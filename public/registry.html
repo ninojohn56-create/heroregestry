@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS // Superhuman Operative Directory — Registrar Access</title>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/css/app.css">
+  <style>
+    .registry-container {
+      max-width: 1200px;
+      margin: 24px auto 60px;
+      padding: 0 20px;
+    }
+    .filter-toolbar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search-box-reg {
+      display: flex;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      gap: 8px;
+      min-width: 260px;
+    }
+    .search-box-reg input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      width: 100%;
+      outline: none;
+    }
+    .status-pills {
+      display: flex;
+      gap: 6px;
+    }
+    .pill-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill-btn:hover {
+      background: var(--bg-surface-hover);
+      color: var(--text-main);
+    }
+    .pill-btn.active {
+      background: var(--primary);
+      border-color: var(--border-focus);
+      color: var(--bg-app);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+    }
+    .hero-registry-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .hero-registry-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary-accent);
+    }
+    .card-top {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .card-hero-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      object-fit: cover;
+      background: #1e293b;
+    }
+    .hero-card-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-meta-row {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .power-tag {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--primary-accent);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      width: fit-content;
+    }
+    .card-footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* PHONE FRIENDLY MOBILE RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+      .ghrms-header {
+        padding: 0.5rem 0.75rem;
+        height: auto;
+        min-height: 52px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .ghrms-fullname {
+        display: none;
+      }
+      .registry-portal-badge {
+        display: none;
+      }
+      .registry-container {
+        margin: 12px auto 40px;
+        padding: 0 10px;
+      }
+      .registry-title-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+      }
+      .registry-header-actions {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .registry-header-actions .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.82rem;
+      }
+      .filter-toolbar {
+        padding: 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 10px;
+      }
+      .search-box-reg {
+        min-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .status-pills {
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        width: 100%;
+      }
+      .status-pills .pill-btn {
+        flex-shrink: 0;
+        padding: 8px 14px;
+        font-size: 0.75rem;
+      }
+      .search-box-reg input {
+        font-size: 16px !important; /* Prevents iOS auto-zoom */
+      }
+      .filter-group .ghrms-select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 12px;
+        font-size: 16px !important; /* Prevents iOS auto-zoom */
+        min-height: 42px;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .hero-registry-card {
+        padding: 14px;
+      }
+      .card-hero-avatar {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+      }
+      .card-footer-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .card-footer-actions > div:last-child {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+      }
+      .card-footer-actions .btn-mini {
+        flex: 1;
+        text-align: center;
+        padding: 10px 8px;
+        min-height: 40px;
+        font-size: 0.78rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    @media (orientation: landscape) and (max-height: 540px) {
+      .registry-container {
+        margin: 8px auto 30px;
+        padding: 0 12px;
+      }
+      .filter-toolbar {
+        padding: 8px 12px;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .hero-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 10px;
+      }
+      .hero-registry-card {
+        padding: 12px;
+        gap: 8px;
+      }
+      .card-hero-avatar {
+        width: 44px;
+        height: 44px;
+      }
+      .hero-card-name {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="ghrms-header">
+    <div class="ghrms-brand">
+      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
+        <div class="ghrms-title-group">
+          <span class="ghrms-acronym">GHRMS</span>
+          <span class="ghrms-divider">|</span>
+          <span class="ghrms-fullname">SUPERHUMAN OPERATIVE DIRECTORY — REGISTRAR ACCESS</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Portal Identity Badge (Registry is Registrar/Admin-only) -->
+    <div class="registry-portal-badge" style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; color: #a78bfa; text-transform: uppercase; background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.3); border-radius: 4px; padding: 0.2rem 0.6rem;">[SUPERHUMAN OPERATIVE DIRECTORY — REGISTRAR ACCESS]</span>
+    </div>
+
+    <div class="header-right">
+      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-main); font-weight: 700; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm);" title="Return to Dashboard">
+        <span>←</span> <span>RETURN TO DASHBOARD</span>
+      </button>
+      <a href="/logout" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+        <span>[SIGN OUT]</span>
+      </a>
+      <button class="icon-button" id="themeToggleBtn" title="Toggle Theme">
+        <span id="themeToggleIcon" style="font-size:0.75rem;font-weight:700;font-family:var(--font-mono);">[MODE]</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- App Layout with Sidebar (Matching Registrar Navigation) -->
+  <div class="ghrms-app-layout">
+    <!-- Left Navigation Sidebar -->
+    <nav class="ghrms-sidebar" aria-label="Registry Navigation">
+      <div class="nav-section-title">Navigation // Accord Steps</div>
+      <ul class="nav-item-list">
+        <li>
+          <a class="nav-link" href="/registrar" title="Registration Queue">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> REGISTRATION QUEUE</span>
+            <span class="nav-pill slate" id="navQueueBadgeRegistry">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="/registrar" title="Pending Update Approvals">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> PENDING APPROVALS</span>
+            <span class="nav-pill slate" id="navPendingBadgeRegistry">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link active" href="/registry" title="Superhuman Central Registry">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> HERO PROFILES</span>
+            <span class="nav-pill active-pill" id="navHeroCountBadge">11</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="/register" title="Superhuman Power Assessment Intake">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> POWER ASSESSMENT</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title" style="margin-top: 1.5rem;">Assessor Tools</div>
+      <ul class="nav-item-list">
+        <li>
+          <a class="nav-link" href="/registrar" onclick="returnToOriginDashboard(); return false;" title="Return to Registrar Desk">
+            <span class="nav-link-label" style="color: var(--text-main); font-weight: 700;">← REGISTRAR DESK</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Scrollable Directory Area -->
+    <main class="registry-scroll-panel" id="registryScrollPanel">
+      <div class="registry-container">
+        <div class="registry-title-row" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h1 style="font-size: 1.4rem; font-weight: 800; margin: 0 0 4px; color: var(--text-main);">
+              Superhuman Operative Directory — Registrar Access
+            </h1>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; font-family: var(--font-mono);">
+              RESTRICTED CIVIC REGISTRY // REGISTRAR, ASSESSOR &amp; ADMIN CLEARANCE ONLY
+            </p>
+          </div>
+
+          <div class="registry-header-actions" style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" onclick="openVerifyModal()" style="font-size: 0.78rem; padding: 7px 14px;">
+              [VERIFY BADGE TOKEN]
+            </button>
+            <a href="/register" class="btn btn-primary" style="font-size: 0.78rem; padding: 7px 14px; text-decoration: none;">
+              [REGISTER NEW HERO]
+            </a>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="filter-toolbar">
+          <div class="filter-group">
+            <div class="search-box-reg">
+              <span style="font-size:0.75rem;font-weight:700;font-family:var(--font-mono);color:var(--text-muted);">FIND:</span>
+              <input type="text" id="registrySearch" placeholder="Search by hero alias, real name, power, sector..." oninput="filterHeroes()">
+            </div>
+
+            <div class="status-pills">
+              <button class="pill-btn active" data-status="" onclick="setStatusFilter('', this)">All</button>
+              <button class="pill-btn" data-status="Licensed" onclick="setStatusFilter('Licensed', this)">Licensed</button>
+              <button class="pill-btn" data-status="Under Review" onclick="setStatusFilter('Under Review', this)">Under Review</button>
+              <button class="pill-btn" data-status="Rogue" onclick="setStatusFilter('Rogue', this)">Rogue</button>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <select class="ghrms-select" id="threatFilter" onchange="filterHeroes()" style="font-size: 0.78rem; padding: 6px 10px;">
+              <option value="">All Threat Tiers</option>
+              <option value="5">Tier 5: S-Class (Planetary)</option>
+              <option value="4">Tier 4: A-Class (Continental)</option>
+              <option value="3">Tier 3: B-Class (Regional)</option>
+              <option value="2">Tier 2: C-Class (City-Wide)</option>
+              <option value="1">Tier 1: D-Class (Local)</option>
+              <option value="0">Tier 0: Civilian</option>
+            </select>
+
+            <select class="ghrms-select" id="regionFilter" onchange="filterHeroes()" style="font-size: 0.78rem; padding: 6px 10px;">
+              <option value="">All Sectors</option>
+              <option value="Sector 1">Sector 1 - Metro Downtown</option>
+              <option value="Sector 2">Sector 2 - Industrial</option>
+              <option value="Sector 3">Sector 3 - Residential</option>
+              <option value="Sector 4">Sector 4 - Coastal</option>
+              <option value="Sector 5">Sector 5 - Perimeter</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Hero Card Grid -->
+        <div class="hero-grid" id="heroCardsGrid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Badge Verifier Modal -->
+  <div class="ghrms-modal-overlay" id="verifierModal" role="dialog">
+    <div class="ghrms-modal-box" style="max-width: 440px;">
+      <div class="ghrms-modal-header">
+        <span>ANTI-SPOOF FIELD BADGE VERIFIER</span>
+        <button class="icon-button" onclick="closeVerifyModal()">[X]</button>
+      </div>
+      <div class="ghrms-modal-body">
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0;">
+          Authenticate 30-second rotating cryptographic QR token for field operatives.
+        </p>
+
+        <form onsubmit="event.preventDefault(); executeVerification();">
+          <div class="form-field-group" style="margin-bottom: 12px;">
+            <label class="field-label-text" for="verifyHeroId">Select Hero / ID</label>
+            <select class="ghrms-select" id="verifyHeroSelect"></select>
+          </div>
+
+          <div class="form-field-group" style="margin-bottom: 16px;">
+            <label class="field-label-text" for="verifyTokenInput">6-Digit Rotating Badge Token</label>
+            <input type="text" class="ghrms-input" id="verifyTokenInput" placeholder="e.g. 748291" maxlength="6" style="font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.2em; text-align: center;" required>
+          </div>
+
+          <button type="submit" class="btn-confirm-final" style="width: 100%;">
+            [VERIFY CRYPTOGRAPHIC TOKEN]
+          </button>
+        </form>
+
+        <div id="verificationResultBox" style="display: none; margin-top: 16px; padding: 14px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       HERO EDIT MODAL (In-Page Hero Profile Editing)
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="heroEditModal" role="dialog" aria-modal="true" aria-label="Edit Hero Record">
+    <div class="ghrms-modal-box" style="max-width: 560px;">
+      <div class="ghrms-modal-header">
+        <span id="editHeroModalTitle">[EDIT OPERATIVE REGISTRY RECORD]</span>
+        <button class="icon-button" onclick="closeEditModal()">[X]</button>
+      </div>
+      <form class="ghrms-modal-body" id="heroEditForm" onsubmit="submitEditHero(event)" style="gap: 0.75rem;">
+
+        <!-- Civilian Legal Identity -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Civilian Legal Real Name *</label>
+            <input type="text" class="ghrms-input" id="editHeroRealName" placeholder="e.g. Marcus Vance" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Government National ID *</label>
+            <input type="text" class="ghrms-input" id="editHeroGovId" placeholder="e.g. FED-9GH-8430" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Hero Alias / Callsign *</label>
+            <input type="text" class="ghrms-input" id="editHeroAlias" placeholder="e.g. APEX" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Operational Status</label>
+            <select class="ghrms-select" id="editStatus">
+              <option value="Under Review">Under Review</option>
+              <option value="Licensed">Licensed</option>
+              <option value="Suspended">Suspended</option>
+              <option value="Rogue">Rogue</option>
+              <option value="Locked Out">Locked Out</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Primary Power Classification *</label>
+            <input type="text" class="ghrms-input" id="editPrimaryPower" placeholder="e.g. Enhanced Strength" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Secondary Power Listing</label>
+            <input type="text" class="ghrms-input" id="editSecondaryPower" placeholder="e.g. Flight">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Sector / Region</label>
+            <input type="text" class="ghrms-input" id="editRegion" placeholder="Sector 1 - Metro Downtown">
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Threat Tier (0–5)</label>
+            <select class="ghrms-select" id="editThreatTier">
+              <option value="0">0 — Inert</option>
+              <option value="1">1 — Minimal</option>
+              <option value="2">2 — Low</option>
+              <option value="3">3 — Moderate</option>
+              <option value="4">4 — High</option>
+              <option value="5">5 — Extreme</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Tactical Gear Manifest (Comma Separated)</label>
+          <input type="text" class="ghrms-input" id="editHeroGear" placeholder="e.g. Kevlar Weave Suit, EMP Disrupter, Grapple Hook">
+        </div>
+
+        <!-- Sidekick Enrollment -->
+        <div class="form-field-group" style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius-sm); padding: 0.75rem;">
+          <label class="field-label-text" style="color: #a78bfa;">[SIDEKICK DIVISION] Assign Senior Mentor</label>
+          <div class="field-subtext" style="margin-bottom: 0.5rem; font-size: 0.7rem; color: var(--text-muted);">Select a mentor to link this operative as their sidekick. Leave blank for independent hero status.</div>
+          <select class="ghrms-select" id="editMentorSelect">
+            <option value="">— No mentor / Keep independent —</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeEditModal()" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel</button>
+          <button type="submit" class="btn-confirm-final" id="btnSaveEditHeroRegistry" style="padding: 0.5rem 1.25rem; font-size: 0.8rem;">[SAVE ALL CHANGES]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <div id="toastContainer" class="ghrms-toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px;"></div>
+
+  <script>
+    // Theme setup
+    function applyRegistryTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    const savedTheme = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+    applyRegistryTheme(savedTheme);
+
+    const regThemeBtn = document.getElementById('themeToggleBtn');
+    if (regThemeBtn) {
+      regThemeBtn.onclick = () => {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('ghrms_theme', next);
+        localStorage.setItem('color-scheme', next);
+        applyRegistryTheme(next);
+      };
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'ghrms_theme' || e.key === 'color-scheme') {
+        applyRegistryTheme(e.newValue || 'dark');
+      }
+    });
+
+    let allHeroes = [];
+    let currentStatusFilter = '';
+    let currentStaffUser = null;
+
+    async function checkAuthStatus() {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        if (data && data.authenticated && data.user) {
+          currentStaffUser = data.user;
+          // Normal hero attempted access to full registry - immediately redirect to Hero Dashboard
+          if (data.user.role === 'HERO') {
+            window.location.replace('/hero?denied=registry');
+            return;
+          }
+          // Verify staff role clearance
+          const allowedRoles = ['REGISTRAR', 'ASSESSOR', 'ADMIN', 'SUPER_ADMIN'];
+          if (!allowedRoles.includes(data.user.role)) {
+            window.location.replace('/login');
+            return;
+          }
+          if (data.user.role === 'SUPER_ADMIN' || data.user.role === 'ADMIN' || (data.user.clearance_level && data.user.clearance_level >= 4)) {
+            const btnReturn = document.getElementById('btnReturnDashboard');
+            if (btnReturn) {
+              btnReturn.innerHTML = '<span style="font-size: 0.9rem; line-height: 1;">←</span> <span>MAIN COMMAND CENTER</span>';
+              btnReturn.style.color = '#60a5fa';
+              btnReturn.style.borderColor = 'rgba(96, 165, 250, 0.4)';
+              btnReturn.style.background = 'rgba(59, 130, 246, 0.12)';
+            }
+            const navReturnLink = document.querySelector('a[title="Return to Registrar Desk"]');
+            if (navReturnLink) {
+              navReturnLink.title = 'Return to Super Admin Command Center';
+              navReturnLink.href = '/admin';
+              navReturnLink.innerHTML = '<span class="nav-link-label" style="color: #60a5fa; font-weight: 800;">← MAIN COMMAND CENTER</span><span class="nav-pill" style="background: rgba(59, 130, 246, 0.25); color: #bfdbfe; font-weight: 800;">L' + (data.user.clearance_level || 5) + '</span>';
+            }
+          }
+        } else {
+          window.location.replace('/login?redirect=' + encodeURIComponent(window.location.pathname));
+        }
+      } catch (e) {
+        currentStaffUser = null;
+        window.location.replace('/login');
+      }
+    }
+
+    async function loadRegistryData() {
+      try {
+        const res = await fetch('/api/heroes');
+        if (res.status === 403) {
+          window.location.replace('/hero?denied=registry');
+          return;
+        }
+        const data = await res.json();
+        if (data.success && data.data) {
+          allHeroes = data.data;
+          const badge = document.getElementById('navHeroCountBadge');
+          if (badge) badge.textContent = allHeroes.length;
+          filterHeroes();
+          populateVerifySelect();
+        }
+      } catch (err) {
+        console.error('Failed to load heroes', err);
+      }
+    }
+
+    function setStatusFilter(status, btn) {
+      currentStatusFilter = status;
+      document.querySelectorAll('.status-pills .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterHeroes();
+    }
+
+    function filterHeroes() {
+      const query = document.getElementById('registrySearch').value.toLowerCase().trim();
+      const threat = document.getElementById('threatFilter').value;
+      const region = document.getElementById('regionFilter').value;
+
+      const filtered = allHeroes.filter(h => {
+        if (currentStatusFilter) {
+          const s = (h.status || '').toLowerCase();
+          const target = currentStatusFilter.toLowerCase();
+          if (target === 'under review' && !(s.includes('review') || s.includes('submitted'))) return false;
+          if (target === 'licensed' && !s.includes('license')) return false;
+          if (target === 'rogue' && !(s.includes('rogue') || s.includes('revoked') || s.includes('locked'))) return false;
+        }
+
+        if (threat !== '' && parseInt(h.threat_tier) !== parseInt(threat)) return false;
+        if (region && !h.region.toLowerCase().includes(region.toLowerCase())) return false;
+
+        if (query) {
+          const match = (h.alias || '').toLowerCase().includes(query) ||
+                        (h.real_name || '').toLowerCase().includes(query) ||
+                        (h.primary_power || '').toLowerCase().includes(query) ||
+                        (h.region || '').toLowerCase().includes(query) ||
+                        (h.license_number || '').toLowerCase().includes(query);
+          if (!match) return false;
+        }
+
+        return true;
+      });
+
+      renderHeroes(filtered);
+    }
+
+    function renderHeroes(list) {
+      const grid = document.getElementById('heroCardsGrid');
+      if (!list || list.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted); background: var(--bg-card); border: 1px dashed var(--border-color); border-radius: var(--radius-md);">
+            No superhuman records matched the filter criteria.
+          </div>
+        `;
+        return;
+      }
+
+      const isStaff = currentStaffUser && (currentStaffUser.role === 'SUPER_ADMIN' || currentStaffUser.role === 'ADMIN' || currentStaffUser.role === 'REGISTRAR');
+
+      grid.innerHTML = list.map(h => {
+        const isLicensed = (h.status || '').toLowerCase().includes('licensed');
+        const isRogue = (h.status || '').toLowerCase().includes('rogue') || (h.status || '').toLowerCase().includes('locked');
+        const statusClass = isLicensed ? 'green' : (isRogue ? 'red' : 'amber');
+        const avatar = h.avatar || (h.alias.toLowerCase().includes('lumina') ? '/img/lumina.jpg' : (h.alias.toLowerCase().includes('atlas') ? '/img/atlas.jpg' : '/img/apex.jpg'));
+        const realNameHtml = (isStaff && h.real_name) ? `<div style="font-size:0.72rem; color:var(--accent-blue); margin-top:2px; font-weight:600; font-family:var(--font-mono);">CIVILIAN: ${h.real_name}</div>` : '';
+        const editBtnHtml = isStaff ? `
+          <button type="button" class="btn-mini" onclick="openEditModal('${h.id}')" style="font-size:0.72rem; padding:4px 8px; background:rgba(255,255,255,0.1); border:1px solid var(--border-color); color:var(--text-main); font-weight:700; cursor:pointer;">
+            [EDIT RECORD]
+          </button>` : '';
+
+        return `
+          <div class="hero-registry-card">
+            <div>
+              <div class="card-top">
+                <img src="${avatar}" class="card-hero-avatar" alt="${h.alias}">
+                <div style="flex: 1;">
+                  <div class="hero-card-name">
+                    <span>${h.alias}</span>
+                    <span class="nav-pill ${statusClass}" style="font-size: 0.65rem;">${h.status}</span>
+                  </div>
+                  ${realNameHtml}
+                  <div class="card-meta-row" style="margin-top: 3px;">
+                    <span>ID: <code>${h.id}</code></span>
+                    <span>·</span>
+                    <span>${h.region || 'Sector 1'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin: 12px 0 8px;">
+                <div class="power-tag">[POWER] ${h.primary_power || 'Kinetic'}</div>
+                ${h.secondary_power && h.secondary_power !== 'None' ? `<div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 6px;">Secondary: ${h.secondary_power}</div>` : ''}
+              </div>
+            </div>
+
+            <div class="card-footer-actions">
+              <div>
+                <span style="font-size: 0.7rem; color: var(--text-subtle); display: block; font-family: var(--font-mono);">THREAT RATING</span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #f59e0b;">${h.threat_tier_label || 'B-Class'}</span>
+              </div>
+              <div style="display:flex; gap:6px;">
+                ${editBtnHtml}
+                <button class="btn-mini btn-mini-assess" onclick="quickVerify('${h.id}')" style="font-size: 0.72rem; padding: 4px 10px;">
+                  [VERIFY BADGE]
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function populateVerifySelect() {
+      const sel = document.getElementById('verifyHeroSelect');
+      sel.innerHTML = allHeroes.map(h => `<option value="${h.id}">${h.alias}${h.real_name ? ` (${h.real_name})` : ''} [${h.id}]</option>`).join('');
+    }
+
+    function openVerifyModal() {
+      document.getElementById('verifierModal').classList.add('active');
+    }
+
+    function closeVerifyModal() {
+      document.getElementById('verifierModal').classList.remove('active');
+      document.getElementById('verificationResultBox').style.display = 'none';
+    }
+
+    // ──────────────────────────────────────────────
+    // In-Page Hero Edit Modal Handlers
+    // ──────────────────────────────────────────────
+    let selectedEditHeroId = null;
+
+    function openEditModal(heroId) {
+      const isStaff = currentStaffUser && (currentStaffUser.role === 'SUPER_ADMIN' || currentStaffUser.role === 'ADMIN' || currentStaffUser.role === 'REGISTRAR');
+      if (!isStaff) {
+        showToast('Security clearance required to edit operative registry.', 'error');
+        return;
+      }
+      const hero = allHeroes.find(h => h.id === heroId);
+      if (!hero) return;
+      selectedEditHeroId = heroId;
+
+      // Populate mentor dropdown
+      const mentorSel = document.getElementById('editMentorSelect');
+      if (mentorSel) {
+        mentorSel.innerHTML = '<option value="">— No mentor / Keep independent —</option>';
+        allHeroes
+          .filter(h => h.id !== heroId)
+          .forEach(h => {
+            const opt = document.createElement('option');
+            opt.value = h.id;
+            opt.textContent = h.alias;
+            if (h.alias === hero.mentor) opt.selected = true;
+            mentorSel.appendChild(opt);
+          });
+      }
+
+      const realNameEl = document.getElementById('editHeroRealName');
+      const govIdEl    = document.getElementById('editHeroGovId');
+      const gearEl     = document.getElementById('editHeroGear');
+
+      if (realNameEl) realNameEl.value = hero.real_name || (hero.vault_info && hero.vault_info.real_name) || '';
+      if (govIdEl)    govIdEl.value    = hero.gov_code || hero.license_number || '';
+      if (gearEl)     gearEl.value     = Array.isArray(hero.gear_manifest) ? hero.gear_manifest.join(', ') : (hero.gear_manifest || '');
+
+      document.getElementById('editHeroAlias').value         = hero.alias || '';
+      document.getElementById('editPrimaryPower').value      = hero.primary_power || '';
+      document.getElementById('editSecondaryPower').value    = hero.secondary_power || '';
+      document.getElementById('editRegion').value            = hero.region || '';
+      document.getElementById('editStatus').value            = hero.status || 'Licensed';
+      document.getElementById('editThreatTier').value        = hero.threat_tier ?? 2;
+      document.getElementById('editHeroModalTitle').textContent = `[EDIT OPERATIVE: ${hero.alias}]`;
+
+      document.getElementById('heroEditModal').classList.add('active');
+    }
+
+    function closeEditModal() {
+      document.getElementById('heroEditModal').classList.remove('active');
+      selectedEditHeroId = null;
+    }
+
+    async function submitEditHero(e) {
+      e.preventDefault();
+      if (!selectedEditHeroId) return;
+
+      const hero = allHeroes.find(h => h.id === selectedEditHeroId);
+      if (!hero) return;
+
+      const mentorSelectEl = document.getElementById('editMentorSelect');
+      const mentorHeroId   = mentorSelectEl?.value || '';
+      const mentorHero     = allHeroes.find(h => h.id === mentorHeroId);
+
+      const gearRaw = document.getElementById('editHeroGear')?.value.trim() || '';
+      const gearManifest = gearRaw ? gearRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const payload = {
+        real_name:       document.getElementById('editHeroRealName')?.value.trim() || '',
+        gov_id:          document.getElementById('editHeroGovId')?.value.trim() || '',
+        alias:           document.getElementById('editHeroAlias').value.trim(),
+        primary_power:   document.getElementById('editPrimaryPower').value.trim(),
+        secondary_power: document.getElementById('editSecondaryPower').value.trim(),
+        region:          document.getElementById('editRegion').value.trim(),
+        status:          document.getElementById('editStatus').value,
+        threat_tier:     parseInt(document.getElementById('editThreatTier').value, 10),
+        gear_manifest:   gearManifest,
+        mentor:          mentorHero ? mentorHero.alias : (hero.mentor || null)
+      };
+
+      const saveBtn = document.getElementById('btnSaveEditHeroRegistry');
+      if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+
+      try {
+        const res = await fetch(`/api/heroes/${hero.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES]'; }
+
+        if (data.success) {
+          showToast(`Operative ${data.data.alias} updated successfully!`, 'success');
+          closeEditModal();
+
+          if (mentorHeroId && mentorHeroId !== '') {
+            await fetch(`/api/heroes/${hero.id}/enroll-sidekick`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ mentor_hero_id: mentorHeroId })
+            });
+          }
+
+          await loadRegistryData();
+        } else {
+          showToast(`Save failed: ${data.error || 'Server error'}`, 'error');
+        }
+      } catch (err) {
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES]'; }
+        showToast(`Save error: ${err.message}`, 'error');
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      let container = document.getElementById('toastContainer');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        container.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;';
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        padding: 10px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;
+        background: ${type === 'success' ? 'rgba(16,185,129,0.95)' : type === 'error' ? 'rgba(239,68,68,0.95)' : 'rgba(30,41,59,0.95)'};
+        color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
+        display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); transition: all 0.2s;
+      `;
+      toast.textContent = (type === 'success' ? '[OK] ' : type === 'error' ? '[ALERT] ' : '[INFO] ') + message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 200);
+      }, 3500);
+    }
+
+    async function quickVerify(heroId) {
+      document.getElementById('verifyHeroSelect').value = heroId;
+      openVerifyModal();
+
+      // For convenience in testing, fetch active valid token
+      try {
+        const tokenRes = await fetch(`/api/heroes/${heroId}/badge-token`);
+        const tokenData = await tokenRes.json();
+        if (tokenData.success && tokenData.data) {
+          document.getElementById('verifyTokenInput').value = tokenData.data.token;
+        }
+      } catch (e) {}
+    }
+
+    async function executeVerification() {
+      const heroId = document.getElementById('verifyHeroSelect').value;
+      const token = document.getElementById('verifyTokenInput').value.trim();
+      const resultBox = document.getElementById('verificationResultBox');
+
+      try {
+        const res = await fetch('/api/verify-badge', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hero_id: heroId, token: token })
+        });
+        const data = await res.json();
+
+        resultBox.style.display = 'block';
+        if (data.success && data.valid) {
+          resultBox.style.background = 'var(--status-green-bg)';
+          resultBox.style.border = '1px solid var(--status-green-border)';
+          resultBox.style.color = '#6ee7b7';
+          resultBox.innerHTML = `
+            <strong>[VALID FIELD BADGE CONFIRMED]</strong><br>
+            Operative: ${data.alias} (${data.hero_id})<br>
+            License Status: ${data.status}<br>
+            Threat Rating: ${data.threat_tier_label}<br>
+            Verification: SHA-256 HMAC Match Valid
+          `;
+        } else if (data.status === 'ROGUE_ALERT') {
+          resultBox.style.background = 'var(--status-red-bg)';
+          resultBox.style.border = '1px solid var(--status-red-border)';
+          resultBox.style.color = '#fca5a5';
+          resultBox.innerHTML = `
+            <strong>[ROGUE ALERT: CONTAINMENT ORDER ACTIVE]</strong><br>
+            ${data.message}<br>
+            Subject: ${data.alias} (${data.hero_id})
+          `;
+        } else {
+          resultBox.style.background = 'var(--status-red-bg)';
+          resultBox.style.border = '1px solid var(--status-red-border)';
+          resultBox.style.color = '#fca5a5';
+          resultBox.innerHTML = `
+            <strong>[VERIFICATION FAILED]</strong><br>
+            Token Expired or Invalid Anti-Spoof Signature.
+          `;
+        }
+      } catch (err) {
+        resultBox.style.display = 'block';
+        resultBox.style.background = 'var(--status-red-bg)';
+        resultBox.style.color = '#fca5a5';
+        resultBox.textContent = 'Verification error: ' + err.message;
+      }
+    }
+
+    function returnToOriginDashboard() {
+      const ref = document.referrer;
+      if (ref && (ref.includes('/registrar') || ref.includes('/admin') || ref.includes('/hero'))) {
+        window.location.href = ref;
+        return;
+      }
+      fetch('/api/auth/me')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.user) {
+            if (data.user.role === 'SUPER_ADMIN' || data.user.role === 'ADMIN') {
+              window.location.href = '/admin';
+            } else if (data.user.role === 'HERO') {
+              window.location.href = '/hero';
+            } else {
+              window.location.href = '/registrar';
+            }
+          } else {
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              window.location.href = '/';
+            }
+          }
+        })
+        .catch(() => {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = '/';
+          }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuthStatus();
+      await loadRegistryData();
+
+      // Sync pending updates badge and queue count
+      try {
+        const pRes = await fetch('/api/pending-updates');
+        const pData = await pRes.json();
+        const pendingBadge = document.getElementById('navPendingBadgeRegistry');
+        if (pendingBadge && pData.success && Array.isArray(pData.data)) {
+          pendingBadge.textContent = pData.data.length;
+        }
+      } catch (e) {}
+
+      const queueCount = allHeroes.filter(h => h.status === 'Under Review' || h.status === 'Pending').length;
+      const qBadge = document.getElementById('navQueueBadgeRegistry');
+      if (qBadge) {
+        qBadge.textContent = queueCount;
+        if (queueCount === 0) {
+          qBadge.style.color = '#34d399';
+        }
+      }
+
+      // Check incoming deep-link param
+      const params = new URLSearchParams(window.location.search);
+      const editHeroId = params.get('edit') || params.get('hero');
+      if (editHeroId) {
+        openEditModal(editHeroId);
+      }
+    });
+  </script>
+</body>
+</html>

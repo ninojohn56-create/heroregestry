@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS // Super Admin Command Center</title>
+  <meta name="description" content="Global Hero Registration Authority Management System — Super Admin Command Center.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f5f5',
+              100: '#e5e5e5',
+              200: '#d4d4d4',
+              300: '#a3a3a3',
+              400: '#737373',
+              500: '#525252',
+              600: '#000000',
+              700: '#171717',
+              800: '#262626',
+              900: '#0a0a0a'
+            },
+            slate: {
+              50: '#fafafa',
+              100: '#f5f5f5',
+              200: '#e5e5e5',
+              300: '#d4d4d4',
+              400: '#a3a3a3',
+              500: '#737373',
+              600: '#525252',
+              700: '#262626',
+              800: '#141414',
+              900: '#0a0a0a',
+              950: '#000000'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'Consolas', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS for Tactical Radar -->
+  <link rel="stylesheet" href="/css/leaflet.css">
+  <link rel="stylesheet" href="/css/app.css?v=4.0">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    .badge-tier-0 { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .badge-tier-1 { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.35); }
+    .badge-tier-2 { background: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
+    .badge-tier-3 { background: rgba(255, 255, 255, 0.1); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+    .badge-tier-4 { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.35); }
+    .badge-tier-5 { background: rgba(100, 116, 139, 0.15); color: #64748b; border: 1px solid rgba(100, 116, 139, 0.35); }
+
+    /* Collapsible Sidebar Styles */
+    aside#sidebar { width: 16rem; min-width: 16rem; }
+    aside#sidebar .nav-link,
+    aside#sidebar nav a {
+      justify-content: flex-start !important;
+      border-left: none !important;
+      padding: 0.625rem 0.75rem !important;
+      font-size: 0.875rem !important;
+    }
+    aside#sidebar.sidebar-collapsed { width: 4.5rem !important; min-width: 4.5rem !important; }
+    aside.sidebar-collapsed .sidebar-text,
+    aside.sidebar-collapsed .sidebar-badge,
+    aside.sidebar-collapsed .sidebar-group-title,
+    aside.sidebar-collapsed .sidebar-user-info,
+    aside.sidebar-collapsed #sidebarBrandTitle,
+    aside.sidebar-collapsed #sidebarRoleSubtitle { display: none !important; }
+    aside.sidebar-collapsed .nav-link,
+    aside.sidebar-collapsed nav a { justify-content: center !important; padding-left: 0 !important; padding-right: 0 !important; }
+    aside.sidebar-collapsed .sidebar-header { justify-content: center !important; padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+    aside.sidebar-collapsed .sidebar-user-box { justify-content: center !important; padding: 0.5rem !important; }
+  </style>
+
+  <script>
+    // Initialize theme immediately to prevent flashing
+    (function() {
+      const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-200 overflow-hidden">
+
+  <div id="app" class="flex h-screen w-full overflow-hidden">
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/50 hidden md:hidden transition-opacity backdrop-blur-xs"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col w-64 shrink-0 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full md:translate-x-0 transition-all duration-200 ease-in-out md:static md:inset-auto">
+      
+      <!-- Sidebar Header -->
+      <div class="sidebar-header flex items-center justify-between h-16 px-4 border-b border-slate-200 dark:border-slate-700 shrink-0">
+        <a href="/admin" class="flex items-center gap-3 text-left overflow-hidden">
+          <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-600 text-white shadow-md shadow-brand-500/20 shrink-0">
+            <i data-lucide="shield" class="w-6 h-6"></i>
+          </div>
+          <div class="min-w-0">
+            <h1 id="sidebarBrandTitle" class="font-bold text-base leading-tight tracking-tight text-slate-900 dark:text-white truncate">GHRMS Command</h1>
+            <span id="sidebarRoleSubtitle" class="text-xs text-rose-600 dark:text-rose-400 font-semibold uppercase tracking-wider block truncate">Supreme Command (L5)</span>
+          </div>
+        </a>
+        <div class="flex items-center gap-1">
+          <!-- Desktop Collapse Toggle -->
+          <button id="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" class="hidden md:flex text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" title="Toggle Sidebar Collapse">
+            <i data-lucide="panel-left-close" id="sidebar-collapse-icon" class="w-5 h-5"></i>
+          </button>
+          <!-- Mobile Close Toggle -->
+          <button id="sidebar-close" class="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1.5 rounded-lg">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+        <div class="sidebar-group-title px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Core Navigation</div>
+        
+        <a href="#dashboard" onclick="switchTab('dashboard')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400" data-target="dashboard" title="Dashboard">
+          <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Dashboard</span>
+        </a>
+
+        <a href="#heroes" onclick="switchTab('heroes')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="heroes" title="Hero Profiles">
+          <i data-lucide="users" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Hero Profiles</span>
+          <span id="nav-heroes-count" class="sidebar-badge ml-auto bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full font-bold">11</span>
+        </a>
+
+        <a href="#queue" onclick="switchTab('queue')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="queue" title="Registration Queue">
+          <i data-lucide="file-text" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Registration Queue</span>
+          <span id="nav-pending-badge" class="sidebar-badge ml-auto bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">14</span>
+        </a>
+
+        <a href="#users" onclick="switchTab('users')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="users" title="Personnel & Passkeys">
+          <i data-lucide="key-round" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Personnel &amp; Passkeys</span>
+          <span id="nav-users-badge" class="sidebar-badge ml-auto bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs px-2 py-0.5 rounded-full font-bold">6</span>
+        </a>
+
+        <div class="sidebar-group-title pt-4 px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Security &amp; Audits</div>
+
+        <a href="#access" onclick="switchTab('access')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="access" title="Access Control">
+          <i data-lucide="lock" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Access Control</span>
+        </a>
+
+        <a href="#audit" onclick="switchTab('audit')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="audit" title="Chained Audit Log">
+          <i data-lucide="history" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Chained Audit Log</span>
+        </a>
+
+        <div class="sidebar-group-title pt-4 px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Tools &amp; Portals</div>
+
+        <a href="#radar" onclick="switchTab('radar')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="radar" title="Tactical Radar / GIS">
+          <i data-lucide="radar" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Tactical Radar / GIS</span>
+        </a>
+
+        <a href="#reports" onclick="switchTab('reports')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="reports" title="Reports & Export">
+          <i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">Reports &amp; Export</span>
+        </a>
+
+        <a href="#settings" onclick="switchTab('settings')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="settings" title="System Settings">
+          <i data-lucide="settings" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text">System Settings</span>
+        </a>
+
+        <a href="/hero" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Launch Hero Portal (Role 1 Intake & Specification)">
+          <i data-lucide="zap" class="w-5 h-5 text-amber-500 shrink-0"></i>
+          <span class="sidebar-text">Hero Portal</span>
+          <span class="sidebar-badge ml-auto bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">L1</span>
+        </a>
+
+        <a href="/registrar" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Launch Registrar Intake & Assessor Desk">
+          <i data-lucide="clipboard-check" class="w-5 h-5 text-neutral-700 dark:text-neutral-300 shrink-0"></i>
+          <span class="sidebar-text">Registrar Desk</span>
+          <span class="sidebar-badge ml-auto bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs px-2 py-0.5 rounded-full font-bold">L3</span>
+        </a>
+
+        <a href="/sentinel" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Sentinel Checkpoint Scanner">
+          <i data-lucide="shield-alert" class="w-5 h-5 text-emerald-500 shrink-0"></i>
+          <span class="sidebar-text">Sentinel Terminal</span>
+          <span class="sidebar-badge ml-auto bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs px-2 py-0.5 rounded-full font-bold">Field</span>
+        </a>
+
+        <a href="/registry" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Public Hero Central Registry">
+          <i data-lucide="globe" class="w-5 h-5 text-indigo-500 shrink-0"></i>
+          <span class="sidebar-text">Public Registry</span>
+          <span class="sidebar-badge ml-auto bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs px-2 py-0.5 rounded-full font-bold">Public</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer User Profile -->
+      <div class="p-3 border-t border-slate-200 dark:border-slate-700 shrink-0">
+        <div class="sidebar-user-box flex items-center gap-3 p-2 rounded-xl bg-slate-50 dark:bg-slate-900/50">
+          <img src="/img/sarah_chen.jpg" id="headerUserAvatar" alt="User Avatar" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0">
+          <div class="sidebar-user-info flex-1 min-w-0">
+            <p id="headerUserName" class="text-sm font-bold truncate text-slate-900 dark:text-white">Admin Officer</p>
+            <p id="headerUserRole" class="text-xs text-brand-600 dark:text-brand-400 font-semibold truncate">Clearance L4 · Standard Admin</p>
+          </div>
+          <a href="/logout" class="text-slate-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-900/20 shrink-0" title="Sign Out">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Container -->
+    <div class="flex flex-col flex-1 h-full overflow-hidden">
+      
+      <!-- Top Header -->
+      <header class="flex items-center justify-between h-16 px-4 md:px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 z-30 shrink-0 gap-4">
+        <div class="flex items-center gap-3 min-w-0">
+          <button id="sidebar-toggle" onclick="handleSidebarToggle()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shrink-0" title="Toggle Navigation Sidebar">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <div class="min-w-0">
+            <h2 id="page-title" class="text-base md:text-lg font-bold text-slate-800 dark:text-white truncate">Super Admin Command Center</h2>
+            <p id="page-subtitle" class="text-xs text-slate-500 dark:text-slate-400 hidden xl:block truncate">Master Superhuman Authority &amp; Incident Response Directive (Level 5).</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-3 shrink-0">
+          <!-- Global Search -->
+          <div class="relative hidden lg:block w-72">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search operative, callsign, ID..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-700 rounded-xl focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 transition-all text-slate-800 dark:text-slate-100">
+          </div>
+
+          <!-- Clearance Badge Indicator -->
+          <div id="headerClearancePill" class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 rounded-xl text-xs font-bold border border-rose-200 dark:border-rose-800">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+            <span id="portalClearanceBadge">[SUPER ADMIN · CLEARANCE L5]</span>
+          </div>
+
+          <!-- Dark Mode Toggle -->
+          <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Toggle Theme">
+            <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+
+          <!-- Notifications Dropdown Trigger -->
+          <div class="relative">
+            <button onclick="toggleNotifications()" class="relative p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <span id="notif-indicator" class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
+            </button>
+            
+            <!-- Notifications Popover -->
+            <div id="notifications-panel" class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl hidden z-50 overflow-hidden">
+              <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                <h3 class="font-bold text-sm text-slate-900 dark:text-white">Directive Notifications</h3>
+                <span class="text-xs text-brand-600 dark:text-brand-400 font-semibold cursor-pointer" onclick="markAllNotificationsRead()">Mark all read</span>
+              </div>
+              <div id="notifications-list" class="divide-y divide-slate-100 dark:divide-slate-700 max-h-72 overflow-y-auto text-sm">
+                <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('queue')">
+                  <div class="flex items-center justify-between">
+                    <p class="font-bold text-xs text-amber-600 dark:text-amber-400">[INSPECTION DUE]</p>
+                    <span class="text-[10px] text-slate-400">Just now</span>
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Operative APEX registration requires confirmation.</p>
+                </div>
+                <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('radar')">
+                  <div class="flex items-center justify-between">
+                    <p class="font-bold text-xs text-rose-600 dark:text-rose-400">[ROGUE RADAR]</p>
+                    <span class="text-[10px] text-slate-400">12m ago</span>
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Sector 2 Containment alert active for rogue signatures.</p>
+                </div>
+                <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('users')">
+                  <div class="flex items-center justify-between">
+                    <p class="font-bold text-xs text-neutral-900 dark:text-neutral-100">[AUTH ACCORD]</p>
+                    <span class="text-[10px] text-slate-400">1h ago</span>
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Personnel passkeys synced with SHA-256 chained audit ledger.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Main View -->
+      <main class="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-slate-900">
+
+        <!-- ════════════════════════════════════════════
+             1. DASHBOARD TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-dashboard" class="tab-content space-y-6">
+          
+          <!-- Summary Stat Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Stat Card 1 -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Total Operatives</p>
+                <h3 id="stat-total-heroes" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">2,419</h3>
+                <span class="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-md mt-2">
+                  <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +4.2% this term
+                </span>
+              </div>
+              <div class="p-4 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 rounded-2xl">
+                <i data-lucide="users" class="w-6 h-6"></i>
+              </div>
+            </div>
+
+            <!-- Stat Card 2 -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Active Licensures</p>
+                <h3 id="stat-licensed-heroes" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">9</h3>
+                <span class="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-md mt-2">
+                  <i data-lucide="shield-check" class="w-3 h-3 mr-1"></i> Across 5 sectors
+                </span>
+              </div>
+              <div class="p-4 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl">
+                <i data-lucide="award" class="w-6 h-6"></i>
+              </div>
+            </div>
+
+            <!-- Stat Card 3 -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Pending Queue</p>
+                <h3 id="stat-pending-queue" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">14</h3>
+                <span class="inline-flex items-center text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-md mt-2">
+                  <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Requires review
+                </span>
+              </div>
+              <div class="p-4 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-2xl">
+                <i data-lucide="file-clock" class="w-6 h-6"></i>
+              </div>
+            </div>
+
+            <!-- Stat Card 4 -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Personnel Accounts</p>
+                <h3 id="stat-personnel-count" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">6</h3>
+                <span class="inline-flex items-center text-xs font-bold text-neutral-800 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-md mt-2">
+                  <i data-lucide="user-check" class="w-3 h-3 mr-1"></i> Clearance L1 - L5
+                </span>
+              </div>
+              <div class="p-4 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl">
+                <i data-lucide="key-round" class="w-6 h-6"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Applications Table -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">Active Operative Intake Queue</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pending evaluation records and credential verifications</p>
+              </div>
+              <button onclick="switchTab('queue')" class="text-sm font-bold text-brand-600 dark:text-brand-400 hover:underline">View All Queue</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                    <th class="py-3.5 px-6">Operative & Callsign</th>
+                    <th class="py-3.5 px-6">Sector / Region</th>
+                    <th class="py-3.5 px-6">Primary Power</th>
+                    <th class="py-3.5 px-6">Threat Class</th>
+                    <th class="py-3.5 px-6">Status</th>
+                    <th class="py-3.5 px-6 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-queue-table" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             2. HEROES / OPERATIVES DIRECTORY TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-heroes" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Superhuman Operatives Directory</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Directly inspect, edit, and reset credentials for registered heroes.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="openHeroPasskeyModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm shadow-md transition-all">
+                <i data-lucide="key" class="w-4 h-4"></i>
+                <span>Reset Hero Passkey</span>
+              </button>
+              <button onclick="openAddHeroModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow-md shadow-brand-500/20 transition-all">
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                <span>Add Operative</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="relative w-full md:w-80">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                <i data-lucide="search" class="w-4 h-4"></i>
+              </span>
+              <input type="text" id="hero-filter-search" oninput="filterHeroesTable()" placeholder="Search by callsign, name, ID..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
+            </div>
+            <div class="flex items-center gap-3 w-full md:w-auto flex-wrap">
+              <select id="hero-filter-sector" onchange="filterHeroesTable()" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+                <option value="">All Municipal Sectors</option>
+                <option value="Sector 1">Sector 1 - Metro Downtown</option>
+                <option value="Sector 2">Sector 2 - Industrial District</option>
+                <option value="Sector 3">Sector 3 - Suburbs North</option>
+                <option value="Sector 4">Sector 4 - Coastal Wharf</option>
+                <option value="Sector 5">Sector 5 - High-Tech Valley</option>
+              </select>
+              <select id="hero-filter-status" onchange="filterHeroesTable()" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+                <option value="">All Statuses</option>
+                <option value="Licensed">Licensed</option>
+                <option value="Under Review">Under Review</option>
+                <option value="Suspended">Suspended</option>
+                <option value="Rogue">Rogue</option>
+              </select>
+              <select id="hero-filter-division" onchange="filterHeroesTable()" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+                <option value="">All Divisions</option>
+                <option value="Hero">Primary Hero</option>
+                <option value="Sidekick">Sidekick Division</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Heroes Table -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                    <th class="py-3.5 px-6">Callsign / Civilian ID</th>
+                    <th class="py-3.5 px-6">Power Specification</th>
+                    <th class="py-3.5 px-6">Sector / Region</th>
+                    <th class="py-3.5 px-6">Threat Class</th>
+                    <th class="py-3.5 px-6">Status</th>
+                    <th class="py-3.5 px-6 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="heroes-table-body" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm">
+                  <!-- Rendered dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             3. REGISTRATION QUEUE TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-queue" class="tab-content hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Operative Registration &amp; Approvals</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Audit applicant records, verify background clearances, and approve licensing.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="relative w-48 sm:w-64">
+                <input type="text" id="queue-search-input" oninput="handleQueueSearch(this.value)" placeholder="Search queue applicants..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <i data-lucide="search" class="w-3.5 h-3.5 absolute left-2.5 top-2 text-slate-400"></i>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="filterQueue('all')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-black text-white dark:bg-white dark:text-black shadow-xs" data-q="all">All</button>
+            <button onclick="filterQueue('Submitted')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Submitted">Submitted</button>
+            <button onclick="filterQueue('Under Review')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Under Review">Under Review</button>
+            <button onclick="filterQueue('Returned for Correction')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Returned for Correction">Returned for Correction</button>
+            <button onclick="filterQueue('Verified')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Verified">Verified</button>
+            <button onclick="filterQueue('Approved')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Approved">Approved</button>
+            <button onclick="filterQueue('Rejected')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Rejected">Rejected</button>
+            <button onclick="filterQueue('pending_updates')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="pending_updates">Profile Updates (<span id="queue-pending-update-count">0</span>)</button>
+          </div>
+
+          <!-- Pending Updates Section if any -->
+          <div id="pending-updates-container" class="space-y-4" style="display: none;">
+            <div class="p-4 bg-amber-50/50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl">
+              <h4 class="font-bold text-sm text-amber-800 dark:text-amber-300 flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                <span>Hero Profile Update Requests Awaiting Admin Approval</span>
+              </h4>
+              <p class="text-xs text-amber-700 dark:text-amber-400 mt-1">Review changes requested by operatives from their portals.</p>
+              <div id="pending-updates-list" class="mt-4 space-y-3"></div>
+            </div>
+          </div>
+
+          <!-- Applications Queue Table -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                    <th class="py-3.5 px-6">Applicant</th>
+                    <th class="py-3.5 px-6">Division &amp; Mentorship</th>
+                    <th class="py-3.5 px-6">Primary Power</th>
+                    <th class="py-3.5 px-6">Threat Assessment</th>
+                    <th class="py-3.5 px-6">Status</th>
+                    <th class="py-3.5 px-6 text-right">Approval Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="queue-table-body" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             4. PERSONNEL ACCOUNTS & PASSKEYS TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-users" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Personnel Accounts &amp; Passkeys</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Day-to-day password management. Standard Admins can reset credentials for regular heroes and staff.</p>
+            </div>
+            <button onclick="openProvisionUserModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow-md shadow-brand-500/20 transition-all">
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+              <span>+ Provision User / Admin</span>
+            </button>
+          </div>
+
+          <!-- Category filter buttons -->
+          <div class="flex gap-2">
+            <button onclick="filterUsersTable('all')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-600 text-white" data-u="all">All Accounts</button>
+            <button onclick="filterUsersTable('heroes')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200" data-u="heroes">Hero Operatives</button>
+            <button onclick="filterUsersTable('staff')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200" data-u="staff">Administrative Staff</button>
+          </div>
+
+          <!-- Accounts Table -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                    <th class="py-3.5 px-6">Account Username &amp; Profile</th>
+                    <th class="py-3.5 px-6">System Role</th>
+                    <th class="py-3.5 px-6">Clearance Level</th>
+                    <th class="py-3.5 px-6">Linked Hero Call</th>
+                    <th class="py-3.5 px-6 text-right">Passkey Management</th>
+                  </tr>
+                </thead>
+                <tbody id="users-table-body" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm">
+                  <!-- Rendered dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             5. ACCESS CONTROL TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-access" class="tab-content hidden space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Access Control &amp; Security Roles</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Cryptographic role hierarchy and security clearance specifications.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Role Card: Super Admin -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-amber-200 dark:border-amber-800 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-700">SUPER_ADMIN</span>
+                <span class="text-xs font-mono font-bold text-amber-600">LEVEL 5</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white">Supreme Commander</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Complete municipal override. Root factory restores, account purges, and security directives.</p>
+              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: commander</div>
+            </div>
+
+            <!-- Role Card: Standard Admin -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-indigo-200 dark:border-indigo-800 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-300 dark:border-indigo-700">ADMIN</span>
+                <span class="text-xs font-mono font-bold text-indigo-600">LEVEL 4</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white">Standard Admin</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Day-to-day user management, hero passkey resets, record editing. Strictly blocked from Super Admin tampering.</p>
+              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: admin</div>
+            </div>
+
+            <!-- Role Card: Registrar -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700">REGISTRAR</span>
+                <span class="text-xs font-mono font-bold text-neutral-600 dark:text-neutral-400">LEVEL 3</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white">Intake Assessor</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Operative evaluation queue, FTF verification, licensing directives, and hero passkey renewals.</p>
+              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: sarah.chen</div>
+            </div>
+
+            <!-- Role Card: Hero -->
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600">HERO</span>
+                <span class="text-xs font-mono font-bold text-slate-500">LEVEL 1</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white">Registered Operative</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Self-service operative portal, rotating 30s cryptographic field badge, dynamic damage claims drawer.</p>
+              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: apex, lumina, solaris</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             6. CHAINED AUDIT LEDGER TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-audit" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">SHA-256 Chained Audit Ledger</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Cryptographically chained ledger verifying every credential change and directive.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="exportAuditLedger()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-xl text-sm transition-all text-slate-800 dark:text-slate-100">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Export Audit CSV</span>
+              </button>
+              <button onclick="verifyAuditChain()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow-md transition-all">
+                <i data-lucide="check-check" class="w-4 h-4"></i>
+                <span>Verify Cryptographic Chain</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                    <th class="py-3.5 px-6">Timestamp</th>
+                    <th class="py-3.5 px-6">Security Actor</th>
+                    <th class="py-3.5 px-6">Action / Event</th>
+                    <th class="py-3.5 px-6">Target Record</th>
+                    <th class="py-3.5 px-6">SHA-256 Hash</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-table-body" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm font-mono">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             7. TACTICAL RADAR / GIS TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-radar" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">GIS Tactical Radar &amp; Containment</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Live geospatial telemetry, sector containment perimeters, and atmospheric feeds.</p>
+            </div>
+            <div id="radarEmergencyActionContainer">
+              <button id="btnToggleRogueBroadcast" onclick="toggleRogueContainmentBroadcast()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm shadow-md shadow-rose-600/20 transition-all">
+                <i data-lucide="radio" class="w-4 h-4"></i>
+                <span id="rogueBroadcastBtnText">Trigger Rogue Emergency Broadcast</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Weather Telemetry Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div>
+              <span class="text-xs font-bold text-slate-400 uppercase">Sector Temperature</span>
+              <p id="tacticalTempText" class="text-lg font-bold text-brand-600 dark:text-brand-400 mt-0.5">21°C</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-400 uppercase">Wind Velocity</span>
+              <p id="tacticalWindText" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">4.2 m/s NW</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-400 uppercase">Atmospheric Sky</span>
+              <p id="tacticalSkyText" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">Clear Sky</p>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-400 uppercase">Flight Safety Index</span>
+              <p id="tacticalFlightText" class="text-lg font-bold text-emerald-600 mt-0.5">Optimal</p>
+            </div>
+          </div>
+
+          <!-- Leaflet Map Box -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden p-2">
+            <div id="adminTacticalMap" style="height: 480px; width: 100%; border-radius: 12px;"></div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             8. REPORTS & DATA EXPORT TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-reports" class="tab-content hidden space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Registry Reports &amp; Tactical Exports</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Generate authenticated audit reports and export tabular dataset records.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="p-3 bg-brand-50 dark:bg-brand-900/35 text-brand-600 dark:text-brand-400 rounded-xl w-fit mb-4">
+                  <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-bold text-base text-slate-900 dark:text-white">Operatives Registry Export</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Full registry including classifications, powers, threat tiers, and regions.</p>
+              </div>
+              <div class="flex gap-2 mt-4">
+                <button onclick="exportHeroesCsv()" class="flex-1 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition-all">CSV Export</button>
+                <button onclick="exportHeroesJson()" class="flex-1 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition-all">JSON Export</button>
+              </div>
+            </div>
+
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="p-3 bg-purple-50 dark:bg-purple-900/35 text-purple-600 dark:text-purple-400 rounded-xl w-fit mb-4">
+                  <i data-lucide="history" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-bold text-base text-slate-900 dark:text-white">Cryptographic Audit Export</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Export full SHA-256 chained transaction logs for legal verification.</p>
+              </div>
+              <button onclick="exportAuditLedger()" class="mt-4 w-full py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-all">Download Audit CSV</button>
+            </div>
+
+            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="p-3 bg-emerald-50 dark:bg-emerald-900/35 text-emerald-600 dark:text-emerald-400 rounded-xl w-fit mb-4">
+                  <i data-lucide="badge-check" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-bold text-base text-slate-900 dark:text-white">Anti-Spoof Field Badge Verifier</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Authenticate live rotating 30-second HMAC field credentials.</p>
+              </div>
+              <button onclick="openBadgeVerifierModal()" class="mt-4 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all">Launch Badge Verifier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════
+             9. SYSTEM SETTINGS TAB
+             ════════════════════════════════════════════ -->
+        <div id="tab-settings" class="tab-content hidden space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">System Settings &amp; Parameters</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Configure global superhuman accord policies, maintenance modes, and canon state.</p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Active Security Accord</h4>
+                <p class="text-xs text-slate-500">Master municipal accord jurisdiction.</p>
+              </div>
+              <select class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold">
+                <option>Lex Talionis Accord 2026 (Active)</option>
+                <option>Metropolitan Protocol Revision 4</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Automated Biometric Threat Scoring</h4>
+                <p class="text-xs text-slate-500">Calculate threat tiers based on reported wattage and collateral indices.</p>
+              </div>
+              <input type="checkbox" checked class="w-5 h-5 accent-brand-600 rounded">
+            </div>
+
+            <div id="containmentEmergencyRow" class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+              <div>
+                <h4 class="font-bold text-sm text-slate-900 dark:text-white">Containment Emergency Mode</h4>
+                <p class="text-xs text-slate-500">Trigger broadcast banner and quarantine unverified badges (Supreme Commander L5).</p>
+              </div>
+              <input type="checkbox" id="settingsEmergencyCheck" onchange="toggleRogueContainmentBroadcast(this.checked)" class="w-5 h-5 accent-rose-600 rounded">
+            </div>
+
+            <!-- Danger Zone: Super Admin (Clearance L5) -->
+            <div id="superAdminDangerZone" class="pt-4 p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-900/10 flex items-center justify-between">
+              <div>
+                <h4 class="font-bold text-sm text-rose-600 dark:text-rose-400">Restore Canon Factory Baseline</h4>
+                <p class="text-xs text-slate-500">Supreme Commander (L5) only: re-seed all canon users and baseline operatives.</p>
+              </div>
+              <button id="btnFactoryReset" onclick="runFactoryReset()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-md">
+                [RESTORE CANON DATA]
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL 1: RESET HERO PASSKEY MODAL
+       ════════════════════════════════════════════ -->
+  <div id="hero-passkey-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-amber-500/10">
+        <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+          <i data-lucide="key" class="w-5 h-5"></i>
+          <h3 class="font-bold text-base">Reset Operative Security Passkey</h3>
+        </div>
+        <button onclick="closeHeroPasskeyModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleHeroPasskeySubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Target Operative / Callsign *</label>
+          <select id="modal-passkey-hero-select" onchange="onModalHeroSelectChange(this.value)" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100"></select>
+        </div>
+
+        <!-- Selected Hero Summary Card -->
+        <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-3">
+          <img id="modal-passkey-hero-avatar" src="/img/apex.jpg" alt="Avatar" class="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700">
+          <div class="flex-1 min-w-0">
+            <h4 id="modal-passkey-hero-name" class="font-bold text-sm text-slate-900 dark:text-white">APEX (Samuel Wright)</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Username: <strong id="modal-passkey-hero-username" class="text-brand-600 dark:text-brand-400 font-mono">apex</strong> · <span id="modal-passkey-hero-status" class="text-emerald-600 font-bold">Licensed</span>
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">New Security Passkey *</label>
+          <div class="flex gap-2">
+            <input type="text" id="modal-new-passkey-input" required placeholder="Minimum 4 characters" class="flex-1 px-3 py-2 text-sm font-mono font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100" autocomplete="new-password">
+            <button type="button" onclick="generateRandomPasskeyModal()" class="px-3 py-2 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 rounded-xl text-xs font-bold hover:bg-brand-100 transition-all">
+              [GENERATE]
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">The operative will use this passkey to sign into their portal at /hero.</p>
+        </div>
+
+        <div class="p-3 bg-emerald-500/10 border border-emerald-500/25 rounded-xl text-xs text-emerald-700 dark:text-emerald-300">
+          <strong>[CRYPTOGRAPHIC AUDIT]:</strong> This action is committed to the chained SHA-256 audit ledger.
+        </div>
+
+        <div class="pt-2 flex justify-end gap-3">
+          <button type="button" onclick="closeHeroPasskeyModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
+          <button type="submit" class="px-5 py-2 text-sm font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl shadow-md">Save New Passkey</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL 2: PROVISION USER / ADMIN MODAL
+       ════════════════════════════════════════════ -->
+  <div id="user-provision-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-brand-600/10">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white">Provision New Account</h3>
+        <button onclick="closeProvisionUserModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleProvisionUserSubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Callsign / Username *</label>
+          <input type="text" id="prov-username" required placeholder="e.g. marcus.vance" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Full Personnel Name *</label>
+          <input type="text" id="prov-name" required placeholder="e.g. Marcus Vance" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Passkey *</label>
+          <input type="password" id="prov-password" required placeholder="Minimum 4 characters" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Security Role *</label>
+          <select id="prov-role" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
+            <option value="HERO">HERO · Clearance L1</option>
+            <option value="REGISTRAR">REGISTRAR · Clearance L3</option>
+            <option value="SUPER_ADMIN" id="opt-superadmin-role">SUPER_ADMIN · Clearance L5</option>
+          </select>
+        </div>
+        <div class="pt-2 flex justify-end gap-3">
+          <button type="button" onclick="closeProvisionUserModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
+          <button type="submit" class="px-5 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md">Confirm Provisioning</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL 3: EDIT HERO MODAL
+       ════════════════════════════════════════════ -->
+  <div id="hero-edit-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 id="hero-edit-title" class="font-bold text-base text-slate-900 dark:text-white">Edit Operative Profile</h3>
+        <button onclick="closeHeroEditModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleHeroEditSubmit(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
+        <input type="hidden" id="edit-hero-id">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Callsign / Alias *</label>
+            <input type="text" id="edit-alias" required class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Civilian Legal Real Name *</label>
+            <input type="text" id="edit-real-name" required class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Primary Power Classification *</label>
+            <input type="text" id="edit-primary-power" required class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Secondary Power</label>
+            <input type="text" id="edit-secondary-power" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Threat Tier</label>
+            <select id="edit-threat-tier" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+              <option value="0">Tier 0 - Cosmic</option>
+              <option value="1">Tier 1 - Planetary</option>
+              <option value="2">Tier 2 - Continental</option>
+              <option value="3">Tier 3 - Regional</option>
+              <option value="4">Tier 4 - City</option>
+              <option value="5">Tier 5 - Street</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Status</label>
+            <select id="edit-status" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+              <option value="Licensed">Licensed</option>
+              <option value="Under Review">Under Review</option>
+              <option value="Suspended">Suspended</option>
+              <option value="Rogue">Rogue</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Sector</label>
+            <select id="edit-sector" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+              <option value="Sector 1 - Metro Downtown">Sector 1</option>
+              <option value="Sector 2 - Industrial District">Sector 2</option>
+              <option value="Sector 3 - Suburbs North">Sector 3</option>
+              <option value="Sector 4 - Coastal Wharf">Sector 4</option>
+              <option value="Sector 5 - High-Tech Valley">Sector 5</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Assigned Mentor (for Sidekick Division)</label>
+          <select id="edit-mentor" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            <option value="">— None / Independent Operative —</option>
+          </select>
+        </div>
+
+        <div class="pt-4 flex justify-between items-center gap-3">
+          <button type="button" onclick="triggerPasskeyFromEditModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs transition-all" title="Launch security passkey reset modal for this operative">
+            <i data-lucide="key" class="w-4 h-4"></i>
+            Reset Security Passkey
+          </button>
+          <div class="flex justify-end gap-3">
+            <button type="button" onclick="closeHeroEditModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
+            <button type="submit" class="px-5 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md">Save Changes</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL 4: AES-256 VAULT BIO MODAL
+       ════════════════════════════════════════════ -->
+  <div id="vault-bio-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-xl mx-4 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-900 text-white">
+        <div class="flex items-center gap-2">
+          <i data-lucide="lock" class="w-5 h-5 text-amber-400"></i>
+          <h3 class="font-bold text-sm uppercase tracking-wider">AES-256 Identity Vault</h3>
+        </div>
+        <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="vault-modal-content" class="p-6 space-y-3 font-mono text-xs">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL 5: REVOKE HERO LICENSE MODAL
+       ════════════════════════════════════════════ -->
+  <div id="revoke-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-rose-200 dark:border-rose-900 shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-rose-200 dark:border-rose-900 bg-rose-500/10">
+        <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400">
+          <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+          <h3 class="font-bold text-base">Issue Revocation Directive</h3>
+        </div>
+        <button onclick="closeRevokeModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleRevokeSubmit(event)" class="p-6 space-y-4">
+        <input type="hidden" id="revoke-hero-id">
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          Revoking operative <strong id="revoke-hero-callsign" class="text-rose-600 dark:text-rose-400"></strong>'s license will suspend their credential privileges immediately.
+        </p>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Reason Category</label>
+          <select id="revoke-category" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+            <option value="Accord Violation (Code 104 - Collateral Threat)">Accord Violation (Code 104)</option>
+            <option value="Power Volatility &amp; Containment Breach">Power Volatility &amp; Containment Breach</option>
+            <option value="Failure of Mandatory Evaluation">Failure of Mandatory Evaluation</option>
+            <option value="Civic Misconduct / Criminal Allegation">Civic Misconduct / Criminal Allegation</option>
+            <option value="Classified Security Directive">Classified Security Directive</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Official Directive Notice *</label>
+          <textarea id="revoke-reason" required rows="3" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100" placeholder="State reasons for licensure revocation..."></textarea>
+        </div>
+        <div class="pt-2 flex justify-end gap-3">
+          <button type="button" onclick="closeRevokeModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
+          <button type="submit" class="px-5 py-2 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md">Confirm Revocation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL 6: FIELD BADGE VERIFIER MODAL
+       ════════════════════════════════════════════ -->
+  <div id="verifier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-emerald-500/10">
+        <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+          <i data-lucide="qr-code" class="w-5 h-5"></i>
+          <h3 class="font-bold text-base">Anti-Spoof Field Badge Verifier</h3>
+        </div>
+        <button onclick="closeVerifierModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleBadgeVerification(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Select Operative</label>
+          <select id="verifier-hero-select" onchange="fetchActiveBadgeToken(this.value)" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">6-Digit Rotating Cryptographic Token</label>
+          <input type="text" id="verifier-token-input" required maxlength="6" placeholder="e.g. 748291" class="w-full px-3 py-2 text-lg font-mono font-bold tracking-widest text-center bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-md transition-all">
+          Verify Cryptographic Token
+        </button>
+        <div id="verifier-result-box" class="hidden p-4 rounded-xl text-xs font-mono"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       COMMANDER OPERATIVE INSPECTOR DRAWER
+       ════════════════════════════════════════════ -->
+  <div id="operative-inspector-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col hidden">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-900 text-white shrink-0">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
+        <h3 class="font-bold text-sm uppercase tracking-wider">Commander Operative Assessor</h3>
+      </div>
+      <button onclick="closeOperativeInspectorDrawer()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Body Content -->
+    <div id="operative-inspector-content" class="p-6 space-y-5 overflow-y-auto flex-1 text-slate-800 dark:text-slate-100">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[100000] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script src="/js/leaflet.js"></script>
+  <script src="/js/admin.js?v=4.0"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+    "system_alert_level": "ELEVATED - OMEGA-3",
+    "rogue_broadcast_active": false,
+    "rogue_broadcast_message": "EMERGENCY ROGUE DIRECTIVE: All field heroes report to sector coordination.",
+    "containment_zones": [
+        {
+            "id": "zone_cst_alpha",
+            "name": "Zone Alpha - Coastal Quarantine",
+            "center": {
+                "lat": 40.6782,
+                "lng": -74.0445
+            },
+            "radius_km": 2.2,
+            "threat_tier": 1,
+            "status": "Active Containment"
+        }
+    ]
+}

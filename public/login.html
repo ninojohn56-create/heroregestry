@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS // Security Clearance Gateway</title>
+  <link rel="stylesheet" href="/css/app.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.05), transparent 70%), var(--bg-app);
+    }
+    .gateway-container {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .login-header {
+      padding: 24px 32px;
+      background: rgba(30, 41, 59, 0.4);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-flex {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      border: 1px solid var(--border-focus);
+      object-fit: cover;
+    }
+    .brand-titles h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin: 0;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+    .brand-titles p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 2px 0 0;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+    .login-grid {
+      display: block;
+    }
+    .login-form-pane {
+      padding: 36px 32px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-family: var(--font-mono);
+    }
+    .form-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-family: var(--font-mono);
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+    }
+    .btn-auth {
+      width: 100%;
+      background: var(--primary);
+      color: var(--bg-app);
+      border: 1px solid var(--border-focus);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .btn-auth:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+    .alert-banner {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+    }
+    .alert-error {
+      background: var(--status-red-bg);
+      border: 1px solid var(--status-red-border);
+      color: #fca5a5;
+    }
+    .alert-warning {
+      background: var(--status-amber-bg);
+      border: 1px solid var(--status-amber-border);
+      color: #fcd34d;
+    }
+    .alert-success {
+      background: var(--status-green-bg);
+      border: 1px solid var(--status-green-border);
+      color: #6ee7b7;
+    }
+
+    @media (max-width: 480px) {
+      .gateway-container {
+        margin: 15px auto;
+        padding: 0 10px;
+      }
+      .login-header {
+        padding: 16px 18px;
+      }
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+      }
+      .brand-titles h1 {
+        font-size: 0.95rem;
+      }
+      .brand-titles p {
+        font-size: 0.68rem;
+      }
+      .login-form-pane {
+        padding: 22px 18px;
+      }
+      .form-input {
+        font-size: 16px;
+        padding: 12px;
+      }
+    }
+    @media (orientation: landscape) and (max-height: 540px) {
+      .gateway-container {
+        margin: 10px auto;
+        padding: 0 14px;
+      }
+      .login-card {
+        max-width: 460px;
+      }
+      .login-header {
+        padding: 10px 18px;
+      }
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+      }
+      .brand-titles h1 {
+        font-size: 0.95rem;
+      }
+      .login-form-pane {
+        padding: 14px 18px;
+      }
+      .form-group {
+        margin-bottom: 10px;
+      }
+      .form-input {
+        padding: 8px 12px;
+        font-size: 16px;
+      }
+      .btn-auth {
+        padding: 10px;
+        min-height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gateway-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="brand-flex">
+          <img src="/img/logo.jpg" alt="GHRMS Seal" class="brand-logo">
+          <div class="brand-titles">
+            <h1>Federal Hero Registration Authority</h1>
+            <p>GHRMS // SECURE CLEARANCE &amp; TERMINAL GATEWAY</p>
+          </div>
+        </div>
+        <div>
+          <button id="themeToggleBtn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem;">
+            [MODE]
+          </button>
+        </div>
+      </div>
+
+      <div class="login-grid">
+        <!-- Form Pane -->
+        <div class="login-form-pane">
+          <div id="alertBox" class="alert-banner"></div>
+
+          <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0 0 6px; color: var(--text-main);">
+            Operational Clearance Access
+          </h2>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 24px; line-height: 1.4;">
+            Restricted government &amp; operative registry terminal. Heroes have access strictly to their Hero Portal. Registrars and Admins require elevated clearance passkeys.
+          </p>
+
+          <form id="loginForm" autocomplete="off">
+            <div class="form-group">
+              <label for="usernameInput">Callsign / Identity Handle</label>
+              <input type="text" id="usernameInput" class="form-input" placeholder="e.g. apex, sarah.chen, admin, admin2, commander" required autofocus>
+            </div>
+
+            <div class="form-group">
+              <label for="passwordInput">Security Passkey</label>
+              <input type="password" id="passwordInput" class="form-input" placeholder="••••••••••••" required>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-auth">
+              <span id="btnIcon">[AUTH]</span>
+              <span id="btnText">Authenticate Credentials</span>
+            </button>
+          </form>
+
+          <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
+            <a href="/register" class="btn btn-secondary" style="text-align: center; text-decoration: none; padding: 10px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.05);">
+              [APPLY] New Hero Applicant? Launch Registration Stepper
+            </a>
+          </div>
+
+          <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-subtle);">
+            <span>PROTOCOL: AES-256-GCM / SHA-256</span>
+            <span>NODE: SECTOR-01-PRIM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    function applyLoginTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    const savedTheme = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+    applyLoginTheme(savedTheme);
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('ghrms_theme', next);
+        localStorage.setItem('color-scheme', next);
+        applyLoginTheme(next);
+      });
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'ghrms_theme' || e.key === 'color-scheme') {
+        applyLoginTheme(e.newValue || 'dark');
+      }
+    });
+
+    const alertBox = document.getElementById('alertBox');
+    function showAlert(message, type = 'error') {
+      alertBox.className = `alert-banner alert-${type}`;
+      alertBox.innerHTML = `<span>[ALERT]</span> <span>${message}</span>`;
+      alertBox.style.display = 'flex';
+    }
+
+    // Check query params for denied notices
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('denied') === 'clearance_3_required') {
+      showAlert('ACCESS DENIED: Registrar Desk requires Security Clearance Level 3 (Registrar / Super Admin). Heroes cannot access assessor queues.', 'warning');
+    } else if (params.get('denied') === 'clearance_5_required') {
+      showAlert('ACCESS DENIED: Command Center requires Level 5 Clearance (Super Admin). Field heroes and registrars are blocked from emergency controls.', 'warning');
+    } else if (params.get('redirect')) {
+      showAlert(`Authentication required to access ${params.get('redirect')}. Please provide active credentials.`, 'warning');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const u = document.getElementById('usernameInput').value.trim();
+      const p = document.getElementById('passwordInput').value.trim();
+      doLogin(u, p);
+    });
+
+    async function doLogin(username, password) {
+      const btnText = document.getElementById('btnText');
+      const btnIcon = document.getElementById('btnIcon');
+      btnText.textContent = 'Verifying Security Token...';
+      btnIcon.textContent = '[...]';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.success && data.user) {
+          showAlert(data.message, 'success');
+          btnText.textContent = 'Clearance Confirmed!';
+          btnIcon.textContent = '[OK]';
+
+          // Safe, role-aware destination routing
+          const rawRedirect = params.get('redirect');
+          let safeRedirect = null;
+          if (rawRedirect && rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') && !rawRedirect.startsWith('/\\')) {
+            safeRedirect = rawRedirect;
+          }
+
+          const userRole = data.user.role;
+          let target = '/hero';
+
+          if (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') {
+            target = safeRedirect || '/admin';
+          } else if (userRole === 'REGISTRAR') {
+            // Registrar cannot access /admin Command Center
+            if (safeRedirect && !safeRedirect.startsWith('/admin')) {
+              target = safeRedirect;
+            } else {
+              target = '/registrar';
+            }
+          } else {
+            // HERO role can only access /hero or / (registry directory is restricted to staff)
+            if (safeRedirect && (safeRedirect.startsWith('/hero') || safeRedirect === '/')) {
+              target = safeRedirect;
+            } else {
+              target = '/hero';
+            }
+          }
+
+          setTimeout(() => {
+            window.location.href = target;
+          }, 600);
+        } else {
+          showAlert(data.error || 'Authentication rejected. Callsign or passkey incorrect.', 'error');
+          btnText.textContent = 'Authenticate Credentials';
+          btnIcon.textContent = '[AUTH]';
+        }
+      } catch (err) {
+        showAlert('Terminal connection failure: ' + err.message, 'error');
+        btnText.textContent = 'Authenticate Credentials';
+        btnIcon.textContent = '[AUTH]';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS | Sentinel Checkpoint Terminal</title>
+  <meta name="description" content="GHRMS Sentinel Checkpoint Terminal — Field Superhuman Licensure Scanner, Permanent QR Verification, and Real-Time Rogue Containment.">
+  <meta name="color-scheme" content="light dark">
+
+  <script>
+    (function() {
+      const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/css/app.css">
+  <style>
+    .sentinel-status-bar {
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      transition: all 0.25s ease;
+    }
+    .status-bar-idle {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--primary-accent);
+    }
+    .status-bar-verified {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10b981;
+      color: #34d399;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+    }
+    .status-bar-rogue {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.4);
+      animation: sentinelRoguePulse 1s infinite alternate;
+    }
+    .status-bar-breach {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid #f59e0b;
+      color: #fcd34d;
+    }
+    .metric-hud-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .metric-hud-title {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .metric-hud-val {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+    .directive-card {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top System Header (Sentinel Checkpoint Context) -->
+  <header class="ghrms-header">
+    <div class="ghrms-brand">
+      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
+        <div class="ghrms-title-group">
+          <span class="ghrms-acronym">GHRMS</span>
+          <span class="ghrms-divider">|</span>
+          <span class="ghrms-fullname">SENTINEL CHECKPOINT &amp; POLICE SCANNER</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Checkpoint Sector & Officer Controls -->
+    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem;">
+        <span style="color: var(--text-muted); font-weight: 700;">CHECKPOINT SECTOR:</span>
+        <select id="checkpointSectorSelect" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; font-family: var(--font-mono);">
+          <option value="Sector 01 (Downtown Municipal)">SECTOR 01: DOWNTOWN MUNICIPAL</option>
+          <option value="Sector 02 (Midtown Plaza)">SECTOR 02: MIDTOWN PLAZA</option>
+          <option value="Sector 03 (Industrial Heights)">SECTOR 03: INDUSTRIAL HEIGHTS</option>
+          <option value="Sector 04 (Harbor Docks)">SECTOR 04: HARBOR DOCKS</option>
+          <option value="Sector 07 (Quarantine Perimeter)">SECTOR 07: QUARANTINE PERIMETER</option>
+        </select>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 0.72rem; padding: 3px 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-main);">
+        [OFC. VALDEZ // UNIT 402]
+      </div>
+
+      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()" style="padding: 6px 14px; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: var(--text-main); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.08); border-radius: 4px; cursor: pointer; transition: all 0.2s ease;" title="Return to Previous Dashboard">
+        <span style="font-size: 1rem; line-height: 1;">←</span> <span>RETURN TO DASHBOARD</span>
+      </button>
+
+      <button type="button" id="btnOpenIncidentsModal" class="btn btn-secondary" onclick="openIncidentsModal()" style="padding: 5px 12px; font-size: 0.75rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.12); border-radius: 4px; cursor: pointer; transition: all 0.2s ease;" title="View Battle Damage Incident Reports">
+        <span style="font-family: var(--font-mono); font-weight: 800;">[!]</span> <span>INCIDENT REPORTS</span>
+      </button>
+
+      <button class="header-tool-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
+        <span id="themeToggleIconSymbol" class="theme-icon-symbol">☼</span>
+        <span id="themeToggleIcon" style="font-size:0.72rem;font-weight:700;font-family:var(--font-mono);">LIGHT</span>
+      </button>
+
+      <a href="/" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; text-decoration: none;">
+        [CENTRAL GATEWAY]
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Sentinel Checkpoint Grid -->
+  <main class="sentinel-grid">
+
+    <!-- LEFT COLUMN: SCANNER & TELEMETRY -->
+    <div style="display: flex; flex-direction: column; gap: 1rem; overflow-y: auto;">
+      
+      <!-- Panel 1: Optical Scanner Viewfinder -->
+      <section class="sentinel-panel">
+        <div class="sentinel-panel-header">
+          <span>[OPTICAL SCANNER &amp; SENSOR]</span>
+          <span style="color: var(--status-green); font-size: 0.7rem;">[FEED: ACTIVE]</span>
+        </div>
+
+        <div style="padding: 1rem; display: flex; flex-direction: column; gap: 0.85rem;">
+          <!-- Viewfinder Frame -->
+          <div class="sentinel-scanner-box" id="sentinelViewfinder">
+            <!-- Live Camera Feed Video -->
+            <video id="sentinelCameraVideo" autoplay playsinline muted style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;"></video>
+            <canvas id="sentinelScanCanvas" style="display: none;"></canvas>
+
+            <div class="sentinel-laser-line" id="sentinelLaserLine"></div>
+            <div class="sentinel-reticle-corner sentinel-reticle-tl"></div>
+            <div class="sentinel-reticle-corner sentinel-reticle-tr"></div>
+            <div class="sentinel-reticle-corner sentinel-reticle-bl"></div>
+            <div class="sentinel-reticle-corner sentinel-reticle-br"></div>
+
+            <!-- Viewfinder Idle Graphic -->
+            <div id="viewfinderIdleHUD" style="text-align: center; color: var(--text-subtle); z-index: 2; pointer-events: none; padding: 1rem;">
+              <div style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--primary-accent);">
+                + OPTICAL TARGET RETICLE +
+              </div>
+              <div style="font-size: 0.72rem; margin-top: 5px; color: var(--text-muted);" id="scannerStatusPrompt">
+                ALIGN CIVIC QR CODE OR OPERATIVE TO DETECT
+              </div>
+              <div style="margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 0.65rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); padding: 3px 8px; border-radius: 4px; color: var(--text-main);">
+                <span>[AUTO-DETECTION ARMED]</span>
+              </div>
+            </div>
+
+            <!-- TARGET LOCKED TACTICAL HUD BAR (Non-blocking bottom floating overlay) -->
+            <div id="viewfinderLockedHUD" style="display: none; position: absolute; bottom: 8px; left: 8px; right: 8px; z-index: 5; background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(8px); border: 1px solid var(--primary-accent); border-radius: 6px; padding: 6px 10px; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 255, 255, 0.2); pointer-events: none;">
+              
+              <!-- Left: Operative Face Thumbnail & Basic Name -->
+              <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <div style="position: relative; flex-shrink: 0;">
+                  <img id="viewfinderFaceImg" src="" alt="Operative Face" style="width: 38px; height: 38px; border-radius: 4px; object-fit: cover; border: 1.5px solid var(--primary-accent); display: block; background: #000;">
+                  <div style="position: absolute; bottom: -3px; right: -3px; font-size: 0.5rem; font-weight: 800; padding: 0 3px; border-radius: 2px; font-family: var(--font-mono); line-height: 1.2;" id="viewfinderFaceRoleTag" class="hero-role-badge badge-hero">
+                    [HERO]
+                  </div>
+                </div>
+
+                <div style="min-width: 0;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 0.95rem; font-weight: 800; color: #ffffff; letter-spacing: -0.01em; line-height: 1.1; white-space: nowrap;" id="viewfinderAlias">
+                      ---
+                    </span>
+                    <span id="hudTimeLock" style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-main); background: rgba(255,255,255,0.15); padding: 1px 4px; border-radius: 2px;">
+                      [LOCKED]
+                    </span>
+                  </div>
+                  <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); font-family: var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="viewfinderRealName">
+                    CIVILIAN: ---
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Detection Tag & Security Status -->
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0;">
+                <div style="font-family: var(--font-mono); font-size: 0.62rem; font-weight: 800;" id="hudMatchStatus">
+                  <span style="color: var(--status-green);">[TARGET ACQUIRED]</span>
+                </div>
+                <div style="display: flex; gap: 4px; align-items: center;">
+                  <span id="viewfinderStatusTag" style="font-size: 0.6rem; font-family: var(--font-mono); font-weight: 700; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); padding: 1px 4px; border-radius: 2px;">
+                    [LICENSED]
+                  </span>
+                  <span id="viewfinderSectorTag" style="font-size: 0.6rem; font-family: var(--font-mono); color: var(--text-muted); border: 1px solid var(--border-color); padding: 1px 4px; border-radius: 2px;">
+                    SECTOR 01
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Camera & File Scanner Controls -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+            <button type="button" id="btnToggleCamera" class="btn btn-secondary" style="font-size: 0.72rem; padding: 6px; justify-content: center; font-weight: 700;">
+              [START WEBCAM]
+            </button>
+            <button type="button" id="btnUploadBadge" class="btn btn-secondary" style="font-size: 0.72rem; padding: 6px; justify-content: center; font-weight: 700;">
+              [SCAN IMAGE FILE]
+            </button>
+            <input type="file" id="sentinelFileInput" accept="image/*" style="display: none;">
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; color: var(--text-muted); padding: 0 2px;">
+            <span>Drag &amp; drop badge onto viewfinder or upload</span>
+            <span style="display: flex; gap: 8px;">
+              <a href="/img/sample_qr_apex.png" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-family: var(--font-mono);">[Sample Apex QR]</a>
+              <a href="/img/sample_qr_solaris.png" target="_blank" style="color: #ef4444; text-decoration: underline; font-family: var(--font-mono);">[Sample Solaris QR]</a>
+            </span>
+          </div>
+
+          <!-- Quick Test Targets Chips -->
+          <div>
+            <div style="font-size: 0.68rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;">
+              [FIELD TEST TARGET PRESETS — INSTANT AUTO-DETECT]
+            </div>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;" id="presetChipsContainer">
+              <button type="button" class="sentinel-chip" data-id="hero_apex_01" data-label="APEX (Hero)">
+                [APEX] Hero
+              </button>
+              <button type="button" class="sentinel-chip" data-id="hero_lumina_02" data-label="LUMINA (Hero)">
+                [LUMINA] Hero
+              </button>
+              <button type="button" class="sentinel-chip rogue" data-id="hero_solaris_a833dd" data-label="SOLARIS (Rogue Suspect)">
+                [SOLARIS] Rogue
+              </button>
+              <button type="button" class="sentinel-chip" data-id="hero_aeroscout_07" data-label="AERO SCOUT (Sidekick)">
+                [AERO] Sidekick
+              </button>
+              <button type="button" class="sentinel-chip" data-id="unknown_vigilante_999" data-label="UNREGISTERED">
+                [UNKNOWN] Vigilante
+              </button>
+            </div>
+          </div>
+
+          <!-- Manual / Auto-Detect Form -->
+          <form id="sentinelScanForm" style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.25rem;">
+            <div class="form-field-group">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="field-label-text" for="sentinelScanInput">Optical QR Payload / Hero ID / Alias</label>
+                <span style="font-size: 0.65rem; color: var(--status-green); font-family: var(--font-mono);">[AUTO-DETECT AS YOU TYPE]</span>
+              </div>
+              <input type="text" id="sentinelScanInput" class="form-input" value="" placeholder="Type name, alias, ID, or scan QR..." required style="font-family: var(--font-mono); font-size: 0.82rem;">
+            </div>
+
+            <div class="form-field-group">
+              <label class="field-label-text" for="sentinelPinInput">
+                Challenge PIN (Anti-Spoof Rotating Token) <span style="color: var(--text-subtle); font-size: 0.68rem;">— Optional elevated check</span>
+              </label>
+              <input type="text" id="sentinelPinInput" class="form-input" placeholder="e.g. 840291 (30s dynamic PIN)" maxlength="12" style="font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.1em;">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btnExecuteScan" style="width: 100%; padding: 0.65rem; font-size: 0.8rem; font-weight: 800; justify-content: center; letter-spacing: 0.05em;">
+              [EXECUTE CHECKPOINT SCAN]
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Panel 2: Recent Checkpoint Scans Feed -->
+      <section class="sentinel-panel" style="flex: 1; min-height: 220px;">
+        <div class="sentinel-panel-header">
+          <span>[CHECKPOINT AUDIT LEDGER]</span>
+          <button type="button" id="btnRefreshHistory" class="btn-mini" style="font-size: 0.68rem; padding: 2px 6px;">
+            [REFRESH]
+          </button>
+        </div>
+
+        <div id="sentinelHistoryList" style="flex: 1; overflow-y: auto; max-height: 280px;">
+          <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.75rem;">
+            Loading recent field scans from chained audit log...
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- RIGHT COLUMN: LIVE VERIFIED DOSSIER & DIRECTIVES -->
+    <div style="display: flex; flex-direction: column; gap: 1rem; overflow-y: auto;">
+      
+      <!-- Live Status Banner -->
+      <div id="sentinelStatusBar" class="sentinel-status-bar status-bar-idle">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span id="statusBarIcon">[SCANNER IDLE]</span>
+          <span id="statusBarText">AWAITING CREDENTIAL SCAN</span>
+        </div>
+        <div style="font-size: 0.72rem; font-weight: 400; opacity: 0.85;" id="statusBarSubtext">
+          Sector 01 Municipal Checkpoint
+        </div>
+      </div>
+
+      <!-- Dossier Panel -->
+      <section class="sentinel-panel" style="flex: 1;">
+        <div class="sentinel-panel-header">
+          <span>[OPERATIVE FIELD INSPECTION DOSSIER]</span>
+          <span id="dossierTimestamp" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">
+            SYSTEM READY
+          </span>
+        </div>
+
+        <!-- Dossier Content Container -->
+        <div id="sentinelDossierContainer" style="padding: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem;">
+          
+          <!-- Idle Placeholder -->
+          <div id="dossierIdleView" style="text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
+            <div style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800; color: var(--primary-accent); margin-bottom: 0.5rem;">
+              [SYSTEM ARMED // SENSOR ACTIVE]
+            </div>
+            <p style="font-size: 0.82rem; max-width: 480px; margin: 0 auto; line-height: 1.5;">
+              Scan a superhuman's permanent civic QR credential or select one of the field test presets on the left to pull live licensure status, authorized power limits, and tactical threat level from the GHRMS registry.
+            </p>
+          </div>
+
+          <!-- Scanned Operative View (Hidden initially) -->
+          <div id="dossierActiveView" style="display: none; flex-direction: column; gap: 1.25rem;">
+            
+            <!-- Operative Identity Card -->
+            <div style="display: flex; gap: 1.25rem; align-items: center; background: var(--bg-surface); padding: 1.15rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); flex-wrap: wrap;">
+              <div style="position: relative;">
+                <img id="operativeAvatar" src="/img/logo.jpg" alt="Operative Face" style="width: 104px; height: 104px; border-radius: var(--radius-sm); object-fit: cover; border: 2px solid var(--border-focus); background: #000; box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);">
+                <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.75); font-size: 0.6rem; font-family: var(--font-mono); color: #ffffff; padding: 1px 4px; border-radius: 2px;">
+                  [FACE ID]
+                </div>
+              </div>
+              
+              <div style="flex: 1; min-width: 220px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <span id="operativeAlias" style="font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: -0.01em;">---</span>
+                  <span id="operativeRoleBadge" class="hero-role-badge badge-hero">[HERO]</span>
+                  <span id="operativeTierBadge" class="tier-badge" style="background: rgba(255, 255, 255, 0.1); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); font-size: 0.7rem; padding: 2px 6px; border-radius: 3px; font-weight: 700;">TIER 1</span>
+                </div>
+
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">
+                  Civilian Legal Name: <strong id="operativeRealName" style="color: var(--text-main); font-size: 0.95rem; letter-spacing: 0.02em;">---</strong>
+                </div>
+
+                <div style="font-size: 0.75rem; color: var(--text-subtle); margin-top: 3px;">
+                  Registry ID: <span id="operativeRegId" style="font-family: var(--font-mono); color: var(--text-main);">---</span>
+                </div>
+
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 5px;" id="operativePowersText">
+                  Powers: ---
+                </div>
+              </div>
+
+              <!-- Licensure Seal Indicator -->
+              <div id="operativeSealBadge" style="text-align: right;">
+                <div style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">MUNICIPAL STATUS</div>
+                <div id="operativeStatusPill" style="font-family: var(--font-mono); font-size: 1.05rem; font-weight: 800; color: #10b981; margin-top: 3px;">
+                  [LICENSED]
+                </div>
+              </div>
+            </div>
+
+            <!-- Tactical Parameters HUD Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem;">
+              <div class="metric-hud-box">
+                <span class="metric-hud-title">AUTHORIZED BOUNDS</span>
+                <span class="metric-hud-val" id="hudAuthorizedSector">SECTOR 01</span>
+                <span style="font-size: 0.68rem; color: var(--status-green);" id="hudSectorStatus">[WITHIN PERMITTED ZONE]</span>
+              </div>
+
+              <div class="metric-hud-box">
+                <span class="metric-hud-title">CURFEW STATUS</span>
+                <span class="metric-hud-val" id="hudCurfewStatus">PERMITTED (24/7)</span>
+                <span style="font-size: 0.68rem; color: var(--text-muted);">Active Field Patrol</span>
+              </div>
+
+              <div class="metric-hud-box">
+                <span class="metric-hud-title">CIVIC BOND &amp; INSURANCE</span>
+                <span class="metric-hud-val" id="hudBondValue">$25,000,000</span>
+                <span style="font-size: 0.68rem; color: var(--status-green);">[ACTIVE ESCROW]</span>
+              </div>
+
+              <div class="metric-hud-box">
+                <span class="metric-hud-title">CHALLENGE PIN VERIFICATION</span>
+                <span class="metric-hud-val" id="hudPinVerification">[PERMANENT PASS]</span>
+                <span style="font-size: 0.68rem; color: var(--text-muted);" id="hudPinSubtext">Civic QR Authenticated</span>
+              </div>
+            </div>
+
+            <!-- Rogue Alert Containment Directive (Visible only when Rogue or Alert) -->
+            <div id="rogueContainmentCard" class="directive-card" style="display: none;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 800; color: #ef4444;">
+                  [DIRECTIVE ALPHA-CONTAINMENT // ROGUE SUPERHUMAN]
+                </span>
+                <span style="font-size: 0.7rem; background: #ef4444; color: #fff; padding: 2px 6px; border-radius: 3px; font-weight: 800;">
+                  URGENT HAZARD
+                </span>
+              </div>
+              <p style="font-size: 0.78rem; color: #fca5a5; line-height: 1.45;">
+                This individual has been flagged by GHRMS Super Admin Command as an active rogue threat. Field officers must maintain maximum civilian standoff distance and prepare dampening protocols immediately.
+              </p>
+              <div style="display: flex; gap: 0.75rem; margin-top: 0.4rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-danger" id="btnBroadcastScramble" style="font-size: 0.75rem; padding: 6px 12px;">
+                  [SCRAMBLE CRISIS RESPONSE UNIT]
+                </button>
+                <button type="button" class="btn btn-secondary" id="btnBroadcastSectorLock" style="font-size: 0.75rem; padding: 6px 12px; border-color: #ef4444; color: #ef4444;">
+                  [BROADCAST SECTOR LOCKDOWN]
+                </button>
+              </div>
+            </div>
+
+            <!-- Audit Trail & Cryptographic Verification Strip -->
+            <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-family: var(--font-mono); font-size: 0.72rem; display: flex; flex-direction: column; gap: 0.35rem;">
+              <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                <span>CRYPTO LEDGER HASH:</span>
+                <span id="dossierLedgerHash" style="color: var(--primary-accent);">00000000000000000000</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                <span>INSPECTION DISPATCH:</span>
+                <span id="dossierOfficerTag">SENTINEL-NODE-402</span>
+              </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary" id="btnSentinelExportAudit" style="font-size: 0.78rem; background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.4); color: #c084fc;">
+                [EXPORT CHECKPOINT LEDGER]
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnResetScanner" style="font-size: 0.78rem;">
+                [CLEAR DOSSIER]
+              </button>
+              <button type="button" class="btn btn-primary" id="btnPassAndLog" style="font-size: 0.78rem; background: #059669; border-color: #10b981;">
+                [APPROVE &amp; LOG CHECKPOINT PASS]
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Incident Reports & Collateral Damage Modal -->
+  <div class="ghrms-modal-overlay" id="incidentsModal" role="dialog" aria-modal="true" aria-label="Incident Reports Ledger" style="display: none; position: fixed; inset: 0; background: rgba(5, 10, 20, 0.82); backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 1rem;">
+    <div class="ghrms-modal-box" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px; width: 100%; max-width: 780px; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.2);">
+      <div class="ghrms-modal-header" style="background: rgba(245, 158, 11, 0.12); border-bottom: 1px solid rgba(245, 158, 11, 0.3); padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color: #f59e0b; font-weight: 800; font-family: var(--font-mono); font-size: 0.85rem;">[INCIDENT &amp; COLLATERAL DAMAGE REPORTS]</span>
+          <span class="nav-pill amber" id="incidentCountBadge" style="font-size: 0.68rem; padding: 2px 6px; background: rgba(245,158,11,0.2); color: #fbbf24; border-radius: 4px; font-family: var(--font-mono);">Loading...</span>
+        </div>
+        <button class="icon-button" onclick="closeIncidentsModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; padding: 4px 8px;" title="Close">[X]</button>
+      </div>
+      <div class="ghrms-modal-body" style="padding: 1.25rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem;" id="incidentsModalBody">
+        <div style="text-align: center; color: var(--text-muted); padding: 2rem; font-size: 0.82rem;">Loading incident records...</div>
+      </div>
+      <div style="padding: 0.85rem 1.25rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2);">
+        <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">SOURCE: /api/damage-reports // CIVIC RECOVERY ESCROW</span>
+        <button type="button" class="btn btn-secondary" onclick="closeIncidentsModal()" style="padding: 5px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">[CLOSE]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/jsqr.min.js"></script>
+  <script src="/js/qr.js"></script>
+  <script src="/js/sentinel.js"></script>
+</body>
+</html>

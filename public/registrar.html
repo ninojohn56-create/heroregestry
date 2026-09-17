@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS | Registrar Desk &amp; Assessor UI</title>
+  <meta name="description" content="GHRMS Registrar Desk & Assessor UI — Superhuman Intake Verification, Threat Classification, and Licensing Authority.">
+  <meta name="color-scheme" content="light dark">
+
+  <script>
+    (function() {
+      const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+
+  <!-- Top System Header (Registrar Context) -->
+  <header class="ghrms-header">
+    <div class="ghrms-brand">
+      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
+        <div class="ghrms-title-group">
+          <span class="ghrms-acronym">GHRMS</span>
+          <span class="ghrms-divider">|</span>
+          <span class="ghrms-fullname">REGISTRAR DESK &amp; ASSESSOR UI</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Portal Identity Badge -->
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #f59e0b; text-transform: uppercase; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); border-radius: 4px; padding: 0.2rem 0.6rem;">[REGISTRAR DESK · CLEARANCE L3]</span>
+    </div>
+
+    <!-- Header Tools -->
+    <div class="header-right">
+      <a href="/admin" id="btnReturnAdmin" class="header-tool-btn" style="display: none; color: #60a5fa; border-color: rgba(96, 165, 250, 0.45); background: rgba(59, 130, 246, 0.15);" title="Return to Main Super Admin Command Center">
+        <span>←</span> <span>MAIN COMMAND CENTER</span>
+      </a>
+
+      <div class="header-user-badge" title="Active Registrar Session">
+        <img src="/img/sarah_chen.jpg" alt="Sarah Chen" class="user-avatar-circle" id="headerUserAvatar">
+        <div class="user-info-text">
+          <span class="user-name-line" id="headerUserName">SARAH CHEN</span>
+          <span class="user-role-line" id="headerUserRole" style="color: #f59e0b;">Clearance L3 · Registrar</span>
+        </div>
+      </div>
+
+      <div class="header-search">
+        <span class="header-search-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input type="text" placeholder="Search operatives..." id="globalRegistrarSearch" autocomplete="off">
+      </div>
+
+      <div class="header-notif-wrapper">
+        <button class="header-tool-btn" id="registrarNotifBtn" title="Notifications & Queue Alerts" aria-expanded="false" aria-haspopup="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span>NOTIF</span>
+          <span class="header-notif-pill" id="registrarNotifPill" style="display: none;">0</span>
+        </button>
+
+        <div id="registrarNotifPanel" class="header-notif-popover" style="display: none;" role="region" aria-label="Registrar Notifications Popover">
+          <div class="notif-popover-header">
+            <div class="notif-popover-title">
+              <span>REGISTRAR DIRECTIVES</span>
+            </div>
+            <button type="button" class="notif-mark-read-btn" id="btnRegistrarMarkRead" onclick="markRegistrarNotificationsRead()">Mark read</button>
+          </div>
+          <div id="registrarNotifList" class="notif-list">
+            <div class="notif-empty">Scanning for intake updates...</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="header-tool-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
+        <span id="themeToggleIconSymbol" class="theme-icon-symbol">☼</span>
+        <span id="themeToggleIcon" style="font-size:0.72rem;font-weight:700;font-family:var(--font-mono);">LIGHT</span>
+      </button>
+
+      <a href="/logout" class="header-signout-btn" title="Sign Out">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>[SIGN OUT]</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- App Layout (Exact Image 2) -->
+  <div class="ghrms-app-layout">
+    <!-- Left Navigation (Image 2 Nav) -->
+    <nav class="ghrms-sidebar" aria-label="Registrar Navigation">
+      <div class="nav-section-title">Navigation // Accord Steps</div>
+      <ul class="nav-item-list">
+        <li>
+          <a class="nav-link active" href="/registrar" id="navLinkRegQueue" title="Registration Queue">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> REGISTRATION QUEUE</span>
+            <span class="nav-pill active-pill" id="countQueuePendingBadge">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="javascript:void(0)" id="navOpenPendingApprovals" title="Pending Update Approvals">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> PENDING APPROVALS</span>
+            <span class="nav-pill slate" id="pendingApprovalsCount">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="/registry" title="Superhuman Central Registry">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> HERO PROFILES</span>
+            <span class="nav-pill slate" id="navHeroProfilesCount">11</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="/register" title="Superhuman Power Assessment Intake">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> POWER ASSESSMENT</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title" style="margin-top: 1.5rem;">Assessor Tools</div>
+      <ul class="nav-item-list">
+        <li>
+          <a class="nav-link" href="javascript:void(0)" id="navOpenAuditLedger" title="Chained SHA-256 Audit Log">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[5]</span> CHAINED AUDIT LOG</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="/sentinel" title="Sentinel Checkpoint Terminal">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[6]</span> SENTINEL TERMINAL</span>
+            <span class="nav-pill slate" style="background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.4); color: #34d399; font-weight: 800;">FIELD</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Super Admin Command Center Link (Shown for Super Admin / Admin) -->
+      <div id="sidebarAdminSection" style="display: none; margin-top: 1.5rem;">
+        <div class="nav-section-title" style="color: #60a5fa;">Command Authority</div>
+        <ul class="nav-item-list">
+          <li>
+            <a class="nav-link" href="/admin" id="navLinkAdminReturn" title="Return to Main Super Admin Command Center" style="border-left: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.08);">
+              <span class="nav-link-label" style="color: #93c5fd; font-weight: 800;">
+                <span style="font-family: var(--font-mono); font-weight: 800;">[★]</span> MAIN COMMAND CENTER
+              </span>
+              <span class="nav-pill" id="sidebarAdminBadge" style="background: rgba(59, 130, 246, 0.25); color: #bfdbfe; font-weight: 800;">L5</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Center Content: Split-Screen Table + Details (Image 2) -->
+    <main class="view-panel active">
+      <div class="registrar-split-container">
+        
+        <!-- Center Table: HERO REGISTRATION QUEUE | APPLICATIONS -->
+        <div class="center-table-panel">
+          <div class="table-toolbar" style="flex-wrap: wrap; gap: 0.5rem;">
+            <!-- PRIMARY ROSTER / QUEUE TOGGLE -->
+            <div style="display: flex; gap: 0.35rem; width: 100%; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;" id="registrarViewModeTabs">
+              <button type="button" class="btn-mini" id="btnModeQueue" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 4px; font-weight: 800; cursor: pointer;">
+                [1] REGISTRATION QUEUE (<span id="countPendingQueue">0</span>)
+              </button>
+              <button type="button" class="btn-mini active" id="btnModeProfiles" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 4px; font-weight: 800; background: var(--primary); border: 1px solid var(--border-focus); color: var(--bg-app); cursor: pointer;">
+                [2] HERO PROFILES (<span id="countActiveProfiles">11</span>)
+              </button>
+            </div>
+
+            <div class="card-heading" style="font-size: 0.8rem; margin-right: 0.5rem;" id="currentRosterHeading">
+              HERO PROFILES <span style="color: var(--text-subtle); font-weight: 400;">| VERIFIED ROSTER</span>
+            </div>
+            <!-- DIVISION FILTER TABS -->
+            <div style="display: flex; gap: 0.35rem;" id="registrarDivisionTabs">
+              <button type="button" class="btn-mini active" data-division="all" id="btnRegTabAll" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: var(--primary); border: 1px solid var(--border-focus); color: var(--bg-app); cursor: pointer;">
+                ALL (<span id="countRegAll">0</span>)
+              </button>
+              <button type="button" class="btn-mini" data-division="Hero" id="btnRegTabHeroes" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
+                [HEROES] (<span id="countRegHeroes">0</span>)
+              </button>
+              <button type="button" class="btn-mini" data-division="Sidekick" id="btnRegTabSidekicks" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
+                [SIDEKICKS] (<span id="countRegSidekicks">0</span>)
+              </button>
+            </div>
+            <div class="table-search-box" style="margin-left: auto;">
+              <span style="font-size:0.75rem;font-weight:700;font-family:var(--font-mono);color:var(--text-muted);">FIND:</span>
+              <input type="text" placeholder="Search..." id="queueSearchInput">
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);" id="queueCounterBadge">
+              11 Operatives
+            </div>
+          </div>
+
+          <!-- EMPTY QUEUE AUTO-ROUTED TO PROFILES BANNER -->
+          <div id="emptyQueueNotice" style="display: none; margin: 0.75rem 1rem 0; padding: 0.65rem 0.85rem; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); font-size: 0.75rem; color: var(--text-main); align-items: center; justify-content: space-between;">
+            <div>
+              <strong>✓ REGISTRATION QUEUE CLEAR:</strong> No applications are currently pending assessment. Displaying active <strong>Hero Profiles</strong> below.
+            </div>
+            <a href="/register" class="btn-mini btn-mini-assess" style="text-decoration:none; padding: 3px 8px; font-size: 0.7rem;">+ Intake New Hero</a>
+          </div>
+
+          <div class="ghrms-table-wrap">
+            <table class="ghrms-table">
+              <thead>
+                <tr>
+                  <th>Operative / Classification</th>
+                  <th>Region / Sector</th>
+                  <th>Primary Power</th>
+                  <th>Threat Class</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="registrarTableBody">
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Details Panel: APPLICANT DETAILS (Matches Image 2) -->
+        <aside class="right-details-panel">
+          <div class="details-header" id="detailsHeaderTitle">
+            APPLICANT DETAILS: APEX <span style="font-weight: 400; color: var(--text-muted);">(Samuel Wright)</span>
+          </div>
+
+          <!-- Hero Profile Header -->
+          <div class="applicant-hero-header">
+            <img src="/img/apex.jpg" alt="Apex Avatar" class="applicant-big-avatar" id="detailsAvatarImg">
+            <div class="applicant-profile-meta">
+              <span class="applicant-realname" id="detailsRealNameText">Samuel Wright</span>
+              <span class="applicant-meta-row">ALIAS: <strong id="detailsAliasText" style="color: var(--text-main);">APEX</strong></span>
+              <span class="applicant-meta-row">Age: <span id="detailsAgeText">34</span></span>
+              <span class="applicant-meta-row">DOB: <span id="detailsDobText">Aug. 21, 1983</span></span>
+              <span class="applicant-meta-row">Location: <span id="detailsLocationText">NYC</span></span>
+            </div>
+          </div>
+
+          <!-- DIVISION BADGE & MENTORSHIP HUD -->
+          <div id="regDivisionCard" style="margin: 0.5rem 0 0.6rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+            <div>
+              <span style="font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.04em;">ACCORD RANK / DIVISION</span><br>
+              <span id="regDivisionBadge" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main);">[PRIMARY HERO DIVISION]</span>
+              <div id="regMentorshipSubtext" style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">
+                Attached Sidekicks: <strong id="regAttachedSidekicksText" style="color: var(--text-main);">None</strong>
+              </div>
+            </div>
+            <button type="button" class="btn-mini" id="btnRegPromoteSidekick" style="display: none; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: #c084fc; font-size: 0.7rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+              [GRADUATE TO HERO]
+            </button>
+          </div>
+
+          <!-- Power Assessment Level Bars -->
+          <div class="power-assessment-section">
+            <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem;">
+              POWER ASSESSMENT
+            </div>
+
+            <div class="power-bar-item">
+              <div class="power-bar-label">
+                <span id="primaryPowerLabel">Primary Power: Enhanced Strength</span>
+                <span id="primaryPowerLevel" style="color: var(--primary-accent);">Level 8/10</span>
+              </div>
+              <div class="power-meter-track">
+                <div class="power-meter-fill" id="primaryMeterFill" style="width: 80%;"></div>
+              </div>
+            </div>
+
+            <div class="power-bar-item">
+              <div class="power-bar-label">
+                <span id="secondaryPowerLabel">Flight</span>
+                <span id="secondaryPowerLevel" style="color: var(--primary-accent);">Level 6/10</span>
+              </div>
+              <div class="power-meter-track">
+                <div class="power-meter-fill" id="secondaryMeterFill" style="width: 60%;"></div>
+              </div>
+            </div>
+
+            <!-- Verification Checklist -->
+            <div class="verification-checklist">
+              <div class="checklist-row">
+                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
+                <span style="flex: 1;">Identity Check (AES-256 Vault)</span>
+                <button class="btn-mini btn-mini-assess" id="btnDecryptBioVault" style="font-size: 0.65rem;">
+                  [DECRYPT BIO]
+                </button>
+              </div>
+              <div class="checklist-row">
+                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
+                <span>Psychological Profile Verified</span>
+              </div>
+              <div class="checklist-row">
+                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
+                <span>Power Signature Analysis Clean</span>
+              </div>
+              <div class="checklist-row">
+                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
+                <span>Criminal Record Clean</span>
+              </div>
+            </div>
+
+            <!-- Verification Tags Strip -->
+            <div class="verification-tags-strip">
+              <span>[VERIFIED] Status</span>
+              <span>[VERIFIED] Background</span>
+              <span>[VERIFIED] Civic Records</span>
+            </div>
+          </div>
+
+          <!-- Confirmation Card -->
+          <div class="confirmation-section">
+            <div class="card-header-bar" style="padding-bottom: 0.35rem;">
+              <span class="card-heading" style="font-size: 0.75rem;">CONFIRMATION &amp; ACTIONS</span>
+              <button class="icon-button" style="font-size: 0.8rem;">[LOG]</button>
+            </div>
+            <div class="field-subtext">Review, edit, or finalize the operative's registration record.</div>
+            <!-- Dynamic Revocation Warning Banner if revoked -->
+            <div id="registrarRevocationBanner" style="display:none; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); border-radius: var(--radius-sm); padding: 0.5rem 0.65rem; margin-top: 0.4rem; font-size: 0.72rem; color: #f87171;">
+              <strong>[REVOKED DIRECTIVE]:</strong> <span id="registrarRevocationReasonText"></span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.5rem;">
+              <button class="btn-confirm-final" id="btnFinalRegistration">
+                [FINAL REGISTRATION CONFIRMATION]
+              </button>
+              <button class="btn-mini btn-mini-assess" id="btnEditSelectedHero"
+                onclick="openEditModal(registrarState.selectedHeroId)"
+                style="padding: 0.5rem; font-size: 0.78rem; width: 100%;">
+                [EDIT ALL OPERATIVE INFO]
+              </button>
+              <button class="btn-mini" id="btnEnrollSidekick"
+                style="padding: 0.5rem; font-size: 0.78rem; width: 100%; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: #a78bfa; border-radius: var(--radius-sm); cursor: pointer;">
+                [ENROLL AS SIDEKICK]
+              </button>
+              <button type="button" class="btn" id="btnChangeHeroPasskeyReg"
+                style="padding: 0.55rem; font-size: 0.78rem; width: 100%; font-weight: 700; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 2px 8px rgba(245,158,11,0.15);">
+                <span>🔑 [CHANGE HERO PASSKEY / PASSWORD]</span>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- AES-256 Vault Bio Decrypt Modal -->
+  <div class="ghrms-modal-overlay" id="vaultBioModal" role="dialog" aria-modal="true" aria-label="Decrypted Bio Vault">
+    <div class="ghrms-modal-box" style="max-width: 460px;">
+      <div class="ghrms-modal-header">
+        <span>[AES-256 IDENTITY VAULT · PRIVILEGED SESSION]</span>
+        <button class="icon-button" id="closeVaultModalBtn">[X]</button>
+      </div>
+      <div class="ghrms-modal-body" id="vaultModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       HERO EDIT MODAL (Full Registry Info Editable)
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="heroEditModal" role="dialog" aria-modal="true" aria-label="Edit Hero Record">
+    <div class="ghrms-modal-box" style="max-width: 560px;">
+      <div class="ghrms-modal-header">
+        <span id="editHeroModalTitle">[EDIT OPERATIVE REGISTRY RECORD]</span>
+        <button class="icon-button" id="closeEditModalBtn">[X]</button>
+      </div>
+      <form class="ghrms-modal-body" id="heroEditForm" style="gap: 0.75rem;">
+
+        <!-- Civilian Legal Identity -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Civilian Legal Real Name *</label>
+            <input type="text" class="ghrms-input" id="editHeroRealName" placeholder="e.g. Marcus Vance" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Government National ID *</label>
+            <input type="text" class="ghrms-input" id="editHeroGovId" placeholder="e.g. FED-9GH-8430" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Hero Alias / Callsign *</label>
+            <input type="text" class="ghrms-input" id="editHeroAlias" placeholder="e.g. APEX" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Operational Status</label>
+            <select class="ghrms-select" id="editStatus">
+              <option value="Under Review">Under Review</option>
+              <option value="Licensed">Licensed</option>
+              <option value="Suspended">Suspended</option>
+              <option value="Rogue">Rogue</option>
+              <option value="Locked Out">Locked Out</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Primary Power Classification *</label>
+            <input type="text" class="ghrms-input" id="editPrimaryPower" placeholder="e.g. Enhanced Strength" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Secondary Power Listing</label>
+            <input type="text" class="ghrms-input" id="editSecondaryPower" placeholder="e.g. Flight">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-field-group">
+            <label class="field-label-text">Sector / Region</label>
+            <input type="text" class="ghrms-input" id="editRegion" placeholder="Sector 1 - Metro Downtown">
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Threat Tier (0–5)</label>
+            <select class="ghrms-select" id="editThreatTier">
+              <option value="0">0 — Inert</option>
+              <option value="1">1 — Minimal</option>
+              <option value="2">2 — Low</option>
+              <option value="3">3 — Moderate</option>
+              <option value="4">4 — High</option>
+              <option value="5">5 — Extreme</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Tactical Gear Manifest (Comma Separated)</label>
+          <input type="text" class="ghrms-input" id="editHeroGear" placeholder="e.g. Kevlar Weave Suit, EMP Disrupter, Grapple Hook">
+        </div>
+
+        <!-- Sidekick Enrollment -->
+        <div class="form-field-group" style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius-sm); padding: 0.75rem;">
+          <label class="field-label-text" style="color: #a78bfa;">[SIDEKICK DIVISION] Assign Senior Mentor</label>
+          <div class="field-subtext" style="margin-bottom: 0.5rem;">Select a mentor to link this operative as their sidekick. Leave blank for independent hero status.</div>
+          <select class="ghrms-select" id="editMentorSelect">
+            <option value="">— No mentor / Keep independent —</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+          <button type="button" class="btn btn-secondary" id="cancelEditBtn"
+            onclick="document.getElementById('heroEditModal').classList.remove('active')"
+            style="padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel</button>
+          <button type="submit" class="btn-confirm-final" id="btnSaveEditHero"
+            style="padding: 0.5rem 1.25rem; font-size: 0.8rem;">[SAVE ALL CHANGES]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       REVOKE LICENSE REASON MODAL (Registrar Desk)
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="revokeLicenseModal" role="dialog" aria-modal="true" aria-label="Revoke Hero License">
+    <div class="ghrms-modal-box" style="max-width: 500px;">
+      <div class="ghrms-modal-header" style="background: rgba(239,68,68,0.12); border-bottom: 1px solid rgba(239,68,68,0.3); color: #f87171;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-weight: 800; font-family: var(--font-mono); color: #f87171;">[DIRECTIVE]</span>
+          <span style="font-weight: 800;">REVOKE HERO LICENSE: <span id="revokeModalAliasTitle">APEX</span></span>
+        </div>
+        <button class="icon-button" id="closeRevokeModalBtn">[X]</button>
+      </div>
+      <form class="ghrms-modal-body" id="revokeLicenseForm" style="padding: 1.25rem; gap: 0.85rem;">
+        <div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
+          Revoking this license will suspend active credentials and notify the hero. Enter an official reason below or designate it as confidential.
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Revocation Category / Preset</label>
+          <select class="ghrms-select" id="revokeReasonCategory">
+            <option value="Accord Violation (Code 104 - Collateral Threat)">Accord Violation (Code 104 - Collateral Threat)</option>
+            <option value="Power Volatility & Containment Breach">Power Volatility & Containment Breach</option>
+            <option value="Failure of Mandatory Face-to-Face Evaluation">Failure of Mandatory Face-to-Face Evaluation</option>
+            <option value="Civic Misconduct / Criminal Allegation">Civic Misconduct / Criminal Allegation</option>
+            <option value="Classified Security Directive">Classified Security Directive (Confidential)</option>
+            <option value="custom">Custom Specific Reason...</option>
+          </select>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Official Reason & Notice for Operative *</label>
+          <textarea class="ghrms-input" id="revokeReasonText" rows="3" required placeholder="State why the license is being revoked or details of the directive..."></textarea>
+          <span style="font-size: 0.68rem; color: var(--text-subtle);">This reason will automatically appear on the hero's portal upon login.</span>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+          <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer;">
+            <input type="checkbox" id="revokeConfidentialCheck" style="margin-top: 2px;">
+            <div style="font-size: 0.75rem; color: var(--text-main);">
+              <strong>[CLASSIFIED] Mark as Confidential Directive (Clearance L5)</strong><br>
+              <span style="color: var(--text-muted); font-size: 0.7rem;">Operative will be shown a Classified Security Directive notice without exposing sensitive internal details.</span>
+            </div>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+          <button type="button" class="btn btn-secondary" id="cancelRevokeBtn" style="padding: 0.45rem 1rem; font-size: 0.78rem;">Cancel</button>
+          <button type="submit" class="btn" style="background: #ef4444; border: 1px solid #f87171; color: #fff; font-weight: 700; padding: 0.45rem 1.25rem; font-size: 0.78rem; border-radius: var(--radius-sm); cursor: pointer;">
+            [CONFIRM REVOCATION]
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       CHAINED AUDIT LEDGER MODAL (Registrar View)
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="auditLedgerModal" role="dialog" aria-modal="true" aria-label="Audit Ledger">
+    <div class="ghrms-modal-box" style="max-width: 760px; max-height: 520px;">
+      <div class="ghrms-modal-header">
+        <span>[CHAINED AUDIT LEDGER · SHA-256]</span>
+        <button class="icon-button" id="closeAuditModalBtn">[X]</button>
+      </div>
+      <div class="ghrms-modal-body" style="max-height: 420px; overflow-y: auto;">
+        <table class="ghrms-table">
+          <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Target</th><th>Hash</th></tr></thead>
+          <tbody id="auditTableBodyReg"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       PENDING HERO UPDATE APPROVALS MODAL
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="pendingApprovalsModal" role="dialog" aria-modal="true" aria-label="Pending Update Approvals">
+    <div class="ghrms-modal-box" style="max-width: 720px; max-height: 580px;">
+      <div class="ghrms-modal-header">
+        <span>[PENDING HERO UPDATE REQUESTS]</span>
+        <button class="icon-button" id="closePendingModalBtn">[X]</button>
+      </div>
+      <div class="ghrms-modal-body" style="max-height: 480px; overflow-y: auto; padding: 0;">
+        <div id="pendingApprovalsList" style="display: flex; flex-direction: column; gap: 0;"></div>
+        <div id="pendingApprovalsEmpty" style="display:none; text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem;">
+          [ALL CLEAR] No pending update requests.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       HERO PASSKEY / PASSWORD RESET MODAL
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="heroPasskeyResetModal" role="dialog" aria-modal="true" aria-label="Reset Hero Passkey">
+    <div class="ghrms-modal-box" style="max-width: 500px;">
+      <div class="ghrms-modal-header" style="background: rgba(245,158,11,0.1); border-bottom: 1px solid rgba(245,158,11,0.3); color: #fbbf24;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-weight: 800; font-family: var(--font-mono); color: #f59e0b;">[AUTH]</span>
+          <span style="font-weight: 800;">HERO SECURITY PASSKEY RESET</span>
+        </div>
+        <button class="icon-button" id="closePasskeyModalBtn">[X]</button>
+      </div>
+      <form class="ghrms-modal-body" id="heroPasskeyResetForm" style="padding: 1.25rem; gap: 0.85rem;">
+        <div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
+          Day-to-day passkey management for registered superhumans. Standard Admins and Registrars can issue or update credentials for operative portal access.
+        </div>
+
+        <!-- Target Hero Selector (if opened from sidebar) / Info Banner -->
+        <div class="form-field-group" id="passkeyHeroSelectGroup">
+          <label class="field-label-text" for="passkeyHeroSelect">Target Operative / Callsign *</label>
+          <select class="ghrms-select" id="passkeyHeroSelect"></select>
+        </div>
+
+        <!-- Selected Hero Summary Card -->
+        <div id="passkeyHeroSummaryCard" style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm);">
+          <img src="/img/apex.jpg" id="passkeyHeroAvatar" alt="Avatar" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover; border: 1px solid var(--border-color);">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 800; font-size: 0.82rem; color: var(--text-main);" id="passkeyHeroDisplayName">APEX (Samuel Wright)</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">
+              Username: <strong id="passkeyHeroUsernameTag" style="color: var(--text-main); font-family: var(--font-mono);">apex</strong> · <span id="passkeyHeroStatusTag" style="color: #34d399;">Licensed</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text" for="newHeroPasskeyInput">New Security Passkey *</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" class="ghrms-input" id="newHeroPasskeyInput" placeholder="Min 4 characters (e.g. Hero@2026!)" required style="font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.05em;" autocomplete="new-password">
+            <button type="button" class="btn-mini" id="btnGenTempPasskey" style="background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 700; white-space: nowrap; padding: 0 0.65rem; border-radius: 4px; cursor: pointer;">
+              [GENERATE]
+            </button>
+          </div>
+          <span style="font-size: 0.68rem; color: var(--text-subtle);">Operative will use this passkey to sign into their portal at /hero.</span>
+        </div>
+
+        <div style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.7rem; color: #a7f3d0;">
+          <strong>[AUDIT RECORD]:</strong> This passkey reset will be cryptographically hashed (BCRYPT) and registered in the chained SHA-256 audit ledger.
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+          <button type="button" class="btn btn-secondary" id="cancelPasskeyResetBtn" style="padding: 0.45rem 1rem; font-size: 0.78rem;">Cancel</button>
+          <button type="submit" class="btn" style="background: #f59e0b; border: 1px solid #fbbf24; color: #000; font-weight: 800; padding: 0.45rem 1.25rem; font-size: 0.78rem; border-radius: var(--radius-sm); cursor: pointer;">
+            [SAVE NEW PASSKEY]
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ANTI-SPOOF FIELD BADGE VERIFIER MODAL
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="verifierModal" role="dialog" aria-modal="true" aria-label="Field Badge Verifier">
+    <div class="ghrms-modal-box" style="max-width: 440px;">
+      <div class="ghrms-modal-header">
+        <span>ANTI-SPOOF FIELD BADGE VERIFIER</span>
+        <button class="icon-button" id="closeVerifyModalBtn">[X]</button>
+      </div>
+      <div class="ghrms-modal-body" style="padding: 1.25rem; gap: 0.75rem;">
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
+          Authenticate 30-second rotating cryptographic QR token for field operatives.
+        </p>
+
+        <form id="verifierForm" onsubmit="event.preventDefault(); executeRegistrarVerification();">
+          <div class="form-field-group" style="margin-bottom: 12px;">
+            <label class="field-label-text" for="verifyHeroSelect">Select Hero / ID</label>
+            <select class="ghrms-select" id="verifyHeroSelect"></select>
+          </div>
+
+          <div class="form-field-group" style="margin-bottom: 16px;">
+            <label class="field-label-text" for="verifyTokenInput">6-Digit Rotating Badge Token</label>
+            <input type="text" class="ghrms-input" id="verifyTokenInput" placeholder="e.g. 748291" maxlength="6" style="font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.2em; text-align: center;" required>
+          </div>
+
+          <button type="submit" class="btn-confirm-final" style="width: 100%;">
+            [VERIFY CRYPTOGRAPHIC TOKEN]
+          </button>
+        </form>
+
+        <div id="verificationResultBox" style="display: none; margin-top: 16px; padding: 14px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="/js/registrar.js"></script>
+</body>
+</html>

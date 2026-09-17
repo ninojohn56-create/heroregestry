@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS | Hero &amp; Sidekick Portal</title>
+  <meta name="description"
+    content="GHRMS Hero & Sidekick Application Portal — Confidential Operative Intake & Power Specification.">
+  <meta name="color-scheme" content="light dark">
+
+  <script>
+    (function() {
+      const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body>
+
+  <!-- Top System Header (Hero Portal Context) -->
+  <header class="ghrms-header">
+    <div class="ghrms-brand">
+      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
+        <div class="ghrms-title-group">
+          <span class="ghrms-acronym">GHRMS</span>
+          <span class="ghrms-divider">|</span>
+          <span class="ghrms-fullname">HERO &amp; SIDEKICK PORTAL</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Access Role Label -->
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span class="hero-access-badge" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; color: #38bdf8; text-transform: uppercase; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.35); border-radius: 4px; padding: 0.25rem 0.75rem;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
+        <span>HERO ACCESS</span>
+      </span>
+    </div>
+
+    <!-- Header Tools -->
+    <div class="header-right">
+      <div class="header-user-badge" title="Active Operative Session">
+        <img src="/img/apex.jpg" alt="Apex Avatar" class="user-avatar-circle" id="headerUserAvatar">
+        <div class="user-info-text">
+          <span class="user-name-line" id="headerHeroAlias">APEX</span>
+          <span class="user-role-line" id="headerHeroCode">HERO ACCESS · Operative</span>
+        </div>
+      </div>
+
+      <div class="header-search">
+        <span class="header-search-icon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input type="text" id="heroGlobalSearch" placeholder="Search resources..." autocomplete="off">
+      </div>
+
+      <div class="header-notif-wrapper">
+        <button class="header-tool-btn" id="heroNotifBtn" title="Directives & Alerts" aria-expanded="false" aria-haspopup="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span>ALERTS</span>
+          <span class="header-notif-pill" id="heroNotifPill" style="display: none;">0</span>
+        </button>
+
+        <div id="heroNotifPanel" class="header-notif-popover" style="display: none;" role="region" aria-label="Directives & Alerts Popover">
+          <div class="notif-popover-header">
+            <div class="notif-popover-title">
+              <span>DIRECTIVES &amp; ALERTS</span>
+            </div>
+            <button type="button" class="notif-mark-read-btn" id="btnHeroMarkRead" onclick="markHeroNotificationsRead()">Mark read</button>
+          </div>
+          <div id="heroNotifList" class="notif-list">
+            <div class="notif-empty">Scanning for sector directives...</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="header-tool-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
+        <span id="themeToggleIconSymbol" class="theme-icon-symbol">☼</span>
+        <span id="themeToggleIcon" style="font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono);">LIGHT</span>
+      </button>
+
+      <a href="/logout" class="header-signout-btn" title="Sign Out of Portal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>[SIGN OUT]</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Emergency Rogue Alert Bar (Hidden until active) -->
+  <aside class="ghrms-alert-bar" id="rogueBroadcastBanner">
+    <div>
+      <span style="font-weight: 800; color: #ef4444; margin-right: 0.5rem;">[TACTICAL ALERT]</span>
+      <span id="rogueBroadcastMessage">EMERGENCY BROADCAST ACTIVE: Rogue alert in Sectors 2 &amp; 4.</span>
+    </div>
+    <span style="background: rgba(0,0,0,0.3); padding: 0.15rem 0.4rem; border-radius: 2px;">ACTIVE DIRECTIVE</span>
+  </aside>
+
+  <!-- App Layout -->
+  <div class="ghrms-app-layout">
+    <!-- Left Navigation -->
+    <nav class="ghrms-sidebar" aria-label="Hero Navigation">
+      <div class="sidebar-header-bar">
+        <span class="nav-section-title">HERO ACCESS NAVIGATION</span>
+      </div>
+      <ul class="nav-item-list" style="margin-top: 0.5rem;">
+        <li><a class="nav-link" href="/" title="Central Gateway / Home"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[⌂]</span> HOME / GATEWAY</span></a></li>
+        <li><a class="nav-link active" href="/hero" title="My Hero Profile"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[★]</span> My Hero Profile</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('heroWorkflowStepper')" title="Application Progress"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> Application Progress</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secRegisteredPowers')" title="Registered Powers"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> Registered Powers</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secSecondaryAbilities')" title="Secondary Abilities"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> Secondary Abilities</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secThreatClassification')" title="Threat Classification"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> Threat Classification</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secCertificationsTraining')" title="Certifications & Training"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[5]</span> Certifications &amp; Training</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secSupportingDocuments')" title="Supporting Documents"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[6]</span> Supporting Documents</span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secAuthorizationBadge')" title="Authorization & Badge"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[7]</span> Authorization &amp; Badge</span></a></li>
+      </ul>
+
+      <div class="nav-section-title-sub">Field Utilities</div>
+      <ul class="nav-item-list">
+        <li>
+          <a class="nav-link" id="navOpenQrBadge" style="cursor: pointer;">
+            <span class="nav-link-label">Dynamic QR Badge</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" id="navOpenDamageDrawer" style="cursor: pointer;">
+            <span class="nav-link-label">Damage Drawer</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Center Content: MY HERO PROFILE -->
+    <main class="view-panel active">
+      <div class="panel-title-bar">
+        <div class="panel-title-group">
+          <span class="panel-title-badge" style="background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4);">[HERO ACCESS]</span>
+          <span>MY HERO PROFILE</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 0.72rem; color: #38bdf8; font-weight: 700; letter-spacing: 0.05em; font-family: var(--font-mono); background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); border-radius: 4px; padding: 2px 8px;">CONFIDENTIAL OPERATIVE VIEW</span>
+        </div>
+      </div>
+
+      <!-- Access Denied Redirect Notice (Shown if normal hero tried to browse directory) -->
+      <div id="heroAccessDeniedNotice" style="display: none; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 16px; color: #fca5a5;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.2rem;">🚫</span>
+          <div style="flex: 1;">
+            <strong style="font-size: 0.85rem; color: #ef4444; display: block; margin-bottom: 2px;">[RESTRICTED DIRECTIVE] Superhuman Operative Directory Access Prohibited</strong>
+            <span style="font-size: 0.75rem; color: var(--text-main);">The Superhuman Operative Directory is restricted to authorized Registrar and Administrative personnel. You have been safely redirected to your personal Hero Dashboard.</span>
+          </div>
+          <button type="button" class="btn-mini" onclick="document.getElementById('heroAccessDeniedNotice').style.display='none'" style="padding: 3px 8px; font-size: 0.7rem; color: #fca5a5; background: rgba(255,255,255,0.05); border: 1px solid rgba(239, 68, 68, 0.3); cursor: pointer;">[DISMISS]</button>
+        </div>
+      </div>
+
+      <!-- Hero Header Card with Stepper -->
+      <article class="application-hero-card">
+        <div class="hero-profile-row">
+          <div class="hero-avatar-wrapper" onclick="openFacePhotoUploadModal()" title="Upload / Update Face Picture" style="position: relative; cursor: pointer; flex-shrink: 0; display: inline-block;">
+            <img src="/img/apex.jpg" alt="Hero Avatar" class="hero-thumb-avatar" id="heroThumbAvatar" style="width: 72px; height: 72px; border-radius: var(--radius-md); object-fit: cover; border: 2px solid var(--border-color); transition: all 0.2s;">
+            <div class="avatar-hover-pill" style="position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.92); border: 1px solid var(--border-focus); border-radius: 10px; padding: 2px 7px; font-size: 0.58rem; font-family: var(--font-mono); color: #fff; font-weight: 700; display: flex; align-items: center; gap: 3px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.5);">
+              <span>📷</span> <span>PHOTO</span>
+            </div>
+          </div>
+          <div>
+            <div class="hero-alias-header" id="heroAliasTitle">APEX</div>
+            <div class="hero-sub-id" id="heroSubId">Apex (Samuel Wright) · ID: 9GH-8430</div>
+            <div id="heroRoleBadge" style="margin-top: 5px; display: inline-flex; align-items: center; gap: 0.4rem;">
+              <!-- Dynamic rank badge injected here -->
+            </div>
+          </div>
+          <div style="margin-left: auto; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <button class="btn-mini btn-mini-assess" onclick="openFacePhotoUploadModal()"
+              style="font-size: 0.72rem; padding: 0.35rem 0.65rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; cursor: pointer;">
+              <span>📷</span> <span>UPDATE FACE PHOTO</span>
+            </button>
+            <button class="btn-mini btn-mini-assess" id="btnExpandQrBadge"
+              style="font-size: 0.75rem; padding: 0.35rem 0.75rem; font-weight: 700;">
+              [EXPAND QR BADGE]
+            </button>
+          </div>
+        </div>
+
+        <!-- 5-Stage Registration Workflow Stepper Track -->
+        <div class="ghrms-stepper" id="heroWorkflowStepper">
+          <div class="stepper-track-line">
+            <div class="stepper-track-progress" id="stepperProgressLine" style="width: 25%;"></div>
+          </div>
+
+          <div class="stepper-step completed" id="stNode1">
+            <div class="step-circle">1</div>
+            <span class="step-title-text">Draft / Intake</span>
+          </div>
+
+          <div class="stepper-step active" id="stNode2">
+            <div class="step-circle">2</div>
+            <span class="step-title-text">Submitted</span>
+          </div>
+
+          <div class="stepper-step" id="stNode3">
+            <div class="step-circle">3</div>
+            <span class="step-title-text">Under Review</span>
+          </div>
+
+          <div class="stepper-step" id="stNode4">
+            <div class="step-circle">4</div>
+            <span class="step-title-text">Verified</span>
+          </div>
+
+          <div class="stepper-step" id="stNode5">
+            <div class="step-circle">5</div>
+            <span class="step-title-text">Approved &amp; Licensed</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Registration Workflow Status Notification Banner -->
+      <div id="registrationStatusBanner" style="display: none; border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 20px;">
+        <!-- Injected dynamically by hero.js based on hero.status -->
+      </div>
+
+      <!-- MY HERO PROFILE DOSSIER CARD -->
+      <div class="ghrms-form-card" id="myHeroProfileDossier">
+        <div class="card-header-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="card-heading">MY HERO PROFILE</span>
+              <span style="font-size: 0.65rem; font-weight: 800; font-family: var(--font-mono); color: #38bdf8; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3); border-radius: 4px; padding: 2px 6px;">HERO ACCESS</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">
+              Personal Operative Record, Verified Powers, Threat Calibrations, and Field Authorizations.
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <a href="/register" id="btnEditInRegisterWizard" class="btn-mini btn-mini-assess" style="text-decoration: none; font-size: 0.75rem; padding: 0.4rem 0.85rem; font-weight: 700; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
+              <span>📝</span> <span>REGISTRATION INTAKE</span>
+            </a>
+            <button type="button" class="btn-mini" id="btnToggleHeroEdit" style="font-size: 0.75rem; padding: 0.4rem 0.85rem; font-weight: 700; border-radius: 4px; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main);">
+              QUICK EDIT RECORD
+            </button>
+          </div>
+        </div>
+
+        <!-- Pending update banner injected here by JS -->
+        <div id="pendingUpdateBanner" style="display: none;"></div>
+
+        <!-- MODE 1: MY HERO PROFILE VIEW MODE -->
+        <div id="heroInfoViewMode">
+
+          <!-- 1. HERO IDENTITY & LICENSURE -->
+          <div id="secHeroIdentity" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <span>1. Hero Identity &amp; Licensure</span>
+              <span id="vwAccountStatusBadge" style="font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.08);">STATUS: —</span>
+            </div>
+            <div class="hero-fields-grid">
+              <div class="form-field-group">
+                <span class="field-label-text">Hero Alias / Callsign</span>
+                <div id="vwHeroUsername" style="font-size: 1.1rem; font-weight: 800; color: #ffffff; letter-spacing: 0.04em; margin-top: 3px;">—</div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">License Status</span>
+                <div id="vwHeroLicenseStatus" style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-top: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span id="vwHeroLicenseBadge" style="font-size: 0.75rem; font-family: var(--font-mono); font-weight: 800; color: #34d399; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); padding: 3px 8px; border-radius: 4px;">[LICENSED]</span>
+                  <span id="vwHeroLicenseNumber" style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-muted);">#9GH-8430-FED</span>
+                </div>
+              </div>
+            </div>
+            <div class="hero-fields-grid" style="margin-top: 12px;">
+              <div class="form-field-group" id="vwHeroIdContainer">
+                <span class="field-label-text">Hero ID (Official Identifier)</span>
+                <div id="vwHeroId" style="font-size: 0.92rem; font-family: var(--font-mono); font-weight: 800; color: #38bdf8; margin-top: 3px;">—</div>
+                <div id="vwHeroIdNote" style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">Official GHRMS federal registry number</div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Registration Date &amp; Active Session</span>
+                <div id="vwHeroDates" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; font-family: var(--font-mono);">—</div>
+              </div>
+            </div>
+            <!-- Hidden compatibility elements -->
+            <span id="vwHeroAlias" style="display: none;"></span>
+            <span id="vwHeroOfficialId" style="display: none;"></span>
+            <span id="vwHeroClassification" style="display: none;"></span>
+          </div>
+
+          <!-- 2. REGISTERED POWERS -->
+          <div id="secRegisteredPowers" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+              2. Registered Powers
+            </div>
+            <div class="hero-fields-grid">
+              <div class="form-field-group">
+                <span class="field-label-text">Primary Registered Power</span>
+                <div id="vwHeroPrimaryPower" style="font-size: 1rem; font-weight: 800; color: var(--text-main); margin-top: 3px;">—</div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Power Output Level</span>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                  <div style="flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                    <div id="vwPowerLevelBar" style="width: 70%; height: 100%; background: #3b82f6;"></div>
+                  </div>
+                  <span id="vwPowerLevelText" style="font-size: 0.82rem; font-weight: 800; font-family: var(--font-mono); color: #93c5fd;">70/100</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-field-group" style="margin-top: 12px;">
+              <span class="field-label-text">Comprehensive Power Description</span>
+              <div id="vwHeroPowerDesc" style="font-size: 0.85rem; color: var(--text-main); margin-top: 3px; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">—</div>
+            </div>
+          </div>
+
+          <!-- 3. SECONDARY ABILITIES -->
+          <div id="secSecondaryAbilities" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+              3. Secondary Abilities &amp; Non-Powered Skills
+            </div>
+            <div class="hero-fields-grid">
+              <div class="form-field-group">
+                <span class="field-label-text">Secondary Abilities / Sub-Powers</span>
+                <div id="vwHeroSecondaryPower" style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); margin-top: 3px;">—</div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Tactical Combat Style &amp; Role</span>
+                <div id="vwHeroCombatStyle" style="font-size: 0.88rem; color: var(--text-main); margin-top: 3px;">—</div>
+              </div>
+            </div>
+            <div class="hero-fields-grid" style="margin-top: 12px;">
+              <div class="form-field-group">
+                <span class="field-label-text">Key Abilities &amp; Non-Powered Skills</span>
+                <div id="vwHeroAbilitiesSkills" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px; line-height: 1.45;">—</div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Operational Strengths &amp; Limitations</span>
+                <div id="vwHeroStrengthsWeaknesses" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px; line-height: 1.45;">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. THREAT CLASSIFICATION -->
+          <div id="secThreatClassification" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+              4. Threat Classification &amp; Combat Calibration
+            </div>
+            <div class="hero-fields-grid">
+              <div class="form-field-group">
+                <span class="field-label-text">Assigned Threat Classification</span>
+                <div id="vwHeroThreatTier" style="margin-top: 4px;">—</div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Power Control Level</span>
+                <div id="vwHeroControlLevel" style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-top: 4px;">—</div>
+              </div>
+            </div>
+            <div class="hero-fields-grid" style="margin-top: 12px;">
+              <div class="form-field-group">
+                <span class="field-label-text">Combat Effectiveness Rating</span>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
+                  <div style="flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                    <div id="vwCombatRatingBar" style="width: 75%; height: 100%; background: #10b981;"></div>
+                  </div>
+                  <span id="vwCombatRatingText" style="font-size: 0.82rem; font-weight: 800; font-family: var(--font-mono); color: #6ee7b7;">75/100</span>
+                </div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Sector Jurisdiction &amp; Field Gear</span>
+                <div id="vwHeroSectorGear" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; line-height: 1.45;">—</div>
+              </div>
+            </div>
+            <div class="form-field-group" style="margin-top: 12px;">
+              <span class="field-label-text">Assessment Notes &amp; Risk Mitigation</span>
+              <div id="vwHeroAssessmentNotes" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; font-style: italic;">None recorded</div>
+            </div>
+          </div>
+
+          <!-- 5. CERTIFICATIONS & TRAINING RECORDS -->
+          <div id="secCertificationsTraining" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+              5. Certifications &amp; Training Records
+            </div>
+            <div class="form-field-group">
+              <span class="field-label-text">Official Accreditations &amp; Certifications</span>
+              <div id="vwHeroCertifications" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px;">
+                <!-- Populated dynamically by hero.js -->
+              </div>
+            </div>
+            <div class="form-field-group" style="margin-top: 12px;">
+              <span class="field-label-text">Training Records &amp; Field Readiness</span>
+              <div id="vwHeroTraining" style="font-size: 0.85rem; color: var(--text-main); margin-top: 3px; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">—</div>
+            </div>
+          </div>
+
+          <!-- 6. SUPPORTING DOCUMENT STATUS -->
+          <div id="secSupportingDocuments" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em;">
+                6. Supporting Document Status
+              </div>
+              <button type="button" onclick="document.getElementById('docUploadDrawer').style.display = document.getElementById('docUploadDrawer').style.display === 'none' ? 'block' : 'none'" class="btn-mini btn-mini-assess" style="font-size: 0.72rem; padding: 4px 10px; cursor: pointer;">
+                + Upload Additional Document
+              </button>
+            </div>
+
+            <!-- Upload Inline Drawer -->
+            <div id="docUploadDrawer" style="display: none; background: rgba(0,0,0,0.3); border: 1px dashed var(--border-color); border-radius: 6px; padding: 12px; margin-bottom: 12px;">
+              <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; color: var(--text-main);">Upload Verification Document</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <label class="field-label-text" style="font-size: 0.68rem;">Document Type *</label>
+                  <select class="ghrms-select" id="newDocType" style="font-size: 0.75rem; min-height: 32px;">
+                    <option value="Official ID">Official ID (Required)</option>
+                    <option value="Hero Certification">Hero Certification (Required)</option>
+                    <option value="Training Certificate">Training Certificate (Optional)</option>
+                    <option value="Authorization Document">Authorization Document (Optional)</option>
+                    <option value="Other Supporting Documents">Other Supporting Documents (Optional)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label-text" style="font-size: 0.68rem;">Expiration Date (Optional)</label>
+                  <input type="date" class="ghrms-input" id="newDocExp" style="font-size: 0.75rem; min-height: 32px;">
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 8px; align-items: center;">
+                <input type="file" id="newDocFile" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="font-size: 0.72rem; flex: 1;">
+                <button type="button" class="btn-confirm-final" onclick="uploadSingleDocument()" style="padding: 6px 14px; font-size: 0.75rem;">
+                  Upload File
+                </button>
+              </div>
+            </div>
+
+            <div id="supportingDocsList" style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">No supporting documents attached yet.</div>
+            </div>
+          </div>
+
+          <!-- 7. AUTHORIZATION STATUS & BADGE VERIFICATION -->
+          <div id="secAuthorizationBadge" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+              7. Authorization Status &amp; Badge Verification
+            </div>
+            <div class="hero-fields-grid">
+              <div class="form-field-group">
+                <span class="field-label-text">Operational Authorization Status</span>
+                <div id="vwHeroAuthorizationStatus" style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-top: 3px;">
+                  <!-- Dynamic authorization injected by hero.js -->
+                </div>
+              </div>
+              <div class="form-field-group">
+                <span class="field-label-text">Identity Verification Review Status</span>
+                <div id="vwHeroVerificationStatus" style="margin-top: 3px;">—</div>
+              </div>
+            </div>
+            <div class="form-field-group" style="margin-top: 12px;">
+              <span class="field-label-text">Anti-Spoof Field Badge Verification Status</span>
+              <div id="vwHeroBadgeStatus" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 4px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399;"></span>
+                  <div>
+                    <span style="font-size: 0.82rem; font-weight: 800; color: #34d399; font-family: var(--font-mono);">[CRYPTOGRAPHICALLY VERIFIED]</span>
+                    <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 1px;">30s Rotating Anti-Spoof PIN &amp; Permanent Civic QR Credential Active</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-mini btn-mini-assess" onclick="document.getElementById('btnExpandQrBadge').click()" style="padding: 6px 14px; font-size: 0.75rem; font-weight: 700;">
+                  [VIEW FIELD QR BADGE]
+                </button>
+              </div>
+            </div>
+            <div class="form-field-group" style="margin-top: 12px;">
+              <span class="field-label-text">Registrar Verification &amp; Evaluation Notes</span>
+              <div id="vwHeroVerificationNotes" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 3px;">Official verification audit clean. No infractions or flags noted.</div>
+            </div>
+          </div>
+
+          <!-- 8. PROFILE UPDATE / REQUEST ACTIONS BAR -->
+          <div class="hero-card-action-bar" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 0.85rem; margin-top: 0.5rem; flex-wrap: wrap; gap: 10px;">
+            <button type="button" class="btn-mini btn-mini-assess" id="btnOpenDamageDrawerHero"
+              style="font-size: 0.75rem; padding: 0.45rem 0.85rem;">
+              POST-BATTLE DAMAGE DRAWER
+            </button>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-mini btn-mini-assess" onclick="openFacePhotoUploadModal()"
+                style="font-size: 0.75rem; padding: 0.45rem 0.85rem; font-weight: 700; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; cursor: pointer;">
+                <span>📷</span> <span>UPDATE FACE PHOTO</span>
+              </button>
+              <button type="button" class="btn-mini" id="btnResubmitHeroApp" onclick="resubmitRegistration()"
+                style="display: none; padding: 0.45rem 1.25rem; font-size: 0.78rem; background: #10b981; color: #fff; font-weight: 800; border-radius: 4px; border: 1px solid #34d399; cursor: pointer;">
+                [RESUBMIT REGISTRATION]
+              </button>
+              <button type="button" class="btn-confirm-final" id="btnTriggerEditMode"
+                style="padding: 0.45rem 1.25rem; font-size: 0.78rem; cursor: pointer;">
+                QUICK EDIT RECORD
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODE 2: QUICK EDIT FORM MODE -->
+        <form id="heroUpdateForm" style="display: none;">
+          <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; font-size: 0.75rem; color: var(--text-main); margin-bottom: 1rem;">
+            <strong>QUICK EDIT MODE:</strong> Modify operative registration details below. If your registration was returned for correction, submitting this will automatically queue it for re-evaluation.
+          </div>
+
+          <!-- Update Face Photo Row -->
+          <div style="display: flex; gap: 14px; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; flex-wrap: wrap;">
+            <img id="fldEditFacePreview" src="/img/apex.jpg" alt="Edit Face Preview" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-focus); box-shadow: 0 0 8px rgba(59,130,246,0.3);">
+            <div style="flex: 1; min-width: 180px;">
+              <span class="field-label-text" style="margin: 0; display: block;">Operative Face Photo / Biometric Portrait</span>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Ensure clear, well-lit photo if facial correction was requested.</div>
+            </div>
+            <button type="button" class="btn-mini btn-mini-assess" onclick="openFacePhotoUploadModal()" style="font-size: 0.72rem; padding: 5px 12px; font-weight: 700; cursor: pointer;">
+              <span>📷 UPLOAD NEW PHOTO</span>
+            </button>
+          </div>
+
+          <div class="hero-fields-grid">
+            <div class="form-field-group">
+              <label for="fldEditAlias" class="field-label-text">Hero Callsign / Callsign Alias</label>
+              <input type="text" class="ghrms-input" id="fldEditAlias" placeholder="e.g. APEX">
+            </div>
+            <div class="form-field-group">
+              <label for="fldRegion" class="field-label-text">Assigned Sector Jurisdiction</label>
+              <input type="text" class="ghrms-input" id="fldRegion" placeholder="e.g. Sector 1 - Metro Downtown">
+            </div>
+          </div>
+
+          <div class="hero-fields-grid">
+            <div class="form-field-group">
+              <label for="fldPrimaryPower" class="field-label-text">Primary Power Classification</label>
+              <input type="text" class="ghrms-input" id="fldPrimaryPower" placeholder="e.g. Enhanced Strength">
+            </div>
+            <div class="form-field-group">
+              <label for="fldSecondaryPower" class="field-label-text">Secondary Powers</label>
+              <input type="text" class="ghrms-input" id="fldSecondaryPower" placeholder="e.g. Flight, Thermal Vision">
+            </div>
+          </div>
+
+          <div class="form-field-group" style="margin-top: 10px;">
+            <label for="fldPowerDesc" class="field-label-text">Power Description</label>
+            <textarea class="ghrms-input" id="fldPowerDesc" rows="2" placeholder="Power details..."></textarea>
+          </div>
+
+          <div class="hero-fields-grid" style="margin-top: 10px;">
+            <div class="form-field-group">
+              <label for="fldStrengths" class="field-label-text">Strengths</label>
+              <textarea class="ghrms-input" id="fldStrengths" rows="2" placeholder="Key strengths..."></textarea>
+            </div>
+            <div class="form-field-group">
+              <label for="fldWeaknesses" class="field-label-text">Limitations / Weaknesses</label>
+              <textarea class="ghrms-input" id="fldWeaknesses" rows="2" placeholder="Limitations and vulnerabilities..."></textarea>
+            </div>
+          </div>
+
+          <div class="hero-fields-grid" style="margin-top: 10px;">
+            <div class="form-field-group">
+              <label for="fldGearManifest" class="field-label-text">Gear Manifest</label>
+              <input type="text" class="ghrms-input" id="fldGearManifest" placeholder="e.g. Kinetic Suit, Comm Device">
+            </div>
+            <div class="form-field-group">
+              <label for="fldEmergencyContacts" class="field-label-text">Emergency Contacts</label>
+              <input type="text" class="ghrms-input" id="fldEmergencyContacts" placeholder="e.g. Dr. Vance, +1-555-0199">
+            </div>
+          </div>
+
+          <div class="hero-card-action-bar" style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.85rem; margin-top: 0.5rem;">
+            <button type="button" class="btn-mini" id="btnCancelHeroEdit"
+              style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem; padding: 0.45rem 1rem; cursor: pointer; border-radius: 4px;">
+              CANCEL
+            </button>
+            <button type="submit" class="btn-confirm-final" id="btnSubmitHeroUpdate"
+              style="padding: 0.45rem 1.25rem; font-size: 0.78rem;">
+              SAVE &amp; SUBMIT UPDATES
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- Dual-Mode Hero Badge Modal (Permanent Civic QR + Rotating PIN) -->
+  <div class="ghrms-modal-overlay" id="qrBadgeModal" role="dialog" aria-modal="true" aria-label="Field Identification Badge">
+    <div class="ghrms-modal-box" style="max-width: 420px;">
+      <div class="ghrms-modal-header">
+        <span>FEDERAL FIELD IDENTIFICATION BADGE</span>
+        <button class="icon-button" id="closeQrBadgeModalBtn">[X]</button>
+      </div>
+
+      <!-- Badge Mode Switcher Tabs -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; background: var(--bg-surface); border-bottom: 1px solid var(--border-color);">
+        <button type="button" id="tabBadgePermanent" class="stepper-nav-tab active" style="padding: 0.65rem 0.5rem; font-size: 0.75rem; font-weight: 700; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; color: var(--primary-accent); border-bottom: 2px solid var(--primary-accent);">
+          <span>[PERMANENT CIVIC QR]</span>
+        </button>
+        <button type="button" id="tabBadgeDynamic" class="stepper-nav-tab" style="padding: 0.65rem 0.5rem; font-size: 0.75rem; font-weight: 700; border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; color: var(--text-muted); border-bottom: 2px solid transparent;">
+          <span>[ROTATING ANTI-SPOOF PIN]</span>
+        </button>
+      </div>
+
+      <div class="ghrms-modal-body" style="align-items: center; text-align: center; padding: 1.25rem;">
+        <div style="font-size: 1.2rem; font-weight: 800; color: #ffffff;" id="modalBadgeAlias">APEX</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;" id="modalBadgeMeta">
+          Enhanced Strength · A-Class · Sector 1
+        </div>
+
+        <!-- MODE A: PERMANENT CIVIC QR CODE -->
+        <div id="badgePermanentPane">
+          <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 0.85rem auto; width: 176px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+            <canvas id="heroPermanentQrCanvas" width="160" height="160"></canvas>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--text-main); letter-spacing: 0.05em;" id="permanentLicenseDisplay">
+            GHRMS://HERO/9GH-8430
+          </div>
+          <div style="font-size: 0.7rem; color: var(--text-muted); margin: 0.4rem 0 0.8rem; line-height: 1.35; padding: 0 10px;">
+            Permanent federal civic license credential. Never decays. Valid across all municipal checkpoints, police cruisers, and crisis borders.
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="window.print()" style="width: 100%; font-size: 0.78rem; padding: 8px; justify-content: center;">
+            [PRINT / SAVE CIVIC CREDENTIAL]
+          </button>
+        </div>
+
+        <!-- MODE B: ROTATING ANTI-SPOOF PIN -->
+        <div id="badgeDynamicPane" style="display: none;">
+          <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 0.85rem auto; width: 176px; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+            <canvas id="heroBadgeQrCanvas" width="160" height="160"></canvas>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; letter-spacing: 0.2em; color: var(--primary-accent);" id="dynamicTokenDisplay">
+            ------
+          </div>
+          <div style="width: 160px; height: 4px; background: var(--border-color); border-radius: 2px; margin: 0.35rem auto; overflow: hidden;">
+            <div style="height: 100%; background: var(--primary-accent); width: 100%;" id="tokenTimerProgress"></div>
+          </div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;" id="tokenExpiryText">
+            Rotating in 30s (Anti-Spoofing Active)
+          </div>
+          <div style="font-size: 0.7rem; color: var(--status-amber); margin-top: 0.5rem;">
+            Challenge PIN for elevated clearance inspections &amp; high-security checkpoints.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Post-Battle Damage Drawer Modal -->
+  <div class="ghrms-modal-overlay" id="damageDrawerModal" role="dialog" aria-modal="true" aria-label="Damage Drawer">
+    <div class="ghrms-modal-box">
+      <div class="ghrms-modal-header">
+        <span>POST-BATTLE DAMAGE DRAWER (CIVIC RECOVERY)</span>
+        <button class="icon-button" id="closeDamageDrawerModalBtn">[X]</button>
+      </div>
+      <form class="ghrms-modal-body" id="damageReportForm">
+        <div class="form-field-group">
+          <label class="field-label-text">Incident Location Tagging</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" class="ghrms-input" id="dmgCoords" value="40.7128, -74.0060 (Auto-Tagged)"
+              style="flex: 1;" readonly>
+            <button type="button" class="btn-mini btn-mini-assess" id="btnTagGps">TAG GPS</button>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Power Type Discharged</label>
+          <select class="ghrms-select" id="dmgPowerType">
+            <option value="Enhanced Strength">Enhanced Strength / Kinetic</option>
+            <option value="Flight">Flight Shockwave</option>
+            <option value="Technomancy">Technomancy / Energy Surge</option>
+            <option value="Thermal">Thermal / Pyrokinesis</option>
+          </select>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Estimated Civic Collateral ($ USD)</label>
+          <input type="number" class="ghrms-input" id="dmgAmount" value="85000" step="5000">
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text">Engagement Notes</label>
+          <textarea class="ghrms-input" id="dmgNotes" rows="3"
+            placeholder="Describe tactical engagement and collateral impact..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-confirm-final" style="margin-top: 0.5rem;">
+          Dispatch Civic Recovery Claim
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Face Photo / Profile Picture Upload -->
+  <div class="ghrms-modal-overlay" id="modalFacePhotoUpload" role="dialog" aria-modal="true" aria-label="Upload Face Photo" style="display: none;">
+    <div class="ghrms-modal-box" style="max-width: 440px;">
+      <div class="ghrms-modal-header">
+        <span style="font-size: 0.85rem; font-weight: 800; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
+          <span>📷</span> <span>BIOMETRIC FACE PHOTO UPLOAD</span>
+        </span>
+        <button class="icon-button" onclick="closeFacePhotoUploadModal()">[X]</button>
+      </div>
+      <div class="ghrms-modal-body" style="padding: 20px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 12px; border-radius: 50%; overflow: hidden; border: 3px solid var(--border-focus); box-shadow: 0 0 20px rgba(59,130,246,0.3); background: var(--bg-card); cursor: pointer;" onclick="document.getElementById('facePhotoFileInputHero').click()">
+            <img id="modalFacePreviewImg" src="/img/apex.jpg" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-size: 0.65rem; font-weight: 700;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+              <span style="font-size: 1.2rem;">📷</span>
+              <span>SELECT FILE</span>
+            </div>
+          </div>
+          <span id="modalFacePhotoStatusText" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); display: block;">
+            PNG, JPG, or WEBP (Max 8MB)
+          </span>
+        </div>
+
+        <input type="file" id="facePhotoFileInputHero" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleHeroFacePhotoSelected(this)">
+
+        <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 16px;">
+          <button type="button" class="btn-step btn-prev" onclick="document.getElementById('facePhotoFileInputHero').click()" style="padding: 8px 16px; font-size: 0.78rem; font-weight: 700; cursor: pointer;">
+            <span>Choose File</span>
+          </button>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 16px;">
+          <strong>Biometric Requirement:</strong> Portrait must be forward-facing, well-lit, and represent current field identity. Both masked and maskless portraits are acceptable under Accord Article 4.
+        </div>
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+          <button type="button" class="btn-step btn-prev" onclick="closeFacePhotoUploadModal()" style="padding: 8px 16px; font-size: 0.78rem; cursor: pointer;">
+            Cancel
+          </button>
+          <button type="button" id="btnSaveHeroFacePhoto" class="btn-confirm-final" onclick="saveHeroFacePhoto()" style="padding: 8px 20px; font-size: 0.78rem; font-weight: 800; cursor: pointer;">
+            [CONFIRM &amp; SAVE FACE PHOTO]
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="/js/qr.js"></script>
+  <script src="/js/hero.js"></script>
+</body>
+
+</html>

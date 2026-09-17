@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHRMS // Superhuman Onboarding &amp; Registration Stepper</title>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/css/app.css">
+  <style>
+    html,
+    body {
+      height: auto !important;
+      min-height: 100vh !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.05), transparent 70%), var(--bg-app);
+    }
+
+    .wizard-container {
+      max-width: 860px;
+      margin: 30px auto 50px;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .wizard-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), var(--shadow-glow);
+      overflow: hidden;
+    }
+
+
+    .wizard-header {
+      background: var(--bg-card-header);
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wizard-stepper-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .stepper-nav-tab {
+      padding: 14px 18px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .stepper-nav-tab:last-child {
+      border-right: none;
+    }
+
+    .stepper-nav-tab.active {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.08);
+      border-bottom: 2px solid var(--border-focus);
+    }
+
+    .stepper-nav-tab.completed {
+      color: var(--status-green);
+    }
+
+    .tab-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .stepper-nav-tab.active .tab-num {
+      border-color: var(--border-focus);
+      background: var(--primary);
+      color: var(--bg-app);
+    }
+
+    .stepper-nav-tab.completed .tab-num {
+      border-color: var(--status-green);
+      background: var(--status-green);
+      color: #ffffff;
+    }
+
+    .step-pane {
+      padding: 32px 36px;
+      display: none;
+    }
+
+    .step-pane.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .vault-security-badge {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.76rem;
+      color: #a7f3d0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 22px;
+      line-height: 1.45;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 650px) {
+      .wizard-container {
+        margin: 10px auto 30px;
+        padding: 0 10px;
+      }
+
+      .wizard-header {
+        padding: 14px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .wizard-header h1 {
+        font-size: 1rem !important;
+      }
+
+      .wizard-stepper-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .stepper-nav-tab {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 10px 14px;
+        justify-content: flex-start;
+        font-size: 0.78rem;
+      }
+
+      .step-pane {
+        padding: 18px 12px;
+      }
+
+      .vault-security-badge {
+        padding: 10px 12px;
+        font-size: 0.72rem;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .role-selection-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+
+      .ghrms-input,
+      .ghrms-select,
+      textarea {
+        font-size: 16px !important;
+        /* Prevents iOS auto-zoom */
+        min-height: 42px;
+      }
+
+      .wizard-footer {
+        padding: 14px;
+        flex-direction: column-reverse;
+        gap: 10px;
+      }
+
+      .btn-step {
+        width: 100%;
+        justify-content: center;
+        padding: 13px;
+        font-size: 0.88rem;
+        min-height: 44px;
+      }
+
+      .ghrms-header {
+        padding: 0.5rem 0.75rem;
+        height: auto;
+        min-height: 52px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .ghrms-fullname {
+        display: none;
+      }
+
+      .header-right {
+        gap: 0.35rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-right .btn span:last-child {
+        display: none;
+      }
+
+      .header-right .btn {
+        padding: 6px 8px;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 540px) {
+      .wizard-container {
+        margin: 8px auto 24px;
+        padding: 0 12px;
+      }
+
+      .wizard-header {
+        padding: 10px 16px;
+      }
+
+      .stepper-nav-tab {
+        padding: 8px 12px;
+        font-size: 0.72rem;
+      }
+
+      .step-pane {
+        padding: 14px 16px;
+      }
+
+      .form-grid-2 {
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .wizard-footer {
+        padding: 10px 16px;
+      }
+
+      .btn-step {
+        padding: 8px 14px;
+      }
+    }
+
+    .threat-slider-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+    }
+
+    .threat-slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .threat-tier-badge {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: var(--status-amber-bg);
+      color: var(--status-amber);
+      border: 1px solid var(--status-amber-border);
+    }
+
+    .wizard-footer {
+      padding: 18px 36px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      background: rgba(16, 23, 38, 0.4);
+    }
+
+    .btn-step {
+      padding: 10px 22px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-prev {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-prev:hover {
+      background: var(--bg-surface-hover);
+    }
+
+    .btn-next {
+      background: var(--primary);
+      border: 1px solid var(--border-focus);
+      color: var(--bg-app);
+      font-weight: 700;
+    }
+
+    .btn-next:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: 1px solid #34d399;
+      color: #ffffff;
+      font-weight: 800;
+      padding: 12px 28px;
+    }
+
+    .btn-submit:hover {
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.45);
+    }
+
+    .btn-draft {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+      font-weight: 700;
+      padding: 10px 20px;
+    }
+    .btn-draft:hover {
+      background: rgba(59, 130, 246, 0.3);
+      color: #ffffff;
+    }
+
+    .doc-upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    @media (max-width: 768px) {
+      .doc-upload-grid { grid-template-columns: 1fr; }
+    }
+    .doc-upload-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .doc-upload-card:hover {
+      border-color: var(--border-focus);
+    }
+    .doc-badge-req {
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: #f87171;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .doc-badge-opt {
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .correction-alert-banner {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .face-photo-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .face-photo-card:hover {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.05);
+    }
+    .face-avatar-box {
+      position: relative;
+      width: 106px;
+      height: 106px;
+      min-width: 106px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border-focus);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(59, 130, 246, 0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .face-avatar-box:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 18px rgba(59, 130, 246, 0.45);
+    }
+    .face-scanner-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+      box-shadow: 0 0 8px #38bdf8;
+      animation: faceScan 2.4s infinite ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes faceScan {
+      0% { top: 0; opacity: 0.3; }
+      50% { top: calc(100% - 2px); opacity: 1; }
+      100% { top: 0; opacity: 0.3; }
+    }
+    .face-avatar-box:hover .face-overlay {
+      opacity: 1 !important;
+    }
+    .face-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(2px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Header -->
+  <header class="ghrms-header">
+    <div class="ghrms-brand">
+      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
+        <div class="ghrms-title-group">
+          <span class="ghrms-acronym">GHRMS</span>
+          <span class="ghrms-divider">|</span>
+          <span class="ghrms-fullname">GLOBAL HERO REGISTRATION SYSTEM</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()"
+        style="padding: 6px 14px; font-size: 0.78rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; color: var(--text-main); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); cursor: pointer;"
+        title="Return to Dashboard or Gateway">
+        <span>←</span> <span id="returnNavLabel">Dashboard / Gateway</span>
+      </button>
+      <a href="/login" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none;" id="authNavBtn">
+        <span>[AUTH]</span> <span>Sign In</span>
+      </a>
+      <button class="icon-button" id="themeToggleBtn" title="Toggle Light / Dark Mode">
+        <span id="themeToggleIcon" style="font-size:0.75rem;font-weight:700;font-family:var(--font-mono);">[MODE]</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Wizard -->
+  <main class="wizard-container">
+    <div class="wizard-card">
+      <div class="wizard-header">
+        <div>
+          <h1
+            style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em;">
+            Hero Registration Intake Stepper
+          </h1>
+          <p style="font-size: 0.76rem; color: var(--text-muted); margin: 3px 0 0; font-family: var(--font-mono);">
+            GLOBAL HERO ACCORDANCE PROTOCOL // 4-PHASE REGISTRATION WORKFLOW
+          </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span id="regStatusTag"
+            style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--primary-accent); background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px;">
+            FORM GHRMS-701A
+          </span>
+        </div>
+      </div>
+
+      <!-- Correction Notice Banner (if returned for correction) -->
+      <div class="correction-alert-banner" id="correctionBanner">
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+          <span style="color: #f59e0b; font-size: 1.2rem; font-weight: 800;">⚠</span>
+          <div>
+            <strong style="color: #fbbf24; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em;">Registration Returned for Correction</strong>
+            <p id="correctionNotesText" style="font-size: 0.8rem; color: var(--text-main); margin: 4px 0 6px;"></p>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Please review the requested changes, update the fields or upload additional documents, then resubmit your registration.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stepper Nav Bar -->
+      <div class="wizard-stepper-bar">
+        <div class="stepper-nav-tab active" id="tabStep1" onclick="goToStep(1)">
+          <div class="tab-num">1</div>
+          <span>Account &amp; Personal</span>
+        </div>
+        <div class="stepper-nav-tab" id="tabStep2" onclick="goToStep(2)">
+          <div class="tab-num">2</div>
+          <span>Hero Specifications</span>
+        </div>
+        <div class="stepper-nav-tab" id="tabStep3" onclick="goToStep(3)">
+          <div class="tab-num">3</div>
+          <span>Power &amp; Threat</span>
+        </div>
+        <div class="stepper-nav-tab" id="tabStep4" onclick="goToStep(4)">
+          <div class="tab-num">4</div>
+          <span>Identity &amp; Documents</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: Account Information & Personal Information -->
+      <section class="step-pane active" id="paneStep1">
+        <div class="vault-security-badge">
+          <span
+            style="font-size: 0.9rem; font-family: var(--font-mono); color: var(--primary-accent); font-weight: 800;">[VAULT]</span>
+          <div>
+            <strong>Confidential Identity Vaulting:</strong> Real name, date of birth, contact number, residential address, and emergency contacts are encrypted under AES-256-GCM. These records are accessible only to verified Registrar / Admin clearance personnel during official registration review.
+          </div>
+        </div>
+
+        <!-- Biometric Face Photo Upload -->
+        <div class="face-photo-card">
+          <div class="face-avatar-box" onclick="document.getElementById('regFaceFileInput').click()" title="Click to upload or take photo of your face">
+            <img id="regFacePreview" src="/img/apex.jpg" alt="Applicant Face Photo" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <div class="face-scanner-line"></div>
+            <div class="face-overlay">
+              <span style="font-size: 1.1rem; margin-bottom: 2px;">📷</span>
+              <span style="letter-spacing: 0.05em;">CHANGE PHOTO</span>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 250px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <strong style="font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.04em;">Official Face Photo / Portrait</strong>
+                <span id="faceBadgeStatus" style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35);">BIOMETRIC RECOGNITION</span>
+              </div>
+            </div>
+            <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.45;">
+              Upload a clear photo of your face (masked or unmasked). This picture is registered into the federal biometric database for Sentinel patrol verification and displayed on your official GHRMS Hero ID Badge.
+            </p>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="btn-step btn-prev" onclick="document.getElementById('regFaceFileInput').click()" style="padding: 7px 16px; font-size: 0.78rem; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
+                <span>📷 Upload Face Picture</span>
+              </button>
+              <button type="button" id="btnRemoveFace" onclick="resetFacePhoto()" class="btn-step btn-prev" style="padding: 7px 12px; font-size: 0.75rem; display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer;">
+                <span>Remove</span>
+              </button>
+              <span id="faceFileNameLabel" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">PNG, JPG, or WEBP (Max 8MB)</span>
+            </div>
+            <input type="file" id="regFaceFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleFacePhotoSelect(this)">
+            <input type="hidden" id="regAvatarUrl" value="">
+          </div>
+        </div>
+
+        <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
+            1. Account Credentials
+          </h2>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regCallsign">Hero Name / Callsign (Username) *</label>
+            <input type="text" class="ghrms-input" id="regCallsign" placeholder="e.g. nighthawk, solaris, vanguard" required>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">This is your unique operative callsign and system username.</span>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regEmail">Email Address *</label>
+            <input type="email" class="ghrms-input" id="regEmail" placeholder="e.g. operative@heronet.org" required>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Used for registration updates, notifications, and verification alerts.</span>
+          </div>
+        </div>
+
+        <div class="form-grid-2" id="passwordGroupRow">
+          <div class="form-field-group" id="regPasswordContainer" style="grid-column: 1 / -1;">
+            <label class="field-label-text" for="regPassword">Security Passkey (Password) *</label>
+            <input type="password" class="ghrms-input" id="regPassword" placeholder="••••••••••••" value="hero123" required>
+            <span style="font-size: 0.7rem; color: var(--text-muted);" id="passwordHelpText">Minimum 6 characters. (Default preset: hero123)</span>
+          </div>
+          <div class="form-field-group" id="regIdFieldContainer" style="display: none;">
+            <label class="field-label-text" for="regRegIdDisplay">Hero Registration ID</label>
+            <input type="text" class="ghrms-input" id="regRegIdDisplay" placeholder="Auto-generated on creation" readonly style="background: rgba(255,255,255,0.03); opacity: 0.85; font-family: var(--font-mono);">
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Official GHRMS Assigned Registry Identifier</span>
+          </div>
+        </div>
+
+        <div style="margin: 20px 0 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
+            2. Personal Civilian Information (Vault Encrypted)
+          </h2>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regRealName">Real Legal Civilian Name *</label>
+            <input type="text" class="ghrms-input" id="regRealName" placeholder="e.g. Samuel J. Wright" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regDob">Date of Birth *</label>
+            <input type="date" class="ghrms-input" id="regDob" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regGender">Gender</label>
+            <select class="ghrms-select" id="regGender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-Binary">Non-Binary</option>
+              <option value="Other">Other / Meta-Biomorphic</option>
+              <option value="Undisclosed">Prefer not to disclose</option>
+            </select>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regContactNumber">Contact Number *</label>
+            <input type="text" class="ghrms-input" id="regContactNumber" placeholder="+1 (555) 019-4821" required>
+          </div>
+        </div>
+
+        <div class="form-field-group" style="margin-bottom: 16px;">
+          <label class="field-label-text" for="regAddress">Residential / Safehouse Address *</label>
+          <input type="text" class="ghrms-input" id="regAddress" placeholder="e.g. 742 Evergreen Way, Sector 1 Downtown, Metropolitan District" required>
+        </div>
+
+        <div style="margin: 16px 0 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 4px;">
+          <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Emergency Contact Liaison</span>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regEmergencyName">Emergency Contact Name *</label>
+            <input type="text" class="ghrms-input" id="regEmergencyName" placeholder="e.g. Dr. Arthur Vance" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regEmergencyPhone">Emergency Contact Number *</label>
+            <input type="text" class="ghrms-input" id="regEmergencyPhone" placeholder="+1 (555) 019-8800" required>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="field-label-text" for="regEmergencyRelationship">Relationship to Hero *</label>
+          <input type="text" class="ghrms-input" id="regEmergencyRelationship" placeholder="e.g. Spouse, Handler, Tactical Physician, Parent" value="Tactical Handler" required>
+        </div>
+      </section>
+
+      <!-- STEP 2: Hero Information -->
+      <section class="step-pane" id="paneStep2">
+        <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
+            3. Superhuman Capabilities &amp; Tactical Classification
+          </h2>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regClassification">Hero Classification *</label>
+            <select class="ghrms-select" id="regClassification">
+              <option value="Blaster / Energy Projection">Blaster (Ranged Energy / Elemental Projection)</option>
+              <option value="Bruiser / Heavy Tank">Bruiser (Superhuman Strength &amp; Density)</option>
+              <option value="Speedster / Velocity">Speedster (Hyper-Acceleration &amp; Relativistic)</option>
+              <option value="Psionic / Telepath">Psionic (Telekinesis, Telepathy, Mind Ward)</option>
+              <option value="Mystic / Arcane Arts">Mystic (Arcane Weaving &amp; Dimensional)</option>
+              <option value="Regenerator / Biomorphic">Regenerator (Cellular Renewal &amp; Adaptability)</option>
+              <option value="Tech / Tactician">Tech / Tactician (Cybernetic, Gadgetry, Strategist)</option>
+              <option value="Martial Artist / Infiltration">Martial Artist (Peak Human, Infiltration, Stealth)</option>
+              <option value="Support / Utility">Support / Utility (Force Fields, Healing, Buffs)</option>
+            </select>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regCombatStyle">Combat Style *</label>
+            <select class="ghrms-select" id="regCombatStyle">
+              <option value="Melee Brawler">Melee Brawler (Close-quarters impact)</option>
+              <option value="Ranged Tactical">Ranged Tactical (Sniper / Precision energy)</option>
+              <option value="Acrobatic / Agile Flanker">Acrobatic / Agile Flanker</option>
+              <option value="Defensive Guardian">Defensive Guardian (Aegis / Area Denial)</option>
+              <option value="Psionic / Cognitive Dominance">Psionic / Cognitive Dominance</option>
+              <option value="Stealth / Covert Assassin">Stealth / Covert Infiltration</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regPrimaryPower">Primary Superhuman Power *</label>
+            <input type="text" class="ghrms-input" id="regPrimaryPower" placeholder="e.g. Kinetic Energy Absorption &amp; Redirection" required>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regSecondaryPower">Secondary Powers</label>
+            <input type="text" class="ghrms-input" id="regSecondaryPower" placeholder="e.g. Atmospheric Levitation, Thermal Vision">
+          </div>
+        </div>
+
+        <div class="form-field-group" style="margin-bottom: 16px;">
+          <label class="field-label-text" for="regPowerDescription">Comprehensive Power Description *</label>
+          <textarea class="ghrms-input" id="regPowerDescription" rows="3" placeholder="Provide full breakdown of mechanisms, emission vectors, fuel sources, or physics behind your powers..." required style="resize: vertical;"></textarea>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regAbilities">Key Superhuman Abilities</label>
+            <textarea class="ghrms-input" id="regAbilities" rows="2" placeholder="e.g. Shockwave stomp, thermal immunity, cellular stabilization..." style="resize: vertical;"></textarea>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regSkills">Tactical &amp; Non-Powered Skills</label>
+            <textarea class="ghrms-input" id="regSkills" rows="2" placeholder="e.g. Advanced cryptography, Krav Maga, emergency trauma surgery..." style="resize: vertical;"></textarea>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regStrengths">Strengths &amp; Tactical Advantages</label>
+            <textarea class="ghrms-input" id="regStrengths" rows="2" placeholder="e.g. High crowd-control capacity, resistant to blunt trauma, leadership..." style="resize: vertical;"></textarea>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regWeaknesses">Limitations &amp; Vulnerabilities *</label>
+            <textarea class="ghrms-input" id="regWeaknesses" rows="2" placeholder="e.g. Power depletes after 45 minutes of sustained output; susceptible to high-frequency sonic resonance..." required style="resize: vertical;"></textarea>
+          </div>
+        </div>
+
+        <div class="form-field-group" style="margin-bottom: 16px;">
+          <label class="field-label-text" for="regTrainingExperience">Training &amp; Field Experience *</label>
+          <textarea class="ghrms-input" id="regTrainingExperience" rows="2" placeholder="e.g. 4 years Sentinel Cadet Academy, 2 years field vigilante operations in Sector 3..." required style="resize: vertical;"></textarea>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regRegion">Assigned Sector Jurisdiction</label>
+            <select class="ghrms-select" id="regRegion">
+              <option value="Sector 1 - Metro Downtown">Sector 1 - Metro Downtown</option>
+              <option value="Sector 2 - Industrial Corridor">Sector 2 - Industrial Corridor</option>
+              <option value="Sector 3 - High-Density Residential">Sector 3 - High-Density Residential</option>
+              <option value="Sector 4 - Coastal &amp; Harbor">Sector 4 - Coastal &amp; Harbor</option>
+              <option value="Sector 5 - Suburban Perimeter">Sector 5 - Suburban Perimeter</option>
+            </select>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regGear">Tactical Gear &amp; Weapon Manifest</label>
+            <input type="text" class="ghrms-input" id="regGear" placeholder="e.g. Vibranium-weave cowl, grapple cable">
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: Power & Threat Assessment -->
+      <section class="step-pane" id="paneStep3">
+        <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
+            4. Power &amp; Threat Assessment Metrics
+          </h2>
+        </div>
+
+        <!-- Threat Tier Slider -->
+        <div class="threat-slider-box">
+          <div class="threat-slider-header">
+            <div>
+              <label class="field-label-text" for="regThreatTier" style="margin:0; font-size: 0.85rem;">Assigned Threat Tier *</label>
+              <p style="font-size: 0.72rem; color: var(--text-muted); margin: 2px 0 0;">
+                Official Global Hero Accord classification scale (Tier 0 Cosmic down to Tier 5 Street).
+              </p>
+            </div>
+            <span class="threat-tier-badge" id="threatTierLabel">Tier 3 — Moderate</span>
+          </div>
+          <input type="range" id="regThreatTier" min="0" max="5" value="3" step="1"
+            style="width: 100%; cursor: pointer; accent-color: var(--primary-accent);" oninput="updateThreatLabel(this.value)">
+          <div
+            style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-subtle); margin-top: 6px; font-family: var(--font-mono);">
+            <span>0: Cosmic</span>
+            <span>1: Extreme</span>
+            <span>2: High</span>
+            <span>3: Moderate</span>
+            <span>4: Low</span>
+            <span>5: Street</span>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regPowerLevel">Power Output Level (1 - 100) *</label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="range" id="regPowerLevelSlider" min="1" max="100" value="70" style="flex: 1;" oninput="document.getElementById('regPowerLevel').value = this.value">
+              <input type="number" class="ghrms-input" id="regPowerLevel" min="1" max="100" value="70" style="width: 75px; text-align: center;" oninput="document.getElementById('regPowerLevelSlider').value = this.value">
+            </div>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Calibrated raw destructive / energetic potential.</span>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regCombatRating">Combat Effectiveness Rating (1 - 100) *</label>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="range" id="regCombatRatingSlider" min="1" max="100" value="75" style="flex: 1;" oninput="document.getElementById('regCombatRating').value = this.value">
+              <input type="number" class="ghrms-input" id="regCombatRating" min="1" max="100" value="75" style="width: 75px; text-align: center;" oninput="document.getElementById('regCombatRatingSlider').value = this.value">
+            </div>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Tactical acumen, reflex, and engagement proficiency.</span>
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin-top: 10px;">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regControlLevel">Power Control Level *</label>
+            <select class="ghrms-select" id="regControlLevel">
+              <option value="Novice">Novice — Volatile output, requires supervision</option>
+              <option value="Competent" selected>Competent — Reliable field control under stress</option>
+              <option value="Mastered">Mastered — Precision modulation and surgical restraint</option>
+              <option value="Absolute">Absolute — Complete cellular and environmental harmony</option>
+            </select>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text">Operative Standing</label>
+            <div style="display: flex; gap: 12px; margin-top: 6px;">
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
+                <input type="radio" name="operativeRole" value="Hero" checked> Primary Hero
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
+                <input type="radio" name="operativeRole" value="Sidekick"> Apprentice / Sidekick
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field-group" style="margin-top: 12px;">
+          <label class="field-label-text" for="regAssessmentNotes">Threat Assessment Notes &amp; Risk Mitigation Strategy</label>
+          <textarea class="ghrms-input" id="regAssessmentNotes" rows="3" placeholder="Notes on collateral containment, collateral hazard protocols, environment triggers..." style="resize: vertical;"></textarea>
+        </div>
+      </section>
+
+      <!-- STEP 4: Identity Verification & Supporting Documents -->
+      <section class="step-pane" id="paneStep4">
+        <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
+            5. Identity Verification Credentials
+          </h2>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-field-group">
+            <label class="field-label-text" for="regIdType">Official ID Type *</label>
+            <select class="ghrms-select" id="regIdType">
+              <option value="Government National ID">Government National Identity Card</option>
+              <option value="Passport">International Diplomatic / Civilian Passport</option>
+              <option value="Federal Superhero Clearance Badge">Federal Superhero Clearance Badge</option>
+              <option value="Driver's License">State Driver's License</option>
+              <option value="Military Defense ID">Military / Defense Intelligence ID</option>
+            </select>
+          </div>
+          <div class="form-field-group">
+            <label class="field-label-text" for="regIdNumber">Official ID Number *</label>
+            <input type="text" class="ghrms-input" id="regIdNumber" placeholder="e.g. US-NAT-849204-K" required>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Encrypted with your civil profile during review.</span>
+          </div>
+        </div>
+
+        <div style="margin: 20px 0 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
+              6. Supporting Documents
+            </h2>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Accepted: PDF, PNG, JPG, WEBP (Max 12MB)</span>
+          </div>
+        </div>
+
+        <div class="doc-upload-grid">
+          <!-- Required: Official ID -->
+          <div class="doc-upload-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 0.82rem; color: var(--text-main);">Official ID Document</strong>
+              <span class="doc-badge-req">REQUIRED</span>
+            </div>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Scanned copy of government or national identity document.</p>
+            <input type="file" id="fileOfficialId" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
+              <input type="date" id="expOfficialId" class="ghrms-input" style="padding: 4px 8px; font-size: 0.75rem;">
+            </div>
+          </div>
+
+          <!-- Required: Hero Certification -->
+          <div class="doc-upload-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 0.82rem; color: var(--text-main);">Hero Certification</strong>
+              <span class="doc-badge-req">REQUIRED</span>
+            </div>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Guild license, municipal superhero registry clearance, or academy charter.</p>
+            <input type="file" id="fileHeroCert" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
+              <input type="date" id="expHeroCert" class="ghrms-input" style="padding: 4px 8px; font-size: 0.75rem;">
+            </div>
+          </div>
+
+          <!-- Optional: Training Certificate -->
+          <div class="doc-upload-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 0.82rem; color: var(--text-main);">Training Certificate</strong>
+              <span class="doc-badge-opt">OPTIONAL</span>
+            </div>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Combat training academy, tactical certifications, or medical accreditation.</p>
+            <input type="file" id="fileTrainingCert" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
+              <input type="date" id="expTrainingCert" class="ghrms-input" style="padding: 4px 8px; font-size: 0.75rem;">
+            </div>
+          </div>
+
+          <!-- Optional: Authorization Document -->
+          <div class="doc-upload-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="font-size: 0.82rem; color: var(--text-main);">Authorization Document</strong>
+              <span class="doc-badge-opt">OPTIONAL</span>
+            </div>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Special powers jurisdiction waiver, mentor sponsorship letter, or security clearance.</p>
+            <input type="file" id="fileAuthDoc" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
+              <input type="date" id="expAuthDoc" class="ghrms-input" style="padding: 4px 8px; font-size: 0.75rem;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional: Other Supporting Documents -->
+        <div class="doc-upload-card" style="margin-top: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 0.82rem; color: var(--text-main);">Other Supporting Documents</strong>
+            <span class="doc-badge-opt">OPTIONAL</span>
+          </div>
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Medical DNA assay, tech blueprints, weapon licenses, or auxiliary documentation.</p>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 6px;">
+            <input type="file" id="fileOtherDoc" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
+            <input type="date" id="expOtherDoc" class="ghrms-input" style="padding: 4px 8px; font-size: 0.75rem;" placeholder="Expiration Date">
+          </div>
+        </div>
+
+        <!-- Existing Uploaded Documents Container (for when editing drafts or returned registrations) -->
+        <div id="existingDocsContainer" style="display: none; margin-top: 16px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: var(--radius-md); border: 1px dashed var(--border-color);">
+          <strong style="font-size: 0.8rem; color: var(--primary-accent); display: block; margin-bottom: 8px;">Previously Uploaded Documents on File:</strong>
+          <div id="existingDocsList" style="display: flex; flex-direction: column; gap: 6px;"></div>
+        </div>
+
+        <div
+          style="background: var(--bg-surface); padding: 14px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-top: 20px;">
+          <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+            <input type="checkbox" id="regConsent" required checked style="width: 18px; height: 18px; margin-top: 2px;">
+            <span style="font-size: 0.8rem; color: var(--text-main); line-height: 1.4;">
+              I certify under the Superhuman Accords that all provided personal, power, and document disclosures are accurate. I understand that false disclosures or concealment of extreme-tier abilities may incur administrative sanctions.
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Wizard Navigation Footer -->
+      <div class="wizard-footer">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="btn-step btn-prev" id="btnPrev" onclick="prevStep()" style="display: none;">
+            ← Previous
+          </button>
+          <button type="button" class="btn-step btn-draft" id="btnSaveDraft" onclick="saveDraft()" title="Save progress without submitting">
+            💾 Save as Draft
+          </button>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-subtle); font-family: var(--font-mono); text-align: center;"
+          id="stepIndicatorText">
+          STEP 1 OF 4: ACCOUNT &amp; PERSONAL
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-step btn-next" id="btnNext" onclick="nextStep()">
+            Next Step →
+          </button>
+          <button type="button" class="btn-step btn-submit" id="btnSubmit" onclick="submitRegistration()"
+            style="display: none;">
+            [SUBMIT REGISTRATION]
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Theme setup
+    function applyRegisterTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    const savedTheme = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
+    applyRegisterTheme(savedTheme);
+
+    const regPageThemeBtn = document.getElementById('themeToggleBtn');
+    if (regPageThemeBtn) {
+      regPageThemeBtn.onclick = () => {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('ghrms_theme', next);
+        localStorage.setItem('color-scheme', next);
+        applyRegisterTheme(next);
+      };
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'ghrms_theme' || e.key === 'color-scheme') {
+        applyRegisterTheme(e.newValue || 'dark');
+      }
+    });
+
+    let currentStep = 1;
+    let editingHeroId = null;
+    let existingHeroStatus = null;
+
+    const tierLabels = [
+      'Tier 0 — Cosmic',
+      'Tier 1 — Extreme',
+      'Tier 2 — High',
+      'Tier 3 — Moderate',
+      'Tier 4 — Low',
+      'Tier 5 — Street'
+    ];
+
+    function updateThreatLabel(val) {
+      const idx = parseInt(val, 10);
+      const labelEl = document.getElementById('threatTierLabel');
+      if (!labelEl) return;
+      labelEl.textContent = tierLabels[idx] || tierLabels[3];
+
+      const tierStyles = [
+        { bg: 'rgba(192, 132, 252, 0.2)', border: 'rgba(192, 132, 252, 0.6)', color: '#c084fc' }, // Tier 0 Cosmic
+        { bg: 'rgba(239, 68, 68, 0.2)', border: 'rgba(239, 68, 68, 0.6)', color: '#f87171' },     // Tier 1 Extreme
+        { bg: 'rgba(249, 115, 22, 0.2)', border: 'rgba(249, 115, 22, 0.6)', color: '#fb923c' },   // Tier 2 High
+        { bg: 'rgba(245, 158, 11, 0.2)', border: 'rgba(245, 158, 11, 0.6)', color: '#fbbf24' },   // Tier 3 Moderate
+        { bg: 'rgba(56, 189, 248, 0.2)', border: 'rgba(56, 189, 248, 0.6)', color: '#38bdf8' },   // Tier 4 Low
+        { bg: 'rgba(16, 185, 129, 0.2)', border: 'rgba(16, 185, 129, 0.6)', color: '#34d399' }    // Tier 5 Street
+      ];
+      const s = tierStyles[idx] || tierStyles[3];
+      labelEl.style.background = s.bg;
+      labelEl.style.borderColor = s.border;
+      labelEl.style.color = s.color;
+    }
+
+    async function handleFacePhotoSelect(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+
+      if (file.size > 8 * 1024 * 1024) {
+        alert('File size exceeds the 8MB limit. Please choose a smaller photo.');
+        input.value = '';
+        return;
+      }
+
+      // Instant local preview
+      const preview = document.getElementById('regFacePreview');
+      preview.src = URL.createObjectURL(file);
+
+      const fileNameLabel = document.getElementById('faceFileNameLabel');
+      if (fileNameLabel) {
+        fileNameLabel.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      }
+
+      const badge = document.getElementById('faceBadgeStatus');
+      if (badge) {
+        badge.textContent = '[UPLOADING BIOMETRICS...]';
+        badge.style.color = '#fbbf24';
+        badge.style.background = 'rgba(245, 158, 11, 0.2)';
+        badge.style.borderColor = 'rgba(245, 158, 11, 0.5)';
+      }
+
+      const btnRemove = document.getElementById('btnRemoveFace');
+      if (btnRemove) btnRemove.style.display = 'inline-flex';
+
+      // Asynchronously upload to server
+      const fd = new FormData();
+      fd.append('avatar', file);
+
+      try {
+        const res = await fetch('/api/upload-avatar', {
+          method: 'POST',
+          body: fd
+        });
+        const data = await res.json();
+        if (data.success && data.url) {
+          document.getElementById('regAvatarUrl').value = data.url;
+          if (badge) {
+            badge.textContent = '[FACE PHOTO ENROLLED]';
+            badge.style.color = '#34d399';
+            badge.style.background = 'rgba(16, 185, 129, 0.15)';
+            badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+          }
+        } else {
+          console.warn('Avatar upload notice:', data.error);
+          if (badge) {
+            badge.textContent = '[LOCAL PREVIEW CACHED]';
+            badge.style.color = '#93c5fd';
+          }
+        }
+      } catch (err) {
+        console.warn('Network upload notice:', err);
+      }
+    }
+
+    function resetFacePhoto() {
+      const preview = document.getElementById('regFacePreview');
+      preview.src = '/img/apex.jpg';
+      document.getElementById('regFaceFileInput').value = '';
+      document.getElementById('regAvatarUrl').value = '';
+
+      const fileNameLabel = document.getElementById('faceFileNameLabel');
+      if (fileNameLabel) fileNameLabel.textContent = 'PNG, JPG, or WEBP (Max 8MB)';
+
+      const badge = document.getElementById('faceBadgeStatus');
+      if (badge) {
+        badge.textContent = 'BIOMETRIC RECOGNITION';
+        badge.style.color = '#93c5fd';
+        badge.style.background = 'rgba(59, 130, 246, 0.15)';
+        badge.style.borderColor = 'rgba(59, 130, 246, 0.35)';
+      }
+
+      const btnRemove = document.getElementById('btnRemoveFace');
+      if (btnRemove) btnRemove.style.display = 'none';
+    }
+
+    function goToStep(step) {
+      if (step < 1 || step > 4) return;
+      currentStep = step;
+
+      document.querySelectorAll('.step-pane').forEach((p, idx) => {
+        p.classList.toggle('active', idx + 1 === currentStep);
+      });
+
+      for (let i = 1; i <= 4; i++) {
+        const tab = document.getElementById(`tabStep${i}`);
+        if (tab) {
+          tab.classList.remove('active', 'completed');
+          if (i === currentStep) tab.classList.add('active');
+          else if (i < currentStep) tab.classList.add('completed');
+        }
+      }
+
+      // Update footer buttons
+      document.getElementById('btnPrev').style.display = currentStep > 1 ? 'flex' : 'none';
+      document.getElementById('btnNext').style.display = currentStep < 4 ? 'flex' : 'none';
+      document.getElementById('btnSubmit').style.display = currentStep === 4 ? 'flex' : 'none';
+
+      const indicators = [
+        'STEP 1 OF 4: ACCOUNT & PERSONAL IDENTIFICATION',
+        'STEP 2 OF 4: SUPERHUMAN POWER SPECIFICATIONS',
+        'STEP 3 OF 4: POWER & THREAT ASSESSMENT',
+        'STEP 4 OF 4: IDENTITY VERIFICATION & SUPPORTING DOCUMENTS'
+      ];
+      document.getElementById('stepIndicatorText').textContent = indicators[currentStep - 1];
+
+      // Smoothly scroll to the top of the registration wizard on step transition
+      const wizardCard = document.querySelector('.wizard-card');
+      if (wizardCard) {
+        wizardCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function nextStep() {
+      if (currentStep === 1) {
+        const callsign = document.getElementById('regCallsign').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const real = document.getElementById('regRealName').value.trim();
+        const dob = document.getElementById('regDob').value.trim();
+        const contact = document.getElementById('regContactNumber').value.trim();
+        const address = document.getElementById('regAddress').value.trim();
+        const emName = document.getElementById('regEmergencyName').value.trim();
+        const emPhone = document.getElementById('regEmergencyPhone').value.trim();
+
+        if (!callsign || !email || !real || !dob || !contact || !address || !emName || !emPhone) {
+          alert('Please fill in all required Account and Personal fields (marked with *) before continuing.');
+          return;
+        }
+        if (!editingHeroId) {
+          const pass = document.getElementById('regPassword').value.trim();
+          if (!pass || pass.length < 6) {
+            alert('Please provide a secure password of at least 6 characters.');
+            return;
+          }
+        }
+      } else if (currentStep === 2) {
+        const primary = document.getElementById('regPrimaryPower').value.trim();
+        const powerDesc = document.getElementById('regPowerDescription').value.trim();
+        const weaknesses = document.getElementById('regWeaknesses').value.trim();
+        const training = document.getElementById('regTrainingExperience').value.trim();
+        if (!primary || !powerDesc || !weaknesses || !training) {
+          alert('Please provide your Primary Power, Power Description, Limitations/Weaknesses, and Training Experience.');
+          return;
+        }
+      }
+      goToStep(currentStep + 1);
+    }
+
+    function prevStep() {
+      goToStep(currentStep - 1);
+    }
+
+    // Build the JSON payload for registration or updating
+    function getRegistrationPayload(isDraft = false) {
+      const roleTag = document.querySelector('input[name="operativeRole"]:checked')?.value || 'Hero';
+      const threatTierVal = parseInt(document.getElementById('regThreatTier').value, 10);
+      const powerLevelVal = parseInt(document.getElementById('regPowerLevel').value, 10) || 70;
+      const combatRatingVal = parseInt(document.getElementById('regCombatRating').value, 10) || 75;
+
+      return {
+        is_draft: isDraft,
+        callsign: document.getElementById('regCallsign').value.trim(),
+        username: document.getElementById('regCallsign').value.trim(),
+        email: document.getElementById('regEmail').value.trim(),
+        password: document.getElementById('regPassword').value.trim() || undefined,
+        real_name: document.getElementById('regRealName').value.trim(),
+        dob: document.getElementById('regDob').value.trim(),
+        gender: document.getElementById('regGender').value,
+        contact_number: document.getElementById('regContactNumber').value.trim(),
+        address: document.getElementById('regAddress').value.trim(),
+        emergency_contact_name: document.getElementById('regEmergencyName').value.trim(),
+        emergency_contact_number: document.getElementById('regEmergencyPhone').value.trim(),
+        relationship: document.getElementById('regEmergencyRelationship').value.trim() || 'Handler',
+        emergency_contacts: [
+          {
+            name: document.getElementById('regEmergencyName').value.trim(),
+            phone: document.getElementById('regEmergencyPhone').value.trim(),
+            relation: document.getElementById('regEmergencyRelationship').value.trim() || 'Handler'
+          }
+        ],
+        hero_classification: document.getElementById('regClassification').value,
+        combat_style: document.getElementById('regCombatStyle').value,
+        primary_power: document.getElementById('regPrimaryPower').value.trim(),
+        secondary_powers: document.getElementById('regSecondaryPower').value.trim(),
+        secondary_power: document.getElementById('regSecondaryPower').value.trim(),
+        power_description: document.getElementById('regPowerDescription').value.trim(),
+        abilities: document.getElementById('regAbilities').value.trim(),
+        skills: document.getElementById('regSkills').value.trim(),
+        strengths: document.getElementById('regStrengths').value.trim(),
+        limitations_weaknesses: document.getElementById('regWeaknesses').value.trim(),
+        weaknesses: document.getElementById('regWeaknesses').value.trim(),
+        training_experience: document.getElementById('regTrainingExperience').value.trim(),
+        region: document.getElementById('regRegion').value,
+        gear_manifest: document.getElementById('regGear').value.trim() ? [document.getElementById('regGear').value.trim()] : [],
+        threat_tier: isNaN(threatTierVal) ? 3 : threatTierVal,
+        self_threat_rating: isNaN(threatTierVal) ? 3 : threatTierVal,
+        power_level: powerLevelVal,
+        combat_rating: combatRatingVal,
+        power_control_level: document.getElementById('regControlLevel').value,
+        assessment_notes: document.getElementById('regAssessmentNotes').value.trim(),
+        role_tag: roleTag,
+        id_type: document.getElementById('regIdType').value,
+        id_number: document.getElementById('regIdNumber').value.trim(),
+        gov_id: document.getElementById('regIdNumber').value.trim(),
+        avatar: document.getElementById('regAvatarUrl').value.trim() || undefined,
+        profile_picture: document.getElementById('regAvatarUrl').value.trim() || undefined
+      };
+    }
+
+    // Sequentially upload selected files
+    async function uploadAttachedDocuments(heroId) {
+      const docInputs = [
+        { elId: 'fileOfficialId', type: 'Official ID', expId: 'expOfficialId' },
+        { elId: 'fileHeroCert', type: 'Hero Certification', expId: 'expHeroCert' },
+        { elId: 'fileTrainingCert', type: 'Training Certificate', expId: 'expTrainingCert' },
+        { elId: 'fileAuthDoc', type: 'Authorization Document', expId: 'expAuthDoc' },
+        { elId: 'fileOtherDoc', type: 'Other Supporting Documents', expId: 'expOtherDoc' }
+      ];
+
+      for (const item of docInputs) {
+        const fileEl = document.getElementById(item.elId);
+        if (fileEl && fileEl.files && fileEl.files[0]) {
+          const file = fileEl.files[0];
+          const expDate = document.getElementById(item.expId)?.value || '';
+
+          const fd = new FormData();
+          fd.append('document_file', file);
+          fd.append('document_type', item.type);
+          if (expDate) fd.append('expiration_date', expDate);
+
+          try {
+            await fetch(`/api/heroes/${encodeURIComponent(heroId)}/documents`, {
+              method: 'POST',
+              body: fd
+            });
+          } catch (e) {
+            console.warn(`Failed to upload ${item.type}:`, e);
+          }
+        }
+      }
+    }
+
+    // Save as Draft
+    async function saveDraft() {
+      const callsign = document.getElementById('regCallsign').value.trim();
+      if (!callsign) {
+        alert('Please enter at least a Hero Callsign / Username to save a draft.');
+        goToStep(1);
+        document.getElementById('regCallsign').focus();
+        return;
+      }
+
+      const btnDraft = document.getElementById('btnSaveDraft');
+      btnDraft.disabled = true;
+      btnDraft.textContent = '💾 Saving Draft...';
+
+      const payload = getRegistrationPayload(true);
+
+      try {
+        let res, data;
+        if (editingHeroId) {
+          // Update existing draft / returned record
+          res = await fetch(`/api/heroes/${encodeURIComponent(editingHeroId)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          data = await res.json();
+          if (data.success) {
+            await uploadAttachedDocuments(editingHeroId);
+            alert(`[DRAFT SAVED]\nRegistration draft for ${callsign} has been saved successfully.`);
+            window.location.href = '/hero';
+            return;
+          }
+        } else {
+          // Create new record as draft
+          res = await fetch('/api/heroes/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          data = await res.json();
+          if (data.success && data.hero?.id) {
+            await uploadAttachedDocuments(data.hero.id);
+            alert(`[DRAFT CREATED]\nRegistration draft saved with ID ${data.hero.id}. You can return anytime to finish and submit.`);
+            window.location.href = data.redirect || '/hero';
+            return;
+          }
+        }
+
+        alert('Draft Save Notice: ' + (data?.error || 'Could not save draft. Check required basic fields.'));
+      } catch (err) {
+        alert('Connection error while saving draft: ' + err.message);
+      } finally {
+        btnDraft.disabled = false;
+        btnDraft.textContent = '💾 Save as Draft';
+      }
+    }
+
+    // Submit Registration
+    async function submitRegistration() {
+      const consent = document.getElementById('regConsent').checked;
+      if (!consent) {
+        alert('You must acknowledge and accept the Superhuman Accords declaration to submit.');
+        return;
+      }
+
+      // Check required fields
+      const callsign = document.getElementById('regCallsign').value.trim();
+      const real = document.getElementById('regRealName').value.trim();
+      const idNum = document.getElementById('regIdNumber').value.trim();
+      const primary = document.getElementById('regPrimaryPower').value.trim();
+
+      if (!callsign || !real || !idNum || !primary) {
+        alert('Please complete all mandatory fields across Steps 1 through 4 before submitting.');
+        return;
+      }
+
+      const btnSubmit = document.getElementById('btnSubmit');
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = '[TRANSMITTING ENCRYPTED REGISTRATION...]';
+
+      const payload = getRegistrationPayload(false);
+
+      try {
+        let res, data;
+        if (editingHeroId) {
+          // If editing a returned registration, trigger resubmit
+          if (existingHeroStatus === 'Returned for Correction') {
+            payload.resubmit = true;
+          } else {
+            payload.submit_draft = true;
+          }
+
+          res = await fetch(`/api/heroes/${encodeURIComponent(editingHeroId)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          data = await res.json();
+
+          if (data.success) {
+            await uploadAttachedDocuments(editingHeroId);
+            alert(`[REGISTRATION SUBMITTED]\n\nRegistration packet updated and submitted for review.\nStatus: Submitted / Under Review\n\nRedirecting to your Hero Operative Portal...`);
+            window.location.href = '/hero';
+            return;
+          }
+        } else {
+          res = await fetch('/api/heroes/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          data = await res.json();
+
+          if (data.success) {
+            if (data.hero?.id) {
+              await uploadAttachedDocuments(data.hero.id);
+            }
+            alert(`[REGISTRATION SUBMITTED]\n\nHero Callsign: ${data.hero.alias}\nHero Registration ID: ${data.hero.id}\nStatus: Submitted (Assigned to Registrar Review Queue)\n\nRedirecting to your Hero Operative Portal...`);
+            window.location.href = data.redirect || '/hero';
+            return;
+          }
+        }
+
+        alert('Registration Submission Error: ' + (data?.error || 'Failed to submit registration packet.'));
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = '[SUBMIT REGISTRATION]';
+      } catch (err) {
+        alert('Network connection error: ' + err.message);
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = '[SUBMIT REGISTRATION]';
+      }
+    }
+
+    // Auto-detect if logged in and pre-populate if draft / returned
+    async function initIntakeState() {
+      try {
+        const meRes = await fetch('/api/auth/me');
+        const meData = await meRes.json();
+        if (meData.authenticated && meData.user) {
+          document.getElementById('authNavBtn').innerHTML = `<span>[USER]</span> <span>${meData.user.name || meData.user.username}</span>`;
+          document.getElementById('authNavBtn').href = meData.user.role === 'HERO' ? '/hero' : '/admin';
+
+          if (meData.user.hero_id) {
+            const hRes = await fetch(`/api/heroes/${encodeURIComponent(meData.user.hero_id)}`);
+            const hData = await hRes.json();
+            if (hData.success && hData.data) {
+              populateHeroData(hData.data);
+            }
+          }
+        }
+      } catch (e) {
+        console.log('Intake visitor unauthenticated or guest mode:', e);
+      }
+    }
+
+    function populateHeroData(h) {
+      editingHeroId = h.id;
+      existingHeroStatus = h.status;
+
+      if (h.id) {
+        document.getElementById('regRegIdDisplay').value = h.id;
+        const idContainer = document.getElementById('regIdFieldContainer');
+        const pwdContainer = document.getElementById('regPasswordContainer');
+        if (idContainer) idContainer.style.display = 'block';
+        if (pwdContainer) pwdContainer.style.gridColumn = '';
+      }
+      document.getElementById('regStatusTag').textContent = `STATUS: ${(h.status || 'DRAFT').toUpperCase()}`;
+
+      // Show correction banner if Returned for Correction
+      if (h.status === 'Returned for Correction') {
+        const banner = document.getElementById('correctionBanner');
+        const notes = document.getElementById('correctionNotesText');
+        if (banner && notes) {
+          banner.style.display = 'block';
+          notes.textContent = h.correction_notes || h.verification_notes || 'The registrar desk requested corrections to your submission details or documents.';
+        }
+      }
+
+      // Hide password requirement when updating existing account
+      const pwdRow = document.getElementById('passwordGroupRow');
+      if (pwdRow) {
+        document.getElementById('regPassword').required = false;
+        document.getElementById('regPassword').placeholder = '•••••••• (Leave blank to keep current password)';
+        const helpText = document.getElementById('passwordHelpText');
+        if (helpText) helpText.textContent = 'Leave blank to preserve existing security passkey.';
+      }
+
+      // Populate Face Photo
+      if (h.avatar || h.profile_picture) {
+        const pic = h.avatar || h.profile_picture;
+        document.getElementById('regFacePreview').src = pic;
+        document.getElementById('regAvatarUrl').value = pic;
+        const b = document.getElementById('faceBadgeStatus');
+        if (b) {
+          b.textContent = '[FACE PHOTO ON FILE]';
+          b.style.color = '#34d399';
+          b.style.background = 'rgba(16, 185, 129, 0.15)';
+          b.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+        }
+        const rm = document.getElementById('btnRemoveFace');
+        if (rm) rm.style.display = 'inline-flex';
+      }
+
+      // Populate Account & Personal
+      document.getElementById('regCallsign').value = h.alias || h.callsign || '';
+      if (h.email) document.getElementById('regEmail').value = h.email;
+      if (h.real_name) document.getElementById('regRealName').value = h.real_name;
+      if (h.dob) document.getElementById('regDob').value = h.dob;
+      if (h.gender) document.getElementById('regGender').value = h.gender;
+      if (h.contact_number) document.getElementById('regContactNumber').value = h.contact_number;
+      if (h.address) document.getElementById('regAddress').value = h.address;
+      if (h.emergency_contact_name) document.getElementById('regEmergencyName').value = h.emergency_contact_name;
+      if (h.emergency_contact_number) document.getElementById('regEmergencyPhone').value = h.emergency_contact_number;
+      if (h.relationship) document.getElementById('regEmergencyRelationship').value = h.relationship;
+
+      // Populate Hero Specs
+      if (h.hero_classification) document.getElementById('regClassification').value = h.hero_classification;
+      if (h.combat_style) document.getElementById('regCombatStyle').value = h.combat_style;
+      if (h.primary_power) document.getElementById('regPrimaryPower').value = h.primary_power;
+      if (h.secondary_powers || h.secondary_power) document.getElementById('regSecondaryPower').value = h.secondary_powers || h.secondary_power;
+      if (h.power_description) document.getElementById('regPowerDescription').value = h.power_description;
+      if (h.abilities) document.getElementById('regAbilities').value = h.abilities;
+      if (h.skills) document.getElementById('regSkills').value = h.skills;
+      if (h.strengths) document.getElementById('regStrengths').value = h.strengths;
+      if (h.limitations_weaknesses || h.weaknesses) document.getElementById('regWeaknesses').value = h.limitations_weaknesses || h.weaknesses;
+      if (h.training_experience) document.getElementById('regTrainingExperience').value = h.training_experience;
+      if (h.region) document.getElementById('regRegion').value = h.region;
+      if (h.gear_manifest && Array.isArray(h.gear_manifest)) document.getElementById('regGear').value = h.gear_manifest.join(', ');
+
+      // Populate Power & Threat
+      if (h.threat_tier !== undefined) {
+        document.getElementById('regThreatTier').value = h.threat_tier;
+        updateThreatLabel(h.threat_tier);
+      }
+      if (h.power_level) {
+        document.getElementById('regPowerLevel').value = h.power_level;
+        document.getElementById('regPowerLevelSlider').value = h.power_level;
+      }
+      if (h.combat_rating) {
+        document.getElementById('regCombatRating').value = h.combat_rating;
+        document.getElementById('regCombatRatingSlider').value = h.combat_rating;
+      }
+      if (h.power_control_level) document.getElementById('regControlLevel').value = h.power_control_level;
+      if (h.role_tag) {
+        const roleRadio = document.querySelector(`input[name="operativeRole"][value="${h.role_tag}"]`);
+        if (roleRadio) roleRadio.checked = true;
+      }
+      if (h.assessment_notes) document.getElementById('regAssessmentNotes').value = h.assessment_notes;
+
+      // Populate Identity & Docs
+      if (h.id_type) document.getElementById('regIdType').value = h.id_type;
+      if (h.id_number || h.gov_code) document.getElementById('regIdNumber').value = h.id_number || h.gov_code;
+
+      // Render existing documents
+      if (h.supporting_documents && Array.isArray(h.supporting_documents) && h.supporting_documents.length > 0) {
+        const cont = document.getElementById('existingDocsContainer');
+        const list = document.getElementById('existingDocsList');
+        cont.style.display = 'block';
+        list.innerHTML = h.supporting_documents.map(d => `
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); padding: 6px 10px; border-radius: 4px; font-size: 0.75rem;">
+            <div>
+              <strong>${d.document_type || 'Document'}</strong>: 
+              <a href="/api/heroes/${encodeURIComponent(h.id)}/documents/${encodeURIComponent(d.doc_id)}" target="_blank" style="color: #93c5fd; text-decoration: underline;">${d.original_name || 'View File'}</a>
+              <span style="color: var(--text-muted); font-size: 0.68rem; margin-left: 6px;">(${new Date(d.uploaded_at).toLocaleDateString()})</span>
+            </div>
+            <span style="font-family: var(--font-mono); font-weight: 700; padding: 2px 6px; border-radius: 3px; font-size: 0.68rem; background: ${d.verification_status === 'Verified' ? 'rgba(16,185,129,0.15); color: #34d399;' : (d.verification_status === 'Rejected' ? 'rgba(239,68,68,0.15); color: #f87171;' : 'rgba(245,158,11,0.15); color: #fbbf24;')}">
+              ${d.verification_status || 'Pending'}
+            </span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function returnToOriginDashboard() {
+      const ref = document.referrer;
+      if (ref && (ref.includes('/registrar') || ref.includes('/admin') || ref.includes('/hero') || ref.includes('/registry'))) {
+        window.location.href = ref;
+        return;
+      }
+      fetch('/api/auth/me')
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.user) {
+            if (data.user.role === 'SUPER_ADMIN' || data.user.role === 'ADMIN') {
+              window.location.href = '/admin';
+            } else if (data.user.role === 'HERO') {
+              window.location.href = '/hero';
+            } else {
+              window.location.href = '/registrar';
+            }
+          } else {
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              window.location.href = '/';
+            }
+          }
+        })
+        .catch(() => {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = '/';
+          }
+        });
+    }
+
+    // Run on load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateThreatLabel(document.getElementById('regThreatTier').value);
+      initIntakeState();
+    });
+  </script>
+</body>
+
+</html>

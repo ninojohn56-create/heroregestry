@@ -1,0 +1,22 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs and runtime caches
+*.log
+scratch/
+tmp/
+temp/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python Virtual Environments
+.venv/
+venv/
