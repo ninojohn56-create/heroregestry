@@ -11313,5 +11313,19 @@
         },
         "prev_hash": "23738ae153488f54501d2b2cc53422c647bffbbaaceee1bcc2cc5ac7d501b623",
         "hash": "81c8e78fce1f0fa9c8aee093f7956c98ff0a5bf7783c4027d25878a21cafe253"
+    },
+    {
+        "id": "evt_fd160c9531b6",
+        "timestamp": "2026-09-28T13:14:18+00:00",
+        "actor": "APEX (Samuel Wright)",
+        "role": "HERO",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "apex",
+        "details": {
+            "role": "HERO",
+            "clearance_level": 1
+        },
+        "prev_hash": "81c8e78fce1f0fa9c8aee093f7956c98ff0a5bf7783c4027d25878a21cafe253",
+        "hash": "2c13e1705c09b231eb53f8c2b1c7f72b8027c9321be0c8fce4bdaac5894a6fac"
     }
 ]

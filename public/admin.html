@@ -15,26 +15,26 @@
         extend: {
           colors: {
             brand: {
-              50: '#f5f5f5',
-              100: '#e5e5e5',
-              200: '#d4d4d4',
-              300: '#a3a3a3',
-              400: '#737373',
-              500: '#525252',
-              600: '#000000',
-              700: '#171717',
-              800: '#262626',
-              900: '#0a0a0a'
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#0f172a',
+              700: '#1e293b',
+              800: '#0f172a',
+              900: '#020617'
             },
             slate: {
               50: '#fafafa',
               100: '#f5f5f5',
               200: '#e5e5e5',
-              300: '#d4d4d4',
-              400: '#a3a3a3',
-              500: '#737373',
-              600: '#525252',
-              700: '#262626',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
               800: '#141414',
               900: '#0a0a0a',
               950: '#000000'
@@ -66,9 +66,22 @@
     .badge-tier-0 { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
     .badge-tier-1 { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.35); }
     .badge-tier-2 { background: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
-    .badge-tier-3 { background: rgba(255, 255, 255, 0.1); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); }
+    .badge-tier-3 { background: rgba(30, 41, 59, 0.08); color: #1e293b; border: 1px solid rgba(30, 41, 59, 0.25); }
+    .dark .badge-tier-3,
+    [data-theme="dark"] .badge-tier-3 { background: rgba(255, 255, 255, 0.12); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.3); }
     .badge-tier-4 { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.35); }
     .badge-tier-5 { background: rgba(100, 116, 139, 0.15); color: #64748b; border: 1px solid rgba(100, 116, 139, 0.35); }
+
+    /* Dropdown options styling for cross-browser theme consistency */
+    select option {
+      background-color: #ffffff;
+      color: #0f172a;
+    }
+    .dark select option,
+    [data-theme="dark"] select option {
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
 
     /* Collapsible Sidebar Styles */
     aside#sidebar { width: 16rem; min-width: 16rem; }
@@ -128,7 +141,7 @@
         </a>
         <div class="flex items-center gap-1">
           <!-- Desktop Collapse Toggle -->
-          <button id="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" class="hidden md:flex text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" title="Toggle Sidebar Collapse">
+          <button id="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" class="hidden md:flex text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" title="Toggle Sidebar Collapse">
             <i data-lucide="panel-left-close" id="sidebar-collapse-icon" class="w-5 h-5"></i>
           </button>
           <!-- Mobile Close Toggle -->
@@ -140,7 +153,7 @@
 
       <!-- Navigation Links -->
       <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
-        <div class="sidebar-group-title px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Core Navigation</div>
+        <div class="sidebar-group-title px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Core Navigation</div>
         
         <a href="#dashboard" onclick="switchTab('dashboard')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400" data-target="dashboard" title="Dashboard">
           <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
@@ -165,7 +178,7 @@
           <span id="nav-users-badge" class="sidebar-badge ml-auto bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs px-2 py-0.5 rounded-full font-bold">6</span>
         </a>
 
-        <div class="sidebar-group-title pt-4 px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Security &amp; Audits</div>
+        <div class="sidebar-group-title pt-4 px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Security &amp; Audits</div>
 
         <a href="#access" onclick="switchTab('access')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="access" title="Access Control">
           <i data-lucide="lock" class="w-5 h-5 shrink-0"></i>
@@ -177,7 +190,7 @@
           <span class="sidebar-text">Chained Audit Log</span>
         </a>
 
-        <div class="sidebar-group-title pt-4 px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Tools &amp; Portals</div>
+        <div class="sidebar-group-title pt-4 px-3 mb-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tools &amp; Portals</div>
 
         <a href="#radar" onclick="switchTab('radar')" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" data-target="radar" title="Tactical Radar / GIS">
           <i data-lucide="radar" class="w-5 h-5 shrink-0"></i>
@@ -227,7 +240,7 @@
             <p id="headerUserName" class="text-sm font-bold truncate text-slate-900 dark:text-white">Admin Officer</p>
             <p id="headerUserRole" class="text-xs text-brand-600 dark:text-brand-400 font-semibold truncate">Clearance L4 · Standard Admin</p>
           </div>
-          <a href="/logout" class="text-slate-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-900/20 shrink-0" title="Sign Out">
+          <a href="/logout" class="text-slate-500 hover:text-rose-500 dark:text-slate-400 dark:hover:text-rose-400 transition-colors p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-900/20 shrink-0" title="Sign Out">
             <i data-lucide="log-out" class="w-4 h-4"></i>
           </a>
         </div>
@@ -258,12 +271,6 @@
             <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search operative, callsign, ID..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-700 rounded-xl focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 transition-all text-slate-800 dark:text-slate-100">
           </div>
 
-          <!-- Clearance Badge Indicator -->
-          <div id="headerClearancePill" class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 rounded-xl text-xs font-bold border border-rose-200 dark:border-rose-800">
-            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-            <span id="portalClearanceBadge">[SUPER ADMIN · CLEARANCE L5]</span>
-          </div>
-
           <!-- Dark Mode Toggle -->
           <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Toggle Theme">
             <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
@@ -280,27 +287,27 @@
             <div id="notifications-panel" class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl hidden z-50 overflow-hidden">
               <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
                 <h3 class="font-bold text-sm text-slate-900 dark:text-white">Directive Notifications</h3>
-                <span class="text-xs text-brand-600 dark:text-brand-400 font-semibold cursor-pointer" onclick="markAllNotificationsRead()">Mark all read</span>
+                <span class="text-xs text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold cursor-pointer" onclick="markAllNotificationsRead()">Mark all read</span>
               </div>
               <div id="notifications-list" class="divide-y divide-slate-100 dark:divide-slate-700 max-h-72 overflow-y-auto text-sm">
                 <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('queue')">
                   <div class="flex items-center justify-between">
                     <p class="font-bold text-xs text-amber-600 dark:text-amber-400">[INSPECTION DUE]</p>
-                    <span class="text-[10px] text-slate-400">Just now</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Just now</span>
                   </div>
                   <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Operative APEX registration requires confirmation.</p>
                 </div>
                 <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('radar')">
                   <div class="flex items-center justify-between">
                     <p class="font-bold text-xs text-rose-600 dark:text-rose-400">[ROGUE RADAR]</p>
-                    <span class="text-[10px] text-slate-400">12m ago</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">12m ago</span>
                   </div>
                   <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Sector 2 Containment alert active for rogue signatures.</p>
                 </div>
                 <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('users')">
                   <div class="flex items-center justify-between">
                     <p class="font-bold text-xs text-neutral-900 dark:text-neutral-100">[AUTH ACCORD]</p>
-                    <span class="text-[10px] text-slate-400">1h ago</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">1h ago</span>
                   </div>
                   <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Personnel passkeys synced with SHA-256 chained audit ledger.</p>
                 </div>
@@ -384,12 +391,12 @@
                 <h3 class="text-base font-bold text-slate-900 dark:text-white">Active Operative Intake Queue</h3>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pending evaluation records and credential verifications</p>
               </div>
-              <button onclick="switchTab('queue')" class="text-sm font-bold text-brand-600 dark:text-brand-400 hover:underline">View All Queue</button>
+              <button onclick="switchTab('queue')" class="text-sm font-bold text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-slate-300 hover:underline">View All Queue</button>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Operative & Callsign</th>
                     <th class="py-3.5 px-6">Sector / Region</th>
                     <th class="py-3.5 px-6">Primary Power</th>
@@ -465,7 +472,7 @@
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Callsign / Civilian ID</th>
                     <th class="py-3.5 px-6">Power Specification</th>
                     <th class="py-3.5 px-6">Sector / Region</th>
@@ -526,7 +533,7 @@
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Applicant</th>
                     <th class="py-3.5 px-6">Division &amp; Mentorship</th>
                     <th class="py-3.5 px-6">Primary Power</th>
@@ -560,9 +567,9 @@
 
           <!-- Category filter buttons -->
           <div class="flex gap-2">
-            <button onclick="filterUsersTable('all')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-600 text-white" data-u="all">All Accounts</button>
-            <button onclick="filterUsersTable('heroes')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200" data-u="heroes">Hero Operatives</button>
-            <button onclick="filterUsersTable('staff')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200" data-u="staff">Administrative Staff</button>
+            <button onclick="filterUsersTable('all')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-black text-white dark:bg-white dark:text-black shadow-xs" data-u="all">All Accounts</button>
+            <button onclick="filterUsersTable('heroes')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-u="heroes">Hero Operatives</button>
+            <button onclick="filterUsersTable('staff')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-u="staff">Administrative Staff</button>
           </div>
 
           <!-- Accounts Table -->
@@ -570,7 +577,7 @@
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Account Username &amp; Profile</th>
                     <th class="py-3.5 px-6">System Role</th>
                     <th class="py-3.5 px-6">Clearance Level</th>
@@ -604,7 +611,7 @@
               </div>
               <h4 class="text-base font-bold text-slate-900 dark:text-white">Supreme Commander</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Complete municipal override. Root factory restores, account purges, and security directives.</p>
-              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: commander</div>
+              <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">Canon: commander</div>
             </div>
 
             <!-- Role Card: Standard Admin -->
@@ -615,7 +622,7 @@
               </div>
               <h4 class="text-base font-bold text-slate-900 dark:text-white">Standard Admin</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Day-to-day user management, hero passkey resets, record editing. Strictly blocked from Super Admin tampering.</p>
-              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: admin</div>
+              <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">Canon: admin</div>
             </div>
 
             <!-- Role Card: Registrar -->
@@ -626,18 +633,18 @@
               </div>
               <h4 class="text-base font-bold text-slate-900 dark:text-white">Intake Assessor</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Operative evaluation queue, FTF verification, licensing directives, and hero passkey renewals.</p>
-              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: sarah.chen</div>
+              <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">Canon: sarah.chen</div>
             </div>
 
             <!-- Role Card: Hero -->
             <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
               <div class="flex items-center justify-between">
                 <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600">HERO</span>
-                <span class="text-xs font-mono font-bold text-slate-500">LEVEL 1</span>
+                <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">LEVEL 1</span>
               </div>
               <h4 class="text-base font-bold text-slate-900 dark:text-white">Registered Operative</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Self-service operative portal, rotating 30s cryptographic field badge, dynamic damage claims drawer.</p>
-              <div class="pt-2 text-[11px] text-slate-400 font-mono">Canon: apex, lumina, solaris</div>
+              <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">Canon: apex, lumina, solaris</div>
             </div>
           </div>
         </div>
@@ -667,7 +674,7 @@
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 dark:text-slate-500 text-xs uppercase tracking-wider font-bold">
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Timestamp</th>
                     <th class="py-3.5 px-6">Security Actor</th>
                     <th class="py-3.5 px-6">Action / Event</th>
@@ -703,19 +710,19 @@
           <!-- Weather Telemetry Bar -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <div>
-              <span class="text-xs font-bold text-slate-400 uppercase">Sector Temperature</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Sector Temperature</span>
               <p id="tacticalTempText" class="text-lg font-bold text-brand-600 dark:text-brand-400 mt-0.5">21°C</p>
             </div>
             <div>
-              <span class="text-xs font-bold text-slate-400 uppercase">Wind Velocity</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Wind Velocity</span>
               <p id="tacticalWindText" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">4.2 m/s NW</p>
             </div>
             <div>
-              <span class="text-xs font-bold text-slate-400 uppercase">Atmospheric Sky</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Atmospheric Sky</span>
               <p id="tacticalSkyText" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">Clear Sky</p>
             </div>
             <div>
-              <span class="text-xs font-bold text-slate-400 uppercase">Flight Safety Index</span>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Flight Safety Index</span>
               <p id="tacticalFlightText" class="text-lg font-bold text-emerald-600 mt-0.5">Optimal</p>
             </div>
           </div>
@@ -787,9 +794,9 @@
             <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h4 class="font-bold text-sm text-slate-900 dark:text-white">Active Security Accord</h4>
-                <p class="text-xs text-slate-500">Master municipal accord jurisdiction.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Master municipal accord jurisdiction.</p>
               </div>
-              <select class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold">
+              <select class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
                 <option>Lex Talionis Accord 2026 (Active)</option>
                 <option>Metropolitan Protocol Revision 4</option>
               </select>
@@ -798,7 +805,7 @@
             <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h4 class="font-bold text-sm text-slate-900 dark:text-white">Automated Biometric Threat Scoring</h4>
-                <p class="text-xs text-slate-500">Calculate threat tiers based on reported wattage and collateral indices.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Calculate threat tiers based on reported wattage and collateral indices.</p>
               </div>
               <input type="checkbox" checked class="w-5 h-5 accent-brand-600 rounded">
             </div>
@@ -806,7 +813,7 @@
             <div id="containmentEmergencyRow" class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h4 class="font-bold text-sm text-slate-900 dark:text-white">Containment Emergency Mode</h4>
-                <p class="text-xs text-slate-500">Trigger broadcast banner and quarantine unverified badges (Supreme Commander L5).</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Trigger broadcast banner and quarantine unverified badges (Supreme Commander L5).</p>
               </div>
               <input type="checkbox" id="settingsEmergencyCheck" onchange="toggleRogueContainmentBroadcast(this.checked)" class="w-5 h-5 accent-rose-600 rounded">
             </div>
@@ -815,7 +822,7 @@
             <div id="superAdminDangerZone" class="pt-4 p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-900/10 flex items-center justify-between">
               <div>
                 <h4 class="font-bold text-sm text-rose-600 dark:text-rose-400">Restore Canon Factory Baseline</h4>
-                <p class="text-xs text-slate-500">Supreme Commander (L5) only: re-seed all canon users and baseline operatives.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Supreme Commander (L5) only: re-seed all canon users and baseline operatives.</p>
               </div>
               <button id="btnFactoryReset" onclick="runFactoryReset()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-md">
                 [RESTORE CANON DATA]
@@ -838,7 +845,7 @@
           <i data-lucide="key" class="w-5 h-5"></i>
           <h3 class="font-bold text-base">Reset Operative Security Passkey</h3>
         </div>
-        <button onclick="closeHeroPasskeyModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <button onclick="closeHeroPasskeyModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -867,7 +874,7 @@
               [GENERATE]
             </button>
           </div>
-          <p class="text-[11px] text-slate-400 mt-1">The operative will use this passkey to sign into their portal at /hero.</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">The operative will use this passkey to sign into their portal at /hero.</p>
         </div>
 
         <div class="p-3 bg-emerald-500/10 border border-emerald-500/25 rounded-xl text-xs text-emerald-700 dark:text-emerald-300">
@@ -889,7 +896,7 @@
     <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-brand-600/10">
         <h3 class="font-bold text-base text-slate-900 dark:text-white">Provision New Account</h3>
-        <button onclick="closeProvisionUserModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <button onclick="closeProvisionUserModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -929,7 +936,7 @@
     <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
       <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
         <h3 id="hero-edit-title" class="font-bold text-base text-slate-900 dark:text-white">Edit Operative Profile</h3>
-        <button onclick="closeHeroEditModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+        <button onclick="closeHeroEditModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -1041,7 +1048,7 @@
           <i data-lucide="alert-octagon" class="w-5 h-5"></i>
           <h3 class="font-bold text-base">Issue Revocation Directive</h3>
         </div>
-        <button onclick="closeRevokeModal()" class="text-slate-400 hover:text-slate-600">
+        <button onclick="closeRevokeModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -1082,7 +1089,7 @@
           <i data-lucide="qr-code" class="w-5 h-5"></i>
           <h3 class="font-bold text-base">Anti-Spoof Field Badge Verifier</h3>
         </div>
-        <button onclick="closeVerifierModal()" class="text-slate-400 hover:text-slate-600">
+        <button onclick="closeVerifierModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>

@@ -490,7 +490,7 @@ function renderDashboard() {
     const previewList = adminState.heroes.filter(h => h.status === 'Under Review' || h.status === 'Pending' || h.status === 'Suspended').slice(0, 5);
 
     if (previewList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No operatives currently awaiting evaluation in intake queue.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-500 dark:text-slate-400">No operatives currently awaiting evaluation in intake queue.</td></tr>`;
         return;
     }
 
@@ -504,7 +504,7 @@ function renderDashboard() {
                         <img src="${h.avatar || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-8 h-8 rounded-lg object-cover border border-slate-200 dark:border-slate-700">
                         <div>
                             <span class="font-bold text-slate-900 dark:text-white block">${escapeHtml(h.alias)}</span>
-                            <span class="text-xs text-slate-400 font-mono">${escapeHtml(h.real_name || 'Classified')}</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">${escapeHtml(h.real_name || 'Classified')}</span>
                         </div>
                     </div>
                 </td>
@@ -555,7 +555,7 @@ function renderHeroesTable() {
     });
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">No superhuman operatives match the specified filter criteria.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">No superhuman operatives match the specified filter criteria.</td></tr>`;
         return;
     }
 
@@ -575,32 +575,32 @@ function renderHeroesTable() {
                                 <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(h.alias)}</span>
                                 ${divisionBadge}
                             </div>
-                            <span class="text-xs text-slate-400 font-mono block">${escapeHtml(h.real_name || 'Encrypted Vault')} · ${escapeHtml(h.id)}</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono block">${escapeHtml(h.real_name || 'Encrypted Vault')} · ${escapeHtml(h.id)}</span>
                         </div>
                     </div>
                 </td>
                 <td class="py-3.5 px-6">
                     <span class="font-semibold text-slate-800 dark:text-slate-200">${escapeHtml(h.primary_power || 'N/A')}</span>
-                    ${h.secondary_power && h.secondary_power !== 'None' ? `<span class="text-xs text-slate-400 block">+ ${escapeHtml(h.secondary_power)}</span>` : ''}
+                    ${h.secondary_power && h.secondary_power !== 'None' ? `<span class="text-xs text-slate-500 dark:text-slate-400 block">+ ${escapeHtml(h.secondary_power)}</span>` : ''}
                 </td>
                 <td class="py-3.5 px-6 text-slate-600 dark:text-slate-400 text-xs">${escapeHtml(h.region || 'Sector 1')}</td>
                 <td class="py-3.5 px-6">${tierBadge}</td>
                 <td class="py-3.5 px-6">${statusBadge}</td>
                 <td class="py-3.5 px-6 text-right">
                     <div class="flex items-center justify-end gap-1.5">
-                        <button onclick="openOperativeInspector('${h.id}')" class="p-1.5 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg transition-colors" title="Launch Commander Assessor Panel">
+                        <button onclick="openOperativeInspector('${h.id}')" class="p-1.5 text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors" title="Launch Commander Assessor Panel">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="openHeroPasskeyModal('${h.id}')" class="p-1.5 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors" title="Reset Operative Passkey">
+                        <button onclick="openHeroPasskeyModal('${h.id}')" class="p-1.5 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors" title="Reset Operative Passkey">
                             <i data-lucide="key" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="openHeroEditModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-900/30 rounded-lg transition-colors" title="Edit Profile">
+                        <button onclick="openHeroEditModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors" title="Edit Profile">
                             <i data-lucide="edit-3" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="openVaultModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors" title="Decrypt AES-256 Vault Bio">
+                        <button onclick="openVaultModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-purple-600 dark:text-slate-400 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors" title="Decrypt AES-256 Vault Bio">
                             <i data-lucide="lock" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="openRevokeModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-lg transition-colors" title="Revoke Licensure Directive">
+                        <button onclick="openRevokeModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-lg transition-colors" title="Revoke Licensure Directive">
                             <i data-lucide="alert-triangle" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -665,7 +665,7 @@ function renderQueueTable() {
     }
 
     if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">Queue is clear. No matching hero registrations found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">Queue is clear. No matching hero registrations found.</td></tr>`;
         return;
     }
 
@@ -717,7 +717,7 @@ function renderQueueTable() {
                         <img src="${h.avatar || h.profile_picture || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs">
                         <div>
                             <span class="font-bold text-slate-900 dark:text-white block">${escapeHtml(h.alias)}</span>
-                            <span class="text-xs text-slate-400 font-mono">${escapeHtml(h.id)}</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">${escapeHtml(h.id)}</span>
                         </div>
                     </div>
                 </td>
@@ -727,7 +727,7 @@ function renderQueueTable() {
                 </td>
                 <td class="py-3.5 px-6 font-medium text-slate-700 dark:text-slate-300 text-xs">
                     <strong class="block">${escapeHtml(h.primary_power || 'N/A')}</strong>
-                    ${h.secondary_powers || h.secondary_power ? `<span class="text-slate-400">${escapeHtml(h.secondary_powers || h.secondary_power)}</span>` : ''}
+                    ${h.secondary_powers || h.secondary_power ? `<span class="text-slate-500 dark:text-slate-400">${escapeHtml(h.secondary_powers || h.secondary_power)}</span>` : ''}
                 </td>
                 <td class="py-3.5 px-6">${tierBadge}</td>
                 <td class="py-3.5 px-6">${statusBadge}</td>
@@ -762,11 +762,11 @@ function renderPendingUpdatesList() {
         <div class="p-3 bg-white dark:bg-slate-800 rounded-xl border border-amber-200 dark:border-amber-800 flex items-center justify-between text-xs">
             <div>
                 <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(u.hero_alias || u.hero_id)}</span>
-                <span class="text-slate-400 ml-2">Requested: ${escapeHtml(JSON.stringify(u.requested_changes || {}))}</span>
+                <span class="text-slate-500 dark:text-slate-400 ml-2">Requested: ${escapeHtml(JSON.stringify(u.requested_changes || {}))}</span>
             </div>
             <div class="flex gap-2">
                 <button onclick="approvePendingUpdate('${u.id}')" class="px-2.5 py-1 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-700 transition-all">Approve</button>
-                <button onclick="rejectPendingUpdate('${u.id}')" class="px-2.5 py-1 bg-rose-50 text-rose-600 font-bold rounded-lg hover:bg-rose-100 transition-all">Reject</button>
+                <button onclick="rejectPendingUpdate('${u.id}')" class="px-2.5 py-1 bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 font-bold rounded-lg hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all">Reject</button>
             </div>
         </div>
     `).join('');
@@ -1021,7 +1021,7 @@ function renderUsersTable() {
         let deleteActionHtml = '';
         if (isActorSuper && u.username !== 'commander' && u.username !== adminState.currentUser?.username) {
             deleteActionHtml = `
-                <button onclick="deleteUserAccount('${escapeHtml(u.username)}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors ml-2" title="Permanently delete user account">
+                <button onclick="deleteUserAccount('${escapeHtml(u.username)}')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:text-slate-400 dark:hover:text-rose-400 dark:hover:bg-rose-900/30 rounded-lg transition-colors ml-2" title="Permanently delete user account">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
             `;
@@ -1034,14 +1034,14 @@ function renderUsersTable() {
                         <img src="${u.avatar || '/img/apex.jpg'}" alt="${escapeHtml(u.username)}" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700">
                         <div>
                             <span class="font-mono font-bold text-slate-900 dark:text-white block">${escapeHtml(u.username)}</span>
-                            <span class="text-xs text-slate-400">${escapeHtml(u.name || 'Personnel')}</span>
+                            <span class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(u.name || 'Personnel')}</span>
                         </div>
                     </div>
                 </td>
                 <td class="py-3.5 px-6">
                     <span class="px-2.5 py-1 text-xs font-bold rounded-lg ${roleColor}">${u.role}</span>
                 </td>
-                <td class="py-3.5 px-6 text-xs font-mono font-semibold text-slate-500">
+                <td class="py-3.5 px-6 text-xs font-mono font-semibold text-slate-600 dark:text-slate-400">
                     Clearance L${u.clearance_level || 1}
                 </td>
                 <td class="py-3.5 px-6 font-mono text-xs text-brand-600 dark:text-brand-400">
@@ -1064,9 +1064,9 @@ function filterUsersTable(type) {
     adminState.userFilter = type;
     document.querySelectorAll('.users-tab-btn').forEach(b => {
         if (b.dataset.u === type) {
-            b.className = 'users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-600 text-white';
+            b.className = 'users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-black text-white dark:bg-white dark:text-black shadow-xs';
         } else {
-            b.className = 'users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200';
+            b.className = 'users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400';
         }
     });
     renderUsersTable();
@@ -1091,7 +1091,7 @@ function renderAuditTable() {
     if (!tbody) return;
 
     if (adminState.auditLogs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-400">Audit ledger empty or initializing...</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500 dark:text-slate-400">Audit ledger empty or initializing...</td></tr>`;
         return;
     }
 
@@ -1103,14 +1103,14 @@ function renderAuditTable() {
 
         return `
             <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/50 transition-colors">
-                <td class="py-3.5 px-6 text-xs text-slate-500 whitespace-nowrap">${timeStr}</td>
+                <td class="py-3.5 px-6 text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap">${timeStr}</td>
                 <td class="py-3.5 px-6">
                     <span class="font-bold text-slate-900 dark:text-white block text-xs">${escapeHtml(entry.actor || 'System')}</span>
-                    <span class="text-[10px] text-slate-400">[${escapeHtml(entry.role || 'SYS')}]</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">[${escapeHtml(entry.role || 'SYS')}]</span>
                 </td>
                 <td class="py-3.5 px-6 font-bold text-xs text-brand-600 dark:text-brand-400">${escapeHtml(entry.action || entry.event)}</td>
                 <td class="py-3.5 px-6 text-xs text-slate-600 dark:text-slate-300 font-mono">${escapeHtml(entry.target || '—')}</td>
-                <td class="py-3.5 px-6 font-mono text-[11px] text-slate-400" title="${escapeHtml(entry.hash)}">${hashDisplay}</td>
+                <td class="py-3.5 px-6 font-mono text-[11px] text-slate-500 dark:text-slate-400" title="${escapeHtml(entry.hash)}">${hashDisplay}</td>
             </tr>
         `;
     }).join('');
@@ -1454,7 +1454,7 @@ function onModalHeroSelectChange(selectedVal) {
         if (usernameEl) usernameEl.textContent = user.username;
         if (statusEl) {
             statusEl.textContent = `Clearance L${user.clearance_level}`;
-            statusEl.className = 'text-brand-600 font-bold';
+            statusEl.className = 'text-slate-800 dark:text-slate-200 font-bold';
         }
     }
 }
@@ -1666,7 +1666,7 @@ async function openVaultModal(heroId) {
     const content = document.getElementById('vault-modal-content');
     if (!modal || !content) return;
 
-    content.innerHTML = '<div class="py-8 text-center text-slate-400">Decrypting AES-256 encrypted civilian identity...</div>';
+    content.innerHTML = '<div class="py-8 text-center text-slate-500 dark:text-slate-400">Decrypting AES-256 encrypted civilian identity...</div>';
     modal.classList.remove('hidden');
 
     const res = await apiPost(`heroes/${heroId}/decrypt-vault`);
@@ -1683,20 +1683,20 @@ async function openVaultModal(heroId) {
                     <div class="flex items-center gap-3.5 py-1">
                         <img src="${avatarUrl}" class="w-14 h-14 rounded-xl object-cover border-2 border-amber-500/40 shadow-md" alt="Civilian Photo">
                         <div>
-                            <span class="text-slate-500 block text-[11px] uppercase tracking-wider font-semibold">Civilian Legal Name</span>
+                            <span class="text-slate-400 block text-[11px] uppercase tracking-wider font-semibold">Civilian Legal Name</span>
                             <strong class="text-white text-base font-sans">${escapeHtml(v.real_name || 'N/A')}</strong>
                             ${res.alias ? `<div class="text-[11px] text-amber-400/90 font-mono mt-0.5">${escapeHtml(res.alias)}</div>` : ''}
                         </div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1 border-t border-slate-800/60">
-                        <div><span class="text-slate-500 block">Official ID Type:</span> <strong class="text-white">${escapeHtml(v.id_type || 'Official Gov ID')}</strong></div>
-                        <div><span class="text-slate-500 block">Official ID Number:</span> <strong class="text-white font-mono">${escapeHtml(v.id_number || v.gov_id || 'N/A')}</strong></div>
-                        <div><span class="text-slate-500 block">Date of Birth:</span> <strong class="text-white">${escapeHtml(v.dob || 'Classified')}</strong> ${v.age ? `(Age: ${v.age})` : ''}</div>
-                        <div><span class="text-slate-500 block">Gender:</span> <strong class="text-white">${escapeHtml(v.gender || 'Unspecified')}</strong></div>
-                        <div><span class="text-slate-500 block">Contact Phone:</span> <strong class="text-white font-mono">${escapeHtml(v.contact_number || v.handler_contact || 'N/A')}</strong></div>
+                        <div><span class="text-slate-400 block">Official ID Type:</span> <strong class="text-white">${escapeHtml(v.id_type || 'Official Gov ID')}</strong></div>
+                        <div><span class="text-slate-400 block">Official ID Number:</span> <strong class="text-white font-mono">${escapeHtml(v.id_number || v.gov_id || 'N/A')}</strong></div>
+                        <div><span class="text-slate-400 block">Date of Birth:</span> <strong class="text-white">${escapeHtml(v.dob || 'Classified')}</strong> ${v.age ? `(Age: ${v.age})` : ''}</div>
+                        <div><span class="text-slate-400 block">Gender:</span> <strong class="text-white">${escapeHtml(v.gender || 'Unspecified')}</strong></div>
+                        <div><span class="text-slate-400 block">Contact Phone:</span> <strong class="text-white font-mono">${escapeHtml(v.contact_number || v.handler_contact || 'N/A')}</strong></div>
                     </div>
                     <div class="pt-2 text-xs border-t border-slate-800/80">
-                        <span class="text-slate-500 block">Civilian / Safehouse Address:</span>
+                        <span class="text-slate-400 block">Civilian / Safehouse Address:</span>
                         <div class="text-slate-200 mt-0.5">${escapeHtml(v.address || v.safehouse_address || 'Encrypted Geo-Perimeter')}</div>
                     </div>
                 </div>
@@ -1706,9 +1706,9 @@ async function openVaultModal(heroId) {
                         <span class="text-sky-400 font-bold tracking-wider text-xs">[EMERGENCY CONTACT PROTOCOL]</span>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                        <div><span class="text-slate-500 block">Emergency Contact:</span> <strong class="text-white">${escapeHtml(v.emergency_contact_name || 'N/A')}</strong></div>
-                        <div><span class="text-slate-500 block">Relationship:</span> <strong class="text-white">${escapeHtml(v.relationship || 'Unspecified')}</strong></div>
-                        <div><span class="text-slate-500 block">Emergency Phone:</span> <strong class="text-white font-mono">${escapeHtml(v.emergency_contact_number || 'N/A')}</strong></div>
+                        <div><span class="text-slate-400 block">Emergency Contact:</span> <strong class="text-white">${escapeHtml(v.emergency_contact_name || 'N/A')}</strong></div>
+                        <div><span class="text-slate-400 block">Relationship:</span> <strong class="text-white">${escapeHtml(v.relationship || 'Unspecified')}</strong></div>
+                        <div><span class="text-slate-400 block">Emergency Phone:</span> <strong class="text-white font-mono">${escapeHtml(v.emergency_contact_number || 'N/A')}</strong></div>
                     </div>
                 </div>
 
@@ -1837,7 +1837,7 @@ async function handleBadgeVerification(e) {
     if (!heroId || !token || !resultBox) return;
 
     resultBox.classList.remove('hidden');
-    resultBox.innerHTML = '<div class="text-slate-400">Verifying rotating cryptographic token with HMAC-SHA256 signature...</div>';
+    resultBox.innerHTML = '<div class="text-slate-500 dark:text-slate-400 font-mono">Verifying rotating cryptographic token with HMAC-SHA256 signature...</div>';
 
     const res = await apiPost('verify-badge', {
         hero_id: heroId,
@@ -1890,7 +1890,7 @@ async function loadAdminNotifications() {
 
         if (listEl) {
             if (adminNotificationsList.length === 0) {
-                listEl.innerHTML = '<div class="p-4 text-center text-xs text-slate-500">No active alerts or directives.</div>';
+                listEl.innerHTML = '<div class="p-4 text-center text-xs text-slate-500 dark:text-slate-400">No active alerts or directives.</div>';
             } else {
                 listEl.innerHTML = adminNotificationsList.map(n => {
                     const isRead = readIds.includes(n.id);
@@ -1909,7 +1909,7 @@ async function loadAdminNotifications() {
                         <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer ${isRead ? 'opacity-60' : ''}" onclick="handleAdminNotifClick('${tabTarget}', '${n.id}')">
                             <div class="flex items-center justify-between">
                                 <p class="font-bold text-xs ${badgeColor}">${escapeHtml(n.tag || '[ALERT]')}</p>
-                                <span class="text-[10px] text-slate-400">${formatAdminNotifTime(n.created_at)}</span>
+                                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">${formatAdminNotifTime(n.created_at)}</span>
                             </div>
                             <p class="text-xs text-slate-700 dark:text-slate-200 mt-0.5 font-semibold">${escapeHtml(n.title || '')}</p>
                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(n.message || '')}</p>
@@ -2027,7 +2027,7 @@ function openOperativeInspector(heroId) {
     const docs = hero.supporting_documents || hero.documents || [];
     let docsHtml = '';
     if (docs.length === 0) {
-        docsHtml = `<div class="p-3 text-center text-xs text-slate-400 bg-slate-100/50 dark:bg-slate-900/30 rounded-xl border border-slate-200 dark:border-slate-700">No documents uploaded yet.</div>`;
+        docsHtml = `<div class="p-3 text-center text-xs text-slate-500 dark:text-slate-400 bg-slate-100/50 dark:bg-slate-900/30 rounded-xl border border-slate-200 dark:border-slate-700">No documents uploaded yet.</div>`;
     } else {
         docsHtml = docs.map(d => {
             const vStatus = d.verification_status || 'Pending';
@@ -2039,14 +2039,14 @@ function openOperativeInspector(heroId) {
                     <div class="flex items-center justify-between">
                         <div>
                             <span class="font-bold text-slate-900 dark:text-white block">${escapeHtml(d.document_type || 'Supporting Document')}</span>
-                            <span class="text-[11px] text-slate-400 font-mono">${escapeHtml(d.original_name || d.name || 'document.pdf')} (${Math.round((d.file_size || 0) / 1024)} KB)</span>
+                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">${escapeHtml(d.original_name || d.name || 'document.pdf')} (${Math.round((d.file_size || 0) / 1024)} KB)</span>
                         </div>
                         <span class="px-2 py-0.5 text-[10px] font-bold rounded-md border ${statusClass}">${escapeHtml(vStatus)}</span>
                     </div>
-                    <div class="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-400">
+                    <div class="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
                         <div>
                             <span>Uploaded: ${d.upload_date ? new Date(d.upload_date).toLocaleDateString() : 'N/A'}</span>
-                            ${d.expiration_date ? `<span class="ml-2">Expires: <strong class="text-slate-300">${escapeHtml(d.expiration_date)}</strong></span>` : ''}
+                            ${d.expiration_date ? `<span class="ml-2">Expires: <strong class="text-slate-700 dark:text-slate-300">${escapeHtml(d.expiration_date)}</strong></span>` : ''}
                         </div>
                         <div class="flex items-center gap-1.5">
                             <a href="/api/heroes/${encodeURIComponent(hero.id)}/documents/${encodeURIComponent(d.id)}" target="_blank" class="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded font-semibold transition-all">View</a>
@@ -2190,7 +2190,7 @@ function openOperativeInspector(heroId) {
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white truncate">${escapeHtml(hero.alias)}</h3>
                     <span class="text-xs px-2 py-0.5 rounded-md font-bold ${isSidekick ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700'}">${escapeHtml(hero.classification || (isSidekick ? 'SIDEKICK' : 'HERO'))}</span>
                 </div>
-                <p class="text-xs text-slate-400 font-mono mt-0.5">${escapeHtml(hero.id)}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">${escapeHtml(hero.id)}</p>
                 <div class="flex items-center gap-2 mt-2">
                     ${statusBadge}
                     ${tierBadge}
@@ -2202,10 +2202,10 @@ function openOperativeInspector(heroId) {
         <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 text-xs">
             <h4 class="font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-[11px]">1. Account Information</h4>
             <div class="grid grid-cols-2 gap-2 text-slate-600 dark:text-slate-300">
-                <div><span class="text-slate-400 block text-[10px] uppercase">Hero Registration ID</span> <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.id)}</span></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Hero Callsign</span> <span class="font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.alias)}</span></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Registration Date</span> <span>${hero.registration_date ? new Date(hero.registration_date).toLocaleDateString() : (hero.created_at ? new Date(hero.created_at).toLocaleDateString() : 'N/A')}</span></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Last Login</span> <span>${hero.last_login ? new Date(hero.last_login).toLocaleString() : 'Never'}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Hero Registration ID</span> <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.id)}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Hero Callsign</span> <span class="font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.alias)}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Registration Date</span> <span>${hero.registration_date ? new Date(hero.registration_date).toLocaleDateString() : (hero.created_at ? new Date(hero.created_at).toLocaleDateString() : 'N/A')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Last Login</span> <span>${hero.last_login ? new Date(hero.last_login).toLocaleString() : 'Never'}</span></div>
             </div>
         </div>
 
@@ -2219,19 +2219,19 @@ function openOperativeInspector(heroId) {
             </div>
             <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl space-y-1.5 text-slate-600 dark:text-slate-300">
                 <div class="flex justify-between">
-                    <span class="text-slate-400">Official ID Type:</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-medium">Official ID Type:</span>
                     <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.id_type || 'Official Gov ID')}</strong>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-slate-400">Official ID Number:</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-medium">Official ID Number:</span>
                     <strong class="font-mono text-slate-800 dark:text-slate-200">${escapeHtml(hero.id_number || hero.gov_id || 'Vault Encrypted')}</strong>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-slate-400">Civilian Name:</span>
-                    <span class="font-mono text-slate-400">${escapeHtml(hero.real_name || 'Classified AES-256 Vault')}</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-medium">Civilian Name:</span>
+                    <span class="font-mono text-slate-500 dark:text-slate-400">${escapeHtml(hero.real_name || 'Classified AES-256 Vault')}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-slate-400">Operational Region / Sector:</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-medium">Operational Region / Sector:</span>
                     <span class="font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.region || 'Sector 1')}</span>
                 </div>
             </div>
@@ -2241,23 +2241,23 @@ function openOperativeInspector(heroId) {
         <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2.5 text-xs">
             <h4 class="font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-[11px]">3. Hero Specifications</h4>
             <div class="grid grid-cols-2 gap-2 text-slate-600 dark:text-slate-300">
-                <div><span class="text-slate-400 block text-[10px] uppercase">Classification</span> <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.classification || hero.role_tag || 'Hero')}</strong></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Combat Style</span> <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.combat_style || 'N/A')}</strong></div>
-                <div class="col-span-2"><span class="text-slate-400 block text-[10px] uppercase">Primary Power</span> <strong class="text-slate-900 dark:text-white">${escapeHtml(hero.primary_power || 'N/A')}</strong></div>
-                <div class="col-span-2"><span class="text-slate-400 block text-[10px] uppercase">Secondary Powers</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.secondary_powers || hero.secondary_power || 'None')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Classification</span> <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.classification || hero.role_tag || 'Hero')}</strong></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Combat Style</span> <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.combat_style || 'N/A')}</strong></div>
+                <div class="col-span-2"><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Primary Power</span> <strong class="text-slate-900 dark:text-white">${escapeHtml(hero.primary_power || 'N/A')}</strong></div>
+                <div class="col-span-2"><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Secondary Powers</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.secondary_powers || hero.secondary_power || 'None')}</span></div>
             </div>
             ${hero.power_description ? `
                 <div class="pt-1">
-                    <span class="text-slate-400 block text-[10px] uppercase">Power Description</span>
+                    <span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Power Description</span>
                     <p class="text-slate-700 dark:text-slate-300 italic mt-0.5">${escapeHtml(hero.power_description)}</p>
                 </div>
             ` : ''}
             <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200 dark:border-slate-800">
-                <div><span class="text-slate-400 block text-[10px] uppercase">Abilities</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.abilities || 'Standard Operative Abilities')}</span></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Tactical Skills</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.skills || 'Combat Tactics')}</span></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Strengths</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.strengths || 'N/A')}</span></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Limitations / Weaknesses</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.weaknesses || 'N/A')}</span></div>
-                <div class="col-span-2"><span class="text-slate-400 block text-[10px] uppercase">Training / Experience</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.training_experience || 'Standard Agency Training')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Abilities</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.abilities || 'Standard Operative Abilities')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Tactical Skills</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.skills || 'Combat Tactics')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Strengths</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.strengths || 'N/A')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Limitations / Weaknesses</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.weaknesses || 'N/A')}</span></div>
+                <div class="col-span-2"><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Training / Experience</span> <span class="text-slate-700 dark:text-slate-300">${escapeHtml(hero.training_experience || 'Standard Agency Training')}</span></div>
             </div>
         </div>
 
@@ -2269,15 +2269,15 @@ function openOperativeInspector(heroId) {
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="text-slate-400 block text-[10px] uppercase font-bold mb-1">Power Level (1-100)</label>
+                    <label class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold mb-1">Power Level (1-100)</label>
                     <input type="number" id="inspect-power-level" min="1" max="100" value="${hero.power_level ?? 50}" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-xs">
                 </div>
                 <div>
-                    <label class="text-slate-400 block text-[10px] uppercase font-bold mb-1">Combat Rating (1-100)</label>
+                    <label class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold mb-1">Combat Rating (1-100)</label>
                     <input type="number" id="inspect-combat-rating" min="1" max="100" value="${hero.combat_rating ?? 50}" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-xs">
                 </div>
                 <div>
-                    <label class="text-slate-400 block text-[10px] uppercase font-bold mb-1">Power Control Level</label>
+                    <label class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold mb-1">Power Control Level</label>
                     <select id="inspect-control-level" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs">
                         <option value="Minimal" ${hero.power_control_level === 'Minimal' ? 'selected' : ''}>Minimal</option>
                         <option value="Low" ${hero.power_control_level === 'Low' ? 'selected' : ''}>Low</option>
@@ -2288,7 +2288,7 @@ function openOperativeInspector(heroId) {
                     </select>
                 </div>
                 <div>
-                    <label class="text-slate-400 block text-[10px] uppercase font-bold mb-1">Threat Tier</label>
+                    <label class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold mb-1">Threat Tier</label>
                     <select id="inspect-threat-tier" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold">
                         <option value="0" ${hero.threat_tier === 0 ? 'selected' : ''}>Tier 0 — Cosmic</option>
                         <option value="1" ${hero.threat_tier === 1 ? 'selected' : ''}>Tier 1 — Extreme</option>
@@ -2300,7 +2300,7 @@ function openOperativeInspector(heroId) {
                 </div>
             </div>
             <div>
-                <label class="text-slate-400 block text-[10px] uppercase font-bold mb-1">Assessment Notes</label>
+                <label class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold mb-1">Assessment Notes</label>
                 <textarea id="inspect-assessment-notes" rows="2" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs" placeholder="Add tactical notes or conditions...">${escapeHtml(hero.assessment_notes || '')}</textarea>
             </div>
         </div>
@@ -2327,10 +2327,10 @@ function openOperativeInspector(heroId) {
             </div>
 
             <div class="grid grid-cols-2 gap-2 text-slate-600 dark:text-slate-300">
-                <div><span class="text-slate-400 block text-[10px] uppercase">Verification Status</span> <strong class="font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.verification_status || 'Pending')}</strong></div>
-                <div><span class="text-slate-400 block text-[10px] uppercase">Verified By</span> <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.verified_by || 'Unassigned')}</strong></div>
-                <div class="col-span-2"><span class="text-slate-400 block text-[10px] uppercase">Verification Date</span> <span>${hero.verification_date ? new Date(hero.verification_date).toLocaleString() : 'Pending'}</span></div>
-                <div class="col-span-2"><span class="text-slate-400 block text-[10px] uppercase">Verification Notes</span> <span class="italic text-slate-700 dark:text-slate-300">${escapeHtml(hero.verification_notes || 'None recorded.')}</span></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Verification Status</span> <strong class="font-bold text-slate-800 dark:text-slate-200">${escapeHtml(hero.verification_status || 'Pending')}</strong></div>
+                <div><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Verified By</span> <strong class="text-slate-800 dark:text-slate-200">${escapeHtml(hero.verified_by || 'Unassigned')}</strong></div>
+                <div class="col-span-2"><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Verification Date</span> <span>${hero.verification_date ? new Date(hero.verification_date).toLocaleString() : 'Pending'}</span></div>
+                <div class="col-span-2"><span class="text-slate-500 dark:text-slate-400 block text-[10px] uppercase font-bold">Verification Notes</span> <span class="italic text-slate-700 dark:text-slate-300">${escapeHtml(hero.verification_notes || 'None recorded.')}</span></div>
             </div>
         </div>
 
