@@ -88,6 +88,28 @@
       flex-direction: column;
       gap: 0.5rem;
     }
+    [data-theme="light"] .directive-card {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    [data-theme="light"] .directive-card p {
+      color: #991b1b !important;
+    }
+    [data-theme="light"] #btnSentinelExportAudit {
+      background: #f5f3ff !important;
+      border-color: #ddd6fe !important;
+      color: #6d28d9 !important;
+    }
+    [data-theme="light"] #btnOpenIncidentsModal {
+      background: #fffbeb !important;
+      border-color: #fde68a !important;
+      color: #b45309 !important;
+    }
+    [data-theme="light"] #btnBroadcastSectorLock {
+      background: #fef2f2 !important;
+      border-color: #f87171 !important;
+      color: #b91c1c !important;
+    }
   </style>
 </head>
 <body>
@@ -118,11 +140,11 @@
         </select>
       </div>
 
-      <div style="font-family: var(--font-mono); font-size: 0.72rem; padding: 3px 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-main);">
+      <div style="font-family: var(--font-mono); font-size: 0.72rem; padding: 3px 8px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-main);">
         [OFC. VALDEZ // UNIT 402]
       </div>
 
-      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()" style="padding: 6px 14px; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: var(--text-main); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.08); border-radius: 4px; cursor: pointer; transition: all 0.2s ease;" title="Return to Previous Dashboard">
+      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()" style="padding: 6px 14px; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; cursor: pointer;" title="Return to Previous Dashboard">
         <span style="font-size: 1rem; line-height: 1;">←</span> <span>RETURN TO DASHBOARD</span>
       </button>
 

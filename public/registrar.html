@@ -20,6 +20,57 @@
   </script>
 
   <link rel="stylesheet" href="/css/app.css">
+  <style>
+    [data-theme="light"] #btnReturnAdmin {
+      color: #1d4ed8 !important;
+      border-color: #93c5fd !important;
+      background: #eff6ff !important;
+    }
+    [data-theme="light"] #headerUserRole {
+      color: #b45309 !important;
+    }
+    [data-theme="light"] #btnRegPromoteSidekick {
+      background: #f5f3ff !important;
+      border-color: #ddd6fe !important;
+      color: #6d28d9 !important;
+    }
+    [data-theme="light"] #registrarRevocationBanner {
+      background: #fef2f2 !important;
+      border-color: #fecaca !important;
+      color: #991b1b !important;
+    }
+    [data-theme="light"] #btnEnrollSidekick {
+      background: #f5f3ff !important;
+      border-color: #ddd6fe !important;
+      color: #6d28d9 !important;
+    }
+    [data-theme="light"] #btnChangeHeroPasskeyReg {
+      background: #fffbeb !important;
+      border-color: #fde68a !important;
+      color: #92400e !important;
+    }
+    [data-theme="light"] #revokeLicenseModal .ghrms-modal-header {
+      background: #fef2f2 !important;
+      border-color: #fecaca !important;
+      color: #991b1b !important;
+    }
+    [data-theme="light"] #revokeLicenseModal .ghrms-modal-header span {
+      color: #991b1b !important;
+    }
+    [data-theme="light"] #heroPasskeyResetModal .ghrms-modal-header {
+      background: #fffbeb !important;
+      border-color: #fde68a !important;
+      color: #92400e !important;
+    }
+    [data-theme="light"] #heroPasskeyResetModal .ghrms-modal-header span {
+      color: #92400e !important;
+    }
+    [data-theme="light"] #passkeyAuditNotice {
+      background: #f0fdf4 !important;
+      border-color: #bbf7d0 !important;
+      color: #166534 !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -600,7 +651,7 @@
           <span style="font-size: 0.68rem; color: var(--text-subtle);">Operative will use this passkey to sign into their portal at /hero.</span>
         </div>
 
-        <div style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.7rem; color: #a7f3d0;">
+        <div id="passkeyAuditNotice" style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.7rem; color: #a7f3d0;">
           <strong>[AUDIT RECORD]:</strong> This passkey reset will be cryptographically hashed (BCRYPT) and registered in the chained SHA-256 audit ledger.
         </div>
 

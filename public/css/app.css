@@ -13,6 +13,7 @@
   --bg-card-header: #181818;
   --bg-surface: #141414;
   --bg-surface-hover: #222222;
+  --bg-surface-elevated: #181818;
   --bg-input: #0a0a0a;
 
   --border-color: #262626;
@@ -61,6 +62,7 @@
   --bg-card-header: #f5f5f5;
   --bg-surface: #fafafa;
   --bg-surface-hover: #ebebeb;
+  --bg-surface-elevated: #f8fafc;
   --bg-input: #ffffff;
 
   --border-color: #e5e5e5;
@@ -415,9 +417,10 @@ body.ghrms-fixed-layout {
 
 /* Rogue Emergency Alert Bar */
 .ghrms-alert-bar {
-  background-color: var(--status-red);
+  background-color: #991b1b;
   color: #ffffff;
-  padding: 0.35rem 1rem;
+  border-bottom: 1px solid #ef4444;
+  padding: 0.4rem 1rem;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -541,7 +544,7 @@ body.ghrms-fixed-layout {
 
 .nav-pill.active-pill {
   background-color: var(--primary);
-  color: #ffffff;
+  color: var(--bg-app);
 }
 
 /* ==========================================================================
@@ -690,7 +693,8 @@ body.ghrms-fixed-layout {
 
 .stepper-step.active .step-circle {
   background-color: var(--primary-accent);
-  border-color: #ffffff;
+  border-color: var(--primary-accent);
+  color: var(--bg-app);
   box-shadow: 0 0 8px var(--primary-accent);
 }
 
@@ -954,6 +958,24 @@ body.ghrms-fixed-layout {
   border: 1px solid var(--border-color);
 }
 
+[data-theme="light"] .threat-badge.a-class {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+[data-theme="light"] .threat-badge.b-class {
+  background-color: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+[data-theme="light"] .threat-badge.c-class {
+  background-color: #f1f5f9;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
 /* Status Badges */
 .status-pill-reviewing {
   font-size: 0.65rem;
@@ -1000,8 +1022,55 @@ body.ghrms-fixed-layout {
   color: var(--text-muted);
 }
 
+/* Generic Button Suites */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--bg-app);
+  border: 1px solid var(--border-focus);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-focus);
+  color: var(--text-main);
+}
+
+[data-theme="light"] .btn-secondary {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+  color: #000000;
+}
+
 .btn-mini-assess:hover {
-  color: #ffffff;
+  color: var(--text-main);
   border-color: var(--primary-accent);
 }
 
@@ -1179,7 +1248,7 @@ body.ghrms-fixed-layout {
 
 .btn-confirm-final {
   background-color: var(--primary);
-  color: #ffffff;
+  color: var(--bg-app);
   border: none;
   padding: 0.65rem;
   font-size: 0.75rem;
@@ -1221,7 +1290,7 @@ body.ghrms-fixed-layout {
 
 .btn-restrict-access {
   background-color: var(--primary);
-  color: #ffffff;
+  color: var(--bg-app);
   border: none;
   padding: 0.6rem;
   font-size: 0.75rem;
@@ -1249,7 +1318,7 @@ body.ghrms-fixed-layout {
 
 .btn-deactivate-user:hover {
   background-color: var(--status-red);
-  color: #ffffff;
+  color: var(--bg-app);
 }
 
 /* GIS & Audit Extra tabs */

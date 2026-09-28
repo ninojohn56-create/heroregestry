@@ -155,6 +155,86 @@
       line-height: 1.45;
     }
 
+    [data-theme="light"] .vault-security-badge {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+      color: #166534;
+    }
+    [data-theme="light"] .stepper-nav-tab.active {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    [data-theme="light"] .btn-draft {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+    [data-theme="light"] .btn-draft:hover {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    [data-theme="light"] .doc-badge-req {
+      color: #b91c1c;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    [data-theme="light"] .doc-badge-opt {
+      color: #1d4ed8;
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    [data-theme="light"] .correction-alert-banner {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    [data-theme="light"] .correction-alert-banner strong {
+      color: #b45309 !important;
+    }
+    .doc-link {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+    [data-theme="light"] .doc-link {
+      color: #1d4ed8;
+    }
+    .status-doc-badge {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.68rem;
+    }
+    .status-doc-badge.verified {
+      background: rgba(16,185,129,0.15);
+      color: #34d399;
+      border: 1px solid rgba(16,185,129,0.4);
+    }
+    .status-doc-badge.rejected {
+      background: rgba(239,68,68,0.15);
+      color: #f87171;
+      border: 1px solid rgba(239,68,68,0.4);
+    }
+    .status-doc-badge.pending {
+      background: rgba(245,158,11,0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245,158,11,0.4);
+    }
+    [data-theme="light"] .status-doc-badge.verified {
+      background: #f0fdf4;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+    [data-theme="light"] .status-doc-badge.rejected {
+      background: #fef2f2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+    [data-theme="light"] .status-doc-badge.pending {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: #fde68a;
+    }
+
     .form-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -532,7 +612,7 @@
 
     <div class="header-right">
       <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()"
-        style="padding: 6px 14px; font-size: 0.78rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; color: var(--text-main); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); cursor: pointer;"
+        style="padding: 6px 14px; font-size: 0.78rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;"
         title="Return to Dashboard or Gateway">
         <span>←</span> <span id="returnNavLabel">Dashboard / Gateway</span>
       </button>
@@ -560,7 +640,7 @@
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <span id="regStatusTag"
-            style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--primary-accent); background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px;">
+            style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--primary-accent); background: var(--bg-surface); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px;">
             FORM GHRMS-701A
           </span>
         </div>
@@ -1634,13 +1714,13 @@
         const list = document.getElementById('existingDocsList');
         cont.style.display = 'block';
         list.innerHTML = h.supporting_documents.map(d => `
-          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); padding: 6px 10px; border-radius: 4px; font-size: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 6px 10px; border-radius: 4px; font-size: 0.75rem;">
             <div>
               <strong>${d.document_type || 'Document'}</strong>: 
-              <a href="/api/heroes/${encodeURIComponent(h.id)}/documents/${encodeURIComponent(d.doc_id)}" target="_blank" style="color: #93c5fd; text-decoration: underline;">${d.original_name || 'View File'}</a>
+              <a href="/api/heroes/${encodeURIComponent(h.id)}/documents/${encodeURIComponent(d.doc_id)}" target="_blank" class="doc-link">${d.original_name || 'View File'}</a>
               <span style="color: var(--text-muted); font-size: 0.68rem; margin-left: 6px;">(${new Date(d.uploaded_at).toLocaleDateString()})</span>
             </div>
-            <span style="font-family: var(--font-mono); font-weight: 700; padding: 2px 6px; border-radius: 3px; font-size: 0.68rem; background: ${d.verification_status === 'Verified' ? 'rgba(16,185,129,0.15); color: #34d399;' : (d.verification_status === 'Rejected' ? 'rgba(239,68,68,0.15); color: #f87171;' : 'rgba(245,158,11,0.15); color: #fbbf24;')}">
+            <span class="status-doc-badge ${d.verification_status === 'Verified' ? 'verified' : (d.verification_status === 'Rejected' ? 'rejected' : 'pending')}">
               ${d.verification_status || 'Pending'}
             </span>
           </div>

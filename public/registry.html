@@ -22,6 +22,21 @@
       margin: 24px auto 60px;
       padding: 0 20px;
     }
+    [data-theme="light"] .registry-portal-badge span {
+      background: #f5f3ff !important;
+      border-color: #ddd6fe !important;
+      color: #6d28d9 !important;
+    }
+    .admin-return-accent {
+      color: #60a5fa !important;
+      border-color: rgba(96, 165, 250, 0.4) !important;
+      background: rgba(59, 130, 246, 0.12) !important;
+    }
+    [data-theme="light"] .admin-return-accent {
+      color: #1d4ed8 !important;
+      border-color: #93c5fd !important;
+      background: #eff6ff !important;
+    }
     .filter-toolbar {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -309,7 +324,7 @@
     </div>
 
     <div class="header-right">
-      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-main); font-weight: 700; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm);" title="Return to Dashboard">
+      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 700;" title="Return to Dashboard">
         <span>←</span> <span>RETURN TO DASHBOARD</span>
       </button>
       <a href="/logout" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: flex; align-items: center; gap: 5px;">
@@ -614,15 +629,14 @@
             const btnReturn = document.getElementById('btnReturnDashboard');
             if (btnReturn) {
               btnReturn.innerHTML = '<span style="font-size: 0.9rem; line-height: 1;">←</span> <span>MAIN COMMAND CENTER</span>';
-              btnReturn.style.color = '#60a5fa';
-              btnReturn.style.borderColor = 'rgba(96, 165, 250, 0.4)';
-              btnReturn.style.background = 'rgba(59, 130, 246, 0.12)';
+              btnReturn.classList.add('admin-return-accent');
             }
             const navReturnLink = document.querySelector('a[title="Return to Registrar Desk"]');
             if (navReturnLink) {
               navReturnLink.title = 'Return to Super Admin Command Center';
               navReturnLink.href = '/admin';
-              navReturnLink.innerHTML = '<span class="nav-link-label" style="color: #60a5fa; font-weight: 800;">← MAIN COMMAND CENTER</span><span class="nav-pill" style="background: rgba(59, 130, 246, 0.25); color: #bfdbfe; font-weight: 800;">L' + (data.user.clearance_level || 5) + '</span>';
+              navReturnLink.classList.add('admin-return-accent');
+              navReturnLink.innerHTML = '<span class="nav-link-label" style="font-weight: 800;">← MAIN COMMAND CENTER</span><span class="nav-pill" style="font-weight: 800;">L' + (data.user.clearance_level || 5) + '</span>';
             }
           }
         } else {

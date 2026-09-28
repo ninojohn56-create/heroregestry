@@ -1212,7 +1212,7 @@ async function loadIncidentReports() {
             const severityColor = inc.severity === 'Critical' ? '#ef4444' : inc.severity === 'High' ? '#f97316' : '#eab308';
             const damageFormatted = Number(inc.estimated_damage_usd || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
             return `
-                <div style="background: var(--bg-surface-elevated, rgba(15, 23, 42, 0.6)); border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; transition: border-color 0.2s;">
+                <div style="background: var(--bg-surface-elevated, var(--bg-surface)); border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; transition: border-color 0.2s;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
                         <div>
                             <div style="display: flex; align-items: center; gap: 6px;">
@@ -1224,7 +1224,7 @@ async function loadIncidentReports() {
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 6px;">
-                            <span style="font-size: 0.68rem; font-weight: 800; font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px; background: rgba(0,0,0,0.4); color: ${severityColor}; border: 1px solid ${severityColor};">
+                            <span style="font-size: 0.68rem; font-weight: 800; font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px; background: var(--bg-input); color: ${severityColor}; border: 1px solid ${severityColor};">
                                 ${inc.severity || 'Moderate'}
                             </span>
                             <span style="font-size: 0.85rem; font-weight: 800; font-family: var(--font-mono); color: #10b981;">
@@ -1233,7 +1233,7 @@ async function loadIncidentReports() {
                         </div>
                     </div>
 
-                    <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; background: rgba(0,0,0,0.25); padding: 0.5rem 0.75rem; border-radius: 4px; border-left: 2px solid var(--border-focus);">
+                    <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; background: var(--bg-input); padding: 0.5rem 0.75rem; border-radius: 4px; border-left: 2px solid var(--border-focus);">
                         ${inc.notes || 'Civic infrastructure impact recorded.'}
                     </div>
 

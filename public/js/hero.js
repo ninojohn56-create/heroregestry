@@ -215,14 +215,16 @@ function updateHeroUI() {
         if (n) n.className = 'stepper-step';
     });
 
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
     if (currentStatus === 'Draft') {
         if (track) track.style.width = '10%';
         if (st1) st1.className = 'stepper-step active';
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(59, 130, 246, 0.12)';
-            statusBanner.style.border = '1px solid rgba(59, 130, 246, 0.4)';
-            statusBanner.style.color = '#93c5fd';
+            statusBanner.style.background = isLight ? '#eff6ff' : 'rgba(59, 130, 246, 0.12)';
+            statusBanner.style.border = isLight ? '1px solid #bfdbfe' : '1px solid rgba(59, 130, 246, 0.4)';
+            statusBanner.style.color = isLight ? '#1d4ed8' : '#93c5fd';
             statusBanner.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div>
@@ -241,9 +243,9 @@ function updateHeroUI() {
         if (st2) st2.className = 'stepper-step active';
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(234, 179, 8, 0.12)';
-            statusBanner.style.border = '1px solid rgba(234, 179, 8, 0.4)';
-            statusBanner.style.color = '#fde047';
+            statusBanner.style.background = isLight ? '#fffbeb' : 'rgba(234, 179, 8, 0.12)';
+            statusBanner.style.border = isLight ? '1px solid #fde68a' : '1px solid rgba(234, 179, 8, 0.4)';
+            statusBanner.style.color = isLight ? '#92400e' : '#fde047';
             statusBanner.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 1.2rem;">⏳</span>
@@ -261,9 +263,9 @@ function updateHeroUI() {
         if (st3) st3.className = 'stepper-step active';
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(245, 158, 11, 0.12)';
-            statusBanner.style.border = '1px solid rgba(245, 158, 11, 0.4)';
-            statusBanner.style.color = '#fbbf24';
+            statusBanner.style.background = isLight ? '#fffbeb' : 'rgba(245, 158, 11, 0.12)';
+            statusBanner.style.border = isLight ? '1px solid #fde68a' : '1px solid rgba(245, 158, 11, 0.4)';
+            statusBanner.style.color = isLight ? '#92400e' : '#fbbf24';
             statusBanner.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 1.2rem;">🔍</span>
@@ -282,15 +284,15 @@ function updateHeroUI() {
         if (st3) st3.style.borderColor = '#f59e0b';
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(245, 158, 11, 0.15)';
-            statusBanner.style.border = '1px solid rgba(245, 158, 11, 0.5)';
-            statusBanner.style.color = '#fbbf24';
+            statusBanner.style.background = isLight ? '#fffbeb' : 'rgba(245, 158, 11, 0.15)';
+            statusBanner.style.border = isLight ? '1px solid #fde68a' : '1px solid rgba(245, 158, 11, 0.5)';
+            statusBanner.style.color = isLight ? '#92400e' : '#fbbf24';
             const notes = hero.correction_notes || hero.verification_notes || 'The registrar desk requested corrections to your submission details or documents.';
             statusBanner.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <strong style="font-size: 0.9rem; color: #fbbf24; display: block; margin-bottom: 3px;">⚠ Registration Returned for Correction</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 4px; border-left: 3px solid #f59e0b;">
+                        <strong style="font-size: 0.9rem; color: ${isLight ? '#b45309' : '#fbbf24'}; display: block; margin-bottom: 3px;">⚠ Registration Returned for Correction</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 6px; background: var(--bg-input); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; border-left: 3px solid #f59e0b;">
                             <strong>Registrar Notes:</strong> ${escapeHtml(notes)}
                         </div>
                         <span style="font-size: 0.72rem; color: var(--text-muted);">Please review the requested changes, update your profile or documents below, and click Resubmit Registration.</span>
@@ -315,9 +317,9 @@ function updateHeroUI() {
         if (st4) st4.className = 'stepper-step active';
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(6, 182, 212, 0.12)';
-            statusBanner.style.border = '1px solid rgba(6, 182, 212, 0.4)';
-            statusBanner.style.color = '#67e8f9';
+            statusBanner.style.background = isLight ? '#ecfeff' : 'rgba(6, 182, 212, 0.12)';
+            statusBanner.style.border = isLight ? '1px solid #a5f3fc' : '1px solid rgba(6, 182, 212, 0.4)';
+            statusBanner.style.color = isLight ? '#0e7490' : '#67e8f9';
             statusBanner.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <span style="font-size: 1.2rem;">🛡️</span>
@@ -333,9 +335,9 @@ function updateHeroUI() {
         [st1, st2, st3, st4, st5].forEach(n => n && (n.className = 'stepper-step completed'));
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(16, 185, 129, 0.12)';
-            statusBanner.style.border = '1px solid rgba(16, 185, 129, 0.4)';
-            statusBanner.style.color = '#34d399';
+            statusBanner.style.background = isLight ? '#f0fdf4' : 'rgba(16, 185, 129, 0.12)';
+            statusBanner.style.border = isLight ? '1px solid #bbf7d0' : '1px solid rgba(16, 185, 129, 0.4)';
+            statusBanner.style.color = isLight ? '#15803d' : '#34d399';
             statusBanner.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div style="display: flex; align-items: center; gap: 12px;">
@@ -355,16 +357,16 @@ function updateHeroUI() {
         if (track) track.style.width = '50%';
         if (statusBanner) {
             statusBanner.style.display = 'block';
-            statusBanner.style.background = 'rgba(239, 68, 68, 0.12)';
-            statusBanner.style.border = '1px solid rgba(239, 68, 68, 0.4)';
-            statusBanner.style.color = '#f87171';
+            statusBanner.style.background = isLight ? '#fef2f2' : 'rgba(239, 68, 68, 0.12)';
+            statusBanner.style.border = isLight ? '1px solid #fecaca' : '1px solid rgba(239, 68, 68, 0.4)';
+            statusBanner.style.color = isLight ? '#991b1b' : '#f87171';
             const notes = hero.verification_notes || hero.rejection_reason || 'Application did not meet Superhuman Accord regulatory standards.';
             statusBanner.innerHTML = `
                 <div style="display: flex; align-items: flex-start; gap: 12px;">
                     <span style="font-size: 1.2rem;">❌</span>
                     <div>
                         <strong style="font-size: 0.88rem; display: block; margin-bottom: 2px;">Registration Application Rejected</strong>
-                        <div style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 4px; border-left: 3px solid #ef4444;">
+                        <div style="font-size: 0.8rem; color: var(--text-main); margin-bottom: 4px; background: var(--bg-input); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 4px; border-left: 3px solid #ef4444;">
                             <strong>Rejection Findings:</strong> ${escapeHtml(notes)}
                         </div>
                         <span style="font-size: 0.72rem; color: var(--text-muted);">Contact your municipal registrar officer for formal appeals or reapplication protocols.</span>

@@ -110,7 +110,7 @@
     }
     .portal-btn-launch {
       background-color: var(--primary);
-      color: #ffffff;
+      color: var(--bg-app);
       padding: 0.65rem;
       border-radius: var(--radius-sm);
       text-align: center;
@@ -121,6 +121,22 @@
     }
     .portal-card:hover .portal-btn-launch {
       background-color: var(--primary-hover);
+      color: var(--bg-app);
+    }
+    .header-enroll-btn {
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      color: #d8b4fe;
+      background: rgba(168, 85, 247, 0.15);
+    }
+    [data-theme="light"] .header-enroll-btn {
+      border-color: #c084fc;
+      color: #7e22ce;
+      background: #f3e8ff;
+    }
+    [data-theme="light"] .badge-intake {
+      background: #f3e8ff !important;
+      color: #6b21a8 !important;
+      border-color: #d8b4fe !important;
     }
     .telemetry-strip {
       background-color: var(--bg-card);
@@ -206,7 +222,7 @@
     </div>
 
     <div class="header-right">
-      <a href="/register" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 6px; border-radius: var(--radius-sm); border: 1px solid rgba(168, 85, 247, 0.5); color: #d8b4fe; background: rgba(168, 85, 247, 0.15);" title="Start New Hero Registration">
+      <a href="/register" class="btn btn-secondary header-enroll-btn" style="padding: 6px 14px; font-size: 0.8rem; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 6px; border-radius: var(--radius-sm);" title="Start New Hero Registration">
         <span>[ENROLL]</span> <span>New Hero Registration</span>
       </a>
 
@@ -247,10 +263,10 @@
           <div class="portal-badge-icon" style="font-size: 0.85rem; font-family: var(--font-mono); font-weight: 800; color: #c084fc; border-color: rgba(168, 85, 247, 0.4);">[INTAKE]</div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
             <span class="portal-url-tag">HTTP: /register</span>
-            <span style="font-size: 0.65rem; background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.4); padding: 2px 6px; border-radius: 4px; font-weight: 700;">NEW APPLICANTS</span>
+            <span class="badge-intake" style="font-size: 0.65rem; background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168,85,247,0.4); padding: 2px 6px; border-radius: 4px; font-weight: 700;">NEW APPLICANTS</span>
           </div>
         </div>
-        <div class="portal-card-title" style="color: #e9d5ff;">Hero Registration &amp; Biometric Intake</div>
+        <div class="portal-card-title">Hero Registration &amp; Biometric Intake</div>
         <div class="portal-card-desc">
           Official 4-stage superhuman intake pipeline. Submit superhero callsign, classify abilities, upload biometric face profile photo with scanner HUD, and secure civilian identity under AES-256 vault encryption.
         </div>
@@ -260,7 +276,7 @@
           <li><span style="color: var(--status-green); font-weight: 700;">[OK]</span> Threat Tier Calibration &amp; Power Assessment</li>
           <li><span style="color: var(--status-green); font-weight: 700;">[OK]</span> Instant Operative Credentials &amp; Passkey</li>
         </ul>
-        <div class="portal-btn-launch" style="background: #9333ea;">
+        <div class="portal-btn-launch" style="background: #9333ea; color: #ffffff;">
           Begin Hero Registration →
         </div>
       </a>
@@ -332,7 +348,7 @@
           <li><span style="color: var(--status-green); font-weight: 700;">[OK]</span> Immutable Chained SHA-256 Audit Ledger</li>
           <li><span style="color: #f87171; font-weight: 700;">[AUTH]</span> Clearance Level 5 (Supreme Commander)</li>
         </ul>
-        <div class="portal-btn-launch" style="background: #dc2626;">
+        <div class="portal-btn-launch" style="background: #dc2626; color: #ffffff;">
           Launch Command Center →
         </div>
       </a>
@@ -356,7 +372,7 @@
           <li><span style="color: var(--status-green); font-weight: 700;">[OK]</span> Directive Alpha-Containment &amp; CRU Scramble</li>
           <li><span style="color: var(--status-green); font-weight: 700;">[OK]</span> Immutable SHA-256 Checkpoint Audit Log</li>
         </ul>
-        <div class="portal-btn-launch" style="background: #0d9488;">
+        <div class="portal-btn-launch" style="background: #0d9488; color: #ffffff;">
           Launch Sentinel Terminal →
         </div>
       </a>

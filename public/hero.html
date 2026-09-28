@@ -22,6 +22,26 @@
   </script>
 
   <link rel="stylesheet" href="/css/app.css">
+  <style>
+    [data-theme="light"] .hero-access-badge {
+      background: #f0f9ff !important;
+      border-color: #bae6fd !important;
+      color: #0369a1 !important;
+    }
+    [data-theme="light"] #heroAccessDeniedNotice {
+      background: #fef2f2 !important;
+      border-color: #fecaca !important;
+      color: #991b1b !important;
+    }
+    [data-theme="light"] #secHeroIdentity {
+      background: var(--bg-surface) !important;
+    }
+    [data-theme="light"] #vwAccountStatusBadge {
+      background: #f1f5f9 !important;
+      color: #334155 !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -276,7 +296,7 @@
             <div class="hero-fields-grid">
               <div class="form-field-group">
                 <span class="field-label-text">Hero Alias / Callsign</span>
-                <div id="vwHeroUsername" style="font-size: 1.1rem; font-weight: 800; color: #ffffff; letter-spacing: 0.04em; margin-top: 3px;">—</div>
+                <div id="vwHeroUsername" style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.04em; margin-top: 3px;">—</div>
               </div>
               <div class="form-field-group">
                 <span class="field-label-text">License Status</span>
@@ -614,7 +634,7 @@
       </div>
 
       <div class="ghrms-modal-body" style="align-items: center; text-align: center; padding: 1.25rem;">
-        <div style="font-size: 1.2rem; font-weight: 800; color: #ffffff;" id="modalBadgeAlias">APEX</div>
+        <div style="font-size: 1.2rem; font-weight: 800; color: var(--text-main);" id="modalBadgeAlias">APEX</div>
         <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;" id="modalBadgeMeta">
           Enhanced Strength · A-Class · Sector 1
         </div>

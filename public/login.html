@@ -135,19 +135,34 @@
       font-family: var(--font-mono);
     }
     .alert-error {
-      background: var(--status-red-bg);
-      border: 1px solid var(--status-red-border);
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
       color: #fca5a5;
     }
     .alert-warning {
-      background: var(--status-amber-bg);
-      border: 1px solid var(--status-amber-border);
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
       color: #fcd34d;
     }
     .alert-success {
-      background: var(--status-green-bg);
-      border: 1px solid var(--status-green-border);
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
       color: #6ee7b7;
+    }
+    [data-theme="light"] .alert-error {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+    [data-theme="light"] .alert-warning {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+    }
+    [data-theme="light"] .alert-success {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+      color: #166534;
     }
 
     @media (max-width: 480px) {
@@ -260,7 +275,7 @@
           </form>
 
           <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
-            <a href="/register" class="btn btn-secondary" style="text-align: center; text-decoration: none; padding: 10px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.05);">
+            <a href="/register" class="btn btn-secondary" style="text-align: center; text-decoration: none; padding: 10px; font-size: 0.82rem; font-weight: 700; border-radius: var(--radius-md);">
               [APPLY] New Hero Applicant? Launch Registration Stepper
             </a>
           </div>

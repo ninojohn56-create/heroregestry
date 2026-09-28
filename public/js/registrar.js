@@ -708,11 +708,11 @@ function initActions() {
             if (res.success) {
                 const bio = res.bio_data;
                 vaultContent.innerHTML = `
-                    <div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);padding:0.65rem;border-radius:4px;font-size:0.75rem;color:var(--status-amber);font-weight:700;">
+                    <div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);padding:0.65rem;border-radius:4px;font-size:0.75rem;color:var(--text-main);font-weight:700;">
                         [PRIVILEGED AUDIT RECORDED]: Vault ${res.vault_id} decrypted.
                     </div>
                     <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.8rem;margin-top:0.65rem;">
-                        <div><strong style="color:var(--text-muted);">Legal Name:</strong> <span style="font-family:var(--font-mono);color:#ffffff;">${bio.real_name}</span></div>
+                        <div><strong style="color:var(--text-muted);">Legal Name:</strong> <span style="font-family:var(--font-mono);color:var(--text-main);">${bio.real_name}</span></div>
                         <div><strong style="color:var(--text-muted);">Federal ID:</strong> <span style="font-family:var(--font-mono);">${bio.gov_id}</span></div>
                         <div><strong style="color:var(--text-muted);">DNA Marker:</strong> <span style="font-family:var(--font-mono);">${bio.biometric_dna_ref}</span></div>
                         <div><strong style="color:var(--text-muted);">Safehouse:</strong> <span>${bio.safehouse_address}</span></div>
@@ -1114,8 +1114,7 @@ function renderPendingItem(list, upd) {
                     ${new Date(upd.submitted_at).toLocaleString()}
                 </div>
             </div>
-            <span style="margin-left:auto;background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.35);
-                  font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:4px;font-weight:700;">[PENDING]</span>
+            <span class="threat-badge b-class" style="margin-left:auto; font-size:0.65rem; padding:0.15rem 0.5rem; font-weight:700;">[PENDING]</span>
         </div>
         <div style="background:var(--bg-surface);border-radius:4px;padding:0.5rem 0.75rem;display:flex;flex-direction:column;gap:3px;">
             ${fieldRows}
