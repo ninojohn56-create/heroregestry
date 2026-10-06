@@ -705,9 +705,12 @@
             <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.45;">
               Upload a clear portrait photo for your official Hunter License Card.
             </p>
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-              <button type="button" class="btn-step btn-prev" onclick="document.getElementById('regFaceFileInput').click()" style="padding: 7px 16px; font-size: 0.78rem; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
-                <span>📷 Upload Photo</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <button type="button" class="btn-step btn-prev" onclick="document.getElementById('regFaceFileInput').click()" style="padding: 7px 14px; font-size: 0.78rem; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
+                <span>📁 Upload File</span>
+              </button>
+              <button type="button" class="btn-step btn-next" onclick="openLiveCameraModal()" style="padding: 7px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                <span>📷 Open Camera</span>
               </button>
               <button type="button" id="btnRemoveFace" onclick="resetFacePhoto()" class="btn-step btn-prev" style="padding: 7px 12px; font-size: 0.75rem; display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer;">
                 <span>Remove</span>
@@ -715,6 +718,7 @@
               <span id="faceFileNameLabel" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">PNG, JPG, or WEBP (Max 8MB)</span>
             </div>
             <input type="file" id="regFaceFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleFacePhotoSelect(this)">
+            <input type="file" id="regFaceCameraFallback" accept="image/*" capture="user" style="display: none;" onchange="handleFacePhotoSelect(this)">
             <input type="hidden" id="regAvatarUrl" value="">
           </div>
         </div>
@@ -1194,13 +1198,15 @@
       labelEl.style.color = s.color;
     }
 
-    async function handleFacePhotoSelect(input) {
-      if (!input.files || !input.files[0]) return;
-      const file = input.files[0];
+    let cameraStream = null;
+    let cameraFacingMode = 'user';
+    let capturedBlob = null;
+
+    async function processFaceFile(file, fileName = 'hunter_photo.jpg') {
+      if (!file) return;
 
       if (file.size > 8 * 1024 * 1024) {
         alert('File size exceeds the 8MB limit. Please choose a smaller photo.');
-        input.value = '';
         return;
       }
 
@@ -1210,12 +1216,12 @@
 
       const fileNameLabel = document.getElementById('faceFileNameLabel');
       if (fileNameLabel) {
-        fileNameLabel.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+        fileNameLabel.textContent = `${fileName} (${(file.size / 1024).toFixed(1)} KB)`;
       }
 
       const badge = document.getElementById('faceBadgeStatus');
       if (badge) {
-        badge.textContent = '[UPLOADING BIOMETRICS...]';
+        badge.textContent = '[UPLOADING PHOTO...]';
         badge.style.color = '#fbbf24';
         badge.style.background = 'rgba(245, 158, 11, 0.2)';
         badge.style.borderColor = 'rgba(245, 158, 11, 0.5)';
@@ -1226,7 +1232,7 @@
 
       // Asynchronously upload to server
       const fd = new FormData();
-      fd.append('avatar', file);
+      fd.append('avatar', file, fileName);
 
       try {
         const res = await fetch('/api/upload-avatar', {
@@ -1237,7 +1243,7 @@
         if (data.success && data.url) {
           document.getElementById('regAvatarUrl').value = data.url;
           if (badge) {
-            badge.textContent = '[FACE PHOTO ENROLLED]';
+            badge.textContent = '[PHOTO ENROLLED]';
             badge.style.color = '#34d399';
             badge.style.background = 'rgba(16, 185, 129, 0.15)';
             badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
@@ -1251,13 +1257,25 @@
         }
       } catch (err) {
         console.warn('Network upload notice:', err);
+        if (badge) {
+          badge.textContent = '[LOCAL PREVIEW CACHED]';
+          badge.style.color = '#93c5fd';
+        }
       }
+    }
+
+    async function handleFacePhotoSelect(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      await processFaceFile(file, file.name);
     }
 
     function resetFacePhoto() {
       const preview = document.getElementById('regFacePreview');
       preview.src = '/img/apex.jpg';
       document.getElementById('regFaceFileInput').value = '';
+      const fb = document.getElementById('regFaceCameraFallback');
+      if (fb) fb.value = '';
       document.getElementById('regAvatarUrl').value = '';
 
       const fileNameLabel = document.getElementById('faceFileNameLabel');
@@ -1265,7 +1283,7 @@
 
       const badge = document.getElementById('faceBadgeStatus');
       if (badge) {
-        badge.textContent = 'BIOMETRIC RECOGNITION';
+        badge.textContent = 'PHOTO REQUIRED';
         badge.style.color = '#93c5fd';
         badge.style.background = 'rgba(59, 130, 246, 0.15)';
         badge.style.borderColor = 'rgba(59, 130, 246, 0.35)';
@@ -1273,6 +1291,144 @@
 
       const btnRemove = document.getElementById('btnRemoveFace');
       if (btnRemove) btnRemove.style.display = 'none';
+    }
+
+    // --- LIVE WEBCAM & MOBILE CAMERA WORKFLOW ---
+    async function openLiveCameraModal() {
+      const modal = document.getElementById('liveCameraModal');
+      if (!modal) return;
+      modal.style.display = 'flex';
+
+      retakeLiveSnapshot();
+      await startCameraStream();
+    }
+
+    async function startCameraStream() {
+      const video = document.getElementById('cameraStreamVideo');
+      const errBox = document.getElementById('cameraErrorBox');
+      const errMsg = document.getElementById('cameraErrorMsg');
+      if (errBox) errBox.style.display = 'none';
+
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+      }
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (errBox) {
+          errBox.style.display = 'flex';
+          errMsg.textContent = 'Direct live video stream is not supported in this browser. Tap below to use your device camera.';
+        }
+        return;
+      }
+
+      try {
+        const constraints = {
+          video: {
+            facingMode: { ideal: cameraFacingMode },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        };
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (video) {
+          video.srcObject = cameraStream;
+          video.style.transform = cameraFacingMode === 'user' ? 'scaleX(-1)' : 'none';
+          await video.play().catch(() => {});
+        }
+      } catch (err) {
+        console.warn('getUserMedia error:', err);
+        if (errBox) {
+          errBox.style.display = 'flex';
+          errMsg.textContent = err.name === 'NotAllowedError'
+            ? 'Camera permission was denied. Please allow camera permissions or launch your native camera app below.'
+            : 'Could not connect to live camera feed. Tap below to launch your phone camera app.';
+        }
+      }
+    }
+
+    function captureLiveSnapshot() {
+      const video = document.getElementById('cameraStreamVideo');
+      const canvas = document.getElementById('cameraStreamCanvas');
+      const img = document.getElementById('cameraCapturedImg');
+      const hud = document.getElementById('cameraHudOverlay');
+      const liveCtrl = document.getElementById('cameraLiveControls');
+      const snapCtrl = document.getElementById('cameraSnappedControls');
+
+      if (!video || !canvas || !img) return;
+
+      const w = video.videoWidth || 640;
+      const h = video.videoHeight || 480;
+      canvas.width = w;
+      canvas.height = h;
+
+      const ctx = canvas.getContext('2d');
+      if (cameraFacingMode === 'user') {
+        ctx.translate(w, 0);
+        ctx.scale(-1, 1);
+      }
+      ctx.drawImage(video, 0, 0, w, h);
+
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        capturedBlob = blob;
+        img.src = URL.createObjectURL(blob);
+        img.style.display = 'block';
+        video.style.display = 'none';
+        if (hud) hud.style.display = 'none';
+
+        if (liveCtrl) liveCtrl.style.display = 'none';
+        if (snapCtrl) snapCtrl.style.display = 'flex';
+      }, 'image/jpeg', 0.92);
+    }
+
+    function retakeLiveSnapshot() {
+      const video = document.getElementById('cameraStreamVideo');
+      const img = document.getElementById('cameraCapturedImg');
+      const hud = document.getElementById('cameraHudOverlay');
+      const liveCtrl = document.getElementById('cameraLiveControls');
+      const snapCtrl = document.getElementById('cameraSnappedControls');
+
+      capturedBlob = null;
+      if (img) {
+        img.src = '';
+        img.style.display = 'none';
+      }
+      if (video) video.style.display = 'block';
+      if (hud) hud.style.display = 'flex';
+
+      if (liveCtrl) liveCtrl.style.display = 'flex';
+      if (snapCtrl) snapCtrl.style.display = 'none';
+    }
+
+    async function acceptLiveSnapshot() {
+      if (!capturedBlob) return;
+      const fileName = `hunter_portrait_${Date.now()}.jpg`;
+      const file = new File([capturedBlob], fileName, { type: 'image/jpeg' });
+      await processFaceFile(file, fileName);
+      closeLiveCameraModal();
+    }
+
+    async function flipCameraFacing() {
+      cameraFacingMode = cameraFacingMode === 'user' ? 'environment' : 'user';
+      await startCameraStream();
+    }
+
+    function closeLiveCameraModal() {
+      const modal = document.getElementById('liveCameraModal');
+      if (modal) modal.style.display = 'none';
+
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+      }
+    }
+
+    function triggerNativeMobileCamera() {
+      closeLiveCameraModal();
+      const fb = document.getElementById('regFaceCameraFallback');
+      if (fb) fb.click();
     }
 
     function goToStep(step) {
@@ -1847,6 +2003,80 @@
       <div style="padding:8px 18px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-muted); background:var(--bg-surface);">
         <span>HAMS Secure Awakened Hunter Credential Attachment</span>
         <button type="button" onclick="toggleRegisterDocZoom()" style="background:none; border:none; color:var(--primary-accent); cursor:pointer; font-size:0.7rem;">Toggle Zoom</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Camera Modal -->
+  <div id="liveCameraModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:2100; align-items:center; justify-content:center; backdrop-filter:blur(6px); padding: 12px;">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; width:100%; max-width:500px; overflow:hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column;">
+      <!-- Modal Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border-color); background:var(--bg-surface);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+          <span style="font-weight:800; font-size:0.85rem; font-family:var(--font-mono); color:var(--text-main); text-transform: uppercase; letter-spacing: 0.05em;">LIVE HUNTER ID CAMERA</span>
+        </div>
+        <button type="button" onclick="closeLiveCameraModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer; font-weight:800; padding:0 6px;">✕</button>
+      </div>
+
+      <!-- Camera Viewfinder Viewport -->
+      <div style="position: relative; background: #000; width: 100%; height: 380px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+        <!-- Video stream -->
+        <video id="cameraStreamVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); display: block;"></video>
+        <!-- Canvas for capture -->
+        <canvas id="cameraStreamCanvas" style="display: none;"></canvas>
+        <!-- Freeze Frame Preview -->
+        <img id="cameraCapturedImg" style="display: none; width: 100%; height: 100%; object-fit: cover;" alt="Captured Portrait">
+
+        <!-- HUD Guide Overlay -->
+        <div id="cameraHudOverlay" style="position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <!-- Oval Face Guide -->
+          <div style="width: 190px; height: 250px; border: 2px dashed rgba(56, 189, 248, 0.65); border-radius: 50%; box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); position: relative;">
+            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 1px; height: 12px; background: #38bdf8;"></div>
+            <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 1px; height: 12px; background: #38bdf8;"></div>
+            <div style="position: absolute; left: -10px; top: 50%; transform: translateY(-50%); width: 12px; height: 1px; background: #38bdf8;"></div>
+            <div style="position: absolute; right: -10px; top: 50%; transform: translateY(-50%); width: 12px; height: 1px; background: #38bdf8;"></div>
+          </div>
+          <span style="margin-top: 10px; font-size: 0.68rem; font-family: var(--font-mono); color: #38bdf8; background: rgba(0,0,0,0.65); padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;">ALIGN FACE WITHIN FRAME</span>
+        </div>
+
+        <!-- Error notice if camera fails or permissions blocked -->
+        <div id="cameraErrorBox" style="display: none; position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95); padding: 24px; text-align: center; flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
+          <span style="font-size: 2.2rem; margin-bottom: 8px;">📷</span>
+          <strong style="color: #f87171; font-size: 0.88rem; margin-bottom: 6px;">Camera Access Notice</strong>
+          <p id="cameraErrorMsg" style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 16px; line-height: 1.4; max-width: 320px;">
+            Could not open live video stream. You can launch your mobile phone camera instead.
+          </p>
+          <button type="button" onclick="triggerNativeMobileCamera()" style="padding: 9px 20px; background: var(--primary-accent); color: #000; font-weight: 800; border-radius: 6px; border: none; font-size: 0.82rem; cursor: pointer;">
+            📱 Open Phone Camera
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Controls -->
+      <div style="padding: 14px 18px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;">
+        <!-- Live State Controls -->
+        <div id="cameraLiveControls" style="display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" id="btnFlipCamera" onclick="flipCameraFacing()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 12px; font-size: 0.75rem; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Switch between front and back camera">
+            <span>🔄 Flip Lens</span>
+          </button>
+          <button type="button" onclick="captureLiveSnapshot()" style="background: #38bdf8; color: #000; border: none; padding: 9px 26px; font-size: 0.82rem; font-weight: 800; border-radius: 24px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);">
+            <span>📸 CAPTURE PHOTO</span>
+          </button>
+          <button type="button" onclick="triggerNativeMobileCamera()" style="background: none; border: none; color: var(--text-muted); font-size: 0.72rem; cursor: pointer; text-decoration: underline;" title="Use Phone Native Camera App">
+            Phone App
+          </button>
+        </div>
+
+        <!-- Captured State Controls (Shown after photo snapped) -->
+        <div id="cameraSnappedControls" style="display: none; justify-content: space-between; align-items: center; gap: 10px;">
+          <button type="button" onclick="retakeLiveSnapshot()" style="flex: 1; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 9px 16px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer;">
+            🔄 Retake Photo
+          </button>
+          <button type="button" onclick="acceptLiveSnapshot()" style="flex: 1; background: #10b981; color: #000; border: none; padding: 9px 16px; font-size: 0.78rem; font-weight: 800; border-radius: 6px; cursor: pointer;">
+            ✓ Use This Photo
+          </button>
+        </div>
       </div>
     </div>
   </div>
