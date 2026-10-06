@@ -308,7 +308,7 @@
   <!-- Header -->
   <header class="ghrms-header">
     <div class="ghrms-brand">
-      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a href="/registry" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="GHRMS Operative Directory">
         <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
         <div class="ghrms-title-group">
           <span class="ghrms-acronym">GHRMS</span>
@@ -339,43 +339,51 @@
   <!-- App Layout with Sidebar (Matching Registrar Navigation) -->
   <div class="ghrms-app-layout">
     <!-- Left Navigation Sidebar -->
-    <nav class="ghrms-sidebar" aria-label="Registry Navigation">
-      <div class="nav-section-title">Navigation // Accord Steps</div>
+    <nav class="ghrms-sidebar" id="registrySidebar" aria-label="Registry Navigation">
+      <div class="sidebar-header-bar">
+        <span class="nav-section-title sidebar-header-title">Navigation // Steps</span>
+        <button type="button" class="sidebar-collapse-toggle-btn" id="registrySidebarToggleBtn" title="Collapse / Expand Sidebar (Ctrl+B)">
+          <span class="collapse-icon">◀</span>
+        </button>
+      </div>
+
+      <div class="nav-section-title" style="padding: 0.5rem 1.25rem 0.25rem;">Accord Steps</div>
       <ul class="nav-item-list">
         <li>
           <a class="nav-link" href="/registrar" title="Registration Queue">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> REGISTRATION QUEUE</span>
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> <span class="nav-link-text">REGISTRATION QUEUE</span></span>
             <span class="nav-pill slate" id="navQueueBadgeRegistry">0</span>
           </a>
         </li>
         <li>
           <a class="nav-link" href="/registrar" title="Pending Update Approvals">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> PENDING APPROVALS</span>
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> <span class="nav-link-text">PENDING APPROVALS</span></span>
             <span class="nav-pill slate" id="navPendingBadgeRegistry">0</span>
           </a>
         </li>
         <li>
           <a class="nav-link active" href="/registry" title="Superhuman Central Registry">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> HERO PROFILES</span>
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> <span class="nav-link-text">HERO PROFILES</span></span>
             <span class="nav-pill active-pill" id="navHeroCountBadge">11</span>
           </a>
         </li>
         <li>
           <a class="nav-link" href="/register" title="Superhuman Power Assessment Intake">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> POWER ASSESSMENT</span>
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> <span class="nav-link-text">POWER ASSESSMENT</span></span>
           </a>
         </li>
       </ul>
 
-      <div class="nav-section-title" style="margin-top: 1.5rem;">Assessor Tools</div>
+      <div class="nav-section-title" style="margin-top: 1.5rem; padding: 0.5rem 1.25rem 0.25rem;">Assessor Tools</div>
       <ul class="nav-item-list">
         <li>
           <a class="nav-link" href="/registrar" onclick="returnToOriginDashboard(); return false;" title="Return to Registrar Desk">
-            <span class="nav-link-label" style="color: var(--text-main); font-weight: 700;">← REGISTRAR DESK</span>
+            <span class="nav-link-label" style="color: var(--text-main); font-weight: 700;"><span style="font-family: var(--font-mono);">[←]</span> <span class="nav-link-text">REGISTRAR DESK</span></span>
           </a>
         </li>
       </ul>
     </nav>
+    <div class="sidebar-resizer" id="registrySidebarResizer" title="Drag to resize sidebar (double-click to reset)"></div>
 
     <!-- Main Scrollable Directory Area -->
     <main class="registry-scroll-panel" id="registryScrollPanel">
@@ -404,8 +412,12 @@
         <div class="filter-toolbar">
           <div class="filter-group">
             <div class="search-box-reg">
-              <span style="font-size:0.75rem;font-weight:700;font-family:var(--font-mono);color:var(--text-muted);">FIND:</span>
-              <input type="text" id="registrySearch" placeholder="Search by hero alias, real name, power, sector..." oninput="filterHeroes()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-subtle); flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span style="font-size:0.75rem;font-weight:800;font-family:var(--font-mono);color:var(--text-subtle);letter-spacing:0.04em;flex-shrink:0;white-space:nowrap;">FIND:</span>
+              <input type="text" id="registrySearch" placeholder="Search by hero alias, real name, power, sector..." oninput="filterHeroes()" autocomplete="off">
             </div>
 
             <div class="status-pills">
@@ -482,89 +494,236 @@
   <!-- ════════════════════════════════════════════
        HERO EDIT MODAL (In-Page Hero Profile Editing)
        ════════════════════════════════════════════ -->
+  <!-- ════════════════════════════════════════════
+       HERO EDIT MODAL (Full Registry Info Editable — Every Last Field)
+       ════════════════════════════════════════════ -->
   <div class="ghrms-modal-overlay" id="heroEditModal" role="dialog" aria-modal="true" aria-label="Edit Hero Record">
-    <div class="ghrms-modal-box" style="max-width: 560px;">
-      <div class="ghrms-modal-header">
-        <span id="editHeroModalTitle">[EDIT OPERATIVE REGISTRY RECORD]</span>
+    <div class="ghrms-modal-box" style="max-width: 780px; width: 95%; max-height: 92vh; display: flex; flex-direction: column;">
+      <div class="ghrms-modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <span id="editHeroModalTitle">[EDIT OPERATIVE REGISTRY RECORD — ALL FIELDS EDITABLE]</span>
         <button class="icon-button" onclick="closeEditModal()">[X]</button>
       </div>
-      <form class="ghrms-modal-body" id="heroEditForm" onsubmit="submitEditHero(event)" style="gap: 0.75rem;">
+      <form class="ghrms-modal-body" id="heroEditForm" onsubmit="submitEditHero(event)" style="gap: 1rem; overflow-y: auto; padding: 1rem;">
 
-        <!-- Civilian Legal Identity -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-          <div class="form-field-group">
-            <label class="field-label-text">Civilian Legal Real Name *</label>
-            <input type="text" class="ghrms-input" id="editHeroRealName" placeholder="e.g. Marcus Vance" required>
+        <!-- 1. Confidential Civilian Vault Identity -->
+        <div style="border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.03); border-radius: var(--radius-sm); padding: 10px 14px;">
+          <div style="font-size: 0.75rem; font-weight: 800; color: #f87171; letter-spacing: 0.05em; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+            <span>1. 🔒 CONFIDENTIAL CIVILIAN VAULT IDENTITY (LEVEL 3+ RESTRICTED)</span>
+            <span style="font-size: 0.68rem; color: #fca5a5; font-family: var(--font-mono);">[AES-256 ENCRYPTED]</span>
           </div>
-          <div class="form-field-group">
-            <label class="field-label-text">Government National ID *</label>
-            <input type="text" class="ghrms-input" id="editHeroGovId" placeholder="e.g. FED-9GH-8430" required>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-field-group">
+              <label class="field-label-text">Civilian Legal Real Name *</label>
+              <input type="text" class="ghrms-input" id="editHeroRealName" placeholder="e.g. Marcus Vance" required>
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Government National ID / Gov ID *</label>
+              <input type="text" class="ghrms-input" id="editHeroGovId" placeholder="e.g. FED-9GH-8430" required>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Date of Birth</label>
+              <input type="text" class="ghrms-input" id="editHeroDob" placeholder="e.g. Aug. 21, 1983">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Civilian Age</label>
+              <input type="number" class="ghrms-input" id="editHeroAge" placeholder="e.g. 34" min="0" max="999">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Gender</label>
+              <select class="ghrms-select" id="editHeroGender">
+                <option value="Unspecified">Unspecified</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Contact Phone / Handler Line</label>
+              <input type="text" class="ghrms-input" id="editHeroContact" placeholder="e.g. +1 (555) 839-4910">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Emergency Contact Name &amp; Relation</label>
+              <input type="text" class="ghrms-input" id="editHeroEmergencyContact" placeholder="e.g. Dr. Karen Wright (Spouse)">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Confidential Safehouse Address</label>
+              <input type="text" class="ghrms-input" id="editHeroSafehouse" placeholder="e.g. 742 Lexington Ave, Penthouse 44">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Biometric DNA Reference Code</label>
+              <input type="text" class="ghrms-input" id="editHeroDnaRef" placeholder="e.g. APX-998-CYBER-KINETIC">
+            </div>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-          <div class="form-field-group">
-            <label class="field-label-text">Hero Alias / Callsign *</label>
-            <input type="text" class="ghrms-input" id="editHeroAlias" placeholder="e.g. APEX" required>
+        <!-- 2. Hero Callsign, Licensure & Standing -->
+        <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
+          <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); letter-spacing: 0.05em; margin-bottom: 8px;">
+            2. HERO CALLSIGN, LICENSURE &amp; STANDING
           </div>
-          <div class="form-field-group">
-            <label class="field-label-text">Operational Status</label>
-            <select class="ghrms-select" id="editStatus">
-              <option value="Under Review">Under Review</option>
-              <option value="Licensed">Licensed</option>
-              <option value="Suspended">Suspended</option>
-              <option value="Rogue">Rogue</option>
-              <option value="Locked Out">Locked Out</option>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
+            <div class="form-field-group">
+              <label class="field-label-text">Hero Alias / Callsign *</label>
+              <input type="text" class="ghrms-input" id="editHeroAlias" placeholder="e.g. APEX" required>
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Operational Status *</label>
+              <select class="ghrms-select" id="editStatus">
+                <option value="Under Review">Under Review</option>
+                <option value="REVIEWING">REVIEWING</option>
+                <option value="Licensed">Licensed</option>
+                <option value="Approved">Approved</option>
+                <option value="Suspended">Suspended</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Locked Out">Locked Out</option>
+                <option value="Returned for Correction">Returned for Correction</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Official License Number</label>
+              <input type="text" class="ghrms-input" id="editHeroLicense" placeholder="e.g. GHRMS-LIC-9GH-8430">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Assigned Sector Jurisdiction</label>
+              <input type="text" class="ghrms-input" id="editRegion" placeholder="Sector 1 - Metro Downtown">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Registry Gov Code</label>
+              <input type="text" class="ghrms-input" id="editHeroGovCode" placeholder="e.g. 9GH-8430">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Registration Step (1–4)</label>
+              <select class="ghrms-select" id="editHeroStep">
+                <option value="1">Step 1 — Civilian Intake</option>
+                <option value="2">Step 2 — Ability Classification</option>
+                <option value="3">Step 3 — Threat Calibration</option>
+                <option value="4">Step 4 — Verification Complete</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field-group" style="margin-top: 8px;">
+            <label class="field-label-text">Avatar / Profile Picture URL</label>
+            <input type="text" class="ghrms-input" id="editHeroAvatar" placeholder="e.g. /img/apex.jpg or /uploads/avatars/face_xxxx.jpg">
+          </div>
+        </div>
+
+        <!-- 3. Powers, Abilities & Combat Profile -->
+        <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
+          <div style="font-size: 0.75rem; font-weight: 800; color: #38bdf8; letter-spacing: 0.05em; margin-bottom: 8px;">
+            3. SUPERHUMAN POWER SPECIFICATIONS &amp; COMBAT PROFILE
+          </div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem;">
+            <div class="form-field-group">
+              <label class="field-label-text">Primary Power Classification *</label>
+              <input type="text" class="ghrms-input" id="editPrimaryPower" placeholder="e.g. Enhanced Strength" required>
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Power Output Level (1–100%)</label>
+              <input type="number" class="ghrms-input" id="editPrimaryPct" placeholder="80" min="1" max="100">
+            </div>
+          </div>
+          <div class="form-field-group" style="margin-top: 8px;">
+            <label class="field-label-text">Comprehensive Power Description</label>
+            <textarea class="ghrms-input" id="editPowerDesc" rows="2" placeholder="Full power description and physiological mechanisms..."></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Secondary Powers Listing</label>
+              <input type="text" class="ghrms-input" id="editSecondaryPower" placeholder="e.g. Flight, Thermal Shielding">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Secondary Output (1–100%)</label>
+              <input type="number" class="ghrms-input" id="editSecondaryPct" placeholder="60" min="1" max="100">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Tactical Combat Style &amp; Role</label>
+              <input type="text" class="ghrms-input" id="editCombatStyle" placeholder="e.g. Vanguard Striker, Frontline Breacher">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Key Abilities &amp; Non-Powered Skills</label>
+              <input type="text" class="ghrms-input" id="editAbilitiesSkills" placeholder="e.g. Krav Maga, Tactical Leadership">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+            <div class="form-field-group">
+              <label class="field-label-text">Operational Strengths</label>
+              <textarea class="ghrms-input" id="editStrengths" rows="2" placeholder="Tactical strengths, crowd control, kinetic tolerance..."></textarea>
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Limitations / Weaknesses &amp; Vulnerabilities</label>
+              <textarea class="ghrms-input" id="editWeaknesses" rows="2" placeholder="Psychological triggers, thermal depletion, medical vulnerabilities..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Threat Tier, Field Readiness & Mentorship -->
+        <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
+          <div style="font-size: 0.75rem; font-weight: 800; color: #fbbf24; letter-spacing: 0.05em; margin-bottom: 8px;">
+            4. THREAT CALIBRATION, FIELD READINESS &amp; MENTORSHIP
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
+            <div class="form-field-group">
+              <label class="field-label-text">Threat Tier (0–5)</label>
+              <select class="ghrms-select" id="editThreatTier">
+                <option value="0">Tier 0 — Cosmic (Reality-Altering)</option>
+                <option value="1">Tier 1 — Extreme (Continental)</option>
+                <option value="2">Tier 2 — High (Severe / Tactical Asset)</option>
+                <option value="3">Tier 3 — Moderate (High-Yield State Level)</option>
+                <option value="4">Tier 4 — Low (Municipal Superhuman)</option>
+                <option value="5">Tier 5 — Street (Localized Neighborhood)</option>
+              </select>
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Power Control Level</label>
+              <input type="text" class="ghrms-input" id="editControlLevel" placeholder="e.g. Mastered / Absolute (Tier-A)">
+            </div>
+            <div class="form-field-group">
+              <label class="field-label-text">Combat Effectiveness Rating (1–100%)</label>
+              <input type="number" class="ghrms-input" id="editCombatRating" placeholder="75" min="1" max="100">
+            </div>
+          </div>
+          <div class="form-field-group" style="margin-top: 8px;">
+            <label class="field-label-text">Tactical Gear Manifest (Comma Separated)</label>
+            <input type="text" class="ghrms-input" id="editHeroGear" placeholder="e.g. Kevlar Weave Suit, EMP Disrupter, Grapple Hook">
+          </div>
+          <div class="form-field-group" style="margin-top: 8px;">
+            <label class="field-label-text">Training Records &amp; Field Readiness</label>
+            <textarea class="ghrms-input" id="editTraining" rows="2" placeholder="Academy honors, tactical hours logged, disaster response certifications..."></textarea>
+          </div>
+          <div class="form-field-group" style="margin-top: 8px;">
+            <label class="field-label-text">Assessment Notes &amp; Risk Mitigation Directives</label>
+            <textarea class="ghrms-input" id="editAssessmentNotes" rows="2" placeholder="Official officer evaluation notes, psychological clearance, safety parameters..."></textarea>
+          </div>
+          <!-- Sidekick / Mentor Selection -->
+          <div class="form-field-group" style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 8px;">
+            <label class="field-label-text" style="color: #a78bfa;">[SIDEKICK DIVISION] Assign Senior Mentor</label>
+            <div class="field-subtext" style="margin-bottom: 0.5rem; font-size: 0.7rem; color: var(--text-muted);">Select a mentor to link this operative as their sidekick. Leave blank for independent hero status.</div>
+            <select class="ghrms-select" id="editMentorSelect">
+              <option value="">— No mentor / Keep independent —</option>
             </select>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-          <div class="form-field-group">
-            <label class="field-label-text">Primary Power Classification *</label>
-            <input type="text" class="ghrms-input" id="editPrimaryPower" placeholder="e.g. Enhanced Strength" required>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 8px;">
+          <span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">
+            * All edits committed to cryptographically chained SHA-256 Audit Ledger
+          </span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeEditModal()" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel</button>
+            <button type="submit" class="btn-confirm-final" id="btnSaveEditHeroRegistry" style="padding: 0.5rem 1.4rem; font-size: 0.8rem;">[SAVE ALL CHANGES &amp; AUDIT]</button>
           </div>
-          <div class="form-field-group">
-            <label class="field-label-text">Secondary Power Listing</label>
-            <input type="text" class="ghrms-input" id="editSecondaryPower" placeholder="e.g. Flight">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-          <div class="form-field-group">
-            <label class="field-label-text">Sector / Region</label>
-            <input type="text" class="ghrms-input" id="editRegion" placeholder="Sector 1 - Metro Downtown">
-          </div>
-          <div class="form-field-group">
-            <label class="field-label-text">Threat Tier (0–5)</label>
-            <select class="ghrms-select" id="editThreatTier">
-              <option value="0">0 — Inert</option>
-              <option value="1">1 — Minimal</option>
-              <option value="2">2 — Low</option>
-              <option value="3">3 — Moderate</option>
-              <option value="4">4 — High</option>
-              <option value="5">5 — Extreme</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-field-group">
-          <label class="field-label-text">Tactical Gear Manifest (Comma Separated)</label>
-          <input type="text" class="ghrms-input" id="editHeroGear" placeholder="e.g. Kevlar Weave Suit, EMP Disrupter, Grapple Hook">
-        </div>
-
-        <!-- Sidekick Enrollment -->
-        <div class="form-field-group" style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius-sm); padding: 0.75rem;">
-          <label class="field-label-text" style="color: #a78bfa;">[SIDEKICK DIVISION] Assign Senior Mentor</label>
-          <div class="field-subtext" style="margin-bottom: 0.5rem; font-size: 0.7rem; color: var(--text-muted);">Select a mentor to link this operative as their sidekick. Leave blank for independent hero status.</div>
-          <select class="ghrms-select" id="editMentorSelect">
-            <option value="">— No mentor / Keep independent —</option>
-          </select>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
-          <button type="button" class="btn btn-secondary" onclick="closeEditModal()" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel</button>
-          <button type="submit" class="btn-confirm-final" id="btnSaveEditHeroRegistry" style="padding: 0.5rem 1.25rem; font-size: 0.8rem;">[SAVE ALL CHANGES]</button>
         </div>
       </form>
     </div>
@@ -817,23 +976,75 @@
           });
       }
 
-      const realNameEl = document.getElementById('editHeroRealName');
-      const govIdEl    = document.getElementById('editHeroGovId');
-      const gearEl     = document.getElementById('editHeroGear');
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = (val !== null && val !== undefined) ? val : '';
+      };
 
-      if (realNameEl) realNameEl.value = hero.real_name || (hero.vault_info && hero.vault_info.real_name) || '';
-      if (govIdEl)    govIdEl.value    = hero.gov_code || hero.license_number || '';
-      if (gearEl)     gearEl.value     = Array.isArray(hero.gear_manifest) ? hero.gear_manifest.join(', ') : (hero.gear_manifest || '');
+      // 1. Vault
+      setVal('editHeroRealName', hero.real_name || (hero.vault_info && hero.vault_info.real_name) || '');
+      setVal('editHeroGovId', hero.gov_code || hero.id_number || '');
+      setVal('editHeroDob', hero.dob || '');
+      setVal('editHeroAge', hero.age || '');
+      setVal('editHeroGender', hero.gender || 'Unspecified');
+      setVal('editHeroContact', hero.contact_number || '');
+      const emerg = Array.isArray(hero.emergency_contacts) && hero.emergency_contacts[0] ?
+        `${hero.emergency_contacts[0].name || ''} (${hero.emergency_contacts[0].relation || ''} - ${hero.emergency_contacts[0].phone || ''})` :
+        (hero.emergency_contact_name ? `${hero.emergency_contact_name} (${hero.relationship || ''})` : '');
+      setVal('editHeroEmergencyContact', emerg);
+      setVal('editHeroSafehouse', hero.safehouse_address || hero.address || '');
+      setVal('editHeroDnaRef', hero.biometric_dna_ref || '');
 
-      document.getElementById('editHeroAlias').value         = hero.alias || '';
-      document.getElementById('editPrimaryPower').value      = hero.primary_power || '';
-      document.getElementById('editSecondaryPower').value    = hero.secondary_power || '';
-      document.getElementById('editRegion').value            = hero.region || '';
-      document.getElementById('editStatus').value            = hero.status || 'Licensed';
-      document.getElementById('editThreatTier').value        = hero.threat_tier ?? 2;
+      // 2. Standing
+      setVal('editHeroAlias', hero.alias || '');
+      setVal('editStatus', hero.status || 'Licensed');
+      setVal('editHeroLicense', hero.license_number || '');
+      setVal('editRegion', hero.region || '');
+      setVal('editHeroGovCode', hero.gov_code || '');
+      setVal('editHeroStep', hero.registration_step || '4');
+      setVal('editHeroAvatar', hero.avatar || hero.profile_picture || '');
+
+      // 3. Powers
+      setVal('editPrimaryPower', hero.primary_power || '');
+      setVal('editPrimaryPct', hero.primary_pct || 80);
+      setVal('editPowerDesc', hero.power_description || '');
+      setVal('editSecondaryPower', hero.secondary_power || '');
+      setVal('editSecondaryPct', hero.secondary_pct || 60);
+      setVal('editCombatStyle', hero.combat_style || '');
+      setVal('editAbilitiesSkills', hero.abilities || hero.skills || '');
+      setVal('editStrengths', hero.strengths || '');
+      setVal('editWeaknesses', hero.weaknesses || hero.limitations_weaknesses || '');
+
+      // 4. Threat & Calibration
+      setVal('editThreatTier', hero.threat_tier ?? 2);
+      setVal('editControlLevel', hero.power_control_level || '');
+      setVal('editCombatRating', hero.combat_rating || 75);
+      const gear = Array.isArray(hero.gear_manifest) ? hero.gear_manifest.join(', ') : (hero.gear_manifest || '');
+      setVal('editHeroGear', gear);
+      setVal('editTraining', hero.training_experience || '');
+      setVal('editAssessmentNotes', hero.assessment_notes || '');
+
       document.getElementById('editHeroModalTitle').textContent = `[EDIT OPERATIVE: ${hero.alias}]`;
-
       document.getElementById('heroEditModal').classList.add('active');
+
+      // Fetch review to populate decrypted confidential vault fields if available
+      fetch(`/api/heroes/${hero.id}/review`)
+        .then(r => r.json())
+        .then(d => {
+          if (d.success && d.vault) {
+            const v = d.vault;
+            if (v.real_name || v.full_name) setVal('editHeroRealName', v.real_name || v.full_name);
+            if (v.gov_id) setVal('editHeroGovId', v.gov_id);
+            if (v.dob) setVal('editHeroDob', v.dob);
+            if (v.age) setVal('editHeroAge', v.age);
+            if (v.gender) setVal('editHeroGender', v.gender);
+            if (v.contact_number || v.phone) setVal('editHeroContact', v.contact_number || v.phone);
+            if (v.emergency_contact_name) setVal('editHeroEmergencyContact', `${v.emergency_contact_name} ${v.relationship ? '(' + v.relationship + ')' : ''} ${v.emergency_contact_number || ''}`.trim());
+            if (v.safehouse_address || v.address) setVal('editHeroSafehouse', v.safehouse_address || v.address);
+            if (v.biometric_dna_ref) setVal('editHeroDnaRef', v.biometric_dna_ref);
+          }
+        })
+        .catch(() => {});
     }
 
     function closeEditModal() {
@@ -848,28 +1059,64 @@
       const hero = allHeroes.find(h => h.id === selectedEditHeroId);
       if (!hero) return;
 
+      const getVal = (id) => document.getElementById(id)?.value?.trim() || '';
       const mentorSelectEl = document.getElementById('editMentorSelect');
       const mentorHeroId   = mentorSelectEl?.value || '';
       const mentorHero     = allHeroes.find(h => h.id === mentorHeroId);
 
-      const gearRaw = document.getElementById('editHeroGear')?.value.trim() || '';
+      const gearRaw = getVal('editHeroGear');
       const gearManifest = gearRaw ? gearRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
 
       const payload = {
-        real_name:       document.getElementById('editHeroRealName')?.value.trim() || '',
-        gov_id:          document.getElementById('editHeroGovId')?.value.trim() || '',
-        alias:           document.getElementById('editHeroAlias').value.trim(),
-        primary_power:   document.getElementById('editPrimaryPower').value.trim(),
-        secondary_power: document.getElementById('editSecondaryPower').value.trim(),
-        region:          document.getElementById('editRegion').value.trim(),
-        status:          document.getElementById('editStatus').value,
-        threat_tier:     parseInt(document.getElementById('editThreatTier').value, 10),
-        gear_manifest:   gearManifest,
-        mentor:          mentorHero ? mentorHero.alias : (hero.mentor || null)
+        // Vault
+        real_name:               getVal('editHeroRealName'),
+        gov_id:                  getVal('editHeroGovId'),
+        id_number:               getVal('editHeroGovId'),
+        dob:                     getVal('editHeroDob'),
+        age:                     parseInt(getVal('editHeroAge') || '0', 10),
+        gender:                  getVal('editHeroGender'),
+        contact_number:          getVal('editHeroContact'),
+        emergency_contact_name:  getVal('editHeroEmergencyContact'),
+        safehouse_address:       getVal('editHeroSafehouse'),
+        biometric_dna_ref:       getVal('editHeroDnaRef'),
+
+        // Standing
+        alias:                   getVal('editHeroAlias'),
+        status:                  getVal('editStatus'),
+        license_number:          getVal('editHeroLicense'),
+        region:                  getVal('editRegion'),
+        gov_code:                getVal('editHeroGovCode'),
+        registration_step:       parseInt(getVal('editHeroStep') || '4', 10),
+        avatar:                  getVal('editHeroAvatar'),
+
+        // Powers
+        primary_power:           getVal('editPrimaryPower'),
+        primary_pct:             parseInt(getVal('editPrimaryPct') || '80', 10),
+        primary_level:           `Level ${Math.round(parseInt(getVal('editPrimaryPct') || '80', 10) / 10)}/10`,
+        power_description:       getVal('editPowerDesc'),
+        secondary_power:         getVal('editSecondaryPower') || 'None',
+        secondary_powers:        getVal('editSecondaryPower') || 'None',
+        secondary_pct:           parseInt(getVal('editSecondaryPct') || '60', 10),
+        secondary_level:         `Level ${Math.round(parseInt(getVal('editSecondaryPct') || '60', 10) / 10)}/10`,
+        combat_style:            getVal('editCombatStyle'),
+        abilities:               getVal('editAbilitiesSkills'),
+        skills:                  getVal('editAbilitiesSkills'),
+        strengths:               getVal('editStrengths'),
+        weaknesses:              getVal('editWeaknesses'),
+        limitations_weaknesses:  getVal('editWeaknesses'),
+
+        // Threat & Readiness
+        threat_tier:             parseInt(getVal('editThreatTier') || '3', 10),
+        power_control_level:     getVal('editControlLevel'),
+        combat_rating:           parseInt(getVal('editCombatRating') || '75', 10),
+        gear_manifest:           gearManifest,
+        training_experience:     getVal('editTraining'),
+        assessment_notes:        getVal('editAssessmentNotes'),
+        mentor:                  mentorHero ? mentorHero.alias : (hero.mentor || null)
       };
 
       const saveBtn = document.getElementById('btnSaveEditHeroRegistry');
-      if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+      if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving & Auditing...'; }
 
       try {
         const res = await fetch(`/api/heroes/${hero.id}`, {
@@ -878,10 +1125,10 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json();
-        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES]'; }
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES & AUDIT]'; }
 
         if (data.success) {
-          showToast(`Operative ${data.data.alias} updated successfully!`, 'success');
+          showToast(`Operative ${data.data.alias} updated successfully! All fields saved & logged to audit ledger.`, 'success');
           closeEditModal();
 
           if (mentorHeroId && mentorHeroId !== '') {
@@ -897,7 +1144,7 @@
           showToast(`Save failed: ${data.error || 'Server error'}`, 'error');
         }
       } catch (err) {
-        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES]'; }
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES & AUDIT]'; }
         showToast(`Save error: ${err.message}`, 'error');
       }
     }
@@ -1012,7 +1259,7 @@
             if (window.history.length > 1) {
               window.history.back();
             } else {
-              window.location.href = '/';
+              window.location.href = '/registrar';
             }
           }
         })
@@ -1020,7 +1267,7 @@
           if (window.history.length > 1) {
             window.history.back();
           } else {
-            window.location.href = '/';
+            window.location.href = '/registrar';
           }
         });
     }
@@ -1048,13 +1295,17 @@
         }
       }
 
-      // Check incoming deep-link param
-      const params = new URLSearchParams(window.location.search);
-      const editHeroId = params.get('edit') || params.get('hero');
-      if (editHeroId) {
-        openEditModal(editHeroId);
+      // Initialize Resizable and Collapsible Sidebar
+      if (window.GHRMSSidebarEngine) {
+        GHRMSSidebarEngine.initNavSidebar({
+          sidebarId: 'registrySidebar',
+          resizerId: 'registrySidebarResizer',
+          toggleBtnId: 'registrySidebarToggleBtn',
+          storageKey: 'ghrms_registry_sidebar'
+        });
       }
     });
   </script>
+  <script src="/js/sidebar-resizer.js"></script>
 </body>
 </html>

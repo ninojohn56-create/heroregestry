@@ -94,13 +94,16 @@ async function checkAuth() {
     try {
         const res = await apiGet('auth/me');
         if (res.success && res.authenticated && res.user) {
-            heroState.heroId = res.user.hero_id || res.user.id || 'hero_apex_01';
+            // Check URL query parameters so staff or links can view specific hero profiles (e.g. /hero?id=hero_lumina_02)
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryHeroId = urlParams.get('id') || urlParams.get('hero_id');
+            heroState.heroId = queryHeroId || res.user.hero_id || res.user.id || 'hero_apex_01';
             const headerAlias = document.getElementById('headerHeroAlias');
             if (headerAlias) headerAlias.textContent = res.user.name || res.user.alias || 'APEX';
             return;
         }
     } catch (e) {}
-    window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+    window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
 }
 
 // -------------------------------------------------------------
@@ -127,9 +130,12 @@ function setHeroEditMode(isEditing) {
 async function loadHeroData() {
     if (!heroState.heroId) return;
     const res = await apiGet(`heroes/${heroState.heroId}`);
-    if (res.success) {
+    if (res.success && res.data) {
         heroState.hero = res.data;
+        heroState.heroId = res.data.id || heroState.heroId;
         updateHeroUI();
+        renderPermanentQr();
+        updateHeroIdCardModal();
         await checkPendingUpdates();
     }
 }
@@ -163,14 +169,48 @@ function updateHeroUI() {
 
     if (title) title.textContent = hero.alias;
     if (subId) {
-        const licText = hero.status === 'Approved' || hero.status === 'Licensed'
-            ? ` · [ACCREDITED: ${hero.license_number || 'Active'}]`
-            : (hero.status === 'Revoked' ? ' · [LICENSE REVOKED]' : ` · [STATUS: ${hero.status?.toUpperCase() || 'UNKNOWN'}]`);
-        subId.textContent = `${hero.alias} · ID: ${hero.id || hero.gov_code || ''}${licText}`;
+        const isAccredited = hero.status === 'Approved' || hero.status === 'Licensed';
+        const isRevoked = hero.status === 'Revoked';
+        const statusBadgeStyle = isAccredited
+            ? 'background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#34d399;'
+            : (isRevoked
+                ? 'background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:#f87171;'
+                : 'background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24;');
+        const badgeText = isAccredited
+            ? `ACCREDITED: ${hero.license_number || 'ACTIVE'}`
+            : (isRevoked ? 'LICENSE REVOKED' : `STATUS: ${(hero.status || 'UNKNOWN').toUpperCase()}`);
+
+        const realNameText = (hero.vault_info && hero.vault_info.real_name) || hero.real_name || '';
+        const civilianDisplay = realNameText ? `<span class="sub-id-item"><span class="sub-id-label">Civilian:</span> <span class="sub-id-val">${escapeHtml(realNameText)}</span></span>` : '';
+
+        subId.innerHTML = `
+            <div class="hero-sub-id-uncompounded">
+                <span class="sub-id-item">
+                    <span class="sub-id-label">Registry ID:</span>
+                    <span class="sub-id-val" style="color:#38bdf8;">${escapeHtml(hero.id || hero.gov_code || 'PENDING')}</span>
+                </span>
+                ${civilianDisplay}
+                <span class="sub-id-badge" style="${statusBadgeStyle}">[${badgeText}]</span>
+            </div>
+        `;
     }
     if (headerAlias && !headerAlias.textContent) headerAlias.textContent = hero.alias;
 
-    // Division & Mentorship Badge
+    const modalBadgeAlias = document.getElementById('modalBadgeAlias');
+    if (modalBadgeAlias) modalBadgeAlias.textContent = (hero.alias || hero.callsign || 'UNKNOWN').toUpperCase();
+
+    const modalBadgeMeta = document.getElementById('modalBadgeMeta');
+    if (modalBadgeMeta) {
+        const pList = hero.powers ? (Array.isArray(hero.powers) ? hero.powers.join(', ') : hero.powers) : (hero.power || 'Classified Ability');
+        const tNum = hero.threat_level !== undefined ? hero.threat_level : 3;
+        const tLabel = TIER_LABELS[tNum] || `Tier ${tNum}`;
+        const secLabel = hero.sector ? (hero.sector.toString().toLowerCase().includes('sector') ? hero.sector : `Sector ${hero.sector}`) : 'Sector 01';
+        modalBadgeMeta.innerHTML = `
+            <span class="sub-id-item"><span class="sub-id-val">${escapeHtml(pList)}</span></span>
+            <span class="sub-id-badge" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: #fbbf24;">${escapeHtml(tLabel)}</span>
+            <span class="sub-id-badge" style="background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa;">${escapeHtml(secLabel)}</span>
+        `;
+    }
     const roleBadgeEl = document.getElementById('heroRoleBadge');
     if (roleBadgeEl) {
         const isSidekick = (hero.role_tag === 'Sidekick') || !!hero.mentor;
@@ -344,7 +384,10 @@ function updateHeroUI() {
                         <span style="font-size: 1.2rem;">🎖️</span>
                         <div>
                             <strong style="font-size: 0.88rem; display: block; margin-bottom: 2px;">Officially Accredited Hero Operative</strong>
-                            <span style="font-size: 0.78rem; color: var(--text-main);">License Number: <strong>${hero.license_number || 'ACTIVE-HERO'}</strong> · Verified civic credentials active across all municipal sectors.</span>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px;">
+                                <span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); padding: 2px 7px; border-radius: 4px; color: ${isLight ? '#15803d' : '#34d399'};">LIC #${escapeHtml(hero.license_number || 'ACTIVE-HERO')}</span>
+                                <span style="font-size: 0.76rem; color: var(--text-muted);">Verified civic credentials active across all municipal sectors.</span>
+                            </div>
                         </div>
                     </div>
                     <button type="button" class="btn-mini btn-mini-assess" onclick="document.getElementById('btnExpandQrBadge').click()" style="padding: 6px 14px; font-size: 0.75rem;">
@@ -403,7 +446,16 @@ function updateHeroUI() {
     if (elDates) {
         const regDate = hero.registered_at || hero.created_at ? new Date(hero.registered_at || hero.created_at).toLocaleDateString() : 'N/A';
         const lastLogin = hero.last_login ? new Date(hero.last_login).toLocaleString() : 'Recent Active';
-        elDates.textContent = `Registered: ${regDate} · Active: ${lastLogin}`;
+        elDates.innerHTML = `
+            <div class="uncompounded-item-row">
+                <span class="uncompounded-item-label">Registered</span>
+                <span class="uncompounded-item-value">${regDate}</span>
+            </div>
+            <div class="uncompounded-item-row" style="margin-top: 4px;">
+                <span class="uncompounded-item-label">Active Session</span>
+                <span class="uncompounded-item-value" style="color: #34d399;">${lastLogin}</span>
+            </div>
+        `;
     }
 
     // License Status Badge and Number
@@ -492,13 +544,31 @@ function updateHeroUI() {
     if (vwStyle) vwStyle.textContent = hero.combat_style || 'Tactical Field Engagement';
     const vwAbilitiesSkills = document.getElementById('vwHeroAbilitiesSkills');
     if (vwAbilitiesSkills) {
-        vwAbilitiesSkills.textContent = `Abilities: ${hero.abilities || 'Standard tactical proficiency'} · Skills: ${hero.skills || 'Field proficient'}`;
+        vwAbilitiesSkills.innerHTML = `
+            <div class="uncompounded-item-row">
+                <span class="uncompounded-item-label">Abilities</span>
+                <span class="uncompounded-item-value">${escapeHtml(hero.abilities || 'Standard tactical proficiency')}</span>
+            </div>
+            <div class="uncompounded-item-row" style="margin-top: 6px;">
+                <span class="uncompounded-item-label">Field Skills</span>
+                <span class="uncompounded-item-value">${escapeHtml(hero.skills || 'Field proficient')}</span>
+            </div>
+        `;
     }
     const vwStrengthsWeaknesses = document.getElementById('vwHeroStrengthsWeaknesses');
     if (vwStrengthsWeaknesses) {
         const str = hero.strengths || 'High resilience';
         const wkn = hero.limitations_weaknesses || hero.weaknesses || 'Standard human vulnerabilities';
-        vwStrengthsWeaknesses.textContent = `Strengths: ${str} | Limitations: ${wkn}`;
+        vwStrengthsWeaknesses.innerHTML = `
+            <div class="uncompounded-item-row">
+                <span class="uncompounded-item-label" style="color:#34d399;">Strengths</span>
+                <span class="uncompounded-item-value">${escapeHtml(str)}</span>
+            </div>
+            <div class="uncompounded-item-row" style="margin-top: 6px;">
+                <span class="uncompounded-item-label" style="color:#f87171;">Limitations</span>
+                <span class="uncompounded-item-value">${escapeHtml(wkn)}</span>
+            </div>
+        `;
     }
 
     // 4. Power & Threat Assessment
@@ -522,7 +592,16 @@ function updateHeroUI() {
     const vwSectorGear = document.getElementById('vwHeroSectorGear');
     if (vwSectorGear) {
         const gear = Array.isArray(hero.gear_manifest) ? hero.gear_manifest.join(', ') : (hero.gear_manifest || 'Standard Field Issue');
-        vwSectorGear.textContent = `Sector: ${hero.region || 'Sector 1'} · Gear: ${gear}`;
+        vwSectorGear.innerHTML = `
+            <div class="uncompounded-item-row">
+                <span class="uncompounded-item-label">Jurisdiction</span>
+                <span class="uncompounded-item-value">${escapeHtml(hero.region || 'Sector 1')}</span>
+            </div>
+            <div class="uncompounded-item-row" style="margin-top: 6px;">
+                <span class="uncompounded-item-label">Field Gear</span>
+                <span class="uncompounded-item-value">${escapeHtml(gear)}</span>
+            </div>
+        `;
     }
     const vwNotes = document.getElementById('vwHeroAssessmentNotes');
     if (vwNotes) vwNotes.textContent = hero.assessment_notes || 'Collateral risk protocols calibrated by intake assessor.';
@@ -597,7 +676,8 @@ function updateHeroUI() {
                 vwAuthStatus.innerHTML = `
                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                         <span style="font-family:var(--font-mono);font-weight:800;font-size:0.75rem;color:#34d399;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);padding:2px 8px;border-radius:4px;">[AUTONOMOUS CLEARANCE]</span>
-                        <span style="font-size:0.8rem;color:var(--text-main);">Level ${hero.clearance_level || 1} Clearance · Full tactical jurisdiction for independent emergency response across Sector ${escapeHtml(hero.region || '1')}.</span>
+                        <span style="font-family:var(--font-mono);font-weight:700;font-size:0.75rem;color:var(--text-muted);background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:3px;">Level ${hero.clearance_level || 1}</span>
+                        <span style="font-size:0.8rem;color:var(--text-main);">Full tactical jurisdiction for independent emergency response across Sector ${escapeHtml(hero.region || '1')}.</span>
                     </div>
                 `;
             }
@@ -747,37 +827,150 @@ function renderSupportingDocuments(hero) {
     }
 
     list.innerHTML = docs.map(doc => {
+        const docId = doc.id || doc.doc_id;
         const status = doc.verification_status || 'Pending';
-        const statusColor = status === 'Verified' ? 'rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);'
-            : (status === 'Rejected' ? 'rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);'
-            : 'rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);');
+        const badgeClass = status === 'Verified' ? 'doc-badge doc-badge-verified' :
+                           status === 'Rejected' ? 'doc-badge doc-badge-rejected' :
+                           'doc-badge doc-badge-pending';
         
-        const uploadDate = doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : 'N/A';
-        const expDate = doc.expiration_date ? ` · Exp: ${doc.expiration_date}` : '';
-        const verifiedBy = doc.verified_by ? ` (Audit: ${doc.verified_by})` : '';
+        const uploadDate = doc.uploaded_at || doc.upload_date ? new Date(doc.uploaded_at || doc.upload_date).toLocaleDateString() : 'N/A';
 
         return `
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.78rem;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 1.1rem;">📄</span>
+            <div class="doc-card-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">📄</span>
                     <div>
-                        <strong style="color: var(--text-main);">${escapeHtml(doc.document_type || 'Document')}</strong>: 
-                        <a href="/api/heroes/${encodeURIComponent(hero.id)}/documents/${encodeURIComponent(doc.doc_id)}" target="_blank" style="color: #93c5fd; text-decoration: underline; font-family: var(--font-mono); font-size: 0.75rem;">
-                            ${escapeHtml(doc.original_name || 'View Attached File')}
-                        </a>
-                        <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 1px;">
-                            Uploaded: ${uploadDate}${expDate}${verifiedBy}
+                        <div class="doc-title-text">
+                            ${escapeHtml(doc.document_type || 'Document')}
+                        </div>
+                        <div class="doc-meta-text" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px;">
+                            <button type="button" onclick="openDocViewer('${hero.id}', '${docId}', '${escapeHtml(doc.document_type || 'Document')}', '${escapeHtml(doc.original_name || 'document.png')}', '${escapeHtml(doc.mime_type || '')}')" class="btn-doc-view" style="font-size: 0.68rem; padding: 2px 8px; cursor: pointer; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.4); color: #38bdf8; font-weight: 700; border-radius: 4px;">
+                                [VIEW FILE]
+                            </button>
+                            <span>${escapeHtml(doc.original_name || 'Attached File')}</span>
+                            <span>• Uploaded: ${uploadDate}</span>
+                            ${doc.expiration_date ? `<span style="background: rgba(125,125,125,0.12); padding: 1px 6px; border-radius: 3px;">Expires: ${escapeHtml(doc.expiration_date)}</span>` : ''}
+                            ${doc.verified_by ? `<span style="color: var(--status-green); font-weight: 700;">Audit: ${escapeHtml(doc.verified_by)}</span>` : ''}
                         </div>
                     </div>
                 </div>
                 <div>
-                    <span style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; background: ${statusColor}">
+                    <span class="${badgeClass}">
                         ${status.toUpperCase()}
                     </span>
                 </div>
             </div>
         `;
     }).join('');
+}
+
+// ──────────────────────────────────────────────
+// In-Page Document Viewer & Lightbox (Hero Dashboard)
+// ──────────────────────────────────────────────
+let currentDocViewerUrl = null;
+let currentDocViewerMime = null;
+let isDocZoomed = false;
+
+function openDocViewer(heroId, docId, docType, originalName, mimeType) {
+    const modal = document.getElementById('docViewerModal');
+    const content = document.getElementById('docViewerContent');
+    const titleEl = document.getElementById('docViewerTitle');
+    const metaEl = document.getElementById('docViewerMeta');
+    const dlBtn = document.getElementById('btnDocViewerDownload');
+
+    if (!modal || !content) return;
+
+    currentDocViewerUrl = `/api/heroes/${encodeURIComponent(heroId)}/documents/${encodeURIComponent(docId)}`;
+    currentDocViewerMime = mimeType || '';
+    isDocZoomed = false;
+
+    if (titleEl) titleEl.textContent = `[${(docType || 'DOCUMENT').toUpperCase()}: ${originalName || 'EVIDENCE'}]`;
+    if (metaEl) metaEl.textContent = `Operative ID: ${heroId} // File: ${originalName} (${mimeType || 'binary'})`;
+    if (dlBtn) {
+        dlBtn.href = currentDocViewerUrl;
+        dlBtn.download = originalName || 'ghrms_document';
+    }
+
+    const isPdf = (mimeType && mimeType.includes('pdf')) || (originalName && originalName.toLowerCase().endsWith('.pdf'));
+
+    if (isPdf) {
+        content.innerHTML = `
+            <iframe id="docViewerIframe" src="${currentDocViewerUrl}" style="width: 100%; height: 68vh; border: 1px solid var(--border-color); border-radius: 6px; background: #fff;"></iframe>
+        `;
+    } else {
+        content.innerHTML = `
+            <div style="position: relative; text-align: center; width: 100%;">
+                <img id="docViewerImg" src="${currentDocViewerUrl}" alt="${escapeHtml(docType)}" 
+                     style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 24px rgba(0,0,0,0.7); cursor: zoom-in; transition: transform 0.2s ease;" 
+                     onclick="toggleDocZoom()">
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">
+                    Click image or [TOGGLE FULLSIZE] below to zoom in/out
+                </div>
+            </div>
+        `;
+    }
+
+    modal.classList.add('active');
+}
+
+function closeDocViewer() {
+    const modal = document.getElementById('docViewerModal');
+    if (modal) modal.classList.remove('active');
+    const content = document.getElementById('docViewerContent');
+    if (content) content.innerHTML = '';
+    currentDocViewerUrl = null;
+    currentDocViewerMime = null;
+    isDocZoomed = false;
+}
+
+function toggleDocZoom() {
+    const img = document.getElementById('docViewerImg');
+    if (!img) return;
+    isDocZoomed = !isDocZoomed;
+    if (isDocZoomed) {
+        img.style.maxHeight = 'none';
+        img.style.transform = 'scale(1.25)';
+        img.style.cursor = 'zoom-out';
+    } else {
+        img.style.maxHeight = '70vh';
+        img.style.transform = 'scale(1)';
+        img.style.cursor = 'zoom-in';
+    }
+}
+
+function printCurrentDoc() {
+    if (!currentDocViewerUrl) return;
+
+    const isPdf = (currentDocViewerMime && currentDocViewerMime.includes('pdf')) || currentDocViewerUrl.includes('.pdf');
+    if (isPdf) {
+        const iframe = document.getElementById('docViewerIframe');
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            return;
+        }
+    }
+
+    const printWin = window.open('', '_blank', 'width=900,height=700');
+    if (printWin) {
+        printWin.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>GHRMS Accredited Document Print</title>
+                <style>
+                    body { margin: 0; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #fff; font-family: monospace; }
+                    img { max-width: 100%; max-height: 95vh; object-fit: contain; }
+                    @page { size: auto; margin: 10mm; }
+                </style>
+            </head>
+            <body>
+                <img src="${currentDocViewerUrl}" onload="window.print(); window.close();" />
+            </body>
+            </html>
+        `);
+        printWin.document.close();
+    }
 }
 
 // Upload Single Document
@@ -1055,7 +1248,18 @@ async function refreshBadgeToken() {
     const aliasModal = document.getElementById('modalBadgeAlias');
     const metaModal  = document.getElementById('modalBadgeMeta');
     if (aliasModal) aliasModal.textContent = res.data.alias;
-    if (metaModal)  metaModal.textContent  = `${res.data.alias} · ${res.data.threat_tier_label} · Token Verified`;
+    if (metaModal) {
+        metaModal.innerHTML = `
+            <span class="sub-id-item"><span class="sub-id-val">${escapeHtml(res.data.alias)}</span></span>
+            <span class="sub-id-badge" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24;">${escapeHtml(res.data.threat_tier_label)}</span>
+            <span class="sub-id-badge" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#34d399;">✓ Token Verified</span>
+        `;
+        metaModal.style.display = 'flex';
+        metaModal.style.alignItems = 'center';
+        metaModal.style.justifyContent = 'center';
+        metaModal.style.gap = '6px';
+        metaModal.style.flexWrap = 'wrap';
+    }
 
     let remaining = res.data.expires_in;
     const totalStep = res.data.time_step || 30;
@@ -1072,11 +1276,12 @@ async function refreshBadgeToken() {
 }
 
 function renderPermanentQr() {
-    const heroId = (heroState.heroData && heroState.heroData.id) ? heroState.heroData.id : heroState.heroId;
+    const hero = heroState.hero;
+    const heroId = (hero && (hero.gov_code || hero.id)) ? (hero.gov_code || hero.id) : heroState.heroId;
     if (!heroId) return;
     const permPayload = `GHRMS://HERO/${heroId}`;
     const permCanvas = document.getElementById('heroPermanentQrCanvas');
-    if (permCanvas) {
+    if (permCanvas && window.SimpleQR) {
         SimpleQR.renderToCanvas(permCanvas, permPayload, {
             size: 160, foreground: '#0f172a', background: '#ffffff'
         });
@@ -1086,6 +1291,347 @@ function renderPermanentQr() {
         permDisplay.textContent = permPayload;
     }
 }
+
+// -------------------------------------------------------------
+// Official Printable Superhuman ID Card & Hologram Seal
+// -------------------------------------------------------------
+function updateHeroIdCardModal() {
+    const hero = heroState.hero;
+    if (!hero) return;
+
+    const cardAvatar = document.getElementById('cardHeroAvatar');
+    if (cardAvatar) {
+        cardAvatar.src = hero.avatar || hero.profile_picture || '/img/apex.jpg';
+    }
+
+    const cardThreat = document.getElementById('cardThreatTierBadge');
+    if (cardThreat) {
+        const tierNum = hero.threat_level !== undefined ? hero.threat_level : 3;
+        const tierName = ['COSMIC', 'EXTREME', 'HIGH', 'MODERATE', 'LOW', 'STREET'][tierNum] || 'CITY';
+        cardThreat.textContent = `TIER ${tierNum} (${tierName})`;
+    }
+
+    const cardAlias = document.getElementById('cardHeroAlias');
+    if (cardAlias) {
+        cardAlias.textContent = (hero.alias || hero.callsign || 'UNKNOWN').toUpperCase();
+    }
+
+    const cardRealName = document.getElementById('cardHeroRealName');
+    if (cardRealName) {
+        const rn = (hero.vault_info && hero.vault_info.real_name) || hero.real_name || '';
+        cardRealName.textContent = rn || 'CONFIDENTIAL // VAULT ENCRYPTED';
+    }
+
+    const cardGovCode = document.getElementById('cardHeroGovCode');
+    if (cardGovCode) {
+        cardGovCode.textContent = hero.gov_code || hero.id || '9GH-XXXX';
+    }
+
+    const cardSector = document.getElementById('cardHeroSector');
+    if (cardSector) {
+        const s = hero.sector ? hero.sector.toString().replace(/sector\s*/i, '').padStart(2, '0') : '01';
+        cardSector.textContent = `SECTOR ${s}`;
+    }
+
+    const cardPower = document.getElementById('cardHeroPower');
+    if (cardPower) {
+        const pList = hero.powers ? (Array.isArray(hero.powers) ? hero.powers.join(', ') : hero.powers) : (hero.power || 'Classified Ability');
+        cardPower.textContent = pList;
+    }
+
+    const cardLic = document.getElementById('cardLicenseNumber');
+    if (cardLic) {
+        cardLic.textContent = `LIC: ${hero.license_number || ('GHRMS-LIC-' + (hero.gov_code || hero.id || '9GH-0000'))}`;
+    }
+
+    const cardQrCanvas = document.getElementById('cardHeroQrCanvas');
+    if (cardQrCanvas && window.SimpleQR) {
+        const qrPayload = `GHRMS://HERO/${hero.gov_code || hero.id || 'hero_apex_01'}`;
+        SimpleQR.renderToCanvas(cardQrCanvas, qrPayload, {
+            size: 80,
+            foreground: '#0f172a',
+            background: '#ffffff'
+        });
+    }
+}
+
+function openHeroIdCardModal() {
+    const modal = document.getElementById('heroIdCardModal');
+    if (!modal) return;
+    updateHeroIdCardModal();
+    modal.style.display = 'flex';
+}
+
+function closeHeroIdCardModal() {
+    const modal = document.getElementById('heroIdCardModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function printHeroIdCard() {
+    updateHeroIdCardModal();
+    window.print();
+}
+
+async function downloadHeroIdCardPng() {
+    const hero = heroState.hero;
+    if (!hero) {
+        showToast('Hero profile not loaded yet', 'error');
+        return;
+    }
+
+    updateHeroIdCardModal();
+
+    // High-resolution 1000 x 590 px ID card canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 1000;
+    canvas.height = 590;
+    const ctx = canvas.getContext('2d');
+
+    // Rounded rectangle card base with dark metallic gradient
+    const r = 24;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.lineTo(1000 - r, 0);
+    ctx.quadraticCurveTo(1000, 0, 1000, r);
+    ctx.lineTo(1000, 590 - r);
+    ctx.quadraticCurveTo(1000, 590, 1000 - r, 590);
+    ctx.lineTo(r, 590);
+    ctx.quadraticCurveTo(0, 590, 0, 590 - r);
+    ctx.lineTo(0, r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.closePath();
+    ctx.clip();
+
+    const bgGrad = ctx.createLinearGradient(0, 0, 1000, 590);
+    bgGrad.addColorStop(0, '#0b1120');
+    bgGrad.addColorStop(0.5, '#0f172a');
+    bgGrad.addColorStop(1, '#1e1b4b');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 1000, 590);
+
+    // Microprint security background lines
+    ctx.save();
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.07)';
+    ctx.lineWidth = 1;
+    for (let i = -600; i < 1600; i += 16) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i + 600, 590);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // Card Outer Border
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(3, 3, 994, 584);
+
+    // Header Strip
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.fillRect(20, 20, 960, 68);
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(20, 88);
+    ctx.lineTo(980, 88);
+    ctx.stroke();
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 22px monospace';
+    ctx.fillText('GLOBAL HERO REGISTRATION SYSTEM', 80, 52);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('ACCORD SECURITY COMMISSION // FIELD CLEARANCE CREDENTIAL', 80, 72);
+
+    // Gold Smart Chip Graphic
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(900, 34, 56, 40);
+    ctx.strokeStyle = '#fde68a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(900, 34, 56, 40);
+    ctx.strokeRect(912, 42, 32, 24);
+
+    // Hero Portrait with Biometric Border
+    const photoX = 40, photoY = 110, photoW = 200, photoH = 240;
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(photoX, photoY, photoW, photoH);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(photoX, photoY, photoW, photoH);
+
+    const cardImg = document.getElementById('cardHeroAvatar');
+    if (cardImg && cardImg.complete && cardImg.naturalWidth > 0) {
+        try {
+            ctx.drawImage(cardImg, photoX, photoY, photoW, photoH);
+        } catch(e) {}
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.fillRect(photoX, photoY + photoH - 28, photoW, 28);
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('SEC-BIOMETRIC VERIFIED', photoX + (photoW / 2), photoY + photoH - 10);
+    ctx.textAlign = 'left';
+
+    // Threat Tier Badge under photo
+    const tierNum = hero.threat_level !== undefined ? hero.threat_level : 3;
+    const tierName = ['COSMIC', 'EXTREME', 'HIGH', 'MODERATE', 'LOW', 'STREET'][tierNum] || 'CITY';
+    ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+    ctx.fillRect(photoX, photoY + photoH + 12, photoW, 36);
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(photoX, photoY + photoH + 12, photoW, 36);
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 15px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(`TIER ${tierNum} (${tierName})`, photoX + (photoW / 2), photoY + photoH + 36);
+    ctx.textAlign = 'left';
+
+    // Middle Details: Callsign Alias, Real Name, Gov ID, Sector, Powers
+    const textX = 270;
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('CALLSIGN ALIAS', textX, 135);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 38px sans-serif';
+    ctx.fillText((hero.alias || hero.callsign || 'UNKNOWN').toUpperCase(), textX, 175);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('CIVILIAN LEGAL IDENTITY', textX, 220);
+
+    const rn = (hero.vault_info && hero.vault_info.real_name) || hero.real_name || 'CONFIDENTIAL // VAULT ENCRYPTED';
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText(rn, textX, 245);
+
+    // Gov ID & Sector
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('GOV REGISTRY ID', textX, 290);
+    ctx.fillText('SECURITY SECTOR', textX + 220, 290);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 20px monospace';
+    ctx.fillText(hero.gov_code || hero.id || '9GH-XXXX', textX, 315);
+
+    const s = hero.sector ? hero.sector.toString().replace(/sector\s*/i, '').padStart(2, '0') : '01';
+    ctx.fillStyle = '#a78bfa';
+    ctx.fillText(`SECTOR ${s}`, textX + 220, 315);
+
+    // Classified Powers
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('CLASSIFIED SUPERHUMAN ABILITY', textX, 360);
+
+    const pList = hero.powers ? (Array.isArray(hero.powers) ? hero.powers.join(', ') : hero.powers) : (hero.power || 'Classified Accord Ability');
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText(pList, textX, 385);
+
+    // Shimmering Rainbow Metallic Hologram Seal
+    const holoX = 840, holoY = 190, holoR = 64;
+    const holoGrad = ctx.createLinearGradient(holoX - holoR, holoY - holoR, holoX + holoR, holoY + holoR);
+    holoGrad.addColorStop(0, '#ffffff');
+    holoGrad.addColorStop(0.2, '#f43f5e');
+    holoGrad.addColorStop(0.4, '#38bdf8');
+    holoGrad.addColorStop(0.7, '#fbbf24');
+    holoGrad.addColorStop(0.85, '#a78bfa');
+    holoGrad.addColorStop(1, '#ffffff');
+    ctx.beginPath();
+    ctx.arc(holoX, holoY, holoR, 0, Math.PI * 2);
+    ctx.fillStyle = holoGrad;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#ffffff';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(holoX, holoY, holoR - 12, 0, Math.PI * 2);
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(15, 23, 42, 0.6)';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('ACCORD', holoX, holoY - 10);
+    ctx.font = 'bold 20px sans-serif';
+    ctx.fillText('★', holoX, holoY + 8);
+    ctx.font = 'bold 10px monospace';
+    ctx.fillText('VERIFIED', holoX, holoY + 22);
+    ctx.textAlign = 'left';
+
+    // Scannable High-Contrast QR Code Canvas
+    const qrCanvas = document.getElementById('cardHeroQrCanvas') || document.getElementById('heroPermanentQrCanvas');
+    if (qrCanvas) {
+        const qrBoxX = 755, qrBoxY = 280, qrBoxW = 170, qrBoxH = 170;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
+        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
+        try {
+            ctx.drawImage(qrCanvas, qrBoxX + 10, qrBoxY + 10, qrBoxW - 20, qrBoxH - 20);
+        } catch(e) {}
+    }
+
+    // Security Microprint Bottom Footer Bar
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fillRect(20, 520, 960, 48);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(20, 520);
+    ctx.lineTo(980, 520);
+    ctx.stroke();
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '12px monospace';
+    const lic = `LIC: ${hero.license_number || ('GHRMS-LIC-' + (hero.gov_code || hero.id || '9GH-0000'))}`;
+    ctx.fillText(lic, 35, 548);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.textAlign = 'center';
+    ctx.fillText('SEC-AUTH // ARTICLE 4 ACCORD COMPLIANT // TAMPER-EVIDENT CREDENTIAL', 500, 548);
+    ctx.textAlign = 'right';
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText('MUNICIPAL CLEARANCE', 965, 548);
+    ctx.textAlign = 'left';
+
+    // Trigger PNG File Download
+    canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const filename = `${(hero.alias || 'hero').toLowerCase().replace(/[^a-z0-9]/g, '_')}_ghrms_id_card.png`;
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Official Hero ID Card saved as ${filename}!`, 'success');
+    }, 'image/png');
+}
+
+window.openHeroIdCardModal = openHeroIdCardModal;
+window.closeHeroIdCardModal = closeHeroIdCardModal;
+window.printHeroIdCard = printHeroIdCard;
+window.downloadHeroIdCardPng = downloadHeroIdCardPng;
+window.updateHeroIdCardModal = updateHeroIdCardModal;
+window.openFacePhotoUploadModal = openFacePhotoUploadModal;
+window.closeFacePhotoUploadModal = closeFacePhotoUploadModal;
+window.handleHeroFacePhotoSelected = handleHeroFacePhotoSelected;
+window.saveHeroFacePhoto = saveHeroFacePhoto;
+window.markHeroNotificationsRead = markHeroNotificationsRead;
+window.uploadSingleDocument = uploadSingleDocument;
+window.resubmitRegistration = resubmitRegistration;
+window.setHeroEditMode = setHeroEditMode;
+window.handleHeroNotifClick = handleHeroNotifClick;
 
 function initQrModal() {
     const openBtn    = document.getElementById('btnExpandQrBadge');

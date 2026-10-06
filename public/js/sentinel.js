@@ -4,6 +4,16 @@
  * Automatic Hero Identification, Face Recognition HUD, and Webcam Scanner
  */
 
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 const sentinelState = {
     theme: 'dark',
     selectedSector: 'Sector 01 (Downtown Municipal)',
@@ -197,10 +207,12 @@ async function executeScan(qrPayload, pinValue = '', isQuietAuto = false) {
                 showToast(`[AUTO-DETECTED] ${res.data.alias} (${res.data.real_name}) confirmed.`, 'success');
             }
         } else {
+            sentinelState.currentScan = null;
+            sentinelState.lastAutoScannedPayload = qrPayload;
             renderViewfinderBreachHUD(qrPayload, res.error);
             renderBreach(qrPayload, res.error || 'Operative credentials not found in federal database.');
             playAudioCue('alarm');
-            showToast(`[BREACH] ${res.error || 'Unregistered Superhuman'}`, 'error');
+            showToast(`[UNKNOWN / BREACH] ${res.error || 'Subject not registered in federal database.'}`, 'error');
         }
 
         // Refresh recent audit feed
@@ -256,7 +268,7 @@ function renderViewfinderLockedHUD(data) {
     // Primary Power & Sector
     const powerEl = document.getElementById('viewfinderPrimaryPower');
     if (powerEl) {
-        powerEl.textContent = `${data.primary_power || 'Enhanced Ability'} · ${data.threat_tier_label || 'Tier 1'}`;
+        powerEl.innerHTML = `<span style="font-weight:700;">${escapeHtml(data.primary_power || 'Enhanced Ability')}</span> <span style="font-size:0.75rem;padding:1px 6px;border-radius:3px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;font-family:var(--font-mono);">${escapeHtml(data.threat_tier_label || 'Tier 1')}</span>`;
     }
 
     const sectorTag = document.getElementById('viewfinderSectorTag');
@@ -316,46 +328,67 @@ function renderViewfinderBreachHUD(identifier, errorMsg) {
 
     if (idleHUD) idleHUD.style.display = 'none';
     lockedHUD.style.display = 'flex';
-    lockedHUD.style.borderColor = '#f59e0b';
-    lockedHUD.style.boxShadow = '0 4px 16px rgba(245, 158, 11, 0.35)';
+    lockedHUD.style.borderColor = '#ef4444';
+    lockedHUD.style.boxShadow = '0 4px 18px rgba(239, 68, 68, 0.45)';
 
     const faceImg = document.getElementById('viewfinderFaceImg');
     if (faceImg) {
         faceImg.src = '/img/logo.jpg';
-        faceImg.style.borderColor = '#f59e0b';
-        faceImg.style.boxShadow = 'none';
+        faceImg.style.borderColor = '#ef4444';
+        faceImg.style.boxShadow = '0 0 14px rgba(239, 68, 68, 0.5)';
     }
 
     const roleTag = document.getElementById('viewfinderFaceRoleTag');
     if (roleTag) {
-        roleTag.textContent = '[UNREGISTERED]';
+        roleTag.textContent = '[UNKNOWN / DETAIN]';
         roleTag.className = 'hero-role-badge badge-sidekick';
+        roleTag.style.background = '#ef4444';
+        roleTag.style.color = '#ffffff';
     }
 
     const aliasEl = document.getElementById('viewfinderAlias');
-    if (aliasEl) aliasEl.textContent = 'UNIDENTIFIED';
+    if (aliasEl) aliasEl.textContent = 'UNKNOWN SUBJECT';
 
     const realNameEl = document.getElementById('viewfinderRealName');
     if (realNameEl) {
-        realNameEl.textContent = 'CIVILIAN: No Federal Record';
-        realNameEl.style.color = '#fcd34d';
+        realNameEl.textContent = 'CIVILIAN: No Federal Record (UNKNOWN)';
+        realNameEl.style.color = '#fca5a5';
+    }
+
+    const powerEl = document.getElementById('viewfinderPrimaryPower');
+    if (powerEl) {
+        powerEl.innerHTML = `<span style="font-weight:700;color:#ef4444;">Unregistered Potential Anomaly</span> <span style="font-size:0.75rem;padding:1px 6px;border-radius:3px;background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#fca5a5;font-family:var(--font-mono);">TIER UNKNOWN</span>`;
+    }
+
+    const sectorTag = document.getElementById('viewfinderSectorTag');
+    if (sectorTag) {
+        sectorTag.textContent = 'UNAUTHORIZED';
+        sectorTag.style.color = '#ef4444';
     }
 
     const matchStatus = document.getElementById('hudMatchStatus');
     if (matchStatus) {
-        matchStatus.innerHTML = '<span style="color: var(--status-amber);">[SECURITY BREACH]</span>';
+        matchStatus.innerHTML = '<span style="color: #ef4444; font-weight:700;">[UNKNOWN / BREACH]</span>';
+    }
+
+    const timeLock = document.getElementById('hudTimeLock');
+    if (timeLock) {
+        timeLock.textContent = '[INTERCEPT]';
+        timeLock.style.color = '#ef4444';
+        timeLock.style.background = 'rgba(239, 68, 68, 0.2)';
     }
 
     const statusTag = document.getElementById('viewfinderStatusTag');
     if (statusTag) {
-        statusTag.textContent = '[UNAUTHORIZED]';
-        statusTag.style.background = 'rgba(245, 158, 11, 0.15)';
-        statusTag.style.color = '#f59e0b';
-        statusTag.style.borderColor = '#f59e0b';
+        statusTag.textContent = '[UNKNOWN / UNAUTHORIZED]';
+        statusTag.style.background = 'rgba(239, 68, 68, 0.2)';
+        statusTag.style.color = '#ef4444';
+        statusTag.style.borderColor = '#ef4444';
     }
 }
 
 function resetViewfinderHUD() {
+    sentinelState.lastAutoScannedPayload = null;
     const idleHUD = document.getElementById('viewfinderIdleHUD');
     const lockedHUD = document.getElementById('viewfinderLockedHUD');
     const faceImg = document.getElementById('viewfinderFaceImg');
@@ -514,64 +547,72 @@ function renderBreach(identifier, errorMsg) {
 
     if (statusBar) {
         statusBar.className = 'sentinel-status-bar status-bar-breach';
-        if (barIcon) barIcon.textContent = '[SECURITY BREACH]';
-        if (barText) barText.textContent = 'UNREGISTERED ENHANCED INDIVIDUAL';
-        if (barSub) barSub.textContent = 'Target missing from GHRMS Superhuman Registry';
+        if (barIcon) barIcon.textContent = '[UNKNOWN / SECURITY BREACH]';
+        if (barText) barText.textContent = 'UNKNOWN / UNREGISTERED INDIVIDUAL';
+        if (barSub) barSub.textContent = errorMsg || 'Subject missing from GHRMS Superhuman Registry';
     }
 
     const avatar = document.getElementById('operativeAvatar');
     if (avatar) {
         avatar.src = '/img/logo.jpg';
-        avatar.style.borderColor = '#f59e0b';
-        avatar.style.boxShadow = 'none';
+        avatar.style.borderColor = '#ef4444';
+        avatar.style.boxShadow = '0 0 16px rgba(239, 68, 68, 0.45)';
     }
 
     const alias = document.getElementById('operativeAlias');
-    if (alias) alias.textContent = 'UNIDENTIFIED SUBJECT';
+    if (alias) alias.textContent = 'UNKNOWN / UNREGISTERED';
 
     const roleBadge = document.getElementById('operativeRoleBadge');
     if (roleBadge) {
-        roleBadge.textContent = '[UNREGISTERED]';
+        roleBadge.textContent = '[UNKNOWN]';
         roleBadge.className = 'hero-role-badge badge-sidekick';
+        roleBadge.style.background = '#ef4444';
+        roleBadge.style.color = '#ffffff';
     }
 
     const tierBadge = document.getElementById('operativeTierBadge');
-    if (tierBadge) tierBadge.textContent = 'THREAT UNKNOWN';
+    if (tierBadge) tierBadge.textContent = 'THREAT: UNKNOWN';
 
     const realName = document.getElementById('operativeRealName');
-    if (realName) realName.textContent = 'Unknown (No Record)';
+    if (realName) {
+        realName.textContent = 'Civilian Legal Name: UNKNOWN (No Federal Record)';
+        realName.style.color = 'var(--text-main)';
+    }
 
     const regId = document.getElementById('operativeRegId');
-    if (regId) regId.textContent = identifier || 'N/A';
+    if (regId) regId.textContent = identifier || 'UNKNOWN_CREDENTIAL';
 
     const powers = document.getElementById('operativePowersText');
-    if (powers) powers.textContent = 'Powers: Unclassified / Potential Hazard';
+    if (powers) powers.textContent = 'Powers: UNKNOWN / UNREGISTERED ANOMALY';
 
     const statusPill = document.getElementById('operativeStatusPill');
     if (statusPill) {
-        statusPill.textContent = '[DETAIN FOR INTAKE]';
-        statusPill.style.color = '#f59e0b';
+        statusPill.textContent = '[UNKNOWN / DETAIN]';
+        statusPill.style.color = '#ef4444';
     }
 
     const hudSector = document.getElementById('hudAuthorizedSector');
-    if (hudSector) hudSector.textContent = 'UNAUTHORIZED';
+    if (hudSector) {
+        hudSector.textContent = 'UNAUTHORIZED BOUNDS';
+        hudSector.style.color = '#ef4444';
+    }
 
     const hudCurfew = document.getElementById('hudCurfewStatus');
     if (hudCurfew) {
-        hudCurfew.textContent = 'CURFEW VIOLATION';
+        hudCurfew.textContent = 'CURFEW VIOLATION (DETAIN)';
         hudCurfew.style.color = '#ef4444';
     }
 
     const hudBond = document.getElementById('hudBondValue');
     if (hudBond) {
-        hudBond.textContent = 'NO BOND ($0)';
+        hudBond.textContent = 'NO BOND ($0 ESCROW)';
         hudBond.style.color = '#ef4444';
     }
 
     const hudPin = document.getElementById('hudPinVerification');
     const hudPinSub = document.getElementById('hudPinSubtext');
     if (hudPin && hudPinSub) {
-        hudPin.textContent = '[AUTHENTICATION FAILED]';
+        hudPin.textContent = '[UNKNOWN / VERIFICATION FAILED]';
         hudPin.style.color = '#ef4444';
         hudPinSub.textContent = errorMsg || 'No matching federal record';
     }
@@ -604,15 +645,46 @@ function initCameraScanner() {
     async function startCamera() {
         try {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                showToast('Camera hardware access is not supported in this browser.', 'error');
+                showToast('Camera hardware access is not supported in this browser. Please use Firefox or an updated browser.', 'error');
                 return;
             }
-            sentinelState.cameraStream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }
-            });
-            video.srcObject = sentinelState.cameraStream;
+
+            let stream = null;
+            try {
+                // Tier 1: Try flexible constraints with ideal rear/environment camera
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: { ideal: 'environment' },
+                        width: { ideal: 1280, max: 1920 },
+                        height: { ideal: 720, max: 1080 }
+                    },
+                    audio: false
+                });
+            } catch (firstErr) {
+                // Tier 2: Universal fallback constraint (works seamlessly across all desktop webcams in Firefox)
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                });
+            }
+
+            sentinelState.cameraStream = stream;
+            video.muted = true;
+            video.playsInline = true;
+            video.autoplay = true;
+            video.srcObject = stream;
             video.style.display = 'block';
-            await video.play();
+
+            // Ensure video starts playing reliably in Firefox
+            await new Promise((resolve) => {
+                video.onloadedmetadata = () => {
+                    video.play().then(resolve).catch(resolve);
+                };
+                setTimeout(() => {
+                    video.play().then(resolve).catch(resolve);
+                }, 250);
+            });
+
             sentinelState.cameraActive = true;
             btnCam.textContent = '[STOP WEBCAM]';
             btnCam.style.borderColor = 'var(--status-green)';
@@ -625,7 +697,14 @@ function initCameraScanner() {
             showToast('Webcam active — point lens at hero QR badge or ID card', 'success');
             startFrameScanner();
         } catch (err) {
-            showToast(`Camera permission error: ${err.message}`, 'error');
+            console.error('Camera initialization error:', err);
+            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                showToast('Camera access denied. In Firefox, click the camera icon in the address bar to permit access.', 'error');
+            } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+                showToast('No camera hardware detected. You can use [SCAN IMAGE FILE] or drag & drop badge images!', 'error');
+            } else {
+                showToast(`Camera initialization error: ${err.message}`, 'error');
+            }
         }
     }
 
@@ -684,7 +763,7 @@ function initCameraScanner() {
                 if (now > scanCooldown && video.readyState >= (video.HAVE_CURRENT_DATA || 2) && video.videoWidth > 0) {
                     let detectedPayload = null;
 
-                    // 1. Primary Optical Scanner: pure-JS ISO QR decoder (100% universal in all browsers)
+                    // 1. Primary Optical Scanner: pure-JS ISO QR decoder (100% universal across Firefox & all browsers)
                     if (typeof jsQR === 'function') {
                         try {
                             let w = video.videoWidth;
@@ -714,7 +793,7 @@ function initCameraScanner() {
                         }
                     }
 
-                    // 2. Hardware BarcodeDetector API fallback
+                    // 2. Hardware BarcodeDetector API fallback (where supported)
                     if (!detectedPayload && hasBarcodeDetector && barcodeDetector) {
                         try {
                             const barcodes = await barcodeDetector.detect(video);
@@ -725,9 +804,9 @@ function initCameraScanner() {
                     }
 
                     // On successful optical detection
-                    if (detectedPayload && detectedPayload !== sentinelState.lastAutoScannedPayload) {
+                    if (detectedPayload && (detectedPayload !== sentinelState.lastAutoScannedPayload || now > scanCooldown)) {
                         sentinelState.lastAutoScannedPayload = detectedPayload;
-                        scanCooldown = now + 2500;
+                        scanCooldown = now + 3500;
                         if (scanInput) scanInput.value = detectedPayload;
                         playAudioCue('beep');
                         showToast(`[OPTICAL SENSOR] QR Code captured from camera feed!`, 'success');
@@ -769,15 +848,28 @@ function initFileScanner() {
             img.onload = async () => {
                 let detected = null;
 
-                // 1. Pure-JS optical QR decoding with multi-scale sampling
+                // 1. Pure-JS optical QR decoding with multi-scale & multi-region sampling
                 if (typeof jsQR === 'function') {
                     try {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-                        // Pass 1: Scaled canvas (up to 1200px max dimension for speed and crispness)
                         let w = img.naturalWidth || img.width;
                         let h = img.naturalHeight || img.height;
+
+                        function tryDecodeRegion(sourceImg, sx, sy, sw, sh) {
+                            if (sw <= 0 || sh <= 0) return null;
+                            const regCanvas = document.createElement('canvas');
+                            regCanvas.width = sw;
+                            regCanvas.height = sh;
+                            const rCtx = regCanvas.getContext('2d', { willReadFrequently: true });
+                            rCtx.drawImage(sourceImg, sx, sy, sw, sh, 0, 0, sw, sh);
+                            const imgData = rCtx.getImageData(0, 0, sw, sh);
+                            const res = jsQR(imgData.data, sw, sh, { inversionAttempts: 'attemptBoth' });
+                            return (res && res.data && res.data.trim()) ? res.data.trim() : null;
+                        }
+
+                        // Pass 1: Scaled canvas (up to 1200px max dimension for speed and crispness)
                         const maxDim = 1200;
                         let targetW = w;
                         let targetH = h;
@@ -808,6 +900,25 @@ function initFileScanner() {
                             if (qr && qr.data && qr.data.trim().length > 0) {
                                 detected = qr.data.trim();
                             }
+                        }
+
+                        // Pass 3: Bottom-right quadrant crop (where GHRMS Hero ID Card places QR)
+                        if (!detected) {
+                            const cropX = Math.floor(w * 0.60);
+                            const cropY = Math.floor(h * 0.35);
+                            detected = tryDecodeRegion(img, cropX, cropY, w - cropX, h - cropY);
+                        }
+
+                        // Pass 4: Right half of card
+                        if (!detected) {
+                            const cropX = Math.floor(w * 0.50);
+                            detected = tryDecodeRegion(img, cropX, 0, w - cropX, h);
+                        }
+
+                        // Pass 5: Bottom half of card
+                        if (!detected) {
+                            const cropY = Math.floor(h * 0.40);
+                            detected = tryDecodeRegion(img, 0, cropY, w, h - cropY);
                         }
                     } catch (err) {
                         console.error('jsQR file processing exception:', err);
@@ -840,6 +951,7 @@ function initFileScanner() {
                 else if (fname.includes('solaris')) matched = 'hero_solaris_a833dd';
                 else if (fname.includes('lumina')) matched = 'hero_lumina_02';
                 else if (fname.includes('aero')) matched = 'hero_aeroscout_07';
+                else if (fname.includes('vortex')) matched = 'hero_vortex_bd2150';
 
                 if (matched) {
                     const payload = `GHRMS://HERO/${matched}`;
@@ -847,9 +959,18 @@ function initFileScanner() {
                     playAudioCue('beep');
                     showToast(`[IDENTIFIED] Hero identified from badge profile metadata!`, 'success');
                     executeScan(payload);
-                } else {
-                    showToast(`No optical QR code found in "${file.name}". Please ensure image contains a clear QR code.`, 'error');
+                    return;
                 }
+
+                // 4. Optical Signature Unrecognized -> Flag as UNKNOWN and wipe previous hero scan
+                sentinelState.currentScan = null;
+                sentinelState.lastAutoScannedPayload = null;
+                if (scanInput) scanInput.value = '';
+
+                renderViewfinderBreachHUD('UNKNOWN_CREDENTIAL', `Optical signature unreadable or contains no valid Accord QR in "${file.name}".`);
+                renderBreach('UNKNOWN / UNREADABLE', `File "${file.name}" contains no recognized Accord QR code. Optical signature flagged as UNKNOWN.`);
+                playAudioCue('alarm');
+                showToast(`[FLAGGED UNKNOWN] No valid QR code detected in "${file.name}". Flagged as UNKNOWN / SECURITY BREACH.`, 'error');
             };
             img.src = e.target.result;
         };
@@ -918,6 +1039,17 @@ function initAutoDetection() {
 // -------------------------------------------------------------
 // Load Recent Scan History from Backend
 // -------------------------------------------------------------
+window.selectHistoryIndex = function(index) {
+    const item = sentinelState.history && sentinelState.history[index];
+    if (!item) return;
+    const details = item.details || {};
+    const payload = details.qr_input || (details.hero_id ? `GHRMS://HERO/${details.hero_id}` : (item.target_id ? `GHRMS://HERO/${item.target_id}` : ''));
+    if (!payload) return;
+    const scanInput = document.getElementById('sentinelScanInput');
+    if (scanInput) scanInput.value = payload;
+    executeScan(payload, '', true);
+};
+
 async function loadHistory() {
     const list = document.getElementById('sentinelHistoryList');
     if (!list) return;
@@ -926,7 +1058,7 @@ async function loadHistory() {
         const res = await apiGet('sentinel/history');
         if (res.success && Array.isArray(res.data) && res.data.length > 0) {
             sentinelState.history = res.data;
-            list.innerHTML = res.data.map(item => {
+            list.innerHTML = res.data.map((item, index) => {
                 const details = item.details || {};
                 const isRogue = details.is_rogue || item.action === 'SENTINEL_ROGUE_INTERCEPTED';
                 const isBreach = item.action === 'SENTINEL_UNREGISTERED_INTRUDER' || item.action === 'SENTINEL_SCAN_BREACH';
@@ -934,14 +1066,15 @@ async function loadHistory() {
                 const statusColor = isRogue ? '#ef4444' : isBreach ? '#f59e0b' : '#10b981';
 
                 return `
-                    <div class="sentinel-history-item" style="cursor: pointer;" onclick="document.getElementById('sentinelScanInput').value='${details.qr_input || details.hero_id || ''}'; executeScan('${details.qr_input || details.hero_id || ''}', '', true);">
+                    <div class="sentinel-history-item" style="cursor: pointer;" onclick="selectHistoryIndex(${index})">
                         <div>
                             <div style="font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
                                 <span style="color: ${statusColor}; font-family: var(--font-mono); font-size: 0.7rem;">${statusLabel}</span>
-                                <span>${details.alias || details.hero_id || item.user || 'Unknown Subject'}</span>
+                                <span>${escapeHtml(details.alias || details.hero_id || item.user || 'Unknown Subject')}</span>
                             </div>
-                            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">
-                                ${item.timestamp ? new Date(item.timestamp).toLocaleTimeString() : 'Recent'} · ${details.location || 'Sector 01'}
+                            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 6px;">
+                                <span>${item.timestamp ? new Date(item.timestamp).toLocaleTimeString() : 'Recent'}</span>
+                                <span style="background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 3px;">${escapeHtml(details.location || 'Sector 01')}</span>
                             </div>
                         </div>
                         <div style="text-align: right; font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-subtle);">
@@ -1219,8 +1352,9 @@ async function loadIncidentReports() {
                                 <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-main); font-weight: 700;">[${inc.id}]</span>
                                 <h4 style="margin: 0; font-size: 0.92rem; font-weight: 800; color: var(--text-main);">${inc.title || 'Battle Damage Incident'}</h4>
                             </div>
-                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
-                                Location: <strong style="color: var(--text-main);">${inc.region || 'Sector 01'}</strong> · Coord: <span style="font-family: var(--font-mono);">${inc.coordinates ? `${inc.coordinates.lat}, ${inc.coordinates.lng}` : 'N/A'}</span>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <span>Location: <strong style="color: var(--text-main);">${inc.region || 'Sector 01'}</strong></span>
+                                <span>Coord: <span style="font-family: var(--font-mono);">${inc.coordinates ? `${inc.coordinates.lat}, ${inc.coordinates.lng}` : 'N/A'}</span></span>
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 6px;">

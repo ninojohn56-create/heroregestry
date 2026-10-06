@@ -260,7 +260,7 @@
           <form id="loginForm" autocomplete="off">
             <div class="form-group">
               <label for="usernameInput">Callsign / Identity Handle</label>
-              <input type="text" id="usernameInput" class="form-input" placeholder="e.g. apex, sarah.chen, admin, admin2, commander" required autofocus>
+              <input type="text" id="usernameInput" class="form-input" required autofocus>
             </div>
 
             <div class="form-group">
@@ -382,8 +382,8 @@
               target = '/registrar';
             }
           } else {
-            // HERO role can only access /hero or / (registry directory is restricted to staff)
-            if (safeRedirect && (safeRedirect.startsWith('/hero') || safeRedirect === '/')) {
+            // HERO role can only access /hero (registry directory is restricted to staff)
+            if (safeRedirect && safeRedirect.startsWith('/hero')) {
               target = safeRedirect;
             } else {
               target = '/hero';

@@ -1,0 +1,42 @@
+version: '3.8'
+
+# =====================================================================
+# Global Hero Registration Authority Management System (GHRMS)
+# Docker Compose Orchestration Specification
+# =====================================================================
+
+services:
+  ghrms-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghrms/app:latest
+    container_name: ghrms-app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+      - APP_DEBUG=${APP_DEBUG:-false}
+      - APP_URL=${APP_URL:-http://localhost:8000}
+      - PORT=8000
+      - HRS_MASTER_KEY=${HRS_MASTER_KEY:-HRS_SECRET_VAULT_KEY_2026_HERO_SYSTEM}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY:-a07403199b0364245c63171a8554f52f}
+    volumes:
+      # Persistent datastores (heroes, users, vault, audit ledger, settings)
+      - ./backend/data:/var/www/html/backend/data
+      # Persistent uploaded files (biometrics, avatars, identity documents)
+      - ./public/uploads:/var/www/html/public/uploads
+    healthcheck:
+      test: ["CMD", "php", "check_system.php", "--json"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

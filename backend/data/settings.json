@@ -1,7 +1,7 @@
 {
     "system_alert_level": "ELEVATED - OMEGA-3",
     "rogue_broadcast_active": false,
-    "rogue_broadcast_message": "EMERGENCY ROGUE DIRECTIVE: All field heroes report to sector coordination.",
+    "rogue_broadcast_message": "ATTENTION ALL OPERATIVES: Sector 4 Containment Active. Standby for Registry directives.",
     "containment_zones": [
         {
             "id": "zone_cst_alpha",

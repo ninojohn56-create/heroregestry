@@ -39,6 +39,11 @@ class JsonStorage {
             mkdir($dir, 0755, true);
         }
 
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            return false;
+        }
+
         $fp = fopen($filePath, 'c+b');
         if (!$fp) {
             return false;
@@ -49,15 +54,49 @@ class JsonStorage {
             return false;
         }
 
-        ftruncate($fp, 0);
         rewind($fp);
-        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $written = fwrite($fp, $json);
+        if ($written !== false) {
+            ftruncate($fp, strlen($json));
+        }
         fflush($fp);
         flock($fp, LOCK_UN);
         fclose($fp);
 
         return $written !== false;
+    }
+
+    /**
+     * Crash-safe atomic write using temporary file swap
+     */
+    public static function writeSafe(string $filePath, $data): bool {
+        $dir = dirname($filePath);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            return false;
+        }
+
+        $tmpFile = tempnam($dir, 'tmp_ghrms_');
+        if ($tmpFile === false) {
+            return self::write($filePath, $data);
+        }
+
+        if (file_put_contents($tmpFile, $json, LOCK_EX) === false) {
+            @unlink($tmpFile);
+            return false;
+        }
+
+        // On Windows rename will fail if target exists and is open, so try rename with fallback
+        if (!@rename($tmpFile, $filePath)) {
+            $copied = copy($tmpFile, $filePath);
+            @unlink($tmpFile);
+            return $copied;
+        }
+        return true;
     }
 
     /**
@@ -87,11 +126,13 @@ class JsonStorage {
 
         $result = $modifier($data);
 
-        ftruncate($fp, 0);
-        rewind($fp);
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        fwrite($fp, $json);
-        fflush($fp);
+        if ($json !== false) {
+            rewind($fp);
+            fwrite($fp, $json);
+            ftruncate($fp, strlen($json));
+            fflush($fp);
+        }
         flock($fp, LOCK_UN);
         fclose($fp);
 

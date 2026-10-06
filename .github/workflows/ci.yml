@@ -1,0 +1,50 @@
+name: GHRA Continuous Integration & Hardening Verification
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  quality-and-security:
+    name: Code Quality, Lint & System Preflight
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: openssl, mbstring, curl, fileinfo, session, gd, zip
+          coverage: none
+
+      - name: PHP Syntax Linting
+        run: |
+          echo "Linting all project PHP files..."
+          find . -name "*.php" -not -path "./vendor/*" -exec php -l {} +
+
+      - name: System Preflight Diagnostics
+        run: |
+          php check_system.php
+
+      - name: Datastore Backup & Integrity Test
+        run: |
+          php backend/backup.php create
+          php backend/backup.php list
+          BACKUP_FILE=$(find backend/data/backups -name "*.zip" | head -n 1)
+          php backend/backup.php verify "$BACKUP_FILE"
+
+      - name: Start Built-in Application Server
+        run: |
+          php -S 127.0.0.1:8000 router.php > server.log 2>&1 &
+          sleep 2
+          curl -s http://127.0.0.1:8000/api/health
+
+      - name: Execute Automated Regression & Security Test Suite
+        env:
+          TEST_BASE_URL: http://127.0.0.1:8000
+        run: |
+          php tests/test_suite.php

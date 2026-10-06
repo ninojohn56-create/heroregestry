@@ -1,0 +1,255 @@
+================================================================================
+GLOBAL HERO REGISTRATION & MANAGEMENT SYSTEM (GHRMS)
+SYSTEM SECURITY SPECIFICATION & THREAT AUDIT REPORT
+================================================================================
+
+FOCUS: RATE LIMITING, VULNERABILITY ASSESSMENT, EXPLOIT ANALYSIS, AND RESILIENCE
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SECURITY AUDIT & DIRECT ANSWERS
+--------------------------------------------------------------------------------
+
+QUESTION 1: DO WE HAVE A RATE LIMITER?
+ANSWER: NO.
+There is currently ZERO rate limiting anywhere in the application.
+- No limits on login attempts (/api/auth/login).
+- No limits on new hero registrations (/api/heroes/register).
+- No limits on file or avatar uploads (/api/upload-avatar).
+- No limits on API queries or administrative actions.
+An attacker or bot can hammer endpoints with thousands of requests per second
+without being throttled or blocked.
+
+QUESTION 2: CAN SOMEONE EXPLOIT OR BREAK THE WEBSITE OR SYSTEM?
+ANSWER: YES.
+Several concrete vulnerabilities exist in the current codebase that allow an
+attacker to:
+1. Crash the entire website by exhausting disk storage (Denial of Service).
+2. Brute-force and hijack administrative accounts (e.g. "commander").
+3. Inject malicious scripts into the hero directory (Stored XSS).
+4. Corrupt or wipe database files to 0 bytes during concurrent crashes.
+5. Access secret civilian identities without generating an audit record.
+
+
+--------------------------------------------------------------------------------
+2. SECURITY SCORECARD (CURRENT STATUS)
+--------------------------------------------------------------------------------
+
+[CRITICAL RISK] API & Login Rate Limiting: MISSING
+- Impact: Unlimited requests allowed per second on login, registration, and upload.
+
+[CRITICAL RISK] Unauthenticated Avatar Uploads: MISSING
+- Impact: /api/upload-avatar is public; anyone can upload 8MB files in a loop
+  until disk storage hits 100%, crashing the server and database.
+
+[HIGH RISK] Frontend HTML Output Escaping: PARTIAL / FLAWED
+- Impact: Stored Cross-Site Scripting (XSS) in registry.html and registrar.js;
+  hero names and powers are rendered with unescaped innerHTML.
+
+[HIGH RISK] Crash-Safe Atomic File Writes: FLAWED
+- Impact: storage.php calls ftruncate($fp, 0) before writing JSON; an unexpected
+  crash or disk-full error mid-write permanently wipes database files to 0 bytes.
+
+[MEDIUM RISK] Cross-Site Request Forgery (CSRF): PARTIAL
+- Impact: Relies solely on SameSite=Lax cookies; no anti-CSRF tokens on mutating
+  POST/PUT/DELETE API endpoints.
+
+[MEDIUM RISK] Privilege Separation on Vault View: FLAWED
+- Impact: GET /api/heroes/{id} automatically decrypts civilian vault for Assessors
+  (Clearance Level 2) and bypasses the audit log.
+
+[SECURE] Civilian Identity Encryption: STRONG
+- AES-256-CBC encryption with unique 16-byte initialization vectors and isolated
+  storage in vault.json.
+
+[SECURE] Password Hashing: STRONG
+- Industry-standard Bcrypt hashing with cost factor 12 (password_hash).
+
+[SECURE] Cryptographic Audit Ledger: STRONG
+- SHA-256 chained ledger ensures administrative logs cannot be altered retroactively.
+
+[SECURE] Role-Based Access Control (RBAC): STRONG
+- Enforced across router.php and backend API endpoints with clearance levels (1 to 5).
+
+
+--------------------------------------------------------------------------------
+3. TOP EXPLOIT VECTORS (HOW AN ATTACKER CAN BREAK THE SYSTEM)
+--------------------------------------------------------------------------------
+
+EXPLOIT 1: SERVER CRASH VIA UNAUTHENTICATED AVATAR FLOODING (DENIAL OF SERVICE)
+- Endpoint: POST /api/upload-avatar (backend/api.php, line 1303)
+- Flaw: The avatar upload endpoint requires NO authentication (no login check)
+  and accepts files up to 8MB.
+- Attack Method:
+  An attacker runs a simple 1-line script uploading 8MB files in an endless loop:
+  while true; do
+    curl -X POST http://target/api/upload-avatar -F "file=@8mb_dummy.jpg"
+  done
+- Result:
+  Within minutes, /public/uploads/avatars/ consumes all available disk space.
+  When disk space hits 100%, JsonStorage::write() cannot write heroes.json or
+  users.json. The entire server crashes, and all user sessions fail.
+
+EXPLOIT 2: LOGIN BRUTE-FORCING & ACCOUNT HIJACKING
+- Endpoint: POST /api/auth/login (backend/auth.php, line 181)
+- Flaw: Zero rate limiting, zero lockout after failed attempts, and no CAPTCHA.
+- Attack Method:
+  An attacker runs automated password-guessing tools (like Hydra or Burp Suite)
+  against high-clearance accounts like "commander" (Level 5 Super Admin) or
+  "sarah.chen" (Level 3 Registrar).
+- Result:
+  Once the attacker guesses a password, they obtain Level 5 clearance, allowing
+  them to decrypt all civilian safehouses, delete hero accounts, or reassign
+  threat ratings.
+
+EXPLOIT 3: STORED CROSS-SITE SCRIPTING (XSS) IN HERO DIRECTORY
+- Locations: public/registry.html (line 753) and public/js/registrar.js (line 265)
+- Flaw: When heroes register, their alias and powers are saved to heroes.json.
+  When staff view the directory, JavaScript injects those fields directly into
+  .innerHTML without HTML entity escaping.
+- Attack Method:
+  An attacker registers with an alias like:
+  <img src=x onerror="fetch('/api/admin/users').then(...)">
+- Result:
+  When Registrar Sarah Chen or Commander Vance opens /registry or /registrar, the
+  script executes in their browser, allowing the attacker to steal admin cookies
+  or secretly approve rogue operatives.
+
+EXPLOIT 4: 0-BYTE DATABASE CORRUPTION UNDER CRASH
+- Location: backend/storage.php (lines 52 and 90)
+- Flaw: JsonStorage::transaction and JsonStorage::write call:
+  ftruncate($fp, 0); // 1. Empties the file to 0 bytes
+  rewind($fp);
+  fwrite($fp, $json); // 2. Writes the new JSON
+- Result:
+  If the server suffers a power failure, out-of-memory kill, or disk-full error
+  between step 1 and step 2, the file is permanently left with 0 bytes.
+  All hero registrations and user credentials in that file are wiped.
+
+
+--------------------------------------------------------------------------------
+4. RECOMMENDED 5-STEP SECURITY HARDENING SOLUTIONS
+--------------------------------------------------------------------------------
+
+SOLUTION 1: DROP-IN FILE-BASED RATE LIMITER (backend/rate_limiter.php)
+Implement an ultra-fast sliding window rate limiter that requires no external
+dependencies:
+
+```php
+<?php
+declare(strict_types=1);
+
+class RateLimiter {
+    private static string $storageDir = DATA_DIR . '/ratelimit';
+
+    public static function check(string $action, int $maxAttempts = 60, int $windowSeconds = 60): void {
+        if (!is_dir(self::$storageDir)) {
+            @mkdir(self::$storageDir, 0700, true);
+        }
+
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '_', $action . '_' . $ip);
+        $filePath = self::$storageDir . '/' . hash('sha256', $key) . '.json';
+
+        $now = time();
+        $attempts = [];
+        if (file_exists($filePath)) {
+            $raw = @file_get_contents($filePath);
+            $data = $raw ? json_decode($raw, true) : null;
+            if (is_array($data)) {
+                $attempts = array_filter($data, fn($ts) => ($now - $ts) < $windowSeconds);
+            }
+        }
+
+        if (count($attempts) >= $maxAttempts) {
+            $retryAfter = $windowSeconds - ($now - min($attempts));
+            http_response_code(429);
+            header('Content-Type: application/json; charset=UTF-8');
+            header("Retry-After: {$retryAfter}");
+            echo json_encode([
+                'success' => false,
+                'error' => "TOO MANY REQUESTS: Rate limit exceeded for '{$action}'. Retry in {$retryAfter}s.",
+                'code' => 'RATE_LIMIT_EXCEEDED'
+            ]);
+            exit;
+        }
+
+        $attempts[] = $now;
+        @file_put_contents($filePath, json_encode(array_values($attempts)), LOCK_EX);
+    }
+}
+```
+
+APPLY RULES:
+- On Login:       RateLimiter::check('auth_login', maxAttempts: 5, windowSeconds: 60);
+- On Avatar:      RateLimiter::check('avatar_upload', maxAttempts: 5, windowSeconds: 300);
+- On Register:    RateLimiter::check('hero_register', maxAttempts: 3, windowSeconds: 600);
+- Globally:       RateLimiter::check('global_api', maxAttempts: 120, windowSeconds: 60);
+
+
+SOLUTION 2: CRASH-SAFE ATOMIC FILE STORAGE (backend/storage.php)
+Replace in-place ftruncate with an atomic temp-file swap so database files can
+never be emptied:
+
+```php
+public static function writeSafe(string $filePath, $data): bool {
+    $dir = dirname($filePath);
+    if (!is_dir($dir)) mkdir($dir, 0755, true);
+
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    $tmpFile = tempnam($dir, 'tmp_ghrms_');
+    if ($tmpFile === false) return false;
+
+    if (file_put_contents($tmpFile, $json, LOCK_EX) === false) {
+        @unlink($tmpFile);
+        return false;
+    }
+    return rename($tmpFile, $filePath);
+}
+```
+
+
+SOLUTION 3: ENFORCE HTML OUTPUT ENCODING (STOP XSS)
+In public/registry.html and public/js/registrar.js, escape all user variables:
+
+```javascript
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+```
+Replace:
+  ${h.alias}  -->  ${escapeHtml(h.alias)}
+  ${h.primary_power}  -->  ${escapeHtml(h.primary_power)}
+
+
+SOLUTION 4: RESTRICT AVATAR UPLOAD ACCESS
+In backend/api.php line 1303:
+- Require an active user session before accepting avatar files.
+- Automatically delete the user's previous avatar file when a new one is uploaded.
+
+
+SOLUTION 5: ADD SECURITY HEADERS (router.php)
+Inject foundational defenses at the top of router.php:
+- X-Frame-Options: SAMEORIGIN (prevents clickjacking)
+- X-Content-Type-Options: nosniff (stops MIME confusion attacks)
+- Referrer-Policy: strict-origin-when-cross-origin
+
+
+--------------------------------------------------------------------------------
+5. ACTION PLAN BY PRIORITY
+--------------------------------------------------------------------------------
+PRIORITY 1: Deploy RateLimiter on login (5/min) and avatar upload (5/5min).
+PRIORITY 1: Require session authentication on /api/upload-avatar.
+PRIORITY 2: Apply escapeHtml() across registry.html and registrar.js to stop XSS.
+PRIORITY 2: Replace ftruncate with atomic tempnam + rename in storage.php.
+PRIORITY 3: Block Assessors from auto-decrypting vault in GET /api/heroes/{id}.
+PRIORITY 3: Add X-Frame-Options and nosniff headers in router.php.
+
+================================================================================
+END OF SECURITY SPECIFICATION
+================================================================================

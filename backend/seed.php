@@ -48,6 +48,7 @@ $seedHeroesData = [
             ['name' => 'Dr. Karen Wright', 'relation' => 'Spouse', 'phone' => '+1 (555) 012-9844']
         ]
     ],
+    
     [
         'id' => 'hero_lumina_02',
         'alias' => 'LUMINA',
@@ -418,6 +419,7 @@ function seedGHRMSData(): array {
         mkdir(DATA_DIR, 0755, true);
     }
 
+    $existingHeroes = JsonStorage::read(FILE_HEROES, []);
     $heroes = [];
     foreach ($seedHeroesData as $s) {
         $vaultRes = CryptoService::encryptVault($s['real_bio']);
@@ -425,6 +427,9 @@ function seedGHRMSData(): array {
         $heroRecord['real_name'] = $s['real_bio']['real_name'] ?? $s['alias'];
         unset($heroRecord['real_bio']);
         $heroRecord['vault_id'] = $vaultRes['vault_id'];
+        if (!empty($existingHeroes[$s['id']]['supporting_documents'])) {
+            $heroRecord['supporting_documents'] = $existingHeroes[$s['id']]['supporting_documents'];
+        }
         $heroes[$s['id']] = $heroRecord;
     }
 
@@ -522,6 +527,12 @@ function seedGHRMSData(): array {
     require_once __DIR__ . '/auth.php';
     AuthService::seedUsers();
     AuthService::syncHeroUsers();
+
+    // Ensure all heroes have rich supporting documents (PNG ID, PNG Diploma, PDF Dossier)
+    require_once __DIR__ . '/generate_all_documents.php';
+
+    // Upgrade all vault records to authenticated Encrypt-then-MAC
+    CryptoService::migrateVaultHmac();
 
     return [
         'heroes' => count($heroes),

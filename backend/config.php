@@ -61,6 +61,8 @@ define('THREAT_TIERS', [
 // Document storage directory
 define('DIR_DOCUMENTS', DATA_DIR . '/documents');
 
+require_once __DIR__ . '/workflow.php';
+
 // Hero Registration Workflow Statuses
 define('REGISTRATION_STATUSES', [
     'Draft',
@@ -69,7 +71,10 @@ define('REGISTRATION_STATUSES', [
     'Returned for Correction',
     'Verified',
     'Approved',
-    'Rejected'
+    'Licensed',
+    'Suspended',
+    'Rejected',
+    'Revoked'
 ]);
 
 // Document Types

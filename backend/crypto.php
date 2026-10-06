@@ -6,10 +6,17 @@ require_once __DIR__ . '/storage.php';
 
 class CryptoService {
     /**
-     * Encrypt identity bio-data into an isolated vault record
+     * Derive isolated cryptographic HMAC authentication key from master key
+     */
+    private static function getMacKey(): string {
+        return hash_hmac('sha256', 'GHRA_VAULT_HMAC_AUTHENTICATION_KEY', AES_KEY, true);
+    }
+
+    /**
+     * Encrypt identity bio-data into an isolated vault record using Encrypt-then-MAC
      */
     public static function encryptVault(array $bioData): array {
-        $iv = openssl_random_pseudo_bytes(16);
+        $iv = random_bytes(16);
         $payload = json_encode($bioData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $ciphertext = openssl_encrypt($payload, AES_CIPHER, AES_KEY, OPENSSL_RAW_DATA, $iv);
 
@@ -17,11 +24,14 @@ class CryptoService {
             throw new RuntimeException("Vault encryption failed.");
         }
 
+        $mac = hash_hmac('sha256', $iv . $ciphertext, self::getMacKey());
         $vaultId = 'vlt_' . bin2hex(random_bytes(8));
         $record = [
             'vault_id' => $vaultId,
             'ciphertext' => base64_encode($ciphertext),
             'iv' => base64_encode($iv),
+            'mac' => $mac,
+            'algo' => 'AES-256-CBC+HMAC-SHA256',
             'created_at' => date('c'),
             'updated_at' => date('c')
         ];
@@ -40,10 +50,10 @@ class CryptoService {
     }
 
     /**
-     * Update/re-encrypt existing vault record
+     * Update/re-encrypt existing vault record with Encrypt-then-MAC
      */
     public static function updateVault(string $vaultId, array $bioData): bool {
-        $iv = openssl_random_pseudo_bytes(16);
+        $iv = random_bytes(16);
         $payload = json_encode($bioData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $ciphertext = openssl_encrypt($payload, AES_CIPHER, AES_KEY, OPENSSL_RAW_DATA, $iv);
 
@@ -51,8 +61,10 @@ class CryptoService {
             throw new RuntimeException("Vault re-encryption failed.");
         }
 
+        $mac = hash_hmac('sha256', $iv . $ciphertext, self::getMacKey());
         $now = date('c');
-        return JsonStorage::transaction(FILE_VAULT, function (&$vault) use ($vaultId, $ciphertext, $iv, $now) {
+
+        return JsonStorage::transaction(FILE_VAULT, function (&$vault) use ($vaultId, $ciphertext, $iv, $mac, $now) {
             if (!is_array($vault)) {
                 $vault = [];
             }
@@ -61,6 +73,8 @@ class CryptoService {
                 'vault_id' => $vaultId,
                 'ciphertext' => base64_encode($ciphertext),
                 'iv' => base64_encode($iv),
+                'mac' => $mac,
+                'algo' => 'AES-256-CBC+HMAC-SHA256',
                 'created_at' => $createdAt,
                 'updated_at' => $now
             ];
@@ -68,6 +82,9 @@ class CryptoService {
         }, false);
     }
 
+    /**
+     * Decrypt and verify integrity of vault record
+     */
     public static function decryptVault(string $vaultId): ?array {
         $vault = JsonStorage::read(FILE_VAULT, []);
         if (!isset($vault[$vaultId])) {
@@ -78,12 +95,45 @@ class CryptoService {
         $ciphertext = base64_decode($record['ciphertext']);
         $iv = base64_decode($record['iv']);
 
+        // Authenticated Encryption Verification (Encrypt-then-MAC)
+        if (!empty($record['mac'])) {
+            $expectedMac = hash_hmac('sha256', $iv . $ciphertext, self::getMacKey());
+            if (!hash_equals($expectedMac, (string)$record['mac'])) {
+                self::appendAudit('VAULT_ENGINE', 'SYSTEM', 'VAULT_INTEGRITY_VIOLATION', $vaultId, [
+                    'reason' => 'MAC verification failed: ciphertext or IV tampered'
+                ]);
+                return null;
+            }
+        }
+
         $decrypted = openssl_decrypt($ciphertext, AES_CIPHER, AES_KEY, OPENSSL_RAW_DATA, $iv);
         if ($decrypted === false) {
             return null;
         }
 
         return json_decode($decrypted, true);
+    }
+
+    /**
+     * Migrate all existing legacy unauthenticated vault records to Encrypt-then-MAC
+     */
+    public static function migrateVaultHmac(): int {
+        return (int)JsonStorage::transaction(FILE_VAULT, function (&$vault) {
+            if (!is_array($vault)) return 0;
+            $macKey = self::getMacKey();
+            $migrated = 0;
+            foreach ($vault as $vid => &$rec) {
+                if (empty($rec['mac']) && !empty($rec['ciphertext']) && !empty($rec['iv'])) {
+                    $ciphertext = base64_decode($rec['ciphertext']);
+                    $iv = base64_decode($rec['iv']);
+                    $rec['mac'] = hash_hmac('sha256', $iv . $ciphertext, $macKey);
+                    $rec['algo'] = 'AES-256-CBC+HMAC-SHA256';
+                    $migrated++;
+                }
+            }
+            unset($rec);
+            return $migrated;
+        }, 0);
     }
 
     /**

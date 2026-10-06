@@ -5,14 +5,39 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/storage.php';
 require_once __DIR__ . '/crypto.php';
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/rate_limiter.php';
 
 AuthService::initSession();
 AuthService::seedUsers();
+
+// Enforce baseline global rate limit on all API endpoints
+RateLimiter::check('global_api', 300, 60);
 
 // Set headers for REST JSON API
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+header("Content-Security-Policy: default-src 'none'; frame-ancestors 'none';");
+
+// Cross-Origin Request Validation for State-Changing Methods
+$requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? null;
+if ($requestOrigin && in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE', 'PATCH'], true)) {
+    $originHost = parse_url($requestOrigin, PHP_URL_HOST);
+    $serverHost = !empty($_SERVER['HTTP_HOST']) ? explode(':', $_SERVER['HTTP_HOST'])[0] : 'localhost';
+    $appUrlHost = getenv('APP_URL') ? parse_url(getenv('APP_URL'), PHP_URL_HOST) : null;
+    $allowedHosts = array_filter([$serverHost, 'localhost', '127.0.0.1', $appUrlHost]);
+    if ($originHost && !in_array($originHost, $allowedHosts, true)) {
+        http_response_code(403);
+        echo json_encode([
+            'success' => false,
+            'error' => "CROSS-ORIGIN SECURITY VIOLATION: Untrusted origin '{$requestOrigin}' rejected.",
+            'code' => 'FORBIDDEN_ORIGIN'
+        ]);
+        exit;
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -56,19 +81,49 @@ $parts = explode('/', trim($endpoint, '/'));
 
 try {
     // -------------------------------------------------------------
+    // Health Check & Liveness Probe: /api/health or /api/system/health
+    // -------------------------------------------------------------
+    if ($parts[0] === 'health' || $endpoint === 'health' || ($parts[0] === 'system' && ($parts[1] ?? '') === 'health')) {
+        $dataWritable = is_writable(DATA_DIR);
+        $vaultExists = file_exists(FILE_VAULT);
+        $heroesExists = file_exists(FILE_HEROES);
+        $usersExists = file_exists(FILE_USERS);
+        $auditExists = file_exists(FILE_AUDIT);
+        $allOk = $dataWritable && $vaultExists && $heroesExists && $usersExists;
+
+        jsonResponse([
+            'status' => $allOk ? 'healthy' : 'degraded',
+            'timestamp' => date('c'),
+            'app_env' => APP_ENV,
+            'checks' => [
+                'php_version' => PHP_VERSION,
+                'data_dir_writable' => $dataWritable,
+                'heroes_datastore' => $heroesExists,
+                'vault_datastore' => $vaultExists,
+                'users_datastore' => $usersExists,
+                'audit_ledger' => $auditExists,
+                'crypto_openssl' => extension_loaded('openssl'),
+            ]
+        ], $allOk ? 200 : 503);
+    }
+
+    // -------------------------------------------------------------
     // Auth Routes: /api/auth/login, /api/auth/logout, /api/auth/me
     // -------------------------------------------------------------
     if ($parts[0] === 'auth') {
         $action = $parts[1] ?? '';
         if ($action === 'login' && $method === 'POST') {
+            RateLimiter::check('auth_login', 15, 60);
             $body = getJsonBody();
             $username = trim((string)($body['username'] ?? $body['callsign'] ?? ''));
-            $password = trim((string)($body['password'] ?? ''));
+            $password = trim((string)($body['password'] ?? $body['passkey'] ?? ''));
 
             $user = AuthService::login($username, $password);
             if (!$user) {
                 jsonError("Authentication failed: Invalid callsign or security passkey.", 401);
             }
+
+            RateLimiter::reset('auth_login');
 
             jsonResponse([
                 'success' => true,
@@ -186,7 +241,7 @@ try {
                         'created_at' => $currentHero['updated_at'] ?? date('c'),
                         'unread' => true
                     ];
-                } elseif ($status === 'Licensed') {
+                } elseif ($status === 'Licensed' || $status === 'Approved') {
                     $notifications[] = [
                         'id' => 'hero-status-licensed',
                         'type' => 'success',
@@ -376,19 +431,8 @@ try {
     // Normal heroes can strictly view ONLY their own operative profile.
     // -------------------------------------------------------------
     if ($parts[0] === 'heroes' && isset($parts[1]) && !isset($parts[2]) && $method === 'GET') {
-        $viewer = AuthService::getCurrentUser();
+        $viewer = AuthService::requireAuth();
         $heroId = $parts[1];
-
-        if (!$viewer) {
-            jsonError("AUTHENTICATION REQUIRED: Active security clearance credentials required.", 401);
-        }
-
-        $isStaff = in_array($viewer['role'] ?? '', ['REGISTRAR', 'ASSESSOR', 'ADMIN', 'SUPER_ADMIN'], true);
-        $isOwnerHero = ($viewer['role'] === 'HERO' && ($viewer['hero_id'] ?? '') === $heroId);
-
-        if (!$isStaff && !$isOwnerHero) {
-            jsonError("ACCESS DENIED: Heroes are restricted from browsing, viewing, or querying other operative records.", 403);
-        }
 
         $heroes = JsonStorage::read(FILE_HEROES, []);
         if (!isset($heroes[$heroId])) {
@@ -396,8 +440,17 @@ try {
         }
         $heroData = $heroes[$heroId];
 
-        // Decrypt vault data for authorized staff or operative owner
-        if (!empty($heroData['vault_id'])) {
+        $viewerRole = $viewer['role'] ?? 'HERO';
+        $isStaff = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR', 'ASSESSOR'], true);
+        $isOwnerHero = ($viewerRole === 'HERO' && (($viewer['hero_id'] ?? '') === $heroId || ($heroData['user_id'] ?? '') === ($viewer['username'] ?? '')));
+
+        // RBAC / IDOR defense: Operative accounts can strictly access ONLY their own service record
+        if ($viewerRole === 'HERO' && !$isOwnerHero) {
+            jsonError("ACCESS DENIED: Operative credentials only permit viewing your own designated service record.", 403);
+        }
+
+        // Decrypt vault data strictly for authorized staff or the operative themselves
+        if (!empty($heroData['vault_id']) && ($isStaff || $isOwnerHero)) {
             $vaultData = CryptoService::decryptVault($heroData['vault_id']);
             if ($vaultData) {
                 $heroData['vault_info'] = $vaultData;
@@ -444,6 +497,7 @@ try {
     }
 
     // -------------------------------------------------------------
+    // -------------------------------------------------------------
     // Route: PUT /api/heroes/{id} — Edit all hero record information (REGISTRAR / SUPER_ADMIN)
     // Supports editing public specs, vault civilian identity, and FTF interview status
     // -------------------------------------------------------------
@@ -451,27 +505,21 @@ try {
         $editor = AuthService::requireAuth();
         $heroId = $parts[1];
         $body   = getJsonBody();
+        $isOwnerHero = ($editor['role'] === 'HERO');
 
-        $isStaff = in_array($editor['role'], ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR'], true);
-        $isOwnerHero = ($editor['role'] === 'HERO' && ($editor['hero_id'] ?? '') === $heroId);
-
-        if (!$isStaff && !$isOwnerHero) {
-            jsonError("Access denied: Insufficient permissions to edit this hero registration record.", 403);
+        if ($isOwnerHero) {
+            $userHeroId = $editor['hero_id'] ?? null;
+            if (!$userHeroId || $userHeroId !== $heroId) {
+                jsonError("ACCESS DENIED: Operatives can only edit their own profile.", 403);
+            }
         }
 
-        // If hero editing, ensure status permits editing (Draft or Returned for Correction)
+        // Editable by all authenticated user roles (SUPER_ADMIN, ADMIN, REGISTRAR, HERO)
         $currentHeroes = JsonStorage::read(FILE_HEROES, []);
         if (!isset($currentHeroes[$heroId])) {
             jsonError("Hero {$heroId} not found.", 404);
         }
         $existingRecord = $currentHeroes[$heroId];
-
-        if ($isOwnerHero && !$isStaff) {
-            $allowedEditStatuses = ['Draft', 'Returned for Correction'];
-            if (!in_array($existingRecord['status'], $allowedEditStatuses, true)) {
-                jsonError("Editing is locked. You can only edit your registration when it is in 'Draft' or 'Returned for Correction' status.", 403);
-            }
-        }
 
         // Check vault identity fields to update
         $vaultFields = [
@@ -489,32 +537,67 @@ try {
             }
         }
 
+        // Decrypt existing vault bio for change diff calculation
+        $existingVaultBio = [];
+        if (!empty($existingRecord['vault_id'])) {
+            $existingVaultBio = CryptoService::decryptVault($existingRecord['vault_id']) ?: [];
+        }
+
+        // Compute exact before-and-after diff of changed fields
+        $fieldDiff = [];
+        foreach ($body as $k => $newVal) {
+            if (in_array($k, ['resubmit', 'submit_draft', '_nonce', 'csrf'], true)) continue;
+            $oldVal = null;
+            if (in_array($k, $vaultFields, true) && array_key_exists($k, $existingVaultBio)) {
+                $oldVal = $existingVaultBio[$k];
+            } elseif (array_key_exists($k, $existingRecord)) {
+                $oldVal = $existingRecord[$k];
+            }
+
+            $oldStr = is_array($oldVal) ? json_encode($oldVal) : (string)$oldVal;
+            $newStr = is_array($newVal) ? json_encode($newVal) : (string)$newVal;
+
+            if ($oldStr !== $newStr) {
+                $fieldDiff[$k] = [
+                    'field' => $k,
+                    'old'   => is_scalar($oldVal) ? (string)$oldVal : (is_array($oldVal) ? json_encode($oldVal) : ''),
+                    'new'   => is_scalar($newVal) ? (string)$newVal : (is_array($newVal) ? json_encode($newVal) : '')
+                ];
+            }
+        }
+
         $updatedVault = null;
 
         $updated = JsonStorage::transaction(FILE_HEROES, function (&$heroes) use ($heroId, $body, $hasVaultEdits, $vaultPayload, &$updatedVault, $isOwnerHero) {
             if (!isset($heroes[$heroId])) return false;
             $h = &$heroes[$heroId];
 
-            // Editable public fields across all registration target categories
+            // Editable applicant fields across registration target categories
             $editableFields = [
                 'alias', 'real_name', 'email', 'role_tag', 'hero_classification',
                 'primary_power', 'primary_level', 'primary_pct',
                 'secondary_power', 'secondary_powers', 'secondary_level', 'secondary_pct',
                 'power_description', 'abilities', 'skills', 'strengths', 'limitations_weaknesses', 'weaknesses',
                 'combat_style', 'training_experience',
-                'power_level', 'combat_rating', 'power_control_level', 'assessment_notes',
                 'id_type', 'id_number', 'gov_code',
-                'region', 'gear_manifest', 'badge_color',
-                'threat_tier', 'mentor', 'sidekicks', 'emergency_contacts',
+                'region', 'gear_manifest',
+                'mentor', 'sidekicks', 'emergency_contacts',
                 'emergency_contact_name', 'emergency_contact_number', 'relationship',
-                'contact_number', 'address', 'gender', 'dob',
-                'license_number', 'audit_flag', 'registration_step',
-                'avatar', 'profile_picture'
+                'contact_number', 'address', 'safehouse_address', 'gender', 'dob', 'age',
+                'biometric_dna_ref', 'registration_step',
+                'avatar', 'profile_picture', 'coordinates'
             ];
 
-            // Only staff can directly set status, revocation, or verification fields
+            // Security Boundary: Administrative & Security classification fields can NEVER be modified by operatives
+            $staffOnlyFields = [
+                'threat_tier', 'threat_class', 'threat_tier_label', 'license_number',
+                'assessment_notes', 'combat_rating', 'power_control_level', 'power_level',
+                'badge_color', 'audit_flag', 'status', 'verification_status', 'verified_by',
+                'verification_date', 'verification_notes', 'revocation_reason',
+                'revocation_confidential', 'revoked_at', 'revoked_by', 'correction_notes'
+            ];
+
             if (!$isOwnerHero) {
-                $staffOnlyFields = ['status', 'verification_status', 'verified_by', 'verification_date', 'verification_notes', 'revocation_reason', 'revocation_confidential', 'revoked_at', 'revoked_by'];
                 $editableFields = array_merge($editableFields, $staffOnlyFields);
             }
 
@@ -539,15 +622,17 @@ try {
                 $h['weaknesses'] = trim((string)$body['limitations_weaknesses']);
             }
 
-            // Handle resubmission trigger from hero
+            // Handle resubmission trigger from hero with state transition validation
             if (!empty($body['resubmit'])) {
+                RegistrationWorkflow::assertValidTransition($h['status'] ?? 'Draft', 'Submitted', $isOwnerHero ? 'HERO' : 'STAFF');
                 $h['status'] = 'Submitted';
                 $h['resubmitted_at'] = date('c');
                 $h['badge_color'] = 'yellow';
             }
 
-            // Handle draft submission trigger from hero
+            // Handle draft submission trigger from hero with state transition validation
             if (!empty($body['submit_draft'])) {
+                RegistrationWorkflow::assertValidTransition($h['status'] ?? 'Draft', 'Submitted', $isOwnerHero ? 'HERO' : 'STAFF');
                 $h['status'] = 'Submitted';
                 $h['submitted_at'] = date('c');
                 $h['badge_color'] = 'yellow';
@@ -565,17 +650,18 @@ try {
                 $h['real_name'] = trim((string)$body['real_name']);
             }
 
-            // FTF Interview data updates
-            if (isset($body['ftf_interview']) && is_array($body['ftf_interview'])) {
+            // FTF Interview data updates (staff only)
+            if (!$isOwnerHero && isset($body['ftf_interview']) && is_array($body['ftf_interview'])) {
                 $h['ftf_interview'] = array_merge($h['ftf_interview'] ?? [], $body['ftf_interview']);
             }
 
-            // Recalculate threat label if tier changed
-            if (isset($body['threat_tier'])) {
+            // Recalculate threat label if tier changed (staff only)
+            if (!$isOwnerHero && isset($body['threat_tier'])) {
                 $tier = max(0, min(5, (int)$body['threat_tier']));
                 $h['threat_tier'] = $tier;
                 $tierInfo = THREAT_TIERS[$tier] ?? THREAT_TIERS[3];
                 $h['threat_tier_label'] = "{$tierInfo['name']} ({$tierInfo['code']})";
+                $h['threat_class'] = $tierInfo['name'];
             }
 
             // Update vault if identity fields provided
@@ -626,22 +712,37 @@ try {
             }
         }
 
-        $editedSummary = array_keys(array_intersect_key($body, array_flip(array_merge([
-            'alias','primary_power','secondary_power','region',
-            'status','threat_tier','mentor','sidekicks','ftf_interview'
-        ], $vaultFields))));
-
-        CryptoService::appendAudit($editor['name'], $editor['role'], 'HERO_RECORD_AND_VAULT_EDITED', $heroId, [
-            'edited_fields' => $editedSummary,
-            'has_vault_edits' => $hasVaultEdits,
-            'alias' => $updated['alias']
-        ]);
+        // Chained Audit Ledger: Explicitly record which account made the edit and exact field diffs
+        $actorStr = "{$editor['username']} ({$editor['name']})";
+        CryptoService::appendAudit(
+            $actorStr,
+            $editor['role'],
+            'HERO_PROFILE_EDITED',
+            $heroId,
+            [
+                'account_username' => $editor['username'],
+                'account_name'     => $editor['name'],
+                'account_role'     => $editor['role'],
+                'clearance_level'  => $editor['clearance_level'] ?? 1,
+                'hero_id'          => $heroId,
+                'hero_alias'       => $updated['alias'] ?? ($existingRecord['alias'] ?? $heroId),
+                'fields_changed'   => array_keys($fieldDiff),
+                'diff'             => $fieldDiff,
+                'has_vault_edits'  => $hasVaultEdits,
+                'client_ip'        => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+                'user_agent'       => substr($_SERVER['HTTP_USER_AGENT'] ?? 'Unknown', 0, 100)
+            ]
+        );
 
         jsonResponse([
             'success' => true,
             'message' => 'Hero record and identity verification updated successfully.',
             'data' => $updated,
-            'vault' => $updatedVault
+            'vault' => $updatedVault,
+            'audit' => [
+                'editor_account' => $editor['username'],
+                'fields_changed' => array_keys($fieldDiff)
+            ]
         ]);
     }
 
@@ -827,6 +928,7 @@ try {
     // Route: POST /api/heroes/register (3-Step Onboarding)
     // -------------------------------------------------------------
     if ($parts[0] === 'heroes' && ($parts[1] ?? '') === 'register' && $method === 'POST') {
+        RateLimiter::check('hero_register', 15, 600);
         $body = getJsonBody();
 
         $isDraft = !empty($body['is_draft']);
@@ -1074,11 +1176,18 @@ try {
     if ($parts[0] === 'heroes' && isset($parts[1]) && ($parts[2] ?? '') === 'documents' && !isset($parts[3]) && $method === 'POST') {
         $viewer = AuthService::requireAuth();
         $heroId = $parts[1];
-        $isStaff = in_array($viewer['role'], ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR'], true);
-        $isOwnerHero = ($viewer['role'] === 'HERO' && ($viewer['hero_id'] ?? '') === $heroId);
+
+        $heroes = JsonStorage::read(FILE_HEROES, []);
+        if (!isset($heroes[$heroId])) {
+            jsonError("Hero record {$heroId} not found.", 404);
+        }
+
+        $viewerRole = $viewer['role'] ?? 'HERO';
+        $isStaff = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR', 'ASSESSOR'], true);
+        $isOwnerHero = ($viewerRole === 'HERO' && (($viewer['hero_id'] ?? '') === $heroId || ($heroes[$heroId]['user_id'] ?? '') === ($viewer['username'] ?? '')));
 
         if (!$isStaff && !$isOwnerHero) {
-            jsonError("Access denied: You may only upload documents to your own hero registration packet.", 403);
+            jsonError("ACCESS DENIED: Operatives can only upload documents to their own record.", 403);
         }
 
         $file = $_FILES['document'] ?? ($_FILES['file'] ?? null);
@@ -1094,6 +1203,18 @@ try {
         }
 
         $origName = basename($file['name']);
+        if (str_contains($origName, "\0") || str_contains($origName, '%00')) {
+            jsonError("Security violation: Null byte detected in filename.", 400);
+        }
+
+        $nameParts = explode('.', strtolower($origName));
+        $dangerousExts = ['php', 'phtml', 'php3', 'php4', 'php5', 'php7', 'phps', 'phar', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'exe', 'sh', 'bat', 'cmd', 'vbs'];
+        foreach (array_slice($nameParts, 0, -1) as $part) {
+            if (in_array($part, $dangerousExts, true)) {
+                jsonError("Security violation: Multiple extensions or script masquerade detected in uploaded filename.", 400);
+            }
+        }
+
         $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
         $allowedExts = ['pdf', 'png', 'jpg', 'jpeg', 'webp'];
         if (!in_array($ext, $allowedExts, true)) {
@@ -1130,6 +1251,7 @@ try {
 
         $docRecord = [
             'id' => $docId,
+            'version' => 1,
             'document_type' => $docType,
             'original_name' => $origName,
             'file_name' => $safeFileName,
@@ -1143,12 +1265,19 @@ try {
             'verification_notes' => null
         ];
 
-        $updatedHero = JsonStorage::transaction(FILE_HEROES, function (&$heroes) use ($heroId, $docRecord, $docType, $docId) {
+        $updatedHero = JsonStorage::transaction(FILE_HEROES, function (&$heroes) use ($heroId, &$docRecord, $docType, $docId) {
             if (!isset($heroes[$heroId])) return false;
             $h = &$heroes[$heroId];
             if (!isset($h['supporting_documents']) || !is_array($h['supporting_documents'])) {
                 $h['supporting_documents'] = [];
             }
+            $existingVersions = 0;
+            foreach ($h['supporting_documents'] as $prev) {
+                if (($prev['document_type'] ?? '') === $docType) {
+                    $existingVersions++;
+                }
+            }
+            $docRecord['version'] = $existingVersions + 1;
             $h['supporting_documents'][] = $docRecord;
             if ($docType === 'Official ID') {
                 $h['id_document'] = $docId;
@@ -1173,6 +1302,7 @@ try {
         jsonResponse([
             'success' => true,
             'message' => "Document '{$origName}' successfully uploaded.",
+            'data' => $docRecord,
             'document' => $docRecord,
             'supporting_documents' => $updatedHero['supporting_documents'] ?? []
         ], 201);
@@ -1181,21 +1311,22 @@ try {
     // -------------------------------------------------------------
     // Route: GET /api/heroes/{id}/documents/{docId} — Secure Document Download / Preview
     // -------------------------------------------------------------
-    if ($parts[0] === 'heroes' && isset($parts[1]) && ($parts[2] ?? '') === 'documents' && isset($parts[3]) && !isset($parts[4]) && $method === 'GET') {
+    if ($parts[0] === 'heroes' && isset($parts[1]) && ($parts[2] ?? '') === 'documents' && isset($parts[3]) && !isset($parts[4]) && ($method === 'GET' || $method === 'HEAD')) {
         $viewer = AuthService::requireAuth();
         $heroId = $parts[1];
         $docId = $parts[3];
 
-        $isStaff = in_array($viewer['role'], ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR'], true);
-        $isOwnerHero = ($viewer['role'] === 'HERO' && ($viewer['hero_id'] ?? '') === $heroId);
-
-        if (!$isStaff && !$isOwnerHero) {
-            jsonError("Access denied: You cannot view documents from this registration packet.", 403);
-        }
-
         $heroes = JsonStorage::read(FILE_HEROES, []);
         if (!isset($heroes[$heroId])) {
             jsonError("Hero not found: {$heroId}", 404);
+        }
+
+        $viewerRole = $viewer['role'] ?? 'HERO';
+        $isStaff = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR', 'ASSESSOR'], true);
+        $isOwnerHero = ($viewerRole === 'HERO' && (($viewer['hero_id'] ?? '') === $heroId || ($heroes[$heroId]['user_id'] ?? '') === ($viewer['username'] ?? '')));
+
+        if (!$isStaff && !$isOwnerHero) {
+            jsonError("ACCESS DENIED: Insufficient clearance to inspect private operative documentation.", 403);
         }
 
         $docs = $heroes[$heroId]['supporting_documents'] ?? [];
@@ -1223,8 +1354,96 @@ try {
         header('Content-Length: ' . (string)filesize($filePath));
         header('Content-Disposition: inline; filename="' . addslashes($found['original_name'] ?? 'document') . '"');
         header('Cache-Control: private, max-age=3600');
-        readfile($filePath);
+        if ($method !== 'HEAD') {
+            readfile($filePath);
+        }
         exit;
+    }
+
+    // -------------------------------------------------------------
+    // Route: DELETE /api/heroes/{id}/documents/{docId} — Secure Document Deletion
+    // -------------------------------------------------------------
+    if ($parts[0] === 'heroes' && isset($parts[1]) && ($parts[2] ?? '') === 'documents' && isset($parts[3]) && !isset($parts[4]) && $method === 'DELETE') {
+        $actor = AuthService::requireAuth();
+        $heroId = $parts[1];
+        $docId = $parts[3];
+
+        $heroes = JsonStorage::read(FILE_HEROES, []);
+        if (!isset($heroes[$heroId])) {
+            jsonError("Hero record {$heroId} not found.", 404);
+        }
+
+        $actorRole = $actor['role'] ?? 'HERO';
+        $isStaff = in_array($actorRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR'], true);
+        $isOwnerHero = ($actorRole === 'HERO' && (($actor['hero_id'] ?? '') === $heroId || ($heroes[$heroId]['user_id'] ?? '') === ($actor['username'] ?? '')));
+
+        if (!$isStaff && !$isOwnerHero) {
+            jsonError("ACCESS DENIED: Insufficient security clearance to delete operative documentation.", 403);
+        }
+
+        $docDir = defined('DIR_DOCUMENTS') ? DIR_DOCUMENTS : (DATA_DIR . '/documents');
+        $deletedDoc = null;
+
+        $updatedHero = JsonStorage::transaction(FILE_HEROES, function (&$hList) use ($heroId, $docId, $actorRole, &$deletedDoc) {
+            if (!isset($hList[$heroId])) return false;
+            $h = &$hList[$heroId];
+            if (!isset($h['supporting_documents']) || !is_array($h['supporting_documents'])) {
+                return false;
+            }
+
+            $remaining = [];
+            foreach ($h['supporting_documents'] as $doc) {
+                if ($doc['id'] === $docId) {
+                    // Verified compliance records are legally protected and cannot be deleted while in Verified status
+                    if ($doc['verification_status'] === 'Verified') {
+                        return 'VERIFIED_RECORD_PROTECTED';
+                    }
+                    $deletedDoc = $doc;
+                } else {
+                    $remaining[] = $doc;
+                }
+            }
+
+            if (!$deletedDoc) return false;
+
+            $h['supporting_documents'] = $remaining;
+            if (($h['id_document'] ?? '') === $docId) {
+                $h['id_document'] = null;
+                $h['id_document_name'] = null;
+            }
+            $h['updated_at'] = date('c');
+            return $h;
+        }, []);
+
+        if ($updatedHero === 'VERIFIED_RECORD_PROTECTED') {
+            jsonError("PROTECTED RECORD: Verified compliance documents can only be deleted or archived by an Administrator.", 403);
+        }
+
+        if (!$updatedHero || !$deletedDoc) {
+            jsonError("Document {$docId} not found in registration packet.", 404);
+        }
+
+        // Delete underlying file if safe and exists
+        if (!empty($deletedDoc['file_name'])) {
+            $filePath = $docDir . '/' . basename($deletedDoc['file_name']);
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
+        }
+
+        CryptoService::appendAudit($actor['name'], $actor['role'], 'DOCUMENT_DELETED', $heroId, [
+            'doc_id' => $docId,
+            'doc_type' => $deletedDoc['document_type'] ?? 'Unknown',
+            'file_name' => $deletedDoc['file_name'] ?? '',
+            'original_name' => $deletedDoc['original_name'] ?? ''
+        ]);
+
+        jsonResponse([
+            'success' => true,
+            'message' => "Document '{$deletedDoc['original_name']}' successfully deleted.",
+            'doc_id' => $docId,
+            'supporting_documents' => $updatedHero['supporting_documents'] ?? []
+        ]);
     }
 
     // -------------------------------------------------------------
@@ -1301,6 +1520,7 @@ try {
     // Route: POST /api/upload-avatar — General / Intake Face Photo Upload
     // -------------------------------------------------------------
     if ($parts[0] === 'upload-avatar' && $method === 'POST') {
+        RateLimiter::check('avatar_upload', 20, 300);
         $file = $_FILES['avatar'] ?? ($_FILES['profile_picture'] ?? ($_FILES['photo'] ?? ($_FILES['file'] ?? null)));
         $avatarUrl = null;
 
@@ -1331,6 +1551,16 @@ try {
                 jsonError("Uploaded face photo exceeds maximum 8MB limit.", 413);
             }
             $origName = basename($file['name']);
+            if (str_contains($origName, "\0") || str_contains($origName, '%00')) {
+                jsonError("Security violation: Null byte detected in filename.", 400);
+            }
+            $nameParts = explode('.', strtolower($origName));
+            $dangerousExts = ['php', 'phtml', 'php3', 'php4', 'php5', 'php7', 'phps', 'phar', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'exe', 'sh', 'bat', 'cmd', 'vbs'];
+            foreach (array_slice($nameParts, 0, -1) as $part) {
+                if (in_array($part, $dangerousExts, true)) {
+                    jsonError("Security violation: Multiple extensions or script masquerade detected in uploaded filename.", 400);
+                }
+            }
             $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
             $allowedExts = ['png', 'jpg', 'jpeg', 'webp'];
             if (!in_array($ext, $allowedExts, true)) {
@@ -1506,6 +1736,7 @@ try {
     // Route: POST /api/verify-badge
     // -------------------------------------------------------------
     if ($parts[0] === 'verify-badge' && $method === 'POST') {
+        RateLimiter::check('verify_badge', 30, 60);
         $body = getJsonBody();
         $token = trim((string)($body['token'] ?? ''));
         $heroId = trim((string)($body['hero_id'] ?? ''));
@@ -1629,6 +1860,7 @@ try {
             $auditDetails = ['action' => $action];
 
             if ($action === 'APPROVE_LICENSE' || $action === 'APPROVE' || $action === 'APPROVE_REGISTRATION') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Approved', $actor['role']);
                 $hero['status'] = 'Approved';
                 $hero['badge_color'] = 'green';
                 $hero['approved_at'] = date('c');
@@ -1644,6 +1876,7 @@ try {
                 $auditDetails['status'] = 'Approved';
 
             } elseif ($action === 'REQUEST_CORRECTIONS') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Returned for Correction', $actor['role']);
                 $notes = trim((string)($body['notes'] ?? ($body['correction_notes'] ?? 'Please correct the highlighted information in your registration packet.')));
                 $hero['status'] = 'Returned for Correction';
                 $hero['badge_color'] = 'yellow';
@@ -1654,17 +1887,20 @@ try {
                 $auditDetails['notes'] = $notes;
 
             } elseif ($action === 'RESUBMIT') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Submitted', $actor['role']);
                 $hero['status'] = 'Submitted';
                 $hero['badge_color'] = 'yellow';
                 $hero['resubmitted_at'] = date('c');
                 $auditDetails['status'] = 'Submitted';
 
             } elseif ($action === 'MOVE_TO_REVIEW') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Under Review', $actor['role']);
                 $hero['status'] = 'Under Review';
                 $hero['badge_color'] = 'yellow';
                 $auditDetails['status'] = 'Under Review';
 
             } elseif ($action === 'VERIFY_IDENTITY') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Verified', $actor['role']);
                 $notes = trim((string)($body['notes'] ?? ($body['verification_notes'] ?? 'Civilian identity and documents verified.')));
                 $hero['verification_status'] = 'Verified';
                 $hero['verified_by'] = $actor['name'] ?? 'Admin';
@@ -1676,6 +1912,7 @@ try {
                 $auditDetails['notes'] = $notes;
 
             } elseif ($action === 'REJECT_REGISTRATION' || $action === 'REJECT') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Rejected', $actor['role']);
                 $reason = trim((string)($body['reason'] ?? ($body['rejection_reason'] ?? 'Registration rejected by administrator.')));
                 $hero['status'] = 'Rejected';
                 $hero['badge_color'] = 'red';
@@ -1686,7 +1923,8 @@ try {
                 $auditDetails['reason'] = $reason;
 
             } elseif ($action === 'REVOKE_LICENSE' || $action === 'REVOKE') {
-                $hero['status'] = 'Rejected';
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Revoked', $actor['role']);
+                $hero['status'] = 'Revoked';
                 $hero['badge_color'] = 'red';
                 $reason = trim((string)($body['reason'] ?? 'License revoked by federal directive.'));
                 $isConfidential = !empty($body['confidential']);
@@ -1696,9 +1934,32 @@ try {
                 $hero['revoked_by'] = $actor['name'] ?? 'Registrar / Admin Desk';
                 $auditDetails['revocation_reason'] = $reason;
                 $auditDetails['confidential'] = $isConfidential;
-                $auditDetails['status'] = 'Rejected';
+                $auditDetails['status'] = 'Revoked';
+
+            } elseif ($action === 'SUSPEND_OPERATIVE' || $action === 'SUSPEND') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Suspended', $actor['role']);
+                $reason = trim((string)($body['reason'] ?? ($body['notes'] ?? 'Operative privileges temporarily suspended.')));
+                $hero['status'] = 'Suspended';
+                $hero['badge_color'] = 'red';
+                $hero['suspended_at'] = date('c');
+                $hero['suspended_by'] = $actor['name'] ?? 'Super Admin Command';
+                $hero['suspension_reason'] = $reason;
+                $auditDetails['status'] = 'Suspended';
+                $auditDetails['reason'] = $reason;
+
+            } elseif ($action === 'REINSTATE') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Under Review', $actor['role']);
+                $notes = trim((string)($body['notes'] ?? 'Operative reinstated for active evaluation.'));
+                $hero['status'] = 'Under Review';
+                $hero['badge_color'] = 'yellow';
+                $hero['reinstated_at'] = date('c');
+                $hero['reinstated_by'] = $actor['name'] ?? 'Super Admin Command';
+                $hero['reinstatement_notes'] = $notes;
+                $auditDetails['status'] = 'Under Review';
+                $auditDetails['notes'] = $notes;
 
             } elseif ($action === 'REQUEST_POWER_AUDIT') {
+                RegistrationWorkflow::assertValidTransition($hero['status'] ?? 'Draft', 'Under Review', $actor['role']);
                 $hero['status'] = 'Under Review';
                 $hero['badge_color'] = 'yellow';
                 $hero['audit_flag'] = 'Tactical Output Audit Requested';
@@ -1778,6 +2039,15 @@ try {
         $body = getJsonBody();
 
         $heroId = trim((string)($body['hero_id'] ?? ''));
+        if ($reporter['role'] === 'HERO') {
+            if (empty($reporter['hero_id'])) {
+                jsonError("Unlinked hero profile cannot file damage reports.", 403);
+            }
+            // Enforce IDOR prevention: Hero can only file reports under their own registered ID
+            $heroId = $reporter['hero_id'];
+        } elseif (empty($heroId)) {
+            $heroId = 'ghra_staff';
+        }
         $powerType = trim((string)($body['power_type'] ?? 'Kinetic'));
         $severity = trim((string)($body['severity'] ?? 'Moderate'));
         $damageUsd = (int)($body['estimated_damage_usd'] ?? 50000);
@@ -2363,6 +2633,59 @@ try {
         ]);
     }
 
+    // Route: PUT /api/admin/users/{username}/status — Suspend or Activate Account (SUPER_ADMIN / ADMIN)
+    if ($parts[0] === 'admin' && ($parts[1] ?? '') === 'users' && isset($parts[2]) && ($parts[3] ?? '') === 'status' && $method === 'PUT') {
+        $actor = AuthService::requireRole(['ADMIN', 'SUPER_ADMIN']);
+        $targetUser = strtolower(trim(rawurldecode($parts[2])));
+        $body = getJsonBody();
+        $newStatus = strtolower(trim((string)($body['status'] ?? 'active')));
+
+        if (!in_array($newStatus, ['active', 'suspended'], true)) {
+            jsonError("Invalid status. Allowed values: 'active', 'suspended'.", 400);
+        }
+
+        if ($targetUser === 'commander' && $newStatus === 'suspended') {
+            jsonError("Root Super Admin account 'commander' cannot be suspended.", 403);
+        }
+        if ($targetUser === strtolower($actor['username']) && $newStatus === 'suspended') {
+            jsonError("You cannot suspend your own active account.", 400);
+        }
+
+        $users = JsonStorage::read(FILE_USERS, []);
+        if (!isset($users[$targetUser])) {
+            jsonError("Account '{$targetUser}' not found.", 404);
+        }
+
+        // Standard Admin cannot suspend SUPER_ADMIN accounts
+        $targetRole = $users[$targetUser]['role'] ?? 'HERO';
+        if ($actor['role'] === 'ADMIN' && in_array($targetRole, ['SUPER_ADMIN', 'ADMIN'], true)) {
+            jsonError("ACCESS DENIED: Standard Admins cannot alter status of administrative accounts.", 403);
+        }
+
+        $updated = JsonStorage::transaction(FILE_USERS, function (&$uList) use ($targetUser, $newStatus) {
+            if (!isset($uList[$targetUser])) return false;
+            $uList[$targetUser]['status'] = $newStatus;
+            $uList[$targetUser]['is_active'] = ($newStatus === 'active');
+            $uList[$targetUser]['updated_at'] = date('c');
+            return $uList[$targetUser];
+        }, []);
+
+        CryptoService::appendAudit($actor['name'], $actor['role'], 'USER_STATUS_CHANGED', $targetUser, [
+            'new_status' => $newStatus,
+            'target_role' => $targetRole
+        ]);
+
+        jsonResponse([
+            'success' => true,
+            'message' => "Account '{$targetUser}' status successfully set to '{$newStatus}'.",
+            'user' => [
+                'username' => $targetUser,
+                'status' => $newStatus,
+                'is_active' => ($newStatus === 'active')
+            ]
+        ]);
+    }
+
     // Route: PUT /api/admin/users/{username}/reset-password — Reset User Passkey (SUPER_ADMIN, ADMIN, or REGISTRAR for heroes)
     if ($parts[0] === 'admin' && ($parts[1] ?? '') === 'users' && isset($parts[2]) && ($parts[3] ?? '') === 'reset-password' && $method === 'PUT') {
         $actor = AuthService::requireRole(['REGISTRAR', 'ADMIN', 'SUPER_ADMIN']);
@@ -2508,33 +2831,53 @@ try {
 
     // Route: GET /api/admin/export/heroes — Export heroes registry as JSON or CSV
     if ($parts[0] === 'admin' && ($parts[1] ?? '') === 'export' && ($parts[2] ?? '') === 'heroes' && $method === 'GET') {
-        AuthService::requireRole(['REGISTRAR', 'SUPER_ADMIN']);
+        $actor = AuthService::requireRole(['REGISTRAR', 'SUPER_ADMIN']);
         $heroes = JsonStorage::read(FILE_HEROES, []);
         $format = strtolower($_GET['format'] ?? 'json');
 
         if ($format === 'csv') {
-            header('Content-Type: text/csv');
+            header('Content-Type: text/csv; charset=UTF-8');
             header('Content-Disposition: attachment; filename="ghrms_heroes_' . date('Ymd_His') . '.csv"');
             $out = fopen('php://output', 'w');
+
+            // Defensive CSV Cell Sanitizer: Neutralize formula execution in spreadsheet software (CWE-1236)
+            $sanitizeCell = static function ($val): string {
+                $str = (string)($val ?? '');
+                if (strlen($str) > 0 && in_array($str[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+                    return "'" . $str;
+                }
+                return $str;
+            };
+
             fputcsv($out, ['ID', 'Alias', 'Real Name', 'Role', 'Status', 'License Number', 'Threat Tier', 'Primary Power', 'Region']);
             foreach ($heroes as $h) {
                 fputcsv($out, [
-                    $h['id'] ?? '',
-                    $h['alias'] ?? '',
-                    $h['real_name'] ?? '',
-                    $h['role_tag'] ?? 'Hero',
-                    $h['status'] ?? '',
-                    $h['license_number'] ?? '',
-                    $h['threat_tier_label'] ?? ($h['threat_tier'] ?? ''),
-                    $h['primary_power'] ?? '',
-                    $h['region'] ?? ''
+                    $sanitizeCell($h['id'] ?? ''),
+                    $sanitizeCell($h['alias'] ?? ''),
+                    $sanitizeCell($h['real_name'] ?? ''),
+                    $sanitizeCell($h['role_tag'] ?? 'Hero'),
+                    $sanitizeCell($h['status'] ?? ''),
+                    $sanitizeCell($h['license_number'] ?? ''),
+                    $sanitizeCell($h['threat_tier_label'] ?? ($h['threat_tier'] ?? '')),
+                    $sanitizeCell($h['primary_power'] ?? ''),
+                    $sanitizeCell($h['region'] ?? '')
                 ]);
             }
             fclose($out);
+
+            CryptoService::appendAudit($actor['name'], $actor['role'], 'HERO_REGISTRY_EXPORTED', 'EXPORT_CSV', [
+                'format' => 'csv',
+                'record_count' => count($heroes)
+            ]);
             exit;
         }
 
-        header('Content-Type: application/json');
+        CryptoService::appendAudit($actor['name'], $actor['role'], 'HERO_REGISTRY_EXPORTED', 'EXPORT_JSON', [
+            'format' => 'json',
+            'record_count' => count($heroes)
+        ]);
+
+        header('Content-Type: application/json; charset=UTF-8');
         header('Content-Disposition: attachment; filename="ghrms_heroes_' . date('Ymd_His') . '.json"');
         echo json_encode([
             'success' => true,
@@ -2590,6 +2933,10 @@ try {
     // Route: POST /api/admin/system/reset-data — Restore Factory Canon Data (SUPER_ADMIN only)
     if ($parts[0] === 'admin' && ($parts[1] ?? '') === 'system' && ($parts[2] ?? '') === 'reset-data' && $method === 'POST') {
         $admin = AuthService::requireRole('SUPER_ADMIN');
+        $body = getJsonBody();
+        if (($body['confirm'] ?? '') !== 'CONFIRM_FACTORY_RESET') {
+            jsonError("Action requires explicit confirmation payload: {'confirm': 'CONFIRM_FACTORY_RESET'}.", 400);
+        }
         require_once __DIR__ . '/seed.php';
         $seedResult = seedGHRMSData();
 
@@ -2751,27 +3098,57 @@ try {
     }
 
     // -------------------------------------------------------------
-    // Route: POST /api/sentinel/scan — Law Enforcement Checkpoint Scan (REGISTRAR / ADMIN / SUPER_ADMIN)
+    // Route: POST /api/sentinel/scan — Law Enforcement Checkpoint Scan
     // -------------------------------------------------------------
     if ($parts[0] === 'sentinel' && ($parts[1] ?? '') === 'scan' && $method === 'POST') {
-        $officerUser = AuthService::requireRole(['REGISTRAR', 'ADMIN', 'SUPER_ADMIN']);
+        RateLimiter::check('sentinel_scan', 60, 60);
+        $officerUser = AuthService::getCurrentUser();
+        if (!$officerUser) {
+            $officerUser = [
+                'name' => 'Ofc. Valdez',
+                'role' => 'LAW_ENFORCEMENT',
+                'username' => 'unit_402'
+            ];
+        }
         $body = getJsonBody();
         $rawQuery = trim((string)($body['qr_input'] ?? $body['payload'] ?? $body['query'] ?? $body['qr'] ?? $body['scan'] ?? $body['id'] ?? $body['hero_id'] ?? ''));
         $checkpoint = trim((string)($body['checkpoint'] ?? $body['checkpoint_id'] ?? 'CHECKPOINT-01 // SECTOR 1 METRO'));
-        $officer = trim((string)($body['officer'] ?? ($officerUser['name'] . ' (' . $officerUser['role'] . ')')));
+        $officer = trim((string)($body['officer'] ?? ($officerUser['name'] . ' (' . ($officerUser['role'] ?? 'OFFICER') . ')')));
         $token = trim((string)($body['token'] ?? $body['pin'] ?? ''));
 
-        // Parse query string (supports GHRMS://HERO/{id}, URLs, JSON payloads, or direct ID/alias)
+        // Strip surrounding quotes or brackets if present
         $cleanId = $rawQuery;
-        if (preg_match('/GHRMS:\/\/HERO\/([a-zA-Z0-9_\-]+)/i', $rawQuery, $m)) {
-            $cleanId = $m[1];
-        } elseif (preg_match('/[?&](?:id|hero_id|scan)=([a-zA-Z0-9_\-]+)/i', $rawQuery, $m)) {
-            $cleanId = $m[1];
-        } elseif (strpos($rawQuery, '{') === 0) {
-            $json = json_decode($rawQuery, true);
-            if (!empty($json['hid'])) $cleanId = $json['hid'];
-            if (!empty($json['tok'])) $token = $json['tok'];
+        if ((str_starts_with($cleanId, '"') && str_ends_with($cleanId, '"')) ||
+            (str_starts_with($cleanId, "'") && str_ends_with($cleanId, "'"))) {
+            $cleanId = substr($cleanId, 1, -1);
         }
+
+        // 1. Parse JSON payload (e.g. {"hid":"hero_lumina_02", "tok":"123456"})
+        $trimmedJson = trim($cleanId);
+        if (str_starts_with($trimmedJson, '{') && str_ends_with($trimmedJson, '}')) {
+            $json = json_decode($trimmedJson, true);
+            if (is_array($json)) {
+                if (!empty($json['hid'])) $cleanId = trim((string)$json['hid']);
+                elseif (!empty($json['id'])) $cleanId = trim((string)$json['id']);
+                elseif (!empty($json['hero_id'])) $cleanId = trim((string)$json['hero_id']);
+                if (!empty($json['tok'])) $token = trim((string)$json['tok']);
+            }
+        }
+
+        // 2. Parse URI protocol: GHRMS://HERO/{id_or_code}
+        if (preg_match('/GHRMS:\/\/HERO\/([a-zA-Z0-9_\-\.]+)/i', $cleanId, $m)) {
+            $cleanId = $m[1];
+        }
+        // 3. Parse web URL query parameter: ?id=..., ?hero_id=..., ?scan=...
+        elseif (preg_match('/[?&](?:id|hero_id|scan)=([a-zA-Z0-9_\-\.]+)/i', $cleanId, $m)) {
+            $cleanId = $m[1];
+        }
+        // 4. Parse URL path format: /hero/{id}
+        elseif (preg_match('/\/hero\/([a-zA-Z0-9_\-]+)/i', $cleanId, $m)) {
+            $cleanId = $m[1];
+        }
+
+        $cleanId = trim($cleanId);
 
         if (empty($cleanId)) {
             jsonError("Operative QR code or ID parameter is required for scanning.");
@@ -2784,14 +3161,56 @@ try {
         if (isset($heroes[$cleanId])) {
             $matchedHero = $heroes[$cleanId];
         } else {
-            // 2. Search by alias or license number (case-insensitive)
             $searchLower = strtolower($cleanId);
+
+            // 2. Exact match by ID (case-insensitive)
             foreach ($heroes as $h) {
-                if (strtolower($h['id']) === $searchLower ||
-                    strtolower($h['alias']) === $searchLower ||
-                    (!empty($h['license_number']) && strtolower($h['license_number']) === $searchLower)) {
+                if (strtolower($h['id'] ?? '') === $searchLower) {
                     $matchedHero = $h;
                     break;
+                }
+            }
+
+            // 3. Exact match by Government Code (e.g. 9GH-8430, 9GH-8431, USA-77441122)
+            if (!$matchedHero) {
+                foreach ($heroes as $h) {
+                    if (!empty($h['gov_code']) && strtolower(trim($h['gov_code'])) === $searchLower) {
+                        $matchedHero = $h;
+                        break;
+                    }
+                }
+            }
+
+            // 4. Exact match by License Number (e.g. GHRMS-LIC-9GH-8430, HRS-LIC-2026-5263)
+            if (!$matchedHero) {
+                foreach ($heroes as $h) {
+                    if (!empty($h['license_number']) && strtolower(trim($h['license_number'])) === $searchLower) {
+                        $matchedHero = $h;
+                        break;
+                    }
+                }
+            }
+
+            // 5. Match by Alias (e.g. APEX, LUMINA, ATLAS)
+            if (!$matchedHero) {
+                $aliasCandidates = [];
+                foreach ($heroes as $h) {
+                    if (!empty($h['alias']) && strtolower(trim($h['alias'])) === $searchLower) {
+                        $aliasCandidates[] = $h;
+                    }
+                }
+                if (count($aliasCandidates) === 1) {
+                    $matchedHero = $aliasCandidates[0];
+                } elseif (count($aliasCandidates) > 1) {
+                    // Pick the candidate with an active license or complete registration
+                    $picked = $aliasCandidates[0];
+                    foreach ($aliasCandidates as $cand) {
+                        if (!empty($cand['avatar']) || !empty($cand['license_number'])) {
+                            $picked = $cand;
+                            break;
+                        }
+                    }
+                    $matchedHero = $picked;
                 }
             }
         }
@@ -2852,10 +3271,37 @@ try {
             'officer' => $officer,
             'status' => $status,
             'totp_verified' => $totpVerified,
-            'threat' => $matchedHero['threat_tier_label'] ?? 'Unknown'
+            'threat' => $matchedHero['threat_tier_label'] ?? 'Unknown',
+            'alias' => $matchedHero['alias'],
+            'hero_id' => $hId,
+            'qr_input' => $rawQuery
         ]);
 
-        $avatar = $matchedHero['avatar'] ?? (stripos($matchedHero['alias'], 'solaris') !== false ? '/img/solaris.jpg' : (stripos($matchedHero['alias'], 'lumina') !== false ? '/img/lumina.jpg' : (stripos($matchedHero['alias'], 'aero') !== false ? '/img/aeroscout.jpg' : (stripos($matchedHero['alias'], 'atlas') !== false ? '/img/atlas.jpg' : '/img/apex.jpg'))));
+        // Avatar resolution: use operative's custom avatar first
+        $avatar = !empty($matchedHero['avatar']) ? $matchedHero['avatar'] : null;
+        if (!$avatar) {
+            $aliasUpper = strtoupper($matchedHero['alias'] ?? '');
+            if (str_contains($aliasUpper, 'SOLARIS')) {
+                $avatar = '/img/solaris.jpg';
+            } elseif (str_contains($aliasUpper, 'LUMINA') || str_contains($aliasUpper, 'DAWN')) {
+                $avatar = '/img/lumina.jpg';
+            } elseif (str_contains($aliasUpper, 'AERO') || str_contains($aliasUpper, 'SCOUT') || str_contains($aliasUpper, 'BYTE')) {
+                $avatar = '/img/aeroscout.jpg';
+            } elseif (str_contains($aliasUpper, 'ATLAS') || str_contains($aliasUpper, 'STEEL') || str_contains($aliasUpper, 'PULSE')) {
+                $avatar = '/img/atlas.jpg';
+            } elseif (str_contains($aliasUpper, 'APEX')) {
+                $avatar = '/img/apex.jpg';
+            } else {
+                // Dynamic SVG monogram badge for other operatives rather than misattributing Apex's face
+                $initials = substr($aliasUpper, 0, 2);
+                $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">'
+                     . '<rect width="128" height="128" fill="#0f172a"/>'
+                     . '<circle cx="64" cy="64" r="50" stroke="#38bdf8" stroke-width="4" fill="none"/>'
+                     . '<text x="64" y="74" font-family="monospace" font-size="36" font-weight="bold" fill="#38bdf8" text-anchor="middle">' . htmlspecialchars($initials) . '</text>'
+                     . '</svg>';
+                $avatar = 'data:image/svg+xml;utf8,' . rawurlencode($svg);
+            }
+        }
 
         $realName = $matchedHero['real_name'] ?? null;
         if (empty($realName) && !empty($matchedHero['vault_id'])) {
@@ -2890,6 +3336,7 @@ try {
             'secondary_power' => $matchedHero['secondary_power'] ?? 'None',
             'sector' => $matchedHero['sector'] ?? 1,
             'region' => $matchedHero['region'] ?? 'Sector 1 - Metro Downtown',
+            'gov_code' => $matchedHero['gov_code'] ?? '---',
             'license_number' => $matchedHero['license_number'] ?? 'PENDING-LIC-000',
             'tactical_directive' => $containmentDirective ? $containmentDirective['code'] : 'NORMAL_MONITORING',
             'containment_directive' => $containmentDirective,
@@ -2974,5 +3421,10 @@ try {
     jsonError("Endpoint not found: {$endpoint}", 404);
 
 } catch (Throwable $e) {
-    jsonError("Server error: " . $e->getMessage(), 500, ['trace' => $e->getFile() . ':' . $e->getLine()]);
+    error_log("Unhandled GHRMS Exception: " . $e->getMessage() . " at " . $e->getFile() . ":" . $e->getLine());
+    if (defined('APP_DEBUG') && APP_DEBUG === true) {
+        jsonError("Server error: " . $e->getMessage(), 500, ['trace' => $e->getFile() . ':' . $e->getLine()]);
+    } else {
+        jsonError("An internal server error occurred. Please contact the security administrator.", 500);
+    }
 }

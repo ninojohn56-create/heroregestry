@@ -1,6 +1,14 @@
 <?php
 declare(strict_types=1);
 
+// Global Security Headers
+header('X-Frame-Options: SAMEORIGIN');
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+header('X-XSS-Protection: 1; mode=block');
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.basemaps.cartocdn.com https://basemaps.cartocdn.com https://server.arcgisonline.com https://*.arcgisonline.com https://services.arcgisonline.com https://unpkg.com https://images.unsplash.com; connect-src 'self' https://api.openweathermap.org https://*.basemaps.cartocdn.com https://basemaps.cartocdn.com https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://server.arcgisonline.com https://*.arcgisonline.com; frame-ancestors 'self';");
+header("Permissions-Policy: camera=(self), microphone=(), geolocation=()");
+
 $rawUri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 
 // 1. Strict Security Perimeter: Deny direct access to dotfiles, backend internals, or sensitive files
@@ -10,9 +18,8 @@ if (
     str_starts_with($rawUri, '/tests') ||
     str_starts_with($rawUri, '/scratch') ||
     str_starts_with($rawUri, '/docs') ||
-    str_starts_with($rawUri, '/unused files') ||
-    str_starts_with($rawUri, '/unused_files') ||
-    preg_match('#/(Dockerfile|docker-compose\.ya?ml|nginx\.conf|check_system\.php|share\.sh)$#i', $rawUri)
+    str_starts_with($rawUri, '/unused') ||
+    preg_match('#/(Dockerfile|docker-compose\.ya?ml|nginx\.conf|check_system\.php|share\.(sh|bat|ps1)|start\.(sh|bat|ps1)|deploy\.sh|php\.ini)$#i', $rawUri)
 ) {
     http_response_code(403);
     header('Content-Type: text/plain; charset=UTF-8');
@@ -236,11 +243,22 @@ if (!empty($uri) && $uri !== '/' && file_exists(__DIR__ . '/public' . $uri) && !
     exit;
 }
 
-// 10. Root Gateway
-if ($uri === '/') {
-    header('Content-Type: text/html; charset=UTF-8');
-    readfile(__DIR__ . '/public/index.html');
-    exit;
+// 10. Root Gateway - Removed Image 1 (Landing Matrix)
+if ($uri === '/' || $uri === '/index') {
+    if (!$currentUser) {
+        header('Location: /login');
+        exit;
+    }
+    if ($role === 'SUPER_ADMIN' || $role === 'ADMIN') {
+        header('Location: /admin');
+        exit;
+    } elseif ($role === 'REGISTRAR' || $role === 'ASSESSOR') {
+        header('Location: /registrar');
+        exit;
+    } else {
+        header('Location: /hero');
+        exit;
+    }
 }
 
 // 11. 404 Not Found for unmapped routes
@@ -259,7 +277,7 @@ echo <<<HTML
   <div style="font-size:1.2rem;font-weight:800;letter-spacing:0.1em;color:#38bdf8;background:rgba(56,189,248,0.15);padding:6px 14px;border:1px solid #38bdf8;border-radius:4px;">[DIRECTIVE NOT FOUND]</div>
   <h1 style="font-size:2rem;font-weight:800;color:#f8fafc;margin:0;">404 — NOT FOUND</h1>
   <p style="color:#94a3b8;margin:0;">The requested terminal directive or resource does not exist.</p>
-  <a href="/" style="margin-top:1rem;padding:0.6rem 1.5rem;background:#2563eb;color:#fff;border-radius:6px;text-decoration:none;font-weight:600;">Return to Gateway</a>
+  <a href="/login" style="margin-top:1rem;padding:0.6rem 1.5rem;background:#2563eb;color:#fff;border-radius:6px;text-decoration:none;font-weight:600;">Return to Security Clearance Login</a>
 </body>
 </html>
 HTML;

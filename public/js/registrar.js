@@ -9,8 +9,20 @@ const registrarState = {
     theme: 'dark',
     currentUser: null,
     activeDivision: 'all',
-    viewMode: 'profiles'
+    viewMode: 'queue'
 };
+
+function isHeroApproved(status) {
+    if (!status) return false;
+    const s = String(status).trim().toLowerCase();
+    return s === 'approved' || s === 'licensed' || s === 'active';
+}
+
+function isPendingStatus(status) {
+    if (!status) return true;
+    const s = String(status).trim().toLowerCase();
+    return s === 'under review' || s === 'reviewing' || s === 'pending' || s === 'submitted' || s === 'returned for correction' || s === 'draft';
+}
 
 function initTheme() {
     const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
@@ -113,15 +125,7 @@ async function loadHeroes() {
             if (foundHero) {
                 registrarState.selectedHero = foundHero;
                 registrarState.selectedHeroId = foundHero.id;
-                if (foundHero.status === 'Under Review' || foundHero.status === 'Pending' || foundHero.status === 'Submitted') {
-                    registrarState.viewMode = 'queue';
-                    const btnQueue = document.getElementById('btnModeQueue');
-                    const btnProfiles = document.getElementById('btnModeProfiles');
-                    if (btnQueue && btnProfiles) {
-                        btnQueue.classList.add('active');
-                        btnProfiles.classList.remove('active');
-                    }
-                }
+                registrarState.viewMode = isPendingStatus(foundHero.status) ? 'queue' : 'profiles';
             }
         }
 
@@ -150,8 +154,8 @@ function renderQueueTable() {
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    const pendingHeroes  = registrarState.heroes.filter(h => h.status === 'Under Review' || h.status === 'Pending' || h.status === 'Submitted');
-    const licensedHeroes = registrarState.heroes.filter(h => h.status !== 'Under Review' && h.status !== 'Pending' && h.status !== 'Submitted');
+    const pendingHeroes  = registrarState.heroes.filter(h => isPendingStatus(h.status));
+    const licensedHeroes = registrarState.heroes.filter(h => !isPendingStatus(h.status));
 
     // Update dynamic navigation & toolbar badges
     const elPendingQueue   = document.getElementById('countPendingQueue');
@@ -273,14 +277,17 @@ function renderQueueTable() {
             <td><span style="color:var(--text-main);font-weight:600;">${h.primary_power}</span></td>
             <td><span class="threat-badge ${tierClass}">${tierCode}</span></td>
             <td>
-                <span class="${h.status === 'Licensed' ? 'status-pill-licensed' : h.status === 'Rogue' ? 'status-pill-rogue' : 'status-pill-reviewing'}">
+                <span class="${isHeroApproved(h.status) ? 'status-pill-licensed' : (h.status === 'Rogue' || h.status === 'Revoked') ? 'status-pill-rogue' : 'status-pill-reviewing'}">
                     ${h.status || 'REVIEWING'}
                 </span>
             </td>
             <td>
                 <div class="table-actions-cell" onclick="event.stopPropagation();">
                     <button class="btn-mini btn-mini-assess"  onclick="assessHero('${h.id}')">Assess</button>
-                    <button class="btn-mini btn-mini-approve" onclick="approveHero('${h.id}')">Approve</button>
+                    ${isHeroApproved(h.status)
+                        ? `<button class="btn-mini btn-mini-approved" onclick="approveHero('${h.id}')" title="Operative is Approved. Click to re-affirm.">Approved</button>`
+                        : `<button class="btn-mini btn-mini-approve" onclick="approveHero('${h.id}')">Approve</button>`
+                    }
                     <button class="btn-mini"                  onclick="openEditModal('${h.id}')" style="background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.4);color:#a5b4fc;font-weight:700;">[EDIT RECORD]</button>
                 </div>
             </td>
@@ -341,7 +348,7 @@ function updateDetailsPanel(hero) {
     if (pFill)    pFill.style.width  = `${Math.min(100, (hero.threat_tier || 3) * 20)}%`;
     if (sLabel)   sLabel.textContent = hero.secondary_power || 'None';
     if (sLevel)   sLevel.textContent = hero.status || '—';
-    if (sFill)    sFill.style.width  = hero.status === 'Licensed' ? '100%' : '40%';
+    if (sFill)    sFill.style.width  = isHeroApproved(hero.status) ? '100%' : '40%';
 
     // Division Badge & Mentorship Card
     const divBadge   = document.getElementById('regDivisionBadge');
@@ -403,31 +410,37 @@ function updateDetailsPanel(hero) {
     }
 
     // Dynamic Approve / Revoke License button toggle
-    const finalBtn  = document.getElementById('btnFinalRegistration');
-    const revBanner = document.getElementById('registrarRevocationBanner');
-    const revText   = document.getElementById('registrarRevocationReasonText');
+    const finalBtn       = document.getElementById('btnFinalRegistration');
+    const revBanner      = document.getElementById('registrarRevocationBanner');
+    const revText        = document.getElementById('registrarRevocationReasonText');
+    const approvedNotice = document.getElementById('approvedStatusNotice');
+    const isApproved     = isHeroApproved(hero.status);
 
-    if (hero.status === 'Licensed') {
+    if (isApproved) {
+        if (approvedNotice) approvedNotice.style.display = 'block';
         if (finalBtn) {
             finalBtn.innerHTML = '[REVOKE LICENSE]';
             finalBtn.style.background = 'rgba(239, 68, 68, 0.15)';
             finalBtn.style.borderColor = 'rgba(239, 68, 68, 0.45)';
             finalBtn.style.color = '#f87171';
+            finalBtn.title = 'Operative is currently Approved. Click to revoke license.';
         }
         if (revBanner) revBanner.style.display = 'none';
     } else {
+        if (approvedNotice) approvedNotice.style.display = 'none';
         if (finalBtn) {
             finalBtn.innerHTML = '[APPROVE / LICENSE OPERATIVE]';
             finalBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
             finalBtn.style.borderColor = '#34d399';
             finalBtn.style.color = '#ffffff';
+            finalBtn.title = 'Approve and license this operative';
         }
-        if (hero.status === 'Revoked') {
+        if (hero.status === 'Revoked' || hero.status === 'Rogue') {
             if (revBanner) {
                 revBanner.style.display = 'block';
                 if (revText) {
                     revText.textContent = hero.revocation_confidential
-                        ? '[CLASSIFIED SECURITY DIRECTIVE · CLEARANCE L5]'
+                        ? '[CLASSIFIED SECURITY DIRECTIVE: CLEARANCE L5]'
                         : (hero.revocation_reason || 'License suspended by directive');
                 }
             }
@@ -435,11 +448,240 @@ function updateDetailsPanel(hero) {
             if (revBanner) revBanner.style.display = 'none';
         }
     }
+
+    // Render Supporting Documents & Evidence
+    renderRegistrarDocs(hero);
 }
 
 // ──────────────────────────────────────────────
-// Edit Modal
+// Supporting Documents Rendering & Verification
 // ──────────────────────────────────────────────
+function renderRegistrarDocs(hero) {
+    const list = document.getElementById('registrarDocsList');
+    if (!list) return;
+
+    const docs = hero.supporting_documents || hero.documents || [];
+    if (!Array.isArray(docs) || docs.length === 0) {
+        list.innerHTML = `
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic; padding: 8px; background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); border: 1px dashed var(--border-color); text-align: center;">
+                No supporting documents uploaded yet. Click <strong>+ [UPLOAD FILE]</strong> to attach.
+            </div>
+        `;
+        return;
+    }
+
+    list.innerHTML = docs.map(doc => {
+        const docId = doc.id || doc.doc_id;
+        const status = doc.verification_status || 'Pending';
+        const badgeClass = status === 'Verified' ? 'doc-badge doc-badge-verified' :
+                           status === 'Rejected' ? 'doc-badge doc-badge-rejected' :
+                           'doc-badge doc-badge-pending';
+
+        const sizeKb = Math.round((doc.file_size || 0) / 1024);
+        const uploadDate = doc.upload_date ? new Date(doc.upload_date).toLocaleDateString() : '';
+
+        return `
+            <div class="doc-card-item">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div>
+                        <div class="doc-title-text">
+                            <span>📄</span> <span>${escapeHtml(doc.document_type || 'Document')}</span>
+                        </div>
+                        <div class="doc-meta-text">
+                            ${escapeHtml(doc.original_name || 'document.pdf')} ${sizeKb ? `(${sizeKb} KB)` : ''}
+                        </div>
+                        ${doc.verification_notes ? `<div class="doc-note-text">Audit: ${escapeHtml(doc.verification_notes)}</div>` : ''}
+                    </div>
+                    <span class="${badgeClass}">
+                        ${escapeHtml(status)}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-color); gap: 4px;">
+                    <span style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono);">${uploadDate ? `Uploaded: ${uploadDate}` : ''}</span>
+                        <button type="button" onclick="openDocViewer('${hero.id}', '${docId}', '${escapeHtml(doc.document_type || 'Document')}', '${escapeHtml(doc.original_name || 'document.png')}', '${escapeHtml(doc.mime_type || '')}')" class="btn-doc-view" style="cursor: pointer; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.4); color: #38bdf8; font-weight: 700; border-radius: 4px; padding: 3px 8px; font-size: 0.7rem;">
+                            [VIEW]
+                        </button>
+                        <button type="button" onclick="verifyHeroDoc('${hero.id}', '${docId}', 'Verified')" class="btn-doc-verify" title="Mark as Verified">
+                            [VERIFY]
+                        </button>
+                        <button type="button" onclick="verifyHeroDoc('${hero.id}', '${docId}', 'Rejected')" class="btn-doc-reject" title="Mark as Rejected">
+                            [REJECT]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+async function verifyHeroDoc(heroId, docId, status) {
+    const notes = status === 'Rejected'
+        ? (prompt('Enter reason for document rejection:', 'Document unreadable, invalid, or expired.') || '')
+        : (prompt('Enter verification notes (optional):', 'Credentials confirmed authentic against registry.') || '');
+    if (status === 'Rejected' && !notes) return;
+
+    try {
+        const res = await apiPost(`heroes/${heroId}/documents/${docId}/verify`, { status, notes });
+        if (res.success) {
+            showToast(`Document marked as ${status}.`, 'success');
+            await loadHeroes();
+            const updated = registrarState.heroes.find(h => h.id === heroId);
+            if (updated) renderApplicantDetails(updated);
+        } else {
+            showToast(res.error || 'Failed to update document verification.', 'error');
+        }
+    } catch (err) {
+        showToast('Network error while verifying document: ' + err.message, 'error');
+    }
+}
+
+async function handleRegistrarDocUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const hero = registrarState.selectedHero;
+    if (!hero) {
+        showToast('Please select an operative first.', 'warning');
+        return;
+    }
+
+    const docType = prompt('Enter document type:\n(e.g., Official ID, Hero Certification, Training Certificate, Medical Assessment)', 'Official ID') || 'Official ID';
+
+    const formData = new FormData();
+    formData.append('document', file);
+    formData.append('document_type', docType);
+
+    try {
+        showToast('Uploading supporting document...', 'info');
+        const resp = await fetch(`/api/heroes/${encodeURIComponent(hero.id)}/documents`, {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+        });
+        const res = await resp.json();
+        if (res.success) {
+            showToast(`Document "${file.name}" uploaded successfully!`, 'success');
+            await loadHeroes();
+            const updated = registrarState.heroes.find(h => h.id === hero.id);
+            if (updated) renderApplicantDetails(updated);
+        } else {
+            showToast(res.error || 'Failed to upload document.', 'error');
+        }
+    } catch (err) {
+        showToast('Upload error: ' + err.message, 'error');
+    } finally {
+        event.target.value = '';
+    }
+}
+// ──────────────────────────────────────────────
+// In-Page Document Viewer & Lightbox (Same Tab + Enlarge + Print)
+// ──────────────────────────────────────────────
+let currentDocViewerUrl = null;
+let currentDocViewerMime = null;
+let isDocZoomed = false;
+
+function openDocViewer(heroId, docId, docType, originalName, mimeType) {
+    const modal = document.getElementById('docViewerModal');
+    const content = document.getElementById('docViewerContent');
+    const titleEl = document.getElementById('docViewerTitle');
+    const metaEl = document.getElementById('docViewerMeta');
+    const dlBtn = document.getElementById('btnDocViewerDownload');
+
+    if (!modal || !content) return;
+
+    currentDocViewerUrl = `/api/heroes/${encodeURIComponent(heroId)}/documents/${encodeURIComponent(docId)}`;
+    currentDocViewerMime = mimeType || '';
+    isDocZoomed = false;
+
+    if (titleEl) titleEl.textContent = `[${(docType || 'DOCUMENT').toUpperCase()}: ${originalName || 'EVIDENCE'}]`;
+    if (metaEl) metaEl.textContent = `Operative ID: ${heroId} // File: ${originalName} (${mimeType || 'binary'})`;
+    if (dlBtn) {
+        dlBtn.href = currentDocViewerUrl;
+        dlBtn.download = originalName || 'ghrms_document';
+    }
+
+    const isPdf = (mimeType && mimeType.includes('pdf')) || (originalName && originalName.toLowerCase().endsWith('.pdf'));
+
+    if (isPdf) {
+        content.innerHTML = `
+            <iframe id="docViewerIframe" src="${currentDocViewerUrl}" style="width: 100%; height: 68vh; border: 1px solid var(--border-color); border-radius: 6px; background: #fff;"></iframe>
+        `;
+    } else {
+        content.innerHTML = `
+            <div style="position: relative; text-align: center; width: 100%;">
+                <img id="docViewerImg" src="${currentDocViewerUrl}" alt="${escapeHtml(docType)}" 
+                     style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 24px rgba(0,0,0,0.7); cursor: zoom-in; transition: transform 0.2s ease;" 
+                     onclick="toggleDocZoom()">
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">
+                    Click image or [TOGGLE FULLSIZE] below to zoom in/out
+                </div>
+            </div>
+        `;
+    }
+
+    modal.classList.add('active');
+}
+
+function closeDocViewer() {
+    const modal = document.getElementById('docViewerModal');
+    if (modal) modal.classList.remove('active');
+    const content = document.getElementById('docViewerContent');
+    if (content) content.innerHTML = '';
+    currentDocViewerUrl = null;
+    currentDocViewerMime = null;
+    isDocZoomed = false;
+}
+
+function toggleDocZoom() {
+    const img = document.getElementById('docViewerImg');
+    if (!img) return;
+    isDocZoomed = !isDocZoomed;
+    if (isDocZoomed) {
+        img.style.maxHeight = 'none';
+        img.style.transform = 'scale(1.25)';
+        img.style.cursor = 'zoom-out';
+    } else {
+        img.style.maxHeight = '70vh';
+        img.style.transform = 'scale(1)';
+        img.style.cursor = 'zoom-in';
+    }
+}
+
+function printCurrentDoc() {
+    if (!currentDocViewerUrl) return;
+
+    const isPdf = (currentDocViewerMime && currentDocViewerMime.includes('pdf')) || currentDocViewerUrl.includes('.pdf');
+    if (isPdf) {
+        const iframe = document.getElementById('docViewerIframe');
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            return;
+        }
+    }
+
+    const printWin = window.open('', '_blank', 'width=900,height=700');
+    if (printWin) {
+        printWin.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>GHRMS Accredited Document Print</title>
+                <style>
+                    body { margin: 0; padding: 20px; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #fff; font-family: monospace; }
+                    img { max-width: 100%; max-height: 95vh; object-fit: contain; }
+                    @page { size: auto; margin: 10mm; }
+                </style>
+            </head>
+            <body>
+                <img src="${currentDocViewerUrl}" onload="window.print(); window.close();" />
+            </body>
+            </html>
+        `);
+        printWin.document.close();
+    }
+}
+
 function openEditModal(heroId) {
     const hero = registrarState.heroes.find(h => h.id === heroId);
     if (!hero) return;
@@ -449,7 +691,7 @@ function openEditModal(heroId) {
     // Populate mentor dropdown
     const mentorSel = document.getElementById('editMentorSelect');
     if (mentorSel) {
-        mentorSel.innerHTML = '<option value="">— None —</option>';
+        mentorSel.innerHTML = '<option value="">— None / Independent Operative —</option>';
         registrarState.heroes
             .filter(h => h.id !== heroId)
             .forEach(h => {
@@ -461,21 +703,50 @@ function openEditModal(heroId) {
             });
     }
 
-    const realNameEl = document.getElementById('editHeroRealName');
-    const govIdEl    = document.getElementById('editHeroGovId');
-    const gearEl     = document.getElementById('editHeroGear');
+    const v = hero.vault_info || hero.real_bio || {};
+    const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val !== undefined && val !== null ? val : ''; };
 
-    if (realNameEl) realNameEl.value = hero.real_name || (hero.vault_info && hero.vault_info.real_name) || '';
-    if (govIdEl)    govIdEl.value    = hero.gov_code || hero.license_number || '';
-    if (gearEl)     gearEl.value     = Array.isArray(hero.gear_manifest) ? hero.gear_manifest.join(', ') : (hero.gear_manifest || '');
+    // 1. Confidential Civilian Vault Info
+    setVal('editHeroRealName', hero.real_name || v.real_name || '');
+    setVal('editHeroGovId', hero.gov_code || v.gov_id || hero.id_number || '');
+    setVal('editHeroDob', hero.dob || v.dob || '');
+    setVal('editHeroAge', hero.age || v.age || '');
+    setVal('editHeroGender', hero.gender || v.gender || 'Unspecified');
+    setVal('editHeroContact', hero.contact_number || v.contact_number || v.handler_contact || '');
+    setVal('editHeroEmergencyContact', hero.emergency_contact_name || (Array.isArray(hero.emergency_contacts) && hero.emergency_contacts[0]?.name) || '');
+    setVal('editHeroSafehouse', hero.safehouse_address || hero.address || v.safehouse_address || v.address || '');
+    setVal('editHeroDnaRef', hero.biometric_dna_ref || v.biometric_dna_ref || '');
 
-    document.getElementById('editHeroAlias').value         = hero.alias || '';
-    document.getElementById('editPrimaryPower').value      = hero.primary_power || '';
-    document.getElementById('editSecondaryPower').value    = hero.secondary_power || '';
-    document.getElementById('editRegion').value            = hero.region || '';
-    document.getElementById('editStatus').value            = hero.status || 'Under Review';
-    document.getElementById('editThreatTier').value        = hero.threat_tier ?? 3;
-    document.getElementById('editHeroModalTitle').textContent = `[EDIT: ${hero.alias}]`;
+    // 2. Callsign & Licensure
+    setVal('editHeroAlias', hero.alias || '');
+    setVal('editStatus', hero.status || 'Under Review');
+    setVal('editHeroLicense', hero.license_number || '');
+    setVal('editRegion', hero.region || '');
+    setVal('editHeroGovCode', hero.gov_code || '');
+    setVal('editHeroStep', hero.registration_step || 2);
+    setVal('editHeroAvatar', hero.avatar || '');
+
+    // 3. Powers & Combat Profile
+    setVal('editPrimaryPower', hero.primary_power || '');
+    setVal('editPrimaryPct', hero.primary_pct || hero.power_level || 80);
+    setVal('editPowerDesc', hero.power_description || '');
+    setVal('editSecondaryPower', hero.secondary_power || '');
+    setVal('editSecondaryPct', hero.secondary_pct || 60);
+    setVal('editCombatStyle', hero.combat_style || '');
+    setVal('editAbilitiesSkills', hero.abilities || hero.skills || '');
+    setVal('editStrengths', hero.strengths || '');
+    setVal('editWeaknesses', hero.weaknesses || hero.limitations_weaknesses || '');
+
+    // 4. Threat & Calibration
+    setVal('editThreatTier', hero.threat_tier ?? 3);
+    setVal('editControlLevel', hero.power_control_level || '');
+    setVal('editCombatRating', hero.combat_rating || 75);
+    setVal('editHeroGear', Array.isArray(hero.gear_manifest) ? hero.gear_manifest.join(', ') : (hero.gear_manifest || ''));
+    setVal('editTraining', hero.training_experience || '');
+    setVal('editAssessmentNotes', hero.assessment_notes || '');
+
+    const titleEl = document.getElementById('editHeroModalTitle');
+    if (titleEl) titleEl.textContent = `[EDIT OPERATIVE: ${hero.alias} // ALL FIELDS UNLOCKED]`;
 
     document.getElementById('heroEditModal').classList.add('active');
 }
@@ -492,45 +763,84 @@ async function submitEditHero(e) {
     const gearRaw = document.getElementById('editHeroGear')?.value.trim() || '';
     const gearManifest = gearRaw ? gearRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
 
+    const getVal = id => document.getElementById(id)?.value?.trim() || '';
+
     const payload = {
-        real_name:       document.getElementById('editHeroRealName')?.value.trim() || '',
-        gov_id:          document.getElementById('editHeroGovId')?.value.trim() || '',
-        alias:           document.getElementById('editHeroAlias').value.trim(),
-        primary_power:   document.getElementById('editPrimaryPower').value.trim(),
-        secondary_power: document.getElementById('editSecondaryPower').value.trim(),
-        region:          document.getElementById('editRegion').value.trim(),
-        status:          document.getElementById('editStatus').value,
-        threat_tier:     parseInt(document.getElementById('editThreatTier').value, 10),
-        gear_manifest:   gearManifest,
-        mentor:          mentorHero ? mentorHero.alias : (hero.mentor || null)
+        // Civilian Identity
+        real_name:               getVal('editHeroRealName'),
+        gov_id:                  getVal('editHeroGovId'),
+        id_number:               getVal('editHeroGovId'),
+        dob:                     getVal('editHeroDob'),
+        age:                     parseInt(getVal('editHeroAge') || '0', 10),
+        gender:                  getVal('editHeroGender'),
+        contact_number:          getVal('editHeroContact'),
+        safehouse_address:       getVal('editHeroSafehouse'),
+        address:                 getVal('editHeroSafehouse'),
+        emergency_contact_name:  getVal('editHeroEmergencyContact'),
+        biometric_dna_ref:       getVal('editHeroDnaRef'),
+
+        // Callsign & Licensure
+        alias:                   getVal('editHeroAlias'),
+        status:                  getVal('editStatus'),
+        license_number:          getVal('editHeroLicense'),
+        region:                  getVal('editRegion'),
+        gov_code:                getVal('editHeroGovCode'),
+        registration_step:       parseInt(getVal('editHeroStep') || '2', 10),
+        avatar:                  getVal('editHeroAvatar'),
+
+        // Powers & Combat
+        primary_power:           getVal('editPrimaryPower'),
+        primary_pct:             parseInt(getVal('editPrimaryPct') || '80', 10),
+        power_description:       getVal('editPowerDesc'),
+        secondary_power:         getVal('editSecondaryPower'),
+        secondary_pct:           parseInt(getVal('editSecondaryPct') || '60', 10),
+        combat_style:            getVal('editCombatStyle'),
+        abilities:               getVal('editAbilitiesSkills'),
+        skills:                  getVal('editAbilitiesSkills'),
+        strengths:               getVal('editStrengths'),
+        weaknesses:              getVal('editWeaknesses'),
+        limitations_weaknesses:  getVal('editWeaknesses'),
+
+        // Threat & Calibration
+        threat_tier:             parseInt(getVal('editThreatTier') || '3', 10),
+        power_control_level:     getVal('editControlLevel'),
+        combat_rating:           parseInt(getVal('editCombatRating') || '75', 10),
+        gear_manifest:           gearManifest,
+        mentor:                  mentorHero ? mentorHero.alias : (hero.mentor || null),
+        training_experience:     getVal('editTraining'),
+        assessment_notes:        getVal('editAssessmentNotes')
     };
 
     const saveBtn = document.getElementById('btnSaveEditHero');
-    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving & Logging Audit...'; }
 
-    const res = await apiPut(`heroes/${hero.id}`, payload);
+    try {
+        const res = await apiPut(`heroes/${hero.id}`, payload);
 
-    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES]'; }
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES & AUDIT]'; }
 
-    if (res.success) {
-        showToast(`Operative ${res.data.alias} updated successfully. All changes saved.`, 'success');
-        document.getElementById('heroEditModal').classList.remove('active');
+        if (res.success) {
+            showToast(`Operative ${res.data.alias} updated successfully. All changes saved & logged to audit ledger.`, 'success');
+            document.getElementById('heroEditModal').classList.remove('active');
 
-        // If there's a mentor selected and it's different, enroll as sidekick too
-        if (mentorHeroId && mentorHeroId !== '') {
-            const skRes = await apiPost(`heroes/${hero.id}/enroll-sidekick`, { mentor_hero_id: mentorHeroId });
-            if (skRes.success) showToast(skRes.message, 'success');
+            if (mentorHeroId && mentorHeroId !== '') {
+                const skRes = await apiPost(`heroes/${hero.id}/enroll-sidekick`, { mentor_hero_id: mentorHeroId });
+                if (skRes.success) showToast(skRes.message, 'success');
+            }
+
+            registrarState.selectedHeroId = hero.id;
+            await loadHeroes();
+            const updated = registrarState.heroes.find(h => h.id === hero.id);
+            if (updated) {
+                registrarState.selectedHero = updated;
+                updateDetails(updated);
+            }
+        } else {
+            showToast(`Save failed: ${res.error}`, 'error');
         }
-
-        registrarState.selectedHeroId = hero.id;
-        await loadHeroes();
-        const updated = registrarState.heroes.find(h => h.id === hero.id);
-        if (updated) {
-            registrarState.selectedHero = updated;
-            updateDetails(updated);
-        }
-    } else {
-        showToast(`Save failed: ${res.error}`, 'error');
+    } catch (err) {
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = '[SAVE ALL CHANGES & AUDIT]'; }
+        showToast('Error saving changes: ' + err.message, 'error');
     }
 }
 
@@ -538,9 +848,14 @@ async function submitEditHero(e) {
 // Quick action buttons
 // ──────────────────────────────────────────────
 async function approveHero(heroId) {
+    const hero = (registrarState.heroes || []).find(h => h.id === heroId);
+    if (hero && isHeroApproved(hero.status)) {
+        showToast(`Operative ${hero.alias} is already Approved & Licensed.`, 'info');
+        return;
+    }
     const res = await apiPost(`heroes/${heroId}/assess`, { action: 'APPROVE_LICENSE' });
     if (res.success) {
-        showToast(`Field License granted to ${res.data.alias}! Status updated to Licensed.`, 'success');
+        showToast(`Field License granted to ${res.data?.alias || (hero && hero.alias) || heroId}! Status is now Approved.`, 'success');
         registrarState.selectedHeroId = heroId;
         await loadHeroes();
     } else {
@@ -622,12 +937,39 @@ async function denyHero(heroId) {
     }
 }
 
+function setRosterMode(mode) {
+    registrarState.viewMode = mode;
+    const btnModeQueue    = document.getElementById('btnModeQueue');
+    const btnModeProfiles = document.getElementById('btnModeProfiles');
+    const navLinkRegQueue = document.getElementById('navLinkRegQueue');
+
+    if (btnModeQueue && btnModeProfiles) {
+        const isQueue = mode === 'queue';
+        btnModeQueue.classList.toggle('active', isQueue);
+        btnModeQueue.style.background  = isQueue ? 'var(--primary)' : 'rgba(255,255,255,0.05)';
+        btnModeQueue.style.borderColor = isQueue ? 'var(--border-focus)' : 'var(--border-color)';
+        btnModeQueue.style.color       = isQueue ? 'var(--bg-app)' : 'var(--text-muted)';
+
+        btnModeProfiles.classList.toggle('active', !isQueue);
+        btnModeProfiles.style.background  = !isQueue ? 'var(--primary)' : 'rgba(255,255,255,0.05)';
+        btnModeProfiles.style.borderColor = !isQueue ? 'var(--border-focus)' : 'var(--border-color)';
+        btnModeProfiles.style.color       = !isQueue ? 'var(--bg-app)' : 'var(--text-muted)';
+    }
+    if (navLinkRegQueue) {
+        navLinkRegQueue.classList.toggle('active', mode === 'queue');
+    }
+    renderQueueTable();
+}
+
 async function assessHero(heroId) {
     const res = await apiPost(`heroes/${heroId}/assess`, { action: 'REQUEST_POWER_AUDIT' });
     if (res.success) {
-        showToast(`Power audit scheduled for ${res.data.alias}.`, 'info');
+        showToast(`Power audit scheduled for ${res.data?.alias || heroId}. Operative placed into Pending Assessment Queue.`, 'info');
         registrarState.selectedHeroId = heroId;
+        setRosterMode('queue');
         await loadHeroes();
+    } else {
+        showToast(res.error || 'Failed to schedule power audit', 'error');
     }
 }
 
@@ -640,23 +982,6 @@ function initActions() {
     const btnModeProfiles = document.getElementById('btnModeProfiles');
     const navLinkRegQueue = document.getElementById('navLinkRegQueue');
 
-    const setRosterMode = (mode) => {
-        registrarState.viewMode = mode;
-        if (btnModeQueue && btnModeProfiles) {
-            const isQueue = mode === 'queue';
-            btnModeQueue.classList.toggle('active', isQueue);
-            btnModeQueue.style.background  = isQueue ? 'var(--primary)' : 'rgba(255,255,255,0.05)';
-            btnModeQueue.style.borderColor = isQueue ? 'var(--border-focus)' : 'var(--border-color)';
-            btnModeQueue.style.color       = isQueue ? 'var(--bg-app)' : 'var(--text-muted)';
-
-            btnModeProfiles.classList.toggle('active', !isQueue);
-            btnModeProfiles.style.background  = !isQueue ? 'var(--primary)' : 'rgba(255,255,255,0.05)';
-            btnModeProfiles.style.borderColor = !isQueue ? 'var(--border-focus)' : 'var(--border-color)';
-            btnModeProfiles.style.color       = !isQueue ? 'var(--bg-app)' : 'var(--text-muted)';
-        }
-        renderQueueTable();
-    };
-
     if (btnModeQueue)    btnModeQueue.onclick    = () => setRosterMode('queue');
     if (btnModeProfiles) btnModeProfiles.onclick = () => setRosterMode('profiles');
     if (navLinkRegQueue) {
@@ -665,6 +990,7 @@ function initActions() {
             setRosterMode('queue');
         };
     }
+    setRosterMode(registrarState.viewMode || 'queue');
 
     // Division Tab Filter wiring
     const tabAll       = document.getElementById('btnRegTabAll');
@@ -736,12 +1062,13 @@ function initActions() {
                 showToast('Please select an operative first.', 'error');
                 return;
             }
-            if (hero.status === 'Licensed') {
+            if (isHeroApproved(hero.status)) {
                 openRevokeModal(hero);
             } else {
                 const res = await apiPost(`heroes/${hero.id}/assess`, { action: 'APPROVE_LICENSE' });
                 if (res.success) {
-                    showToast(`LICENSING APPROVED for ${hero.alias}! Status is now Licensed.`, 'success');
+                    showToast(`LICENSING APPROVED for ${hero.alias}! Status is now Approved.`, 'success');
+                    registrarState.selectedHeroId = hero.id;
                     await loadHeroes();
                 } else {
                     showToast(res.error || 'Approval failed', 'error');
@@ -895,7 +1222,7 @@ function updatePasskeyModalHeroDisplay(hero) {
     if (userTag) userTag.textContent = candidateUser;
     if (statusTag) {
         statusTag.textContent = hero.status || 'Registered';
-        statusTag.style.color = hero.status === 'Licensed' ? '#34d399' : '#f59e0b';
+        statusTag.style.color = isHeroApproved(hero.status) ? '#34d399' : '#f59e0b';
     }
 }
 
@@ -1040,7 +1367,9 @@ async function checkAuth() {
             const roleEl   = document.getElementById('headerUserRole');
             const avatarEl = document.getElementById('headerUserAvatar');
             if (nameEl)   nameEl.textContent   = res.user.name;
-            if (roleEl)   roleEl.textContent   = `Clearance L${res.user.clearance_level} · ${res.user.role}`;
+            if (roleEl) {
+                roleEl.innerHTML = `<span style="font-size:0.68rem;padding:1px 5px;border-radius:3px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;font-weight:800;font-family:var(--font-mono);margin-right:4px;">L${res.user.clearance_level || 3}</span><span>${escapeHtml(res.user.role)}</span>`;
+            }
             if (avatarEl && res.user.avatar) avatarEl.src = res.user.avatar;
 
             // Show return to Main Super Admin Command Center if user has Admin or Super Admin authority
@@ -1337,3 +1666,369 @@ function initRegistrarNotifications() {
     fetchRegistrarNotifications();
     setInterval(fetchRegistrarNotifications, 15000);
 }
+
+// -------------------------------------------------------------
+// Official Printable Hero ID Card & Hologram Seal Modal
+// -------------------------------------------------------------
+async function openHeroIdCardModal(heroId) {
+    const id = heroId || registrarState.selectedHeroId;
+    if (!id) {
+        showToast('Please select a hero from the roster first', 'error');
+        return;
+    }
+
+    let hero = (registrarState.heroes || []).find(h => h.id === id);
+    if (!hero || !hero.vault_info) {
+        try {
+            const res = await apiGet(`heroes/${id}`);
+            if (res.success && res.data) {
+                hero = res.data;
+            }
+        } catch(e) {}
+    }
+
+    if (!hero) {
+        showToast('Could not load hero details for ID card', 'error');
+        return;
+    }
+
+    registrarState.cardHero = hero;
+
+    const modal = document.getElementById('heroIdCardModal');
+    if (!modal) return;
+
+    updateRegistrarIdCardModal(hero);
+    modal.style.display = 'flex';
+}
+
+function updateRegistrarIdCardModal(hero) {
+    if (!hero) return;
+
+    const cardAvatar = document.getElementById('cardHeroAvatar');
+    if (cardAvatar) {
+        cardAvatar.src = hero.avatar || hero.profile_picture || '/img/apex.jpg';
+    }
+
+    const cardThreat = document.getElementById('cardThreatTierBadge');
+    if (cardThreat) {
+        const tierNum = hero.threat_level !== undefined ? hero.threat_level : 3;
+        const tierName = ['COSMIC', 'EXTREME', 'HIGH', 'MODERATE', 'LOW', 'STREET'][tierNum] || 'CITY';
+        cardThreat.textContent = `TIER ${tierNum} (${tierName})`;
+    }
+
+    const cardAlias = document.getElementById('cardHeroAlias');
+    if (cardAlias) {
+        cardAlias.textContent = (hero.alias || hero.callsign || 'UNKNOWN').toUpperCase();
+    }
+
+    const cardRealName = document.getElementById('cardHeroRealName');
+    if (cardRealName) {
+        const rn = (hero.vault_info && hero.vault_info.real_name) || hero.real_name || '';
+        cardRealName.textContent = rn || 'CONFIDENTIAL // VAULT ENCRYPTED';
+    }
+
+    const cardGovCode = document.getElementById('cardHeroGovCode');
+    if (cardGovCode) {
+        cardGovCode.textContent = hero.gov_code || hero.id || '9GH-XXXX';
+    }
+
+    const cardSector = document.getElementById('cardHeroSector');
+    if (cardSector) {
+        const s = hero.sector ? hero.sector.toString().replace(/sector\s*/i, '').padStart(2, '0') : '01';
+        cardSector.textContent = `SECTOR ${s}`;
+    }
+
+    const cardPower = document.getElementById('cardHeroPower');
+    if (cardPower) {
+        const pList = hero.powers ? (Array.isArray(hero.powers) ? hero.powers.join(', ') : hero.powers) : (hero.power || 'Classified Ability');
+        cardPower.textContent = pList;
+    }
+
+    const cardLic = document.getElementById('cardLicenseNumber');
+    if (cardLic) {
+        cardLic.textContent = `LIC: ${hero.license_number || ('GHRMS-LIC-' + (hero.gov_code || hero.id || '9GH-0000'))}`;
+    }
+
+    const cardQrCanvas = document.getElementById('cardHeroQrCanvas');
+    if (cardQrCanvas && window.SimpleQR) {
+        const qrPayload = `GHRMS://HERO/${hero.gov_code || hero.id || 'hero_apex_01'}`;
+        SimpleQR.renderToCanvas(cardQrCanvas, qrPayload, {
+            size: 80,
+            foreground: '#0f172a',
+            background: '#ffffff'
+        });
+    }
+}
+
+function closeHeroIdCardModal() {
+    const modal = document.getElementById('heroIdCardModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function printHeroIdCard() {
+    window.print();
+}
+
+async function downloadHeroIdCardPng() {
+    const hero = registrarState.cardHero || registrarState.selectedHero;
+    if (!hero) {
+        showToast('Hero record not loaded', 'error');
+        return;
+    }
+
+    // High-resolution 1000 x 590 px ID card canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = 1000;
+    canvas.height = 590;
+    const ctx = canvas.getContext('2d');
+
+    // Rounded rectangle card base with dark metallic gradient
+    const r = 24;
+    ctx.beginPath();
+    ctx.moveTo(r, 0);
+    ctx.lineTo(1000 - r, 0);
+    ctx.quadraticCurveTo(1000, 0, 1000, r);
+    ctx.lineTo(1000, 590 - r);
+    ctx.quadraticCurveTo(1000, 590, 1000 - r, 590);
+    ctx.lineTo(r, 590);
+    ctx.quadraticCurveTo(0, 590, 0, 590 - r);
+    ctx.lineTo(0, r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.closePath();
+    ctx.clip();
+
+    const bgGrad = ctx.createLinearGradient(0, 0, 1000, 590);
+    bgGrad.addColorStop(0, '#0b1120');
+    bgGrad.addColorStop(0.5, '#0f172a');
+    bgGrad.addColorStop(1, '#1e1b4b');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 1000, 590);
+
+    // Microprint security background lines
+    ctx.save();
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.07)';
+    ctx.lineWidth = 1;
+    for (let i = -600; i < 1600; i += 16) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i + 600, 590);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // Card Outer Border
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(3, 3, 994, 584);
+
+    // Header Strip
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.fillRect(20, 20, 960, 68);
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(20, 88);
+    ctx.lineTo(980, 88);
+    ctx.stroke();
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 22px monospace';
+    ctx.fillText('GLOBAL HERO REGISTRATION SYSTEM', 80, 52);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('ACCORD SECURITY COMMISSION // FIELD CLEARANCE CREDENTIAL', 80, 72);
+
+    // Gold Smart Chip Graphic
+    ctx.fillStyle = '#d97706';
+    ctx.fillRect(900, 34, 56, 40);
+    ctx.strokeStyle = '#fde68a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(900, 34, 56, 40);
+    ctx.strokeRect(912, 42, 32, 24);
+
+    // Hero Portrait with Biometric Border
+    const photoX = 40, photoY = 110, photoW = 200, photoH = 240;
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(photoX, photoY, photoW, photoH);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(photoX, photoY, photoW, photoH);
+
+    const cardImg = document.getElementById('cardHeroAvatar');
+    if (cardImg && cardImg.complete && cardImg.naturalWidth > 0) {
+        try {
+            ctx.drawImage(cardImg, photoX, photoY, photoW, photoH);
+        } catch(e) {}
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.fillRect(photoX, photoY + photoH - 28, photoW, 28);
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('SEC-BIOMETRIC VERIFIED', photoX + (photoW / 2), photoY + photoH - 10);
+    ctx.textAlign = 'left';
+
+    // Threat Tier Badge under photo
+    const tierNum = hero.threat_level !== undefined ? hero.threat_level : 3;
+    const tierName = ['COSMIC', 'EXTREME', 'HIGH', 'MODERATE', 'LOW', 'STREET'][tierNum] || 'CITY';
+    ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+    ctx.fillRect(photoX, photoY + photoH + 12, photoW, 36);
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(photoX, photoY + photoH + 12, photoW, 36);
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 15px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(`TIER ${tierNum} (${tierName})`, photoX + (photoW / 2), photoY + photoH + 36);
+    ctx.textAlign = 'left';
+
+    // Middle Details: Callsign Alias, Real Name, Gov ID, Sector, Powers
+    const textX = 270;
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('CALLSIGN ALIAS', textX, 135);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 38px sans-serif';
+    ctx.fillText((hero.alias || hero.callsign || 'UNKNOWN').toUpperCase(), textX, 175);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('CIVILIAN LEGAL IDENTITY', textX, 220);
+
+    const rn = (hero.vault_info && hero.vault_info.real_name) || hero.real_name || 'CONFIDENTIAL // VAULT ENCRYPTED';
+    ctx.fillStyle = '#f1f5f9';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillText(rn, textX, 245);
+
+    // Gov ID & Sector
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('GOV REGISTRY ID', textX, 290);
+    ctx.fillText('SECURITY SECTOR', textX + 220, 290);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 20px monospace';
+    ctx.fillText(hero.gov_code || hero.id || '9GH-XXXX', textX, 315);
+
+    const s = hero.sector ? hero.sector.toString().replace(/sector\s*/i, '').padStart(2, '0') : '01';
+    ctx.fillStyle = '#a78bfa';
+    ctx.fillText(`SECTOR ${s}`, textX + 220, 315);
+
+    // Classified Powers
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px monospace';
+    ctx.fillText('CLASSIFIED SUPERHUMAN ABILITY', textX, 360);
+
+    const pList = hero.powers ? (Array.isArray(hero.powers) ? hero.powers.join(', ') : hero.powers) : (hero.power || 'Classified Accord Ability');
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText(pList, textX, 385);
+
+    // Shimmering Rainbow Metallic Hologram Seal
+    const holoX = 840, holoY = 190, holoR = 64;
+    const holoGrad = ctx.createLinearGradient(holoX - holoR, holoY - holoR, holoX + holoR, holoY + holoR);
+    holoGrad.addColorStop(0, '#ffffff');
+    holoGrad.addColorStop(0.2, '#f43f5e');
+    holoGrad.addColorStop(0.4, '#38bdf8');
+    holoGrad.addColorStop(0.7, '#fbbf24');
+    holoGrad.addColorStop(0.85, '#a78bfa');
+    holoGrad.addColorStop(1, '#ffffff');
+    ctx.beginPath();
+    ctx.arc(holoX, holoY, holoR, 0, Math.PI * 2);
+    ctx.fillStyle = holoGrad;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#ffffff';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(holoX, holoY, holoR - 12, 0, Math.PI * 2);
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(15, 23, 42, 0.6)';
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 12px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('ACCORD', holoX, holoY - 10);
+    ctx.font = 'bold 20px sans-serif';
+    ctx.fillText('★', holoX, holoY + 8);
+    ctx.font = 'bold 10px monospace';
+    ctx.fillText('VERIFIED', holoX, holoY + 22);
+    ctx.textAlign = 'left';
+
+    // Scannable High-Contrast QR Code Canvas (Generated Fresh per Hero)
+    const qrBoxX = 755, qrBoxY = 280, qrBoxW = 170, qrBoxH = 170;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
+    ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(qrBoxX, qrBoxY, qrBoxW, qrBoxH);
+
+    const freshQrCanvas = document.createElement('canvas');
+    if (window.SimpleQR) {
+        const qrPayload = `GHRMS://HERO/${hero.gov_code || hero.id || 'hero_apex_01'}`;
+        SimpleQR.renderToCanvas(freshQrCanvas, qrPayload, {
+            size: 240,
+            foreground: '#0f172a',
+            background: '#ffffff'
+        });
+        try {
+            ctx.drawImage(freshQrCanvas, qrBoxX + 10, qrBoxY + 10, qrBoxW - 20, qrBoxH - 20);
+        } catch(e) {}
+    } else {
+        const domQrCanvas = document.getElementById('cardHeroQrCanvas');
+        if (domQrCanvas) {
+            try {
+                ctx.drawImage(domQrCanvas, qrBoxX + 10, qrBoxY + 10, qrBoxW - 20, qrBoxH - 20);
+            } catch(e) {}
+        }
+    }
+
+    // Security Microprint Bottom Footer Bar
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fillRect(20, 520, 960, 48);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(20, 520);
+    ctx.lineTo(980, 520);
+    ctx.stroke();
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '12px monospace';
+    const lic = `LIC: ${hero.license_number || ('GHRMS-LIC-' + (hero.gov_code || hero.id || '9GH-0000'))}`;
+    ctx.fillText(lic, 35, 548);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.textAlign = 'center';
+    ctx.fillText('SEC-AUTH // ARTICLE 4 ACCORD COMPLIANT // TAMPER-EVIDENT CREDENTIAL', 500, 548);
+    ctx.textAlign = 'right';
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText('MUNICIPAL CLEARANCE', 965, 548);
+    ctx.textAlign = 'left';
+
+    // Trigger PNG File Download
+    canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const filename = `${(hero.alias || 'hero').toLowerCase().replace(/[^a-z0-9]/g, '_')}_ghrms_id_card.png`;
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Official Hero ID Card saved as ${filename}!`, 'success');
+    }, 'image/png');
+}
+
+window.openHeroIdCardModal = openHeroIdCardModal;
+window.closeHeroIdCardModal = closeHeroIdCardModal;
+window.printHeroIdCard = printHeroIdCard;
+window.downloadHeroIdCardPng = downloadHeroIdCardPng;
+window.updateRegistrarIdCardModal = updateRegistrarIdCardModal;

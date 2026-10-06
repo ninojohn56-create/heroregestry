@@ -1,0 +1,65 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+5 0 obj
+<< /Length 1535 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+50 720 Td
+(GLOBAL HERO REGISTRATION AUTHORITY \(GHRMS\)) '
+(CLASSIFIED TACTICAL DOSSIER // AUTHORIZATION PROTOCOL) '
+(SECURITY LEVEL: LEVEL 4 ACCORD SPECIFICATION) '
+(--------------------------------------------------------------------------------) '
+(OPERATIVE IDENTIFICATION:) '
+(  Callsign Alias:          SPECTER ZERO) '
+(  Civilian Legal Name:     Unit 09 / David Alan Cross) '
+(  Federal Government Code: 9GH-0099) '
+(  Active License Number:   GHRMS-REVOKED-0099) '
+(  Current Standing:        Rogue) '
+() '
+(METAHUMAN CAPABILITIES & THREAT GRADING:) '
+(  Primary Power:           Cybernetic Railgun) '
+(  Secondary Specialty:     Invisibility Cloak) '
+(  Assigned Threat Tier:    A-Class) '
+(  Authorized Sector:       Sector 4 - Coastal Wharf) '
+() '
+(TACTICAL LIMITS & EMERGENCY MEDICAL PROTOCOLS:) '
+(  1. Kinetic dampening protocol authorized for civilian containment.) '
+(  2. Non-lethal force mandate applies during municipal standard patrols.) '
+(  3. In event of power surge, deploy Sector Response Team 9 immediately.) '
+(  4. Emergency medical treatment requires high-clearance trauma bypass.) '
+() '
+(OFFICIAL AUDIT VERIFICATION:) '
+(  Authenticated by:        Intake Registrar Sarah Chen / Commander Vance) '
+(  Chained Ledger Block:    SHA-256 Ledger Record Registered) '
+(  Document Date:           2026-10-06 13:14:51 UTC) '
+(--------------------------------------------------------------------------------) '
+(RESTRICTED DISCLOSURE: UNAUTHORIZED DUPLICATION PUNISHABLE UNDER ACCORD LAW) '
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000309 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1895
+%%EOF

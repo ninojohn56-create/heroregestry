@@ -33,13 +33,31 @@
       border-color: #fecaca !important;
       color: #991b1b !important;
     }
-    [data-theme="light"] #secHeroIdentity {
-      background: var(--bg-surface) !important;
+    [data-theme="light"] .hero-dossier-section,
+    [data-theme="light"] #secHeroIdentity,
+    [data-theme="light"] #secRegisteredPowers,
+    [data-theme="light"] #secSecondaryAbilities,
+    [data-theme="light"] #secThreatClassification,
+    [data-theme="light"] #secCertificationsTraining,
+    [data-theme="light"] #secSupportingDocuments,
+    [data-theme="light"] #secAuthorizationBadge {
+      background: #ffffff !important;
+      border-color: #e2e8f0 !important;
     }
     [data-theme="light"] #vwAccountStatusBadge {
       background: #f1f5f9 !important;
       color: #334155 !important;
       border: 1px solid #cbd5e1 !important;
+    }
+    [data-theme="light"] #vwHeroPowerDesc,
+    [data-theme="light"] #vwHeroTraining {
+      background: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    [data-theme="light"] #vwHeroBadgeStatus {
+      background: #f8fafc !important;
+      border-color: #e2e8f0 !important;
     }
   </style>
 </head>
@@ -49,7 +67,7 @@
   <!-- Top System Header (Hero Portal Context) -->
   <header class="ghrms-header">
     <div class="ghrms-brand">
-      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a href="/hero" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="GHRMS Hero Portal">
         <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
         <div class="ghrms-title-group">
           <span class="ghrms-acronym">GHRMS</span>
@@ -73,7 +91,10 @@
         <img src="/img/apex.jpg" alt="Apex Avatar" class="user-avatar-circle" id="headerUserAvatar">
         <div class="user-info-text">
           <span class="user-name-line" id="headerHeroAlias">APEX</span>
-          <span class="user-role-line" id="headerHeroCode">HERO ACCESS · Operative</span>
+          <span class="user-role-line" id="headerHeroCode">
+            <span style="font-size: 0.68rem; font-weight: 800; font-family: var(--font-mono); color: #38bdf8; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3); border-radius: 3px; padding: 1px 5px; margin-right: 4px;">HERO</span>
+            <span>Operative</span>
+          </span>
         </div>
       </div>
 
@@ -138,36 +159,39 @@
   <!-- App Layout -->
   <div class="ghrms-app-layout">
     <!-- Left Navigation -->
-    <nav class="ghrms-sidebar" aria-label="Hero Navigation">
+    <nav class="ghrms-sidebar" id="heroSidebar" aria-label="Hero Navigation">
       <div class="sidebar-header-bar">
-        <span class="nav-section-title">HERO ACCESS NAVIGATION</span>
+        <span class="nav-section-title sidebar-header-title">Hero Access Navigation</span>
+        <button type="button" class="sidebar-collapse-toggle-btn" id="heroSidebarToggleBtn" title="Collapse / Expand Sidebar (Ctrl+B)">
+          <span class="collapse-icon">◀</span>
+        </button>
       </div>
       <ul class="nav-item-list" style="margin-top: 0.5rem;">
-        <li><a class="nav-link" href="/" title="Central Gateway / Home"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[⌂]</span> HOME / GATEWAY</span></a></li>
-        <li><a class="nav-link active" href="/hero" title="My Hero Profile"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[★]</span> My Hero Profile</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('heroWorkflowStepper')" title="Application Progress"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> Application Progress</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secRegisteredPowers')" title="Registered Powers"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> Registered Powers</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secSecondaryAbilities')" title="Secondary Abilities"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> Secondary Abilities</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secThreatClassification')" title="Threat Classification"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> Threat Classification</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secCertificationsTraining')" title="Certifications & Training"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[5]</span> Certifications &amp; Training</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secSupportingDocuments')" title="Supporting Documents"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[6]</span> Supporting Documents</span></a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secAuthorizationBadge')" title="Authorization & Badge"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[7]</span> Authorization &amp; Badge</span></a></li>
+        <li><a class="nav-link active" href="/hero" title="My Hero Profile"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[★]</span> <span class="nav-link-text">My Hero Profile</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('heroWorkflowStepper')" title="Application Progress"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> <span class="nav-link-text">Application Progress</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secRegisteredPowers')" title="Registered Powers"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> <span class="nav-link-text">Registered Powers</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secSecondaryAbilities')" title="Secondary Abilities"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> <span class="nav-link-text">Secondary Abilities</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secThreatClassification')" title="Threat Classification"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> <span class="nav-link-text">Threat Classification</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secCertificationsTraining')" title="Certifications & Training"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[5]</span> <span class="nav-link-text">Certifications &amp; Training</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secSupportingDocuments')" title="Supporting Documents"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[6]</span> <span class="nav-link-text">Supporting Documents</span></span></a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="scrollToHeroSection('secAuthorizationBadge')" title="Authorization & Badge"><span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[7]</span> <span class="nav-link-text">Authorization &amp; Badge</span></span></a></li>
       </ul>
 
       <div class="nav-section-title-sub">Field Utilities</div>
       <ul class="nav-item-list">
         <li>
-          <a class="nav-link" id="navOpenQrBadge" style="cursor: pointer;">
-            <span class="nav-link-label">Dynamic QR Badge</span>
+          <a class="nav-link" id="navOpenQrBadge" style="cursor: pointer;" title="Dynamic QR Badge">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[QR]</span> <span class="nav-link-text">Dynamic QR Badge</span></span>
           </a>
         </li>
         <li>
-          <a class="nav-link" id="navOpenDamageDrawer" style="cursor: pointer;">
-            <span class="nav-link-label">Damage Drawer</span>
+          <a class="nav-link" id="navOpenDamageDrawer" style="cursor: pointer;" title="Damage Drawer">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[DMG]</span> <span class="nav-link-text">Damage Drawer</span></span>
           </a>
         </li>
       </ul>
     </nav>
+    <div class="sidebar-resizer" id="heroSidebarResizer" title="Drag to resize sidebar (double-click to reset)"></div>
 
     <!-- Center Content: MY HERO PROFILE -->
     <main class="view-panel active">
@@ -204,7 +228,13 @@
           </div>
           <div>
             <div class="hero-alias-header" id="heroAliasTitle">APEX</div>
-            <div class="hero-sub-id" id="heroSubId">Apex (Samuel Wright) · ID: 9GH-8430</div>
+            <div class="hero-sub-id" id="heroSubId">
+              <div class="hero-sub-id-uncompounded">
+                <span class="sub-id-item"><span class="sub-id-label">Registry ID:</span> <span class="sub-id-val" style="color: #38bdf8;">9GH-8430</span></span>
+                <span class="sub-id-item"><span class="sub-id-label">Civilian:</span> <span class="sub-id-val">Samuel Wright</span></span>
+                <span class="sub-id-badge" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399;">[ACCREDITED]</span>
+              </div>
+            </div>
             <div id="heroRoleBadge" style="margin-top: 5px; display: inline-flex; align-items: center; gap: 0.4rem;">
               <!-- Dynamic rank badge injected here -->
             </div>
@@ -217,6 +247,10 @@
             <button class="btn-mini btn-mini-assess" id="btnExpandQrBadge"
               style="font-size: 0.75rem; padding: 0.35rem 0.75rem; font-weight: 700;">
               [EXPAND QR BADGE]
+            </button>
+            <button type="button" class="btn-mini btn-mini-assess" id="btnOpenHeroIdCard" onclick="openHeroIdCardModal()"
+              style="font-size: 0.75rem; padding: 0.35rem 0.85rem; font-weight: 800; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(167, 139, 250, 0.2)); border: 1.5px solid #38bdf8; color: #38bdf8; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);">
+              <span>🪪</span> <span>[PRINT / SAVE OFFICIAL ID CARD]</span>
             </button>
           </div>
         </div>
@@ -288,7 +322,7 @@
         <div id="heroInfoViewMode">
 
           <!-- 1. HERO IDENTITY & LICENSURE -->
-          <div id="secHeroIdentity" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secHeroIdentity" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
               <span>1. Hero Identity &amp; Licensure</span>
               <span id="vwAccountStatusBadge" style="font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.08);">STATUS: —</span>
@@ -324,7 +358,7 @@
           </div>
 
           <!-- 2. REGISTERED POWERS -->
-          <div id="secRegisteredPowers" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secRegisteredPowers" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
               2. Registered Powers
             </div>
@@ -345,12 +379,12 @@
             </div>
             <div class="form-field-group" style="margin-top: 12px;">
               <span class="field-label-text">Comprehensive Power Description</span>
-              <div id="vwHeroPowerDesc" style="font-size: 0.85rem; color: var(--text-main); margin-top: 3px; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">—</div>
+              <div id="vwHeroPowerDesc" class="hero-desc-box">—</div>
             </div>
           </div>
 
           <!-- 3. SECONDARY ABILITIES -->
-          <div id="secSecondaryAbilities" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secSecondaryAbilities" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
               3. Secondary Abilities &amp; Non-Powered Skills
             </div>
@@ -377,7 +411,7 @@
           </div>
 
           <!-- 4. THREAT CLASSIFICATION -->
-          <div id="secThreatClassification" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secThreatClassification" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
               4. Threat Classification &amp; Combat Calibration
             </div>
@@ -413,7 +447,7 @@
           </div>
 
           <!-- 5. CERTIFICATIONS & TRAINING RECORDS -->
-          <div id="secCertificationsTraining" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secCertificationsTraining" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
               5. Certifications &amp; Training Records
             </div>
@@ -425,12 +459,12 @@
             </div>
             <div class="form-field-group" style="margin-top: 12px;">
               <span class="field-label-text">Training Records &amp; Field Readiness</span>
-              <div id="vwHeroTraining" style="font-size: 0.85rem; color: var(--text-main); margin-top: 3px; line-height: 1.5; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.04);">—</div>
+              <div id="vwHeroTraining" class="hero-desc-box">—</div>
             </div>
           </div>
 
           <!-- 6. SUPPORTING DOCUMENT STATUS -->
-          <div id="secSupportingDocuments" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secSupportingDocuments" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
               <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em;">
                 6. Supporting Document Status
@@ -473,7 +507,7 @@
           </div>
 
           <!-- 7. AUTHORIZATION STATUS & BADGE VERIFICATION -->
-          <div id="secAuthorizationBadge" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
+          <div id="secAuthorizationBadge" class="hero-dossier-section" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 16px;">
             <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
               7. Authorization Status &amp; Badge Verification
             </div>
@@ -491,7 +525,7 @@
             </div>
             <div class="form-field-group" style="margin-top: 12px;">
               <span class="field-label-text">Anti-Spoof Field Badge Verification Status</span>
-              <div id="vwHeroBadgeStatus" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 4px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 6px;">
+              <div id="vwHeroBadgeStatus" class="hero-badge-status-card" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 4px; padding: 10px 14px; border-radius: 6px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <span style="width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399;"></span>
                   <div>
@@ -615,6 +649,42 @@
     </main>
   </div>
 
+  <!-- ════════════════════════════════════════════
+       IN-PAGE DOCUMENT VIEWER & LIGHTBOX (Same Tab + Enlarge + Print)
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="docViewerModal" role="dialog" aria-modal="true" aria-label="Official Document Viewer" style="z-index: 1200;">
+    <div class="ghrms-modal-box" style="max-width: 920px; width: 95%; max-height: 94vh; display: flex; flex-direction: column;">
+      <div class="ghrms-modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 1rem;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.15rem;">📄</span>
+          <span id="docViewerTitle" style="font-weight: 800; font-size: 0.95rem; letter-spacing: 0.04em;">[DOCUMENT PREVIEW]</span>
+          <span id="docViewerStatusBadge" class="doc-badge doc-badge-verified" style="font-size: 0.68rem; margin-left: 6px;">VERIFIED</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-mini btn-mini-assess" id="btnDocViewerPrint" onclick="printCurrentDoc()" style="padding: 4px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">
+            🖨️ [PRINT DOCUMENT]
+          </button>
+          <a id="btnDocViewerDownload" href="#" download class="btn-mini" style="text-decoration: none; padding: 4px 10px; font-size: 0.75rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600;">
+            ⬇️ [DOWNLOAD]
+          </a>
+          <button type="button" class="icon-button" id="closeDocViewerBtn" onclick="closeDocViewer()" style="padding: 4px 8px; font-weight: 800; cursor: pointer;">[X]</button>
+        </div>
+      </div>
+      <div class="ghrms-modal-body" style="padding: 1rem; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #070a12; min-height: 440px; flex: 1;">
+        <div id="docViewerContent" style="width: 100%; display: flex; justify-content: center; align-items: center;">
+          <!-- Dynamically populated: enlarged image or iframe PDF -->
+        </div>
+      </div>
+      <div style="padding: 0.5rem 1rem; border-top: 1px solid var(--border-color); background: var(--bg-surface); font-size: 0.72rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <span id="docViewerMeta">Accord Standard 701-A // Official Supporting Document Verification</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span style="font-family: var(--font-mono); color: #38bdf8;">SECURE ATTACHMENT</span>
+          <button type="button" onclick="toggleDocZoom()" class="btn-mini" style="font-size: 0.68rem; padding: 2px 8px; background: rgba(255,255,255,0.05); color: var(--text-muted);">[TOGGLE FULLSIZE]</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Dual-Mode Hero Badge Modal (Permanent Civic QR + Rotating PIN) -->
   <div class="ghrms-modal-overlay" id="qrBadgeModal" role="dialog" aria-modal="true" aria-label="Field Identification Badge">
     <div class="ghrms-modal-box" style="max-width: 420px;">
@@ -635,8 +705,10 @@
 
       <div class="ghrms-modal-body" style="align-items: center; text-align: center; padding: 1.25rem;">
         <div style="font-size: 1.2rem; font-weight: 800; color: var(--text-main);" id="modalBadgeAlias">APEX</div>
-        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;" id="modalBadgeMeta">
-          Enhanced Strength · A-Class · Sector 1
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;" id="modalBadgeMeta">
+          <span class="sub-id-item"><span class="sub-id-val">Enhanced Strength</span></span>
+          <span class="sub-id-badge" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: #fbbf24;">Tier 3 / Class-A</span>
+          <span class="sub-id-badge" style="background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa;">Sector 1</span>
         </div>
 
         <!-- MODE A: PERMANENT CIVIC QR CODE -->
@@ -645,14 +717,19 @@
             <canvas id="heroPermanentQrCanvas" width="160" height="160"></canvas>
           </div>
           <div style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--text-main); letter-spacing: 0.05em;" id="permanentLicenseDisplay">
-            GHRMS://HERO/9GH-8430
+            GHRMS://HERO/---
           </div>
           <div style="font-size: 0.7rem; color: var(--text-muted); margin: 0.4rem 0 0.8rem; line-height: 1.35; padding: 0 10px;">
             Permanent federal civic license credential. Never decays. Valid across all municipal checkpoints, police cruisers, and crisis borders.
           </div>
-          <button type="button" class="btn btn-secondary" onclick="window.print()" style="width: 100%; font-size: 0.78rem; padding: 8px; justify-content: center;">
-            [PRINT / SAVE CIVIC CREDENTIAL]
-          </button>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button type="button" class="btn btn-primary" onclick="openHeroIdCardModal()" style="width: 100%; font-size: 0.78rem; padding: 8px; justify-content: center; font-weight: 800; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(167, 139, 250, 0.2)); border: 1.5px solid #38bdf8; color: #38bdf8;">
+              <span>🪪</span> <span>[VIEW OFFICIAL WALLET ID CARD &amp; HOLOGRAM]</span>
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="window.print()" style="width: 100%; font-size: 0.75rem; padding: 6px; justify-content: center;">
+              [PRINT / SAVE CIVIC CREDENTIAL]
+            </button>
+          </div>
         </div>
 
         <!-- MODE B: ROTATING ANTI-SPOOF PIN -->
@@ -672,6 +749,149 @@
           <div style="font-size: 0.7rem; color: var(--status-amber); margin-top: 0.5rem;">
             Challenge PIN for elevated clearance inspections &amp; high-security checkpoints.
           </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       OFFICIAL HERO ACCREDITATION ID CARD & HOLOGRAM SEAL MODAL
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="heroIdCardModal" role="dialog" aria-modal="true" aria-label="Official Hero ID Card" style="display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 10000;">
+    <div class="ghrms-modal-box" style="max-width: 580px; width: 100%; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+      <div class="ghrms-modal-header" style="background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.1rem;">🪪</span>
+          <span style="font-weight: 800; font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.05em; color: var(--text-main);">
+            OFFICIAL SUPERHUMAN ACCREDITATION CREDENTIAL
+          </span>
+        </div>
+        <button class="icon-button" onclick="closeHeroIdCardModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; padding: 4px 8px;">[X]</button>
+      </div>
+
+      <div class="ghrms-modal-body" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
+        
+        <!-- THE PHYSICAL WALLET ID CARD CONTAINER -->
+        <div id="printableHeroIdCard" class="hero-id-card-wrapper" style="position: relative; width: 100%; max-width: 500px; min-height: 295px; background: linear-gradient(145deg, #0b1120 0%, #0f172a 50%, #1e1b4b 100%); border: 2px solid #38bdf8; border-radius: 14px; padding: 16px; color: #ffffff; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.15); overflow: hidden; font-family: var(--font-sans);">
+          
+          <!-- Microprint security background lines -->
+          <div class="card-microprint-bg" style="position: absolute; inset: 0; opacity: 0.08; background-image: repeating-linear-gradient(45deg, #38bdf8 0, #38bdf8 1px, transparent 0, transparent 8px); pointer-events: none;"></div>
+
+          <!-- Top Header Strip: Federal Logo + Accord Title + Security Chip -->
+          <div style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid rgba(56, 189, 248, 0.4); padding-bottom: 8px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="/img/logo.jpg" alt="Seal" style="width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #38bdf8; object-fit: cover;">
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; color: #38bdf8; line-height: 1;">
+                  GLOBAL HERO REGISTRATION SYSTEM
+                </div>
+                <div style="font-size: 0.58rem; color: #94a3b8; font-family: var(--font-mono); letter-spacing: 0.08em; margin-top: 2px;">
+                  ACCORD SECURITY COMMISSION // FIELD CLEARANCE
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <!-- Smart Chip graphic -->
+              <div style="width: 28px; height: 20px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); border-radius: 3px; border: 1px solid #fef08a; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 4px rgba(0,0,0,0.5);">
+                <div style="width: 14px; height: 10px; border: 1px solid rgba(0,0,0,0.3); border-radius: 1px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Content: Photo + Details + Hologram Seal + QR Code -->
+          <div style="position: relative; z-index: 2; display: grid; grid-template-columns: 110px 1fr 100px; gap: 12px; align-items: center;">
+            
+            <!-- Column 1: Portrait Photo -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <div style="position: relative; width: 100px; height: 120px; border-radius: 8px; overflow: hidden; border: 2px solid #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); background: #000;">
+                <img id="cardHeroAvatar" src="/img/apex.jpg" alt="Hero Portrait" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); font-family: var(--font-mono); font-size: 0.52rem; color: #38bdf8; text-align: center; padding: 1px 0; font-weight: 700;">
+                  SEC-BIOMETRIC
+                </div>
+              </div>
+              <span id="cardThreatTierBadge" style="font-size: 0.62rem; font-weight: 800; font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fbbf24; white-space: nowrap; text-align: center;">
+                TIER 4 (CITY)
+              </span>
+            </div>
+
+            <!-- Column 2: Callsign & Legal Details -->
+            <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+              <div>
+                <div style="font-size: 0.58rem; color: #94a3b8; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">CALLSIGN ALIAS</div>
+                <div id="cardHeroAlias" style="font-size: 1.35rem; font-weight: 900; color: #ffffff; letter-spacing: -0.01em; line-height: 1.1; text-transform: uppercase;">
+                  APEX
+                </div>
+              </div>
+
+              <div style="margin-top: 3px;">
+                <div style="font-size: 0.58rem; color: #94a3b8; font-family: var(--font-mono); text-transform: uppercase;">LEGAL IDENTITY</div>
+                <div id="cardHeroRealName" style="font-size: 0.8rem; font-weight: 700; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  Samuel Wright
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 2px;">
+                <div>
+                  <div style="font-size: 0.55rem; color: #94a3b8; font-family: var(--font-mono);">GOV ID</div>
+                  <div id="cardHeroGovCode" style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #38bdf8;">
+                    9GH-8430
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size: 0.55rem; color: #94a3b8; font-family: var(--font-mono);">SECTOR</div>
+                  <div id="cardHeroSector" style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #a78bfa;">
+                    SECTOR 07
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 2px;">
+                <div style="font-size: 0.55rem; color: #94a3b8; font-family: var(--font-mono);">CLASSIFIED POWER</div>
+                <div id="cardHeroPower" style="font-size: 0.68rem; color: #e2e8f0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  Kinetic Absorption
+                </div>
+              </div>
+            </div>
+
+            <!-- Column 3: Holographic Seal + Permanent QR Code -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              
+              <!-- SHIMMERING RAINBOW HOLOGRAPHIC FOIL ACCORD SEAL -->
+              <div class="hologram-seal" title="Official Tamper-Evident Accord Hologram Seal" style="position: relative; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(244,63,94,0.45) 20%, rgba(56,189,248,0.45) 40%, rgba(251,191,36,0.55) 70%, rgba(167,139,250,0.5) 85%, rgba(255,255,255,0.7) 100%); background-size: 200% 200%; border: 1.5px solid rgba(255,255,255,0.8); box-shadow: 0 0 14px rgba(255,255,255,0.5), inset 0 0 6px rgba(255,255,255,0.4); animation: hologramShift 4.5s ease-in-out infinite;">
+                <div style="width: 42px; height: 42px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1;">
+                  <span style="font-size: 0.42rem; font-weight: 900; font-family: var(--font-mono); color: #0f172a; letter-spacing: 0.05em;">ACCORD</span>
+                  <span style="font-size: 0.58rem; color: #0f172a;">★</span>
+                  <span style="font-size: 0.38rem; font-weight: 800; font-family: var(--font-mono); color: #0f172a;">VERIFIED</span>
+                </div>
+              </div>
+
+              <!-- CRISP HIGH-CONTRAST SCANNABLE QR CANVAS -->
+              <div style="background: #ffffff; padding: 4px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); line-height: 0;">
+                <canvas id="cardHeroQrCanvas" width="80" height="80" style="display: block; width: 80px; height: 80px;"></canvas>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Security Microprint Footer Bar -->
+          <div style="position: relative; z-index: 2; margin-top: 12px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 0.54rem; color: #94a3b8;">
+            <span id="cardLicenseNumber">LIC: GHRMS-LIC-9GH-8430</span>
+            <span style="letter-spacing: 0.08em; color: #38bdf8;">SEC-AUTH // ARTICLE 4 ACCORD COMPLIANT</span>
+            <span>MUNICIPAL CLEARANCE</span>
+          </div>
+
+        </div>
+
+        <!-- Action Control Buttons -->
+        <div class="print-hide" style="display: flex; gap: 0.75rem; width: 100%; max-width: 500px; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" onclick="printHeroIdCard()" style="flex: 1; min-width: 180px; font-weight: 800; font-size: 0.8rem; padding: 10px 16px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;">
+            <span>🖨️</span> <span>[PRINT ID CARD / SAVE PDF]</span>
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="downloadHeroIdCardPng()" style="flex: 1; min-width: 180px; font-weight: 800; font-size: 0.8rem; padding: 10px 16px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8;">
+            <span>💾</span> <span>[DOWNLOAD BADGE (PNG)]</span>
+          </button>
         </div>
 
       </div>
@@ -776,6 +996,19 @@
   <!-- Scripts -->
   <script src="/js/qr.js"></script>
   <script src="/js/hero.js"></script>
+  <script src="/js/sidebar-resizer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.GHRMSSidebarEngine) {
+        GHRMSSidebarEngine.initNavSidebar({
+          sidebarId: 'heroSidebar',
+          resizerId: 'heroSidebarResizer',
+          toggleBtnId: 'heroSidebarToggleBtn',
+          storageKey: 'ghrms_hero_sidebar'
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>

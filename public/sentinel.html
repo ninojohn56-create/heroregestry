@@ -105,10 +105,25 @@
       border-color: #fde68a !important;
       color: #b45309 !important;
     }
-    [data-theme="light"] #btnBroadcastSectorLock {
+    [data-theme="light"] .status-bar-breach {
+      background: #fffbeb !important;
+      border-color: #d97706 !important;
+      color: #92400e !important;
+    }
+    [data-theme="light"] .status-bar-rogue {
       background: #fef2f2 !important;
-      border-color: #f87171 !important;
-      color: #b91c1c !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+    }
+    [data-theme="light"] .status-bar-verified {
+      background: #f0fdf4 !important;
+      border-color: #10b981 !important;
+      color: #065f46 !important;
+    }
+    [data-theme="light"] .status-bar-idle {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      color: #1e293b !important;
     }
   </style>
 </head>
@@ -117,7 +132,7 @@
   <!-- Top System Header (Sentinel Checkpoint Context) -->
   <header class="ghrms-header">
     <div class="ghrms-brand">
-      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a href="/sentinel" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="GHRMS Sentinel Checkpoint">
         <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
         <div class="ghrms-title-group">
           <span class="ghrms-acronym">GHRMS</span>
@@ -156,10 +171,6 @@
         <span id="themeToggleIconSymbol" class="theme-icon-symbol">☼</span>
         <span id="themeToggleIcon" style="font-size:0.72rem;font-weight:700;font-family:var(--font-mono);">LIGHT</span>
       </button>
-
-      <a href="/" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; text-decoration: none;">
-        [CENTRAL GATEWAY]
-      </a>
     </div>
   </header>
 
@@ -167,13 +178,16 @@
   <main class="sentinel-grid">
 
     <!-- LEFT COLUMN: SCANNER & TELEMETRY -->
-    <div style="display: flex; flex-direction: column; gap: 1rem; overflow-y: auto;">
+    <div id="sentinelLeftCol" class="sentinel-left-column">
       
       <!-- Panel 1: Optical Scanner Viewfinder -->
       <section class="sentinel-panel">
-        <div class="sentinel-panel-header">
-          <span>[OPTICAL SCANNER &amp; SENSOR]</span>
-          <span style="color: var(--status-green); font-size: 0.7rem;">[FEED: ACTIVE]</span>
+        <div class="sentinel-panel-header" style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span>[OPTICAL SCANNER &amp; SENSOR]</span>
+            <span style="color: var(--status-green); font-size: 0.7rem;">[FEED: ACTIVE]</span>
+          </div>
+          <button type="button" class="btn-mini" id="btnToggleScannerCollapse" style="padding: 2px 7px; font-size: 0.65rem; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 3px;" title="Collapse Scanner Viewfinder">[◀ COLLAPSE]</button>
         </div>
 
         <div style="padding: 1rem; display: flex; flex-direction: column; gap: 0.85rem;">
@@ -258,10 +272,11 @@
             <input type="file" id="sentinelFileInput" accept="image/*" style="display: none;">
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; color: var(--text-muted); padding: 0 2px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; color: var(--text-muted); padding: 0 2px; flex-wrap: wrap; gap: 6px;">
             <span>Drag &amp; drop badge onto viewfinder or upload</span>
-            <span style="display: flex; gap: 8px;">
+            <span style="display: flex; gap: 8px; flex-wrap: wrap;">
               <a href="/img/sample_qr_apex.png" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-family: var(--font-mono);">[Sample Apex QR]</a>
+              <a href="/img/sample_qr_lumina.gif" target="_blank" style="color: #38bdf8; text-decoration: underline; font-family: var(--font-mono);">[Sample Lumina QR]</a>
               <a href="/img/sample_qr_solaris.png" target="_blank" style="color: #ef4444; text-decoration: underline; font-family: var(--font-mono);">[Sample Solaris QR]</a>
             </span>
           </div>
@@ -332,12 +347,15 @@
 
     </div>
 
+    <div class="panel-split-resizer" id="sentinelSplitResizer" title="Drag to resize scanner panel (double-click to reset)"></div>
+
     <!-- RIGHT COLUMN: LIVE VERIFIED DOSSIER & DIRECTIVES -->
-    <div style="display: flex; flex-direction: column; gap: 1rem; overflow-y: auto;">
+    <div id="sentinelRightCol" class="sentinel-right-column">
       
       <!-- Live Status Banner -->
       <div id="sentinelStatusBar" class="sentinel-status-bar status-bar-idle">
         <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <button type="button" class="btn-mini" id="btnRestoreScannerPanel" style="display: none; padding: 2px 8px; font-size: 0.7rem; font-weight: 800; background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; cursor: pointer; border-radius: 3px;" title="Expand Scanner Panel">[▶ SCANNER]</button>
           <span id="statusBarIcon">[SCANNER IDLE]</span>
           <span id="statusBarText">AWAITING CREDENTIAL SCAN</span>
         </div>
@@ -520,5 +538,24 @@
   <script src="/js/jsqr.min.js"></script>
   <script src="/js/qr.js"></script>
   <script src="/js/sentinel.js"></script>
+  <script src="/js/sidebar-resizer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.GHRMSSidebarEngine) {
+        GHRMSSidebarEngine.initSplitPanel({
+          panelId: 'sentinelLeftCol',
+          resizerId: 'sentinelSplitResizer',
+          collapseBtnId: 'btnToggleScannerCollapse',
+          restoreBtnId: 'btnRestoreScannerPanel',
+          storageKey: 'ghrms_sentinel_scanner',
+          isRightPanel: false,
+          minWidth: 320,
+          maxWidth: 680,
+          defaultWidth: 440,
+          cssVarName: '--sentinel-left-width'
+        });
+      }
+    });
+  </script>
 </body>
 </html>

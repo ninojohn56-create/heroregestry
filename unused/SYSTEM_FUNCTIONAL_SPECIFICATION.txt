@@ -1,0 +1,218 @@
+================================================================================
+GLOBAL HERO REGISTRATION & MANAGEMENT SYSTEM (GHRMS)
+SYSTEM FUNCTIONAL SPECIFICATION (NON-TECHNICAL GUIDE)
+================================================================================
+
+DOCUMENT OVERVIEW:
+This document explains the Global Hero Registration & Management System (GHRMS)
+in clear, non-technical language. It describes what the system does, who uses it,
+the step-by-step processes, screen layouts, and security rules.
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY: WHAT IS GHRMS?
+--------------------------------------------------------------------------------
+The Global Hero Registration & Management System (GHRMS) is a centralized web
+platform built to license, evaluate, and manage superheroes for public service.
+
+In simple terms, GHRMS works like a modern digital registry for superheroes—
+similar to how a Department of Motor Vehicles licenses drivers or a government
+medical board certifies doctors, but with specialized tools to:
+
+1. Safeguard Secret Identities:
+   Keep civilian legal names, safehouse addresses, and emergency family contacts
+   strictly locked away inside a digital vault away from the public eye.
+
+2. Standardize Power & Threat Ratings:
+   Classify what each hero can do, how strong they are, and what safety limits
+   exist (from localized Street level to world-shaking Cosmic level).
+
+3. Streamline Intake Review & Approvals:
+   Allow city review officers to check identity documents, ask applicants to fix
+   errors (such as a blurry ID photo), and grant official legal licenses.
+
+4. Equip Field Police & Checkpoints:
+   Allow police patrol officers at street checkpoints to scan a hero's digital
+   badge on a smartphone or tablet and immediately confirm their active legal
+   standing and safety warnings in under 1 second.
+
+
+--------------------------------------------------------------------------------
+2. SYSTEM USERS & CLEARANCE TIERS (WHO USES THE SYSTEM?)
+--------------------------------------------------------------------------------
+Access is controlled through 5 clearance levels, just like security badges in a
+government facility:
+
+CLEARANCE LEVEL 5: SUPREME COMMANDER (Full Citywide Control & Audit)
+CLEARANCE LEVEL 4: ADMINISTRATIVE OFFICER (Staff & System Management)
+CLEARANCE LEVEL 3: INTAKE REGISTRAR (Application Review & Licensing)
+CLEARANCE LEVEL 2: TACTICAL ASSESSOR (Power & Threat Tier Rating)
+CLEARANCE LEVEL 1: HERO APPLICANT / OPERATIVE (Self-Service Registration)
+FIELD ACCESS:      POLICE PATROL & SENTINEL GUARDS (Street Checkpoint Scanner)
+
+ROLE BREAKDOWN:
+
+[A] Hero Applicant / Operative (Clearance Level 1)
+- Registers an account using their superhero alias (e.g., "Apex" or "Solaris").
+- Completes a 4-step guided intake form.
+- Saves progress as a draft at any time and finishes later.
+- Uploads government ID cards, academy diplomas, and a face photo.
+- Tracks review progress in real-time.
+- If an officer requests a fix (e.g. expired document), reads the officer's note,
+  updates the record, and clicks Resubmit.
+- Once approved, receives a digital hero card with a dynamic, tamper-proof QR code.
+- Submits post-battle damage reports after missions.
+
+[B] Intake Registrar & Tactical Assessor (Clearance Levels 2 & 3)
+- Works from an intake queue of pending applications.
+- Opens applications in a split-screen view to verify identity papers.
+- Unlocks the confidential civilian identity vault when matching real names with
+  uploaded government IDs (every unlock event is permanently logged).
+- Marks documents as "Verified" or "Rejected".
+- Calibrates power output ratings (1–100) and assigned threat tiers.
+- Sends applications back to the hero with specific instructions if items are missing.
+- Grants official licenses (format: GHRMS-LIC-YYYY-XXXX) or rejects invalid files.
+
+[C] System Administrator & Supreme Commander (Clearance Levels 4 & 5)
+- Monitors citywide hero readiness and a live threat radar map.
+- Creates, updates, and disables registrar staff accounts.
+- Reviews the permanent, tamper-evident audit ledger (which tracks every view of a
+  secret identity).
+- Issues emergency citywide alerts or containment orders if an operative goes rogue.
+
+[D] Street Police & Sentinel Checkpoint Guards (Field Access)
+- Uses a mobile tablet or scanner at street perimeters.
+- Scans a hero's badge QR code or enters their 4-character ID.
+- Receives an instant Green (Approved) or Red (Unlicensed/Suspended) verdict.
+- Views authorized powers, operating sectors, and emergency medical weaknesses.
+
+
+--------------------------------------------------------------------------------
+3. THE 5 MAIN SYSTEM PORTALS (SCREENS)
+--------------------------------------------------------------------------------
+
+1. Hero Registration Wizard (/register)
+   - Step 1: Civilian Details (Legal name, birthday, emergency contact, face photo).
+   - Step 2: Hero Identity (Callsign, power category, weaknesses, combat style).
+   - Step 3: Power Ratings (Output 1–100, combat skill 1–100, control level).
+   - Step 4: Supporting Documents (Government ID and qualification diplomas).
+   - Includes a "Save Draft" button so applicants never lose their work.
+
+2. Hero Operative Dashboard (/hero)
+   - Real-time progress bar showing if the file is in Draft, Submitted, or Approved.
+   - If changes are needed, displays an amber alert banner with the officer's note.
+   - Displays an accredited digital field badge with a dynamic QR code that refreshes
+     every 30 seconds to prevent counterfeit screenshots.
+   - Post-battle incident drawer to report mission damage or injuries.
+
+3. Registrar Review Desk (/registrar)
+   - Filterable list of all applicants in the city.
+   - Split-screen view to preview documents, photos, and power ratings side-by-side.
+   - One-click buttons to:
+     * "Request Corrections" (sends file back with a note)
+     * "Verify Identity" (marks civilian credentials authenticated)
+     * "Approve License" (generates official municipal license number)
+     * "Reject Registration" (denies non-compliant applications)
+
+4. Command Center (/admin)
+   - Citywide threat radar, staff user administration, and the permanent activity log.
+
+5. Sentinel Street Checkpoint (/sentinel)
+   - Rapid camera scanner for police to scan hero badges and view safety protocols.
+
+
+--------------------------------------------------------------------------------
+4. STEP-BY-STEP APPLICATION WORKFLOW
+--------------------------------------------------------------------------------
+
+PATH A: STANDARD SUCCESSFUL REGISTRATION
+1. Application: Hero visits /register, fills out all 4 steps, and uploads documents.
+2. Submission: Hero clicks "Submit Registration". Status becomes "Submitted", the file
+   enters the city review queue, and civilian details are locked in the vault.
+3. Review: A registrar officer opens the file ("Under Review") and checks the passport.
+4. Vetting: The officer views the decrypted civilian name, confirms it matches the ID,
+   and marks the document "Verified".
+5. Licensing: The officer clicks "Approve License". A license number is generated
+   (e.g., GHRMS-LIC-2026-9281), and the hero's badge illuminates active green.
+
+PATH B: HANDLING MISTAKES (THE CORRECTION LOOP)
+1. Issue Found: Reviewing officer notices an uploaded ID is expired or blurry.
+2. Officer Requests Fix: Officer clicks "Request Corrections" and enters instructions
+   (e.g., "The ID uploaded is expired. Please provide a valid passport scan.").
+3. Status Updated: Application status changes to "Returned for Correction".
+4. Hero Notified: When the hero logs into /hero, an amber alert banner displays the note.
+5. Hero Fixes File: Hero replaces the file and clicks "Resubmit".
+6. Re-entry: Application returns to the queue as "Submitted" without losing any data.
+
+
+--------------------------------------------------------------------------------
+5. APPLICATION STATUS CODES & MEANINGS
+--------------------------------------------------------------------------------
+
+[Draft] (Color: Gray)
+Meaning: Work in progress. Saved by the applicant, not yet submitted to the city.
+Action by: Hero Applicant
+
+[Submitted] (Color: Yellow)
+Meaning: Sent to the city; waiting in line for an intake officer to review.
+Action by: Registrar Officer
+
+[Under Review] (Color: Blue)
+Meaning: An officer has opened the file and is currently vetting documents.
+Action by: Registrar Officer
+
+[Returned for Correction] (Color: Orange / Amber)
+Meaning: Officer found an error or missing document and sent it back with notes.
+Action by: Hero Applicant (Fix and Resubmit)
+
+[Verified] (Color: Teal)
+Meaning: Identity documents and legal credentials have been verified authentic.
+Action by: Registrar Officer
+
+[Approved] (Color: Green)
+Meaning: Officially certified and licensed! Cleared for field duty.
+Action by: Hero & Field Police Checkpoints
+
+[Rejected] (Color: Red)
+Meaning: Application denied due to fraud, safety hazard, or Accord violations.
+Action by: None (File closed)
+
+
+--------------------------------------------------------------------------------
+6. SECURITY & PRIVACY EXPLAINED SIMPLY
+--------------------------------------------------------------------------------
+
+1. The "Digital Safety Deposit Box" (AES-256 Vault):
+   Civilian identities (real names, home safehouses, family contacts) are encrypted
+   with military-grade digital locks into an isolated vault. Public superhero personas
+   are visible to staff, but real civilian names can only be unlocked by authorized
+   officers with Level 3+ clearance, and every view is permanently recorded.
+
+2. The "Tamper-Evident Flight Recorder" (Audit Ledger):
+   Every administrative action (viewing secret identities, approving licenses, editing
+   records) is recorded in a cryptographically chained log. Just like an airplane's
+   black box, nobody—not even IT administrators—can secretly alter or erase records.
+
+3. The "Anti-Screenshot" Digital Badge (Dynamic QR Code):
+   The QR code on a hero's phone regenerates every 30 seconds (like a banking 2FA app).
+   A screenshot taken minutes earlier will be rejected immediately by police scanners.
+
+
+--------------------------------------------------------------------------------
+7. THREAT TIER SCALE (HOW POWERS ARE CLASSIFIED)
+--------------------------------------------------------------------------------
+[Tier 0: Cosmic]   -- Planetary-scale, reality altering or stellar manipulation.
+[Tier 1: Extreme]  -- Continental or multi-city impact; extreme devastation risk.
+[Tier 2: High]     -- City-district scale; heavy artillery and major structural impact.
+[Tier 3: Moderate] -- Neighborhood or multi-block scope (Standard field operative).
+[Tier 4: Low]      -- Specialized or single-building tactical scope.
+[Tier 5: Street]   -- Hand-to-hand, minor enhancement, localized neighborhood defense.
+
+METRICS CAPTURED:
+- Power Output Level: Scale of 1 to 100 measuring physical or energetic yield.
+- Combat Rating: Scale of 1 to 100 measuring martial training and tactical acumen.
+- Power Control Level: Novice, Competent, Mastered, or Absolute.
+- Operative Standing: Hero (Primary operative) or Sidekick (Apprentice in training).
+
+================================================================================
+END OF FUNCTIONAL SPECIFICATION
+================================================================================

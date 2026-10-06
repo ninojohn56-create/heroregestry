@@ -15,29 +15,32 @@
         extend: {
           colors: {
             brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49'
+            },
+            slate: {
               50: '#f8fafc',
               100: '#f1f5f9',
               200: '#e2e8f0',
               300: '#cbd5e1',
               400: '#94a3b8',
               500: '#64748b',
-              600: '#0f172a',
-              700: '#1e293b',
-              800: '#0f172a',
-              900: '#020617'
-            },
-            slate: {
-              50: '#fafafa',
-              100: '#f5f5f5',
-              200: '#e5e5e5',
-              300: '#cbd5e1',
-              400: '#94a3b8',
-              500: '#64748b',
               600: '#475569',
-              700: '#334155',
-              800: '#141414',
-              900: '#0a0a0a',
-              950: '#000000'
+              700: '#1b2433',
+              750: '#141b27',
+              800: '#0f141f',
+              850: '#0b0f17',
+              900: '#080b11',
+              950: '#030508'
             }
           },
           fontFamily: {
@@ -51,26 +54,27 @@
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts: Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Leaflet CSS for Tactical Radar -->
-  <link rel="stylesheet" href="/css/leaflet.css">
-  <link rel="stylesheet" href="/css/app.css?v=4.0">
+  <link rel="stylesheet" href="/css/leaflet.css?v=5.0">
+  <link rel="stylesheet" href="/css/app.css?v=5.0">
 
   <style>
     body { font-family: 'Inter', sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-    .dark ::-webkit-scrollbar-thumb { background: #475569; }
-    .badge-tier-0 { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.35); }
-    .badge-tier-1 { background: rgba(249, 115, 22, 0.15); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.35); }
-    .badge-tier-2 { background: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.35); }
-    .badge-tier-3 { background: rgba(30, 41, 59, 0.08); color: #1e293b; border: 1px solid rgba(30, 41, 59, 0.25); }
-    .dark .badge-tier-3,
-    [data-theme="dark"] .badge-tier-3 { background: rgba(255, 255, 255, 0.12); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.3); }
-    .badge-tier-4 { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.35); }
-    .badge-tier-5 { background: rgba(100, 116, 139, 0.15); color: #64748b; border: 1px solid rgba(100, 116, 139, 0.35); }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    /* Threat Tier Badges: Distinguished, High-Security Calibration */
+    .badge-tier-0 { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .badge-tier-1 { background: rgba(239, 68, 68, 0.16); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-tier-2 { background: rgba(249, 115, 22, 0.16); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); }
+    .badge-tier-3 { background: rgba(14, 165, 233, 0.16); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4); }
+    .badge-tier-4 { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-tier-5 { background: rgba(100, 116, 139, 0.16); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.35); }
 
     /* Dropdown options styling for cross-browser theme consistency */
     select option {
@@ -79,18 +83,24 @@
     }
     .dark select option,
     [data-theme="dark"] select option {
-      background-color: #0f172a;
+      background-color: #0f141f;
       color: #f8fafc;
     }
 
     /* Collapsible Sidebar Styles */
-    aside#sidebar { width: 16rem; min-width: 16rem; }
+    aside#sidebar {
+      width: 16rem;
+      min-width: 180px;
+      max-width: 480px;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s ease-in-out;
+    }
     aside#sidebar .nav-link,
     aside#sidebar nav a {
       justify-content: flex-start !important;
       border-left: none !important;
       padding: 0.625rem 0.75rem !important;
       font-size: 0.875rem !important;
+      transition: all 0.15s ease-in-out;
     }
     aside#sidebar.sidebar-collapsed { width: 4.5rem !important; min-width: 4.5rem !important; }
     aside.sidebar-collapsed .sidebar-text,
@@ -100,9 +110,35 @@
     aside.sidebar-collapsed #sidebarBrandTitle,
     aside.sidebar-collapsed #sidebarRoleSubtitle { display: none !important; }
     aside.sidebar-collapsed .nav-link,
-    aside.sidebar-collapsed nav a { justify-content: center !important; padding-left: 0 !important; padding-right: 0 !important; }
-    aside.sidebar-collapsed .sidebar-header { justify-content: center !important; padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+    aside.sidebar-collapsed nav a {
+      justify-content: center !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    aside.sidebar-collapsed .sidebar-header {
+      justify-content: center !important;
+      padding-left: 0.5rem !important;
+      padding-right: 0.5rem !important;
+    }
     aside.sidebar-collapsed .sidebar-user-box { justify-content: center !important; padding: 0.5rem !important; }
+
+    /* Active Nav Tab Highlight with Cyan/Blue Enterprise Focus */
+    aside#sidebar .nav-link.active-tab,
+    aside#sidebar .nav-link.active {
+      background: rgba(14, 165, 233, 0.12) !important;
+      color: #0284c7 !important;
+      font-weight: 700 !important;
+      border: 1px solid rgba(14, 165, 233, 0.3) !important;
+    }
+    .dark aside#sidebar .nav-link.active-tab,
+    .dark aside#sidebar .nav-link.active,
+    [data-theme="dark"] aside#sidebar .nav-link.active-tab,
+    [data-theme="dark"] aside#sidebar .nav-link.active {
+      background: rgba(14, 165, 233, 0.18) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(14, 165, 233, 0.35) !important;
+      box-shadow: inset 0 0 12px rgba(14, 165, 233, 0.08);
+    }
   </style>
 
   <script>
@@ -135,7 +171,7 @@
             <i data-lucide="shield" class="w-6 h-6"></i>
           </div>
           <div class="min-w-0">
-            <h1 id="sidebarBrandTitle" class="font-bold text-base leading-tight tracking-tight text-slate-900 dark:text-white truncate">GHRMS Command</h1>
+            <h1 id="sidebarBrandTitle" class="font-bold text-base leading-snug tracking-normal text-slate-900 dark:text-white truncate">GHRMS Command</h1>
             <span id="sidebarRoleSubtitle" class="text-xs text-rose-600 dark:text-rose-400 font-semibold uppercase tracking-wider block truncate">Supreme Command (L5)</span>
           </div>
         </a>
@@ -207,12 +243,6 @@
           <span class="sidebar-text">System Settings</span>
         </a>
 
-        <a href="/hero" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Launch Hero Portal (Role 1 Intake & Specification)">
-          <i data-lucide="zap" class="w-5 h-5 text-amber-500 shrink-0"></i>
-          <span class="sidebar-text">Hero Portal</span>
-          <span class="sidebar-badge ml-auto bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">L1</span>
-        </a>
-
         <a href="/registrar" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50" title="Launch Registrar Intake & Assessor Desk">
           <i data-lucide="clipboard-check" class="w-5 h-5 text-neutral-700 dark:text-neutral-300 shrink-0"></i>
           <span class="sidebar-text">Registrar Desk</span>
@@ -238,7 +268,7 @@
           <img src="/img/sarah_chen.jpg" id="headerUserAvatar" alt="User Avatar" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0">
           <div class="sidebar-user-info flex-1 min-w-0">
             <p id="headerUserName" class="text-sm font-bold truncate text-slate-900 dark:text-white">Admin Officer</p>
-            <p id="headerUserRole" class="text-xs text-brand-600 dark:text-brand-400 font-semibold truncate">Clearance L4 · Standard Admin</p>
+            <p id="headerUserRole" class="text-xs text-brand-600 dark:text-brand-400 font-semibold truncate"><span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-brand-500/15 text-brand-600 dark:text-brand-400 border border-brand-500/30">Level L4</span> <span class="font-semibold text-slate-600 dark:text-slate-300">Standard Admin</span></p>
           </div>
           <a href="/logout" class="text-slate-500 hover:text-rose-500 dark:text-slate-400 dark:hover:text-rose-400 transition-colors p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-900/20 shrink-0" title="Sign Out">
             <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -246,71 +276,74 @@
         </div>
       </div>
     </aside>
+    <div id="admin-sidebar-resizer" class="sidebar-resizer" title="Drag to resize sidebar (double-click to reset)"></div>
 
     <!-- Main Container -->
     <div class="flex flex-col flex-1 h-full overflow-hidden">
       
       <!-- Top Header -->
-      <header class="flex items-center justify-between h-16 px-4 md:px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 z-30 shrink-0 gap-4">
+      <header class="flex items-center justify-between h-16 px-4 md:px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700/80 z-30 shrink-0 gap-3 md:gap-4">
         <div class="flex items-center gap-3 min-w-0">
-          <button id="sidebar-toggle" onclick="handleSidebarToggle()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shrink-0" title="Toggle Navigation Sidebar">
-            <i data-lucide="menu" class="w-6 h-6"></i>
+          <button id="sidebar-toggle" onclick="handleSidebarToggle()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-cyan-400 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors shrink-0" title="Toggle Navigation Sidebar">
+            <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
           <div class="min-w-0">
-            <h2 id="page-title" class="text-base md:text-lg font-bold text-slate-800 dark:text-white truncate">Super Admin Command Center</h2>
-            <p id="page-subtitle" class="text-xs text-slate-500 dark:text-slate-400 hidden xl:block truncate">Master Superhuman Authority &amp; Incident Response Directive (Level 5).</p>
+            <h2 id="page-title" class="text-base md:text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate">Super Admin Command Center</h2>
+            <p id="page-subtitle" class="text-xs text-slate-500 dark:text-slate-400 hidden xl:block truncate">Global Superhuman Registration Authority — Supreme Command Directive (Level 5).</p>
           </div>
+        </div>
+
+        <!-- Telemetry System Status Pills -->
+        <div class="hidden lg:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700/80 text-[11px] font-mono text-slate-600 dark:text-slate-300 shadow-xs">
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+            <span class="font-bold tracking-wider text-emerald-600 dark:text-emerald-400">SYSTEM ONLINE</span>
+          </span>
+          <span class="text-slate-300 dark:text-slate-700">|</span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+            <span class="font-bold tracking-wider text-cyan-600 dark:text-cyan-400">DATABASE CONNECTED</span>
+          </span>
+          <span class="text-slate-300 dark:text-slate-700">|</span>
+          <span class="inline-flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.6)]"></span>
+            <span class="font-bold tracking-wider text-sky-600 dark:text-sky-300">REGISTRY SYNCED</span>
+          </span>
         </div>
 
         <div class="flex items-center gap-2 md:gap-3 shrink-0">
           <!-- Global Search -->
-          <div class="relative hidden lg:block w-72">
+          <div class="relative hidden sm:block w-48 lg:w-72">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
               <i data-lucide="search" class="w-4 h-4"></i>
             </span>
-            <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search operative, callsign, ID..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-700 rounded-xl focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 transition-all text-slate-800 dark:text-slate-100">
+            <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search operative, callsign, ID..." class="w-full pl-9 pr-4 py-2 text-xs md:text-sm bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-700 rounded-xl focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 transition-all text-slate-800 dark:text-slate-100">
           </div>
 
           <!-- Dark Mode Toggle -->
-          <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Toggle Theme">
+          <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-cyan-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" title="Toggle Theme">
             <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
           </button>
 
           <!-- Notifications Dropdown Trigger -->
           <div class="relative">
-            <button onclick="toggleNotifications()" class="relative p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+            <button id="adminNotifBtn" onclick="toggleNotifications()" class="relative p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-cyan-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors" title="Directives & Notifications">
               <i data-lucide="bell" class="w-5 h-5"></i>
-              <span id="notif-indicator" class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
+              <span id="notif-indicator" class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full animate-ping"></span>
+              <span id="notif-indicator-static" class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
             </button>
             
             <!-- Notifications Popover -->
-            <div id="notifications-panel" class="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl hidden z-50 overflow-hidden">
-              <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
-                <h3 class="font-bold text-sm text-slate-900 dark:text-white">Directive Notifications</h3>
-                <span class="text-xs text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold cursor-pointer" onclick="markAllNotificationsRead()">Mark all read</span>
+            <div id="notifications-panel" class="absolute right-0 mt-2 w-88 max-w-[calc(100vw-2rem)] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl hidden z-50 overflow-hidden transform transition-all duration-200">
+              <div class="p-4 border-b border-slate-100 dark:border-slate-700/80 flex justify-between items-center bg-slate-50 dark:bg-slate-900/60">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="bell" class="w-4 h-4 text-cyan-400"></i>
+                  <h3 class="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white">Directive &amp; Activity Feed</h3>
+                </div>
+                <button type="button" class="text-xs text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 font-semibold cursor-pointer" onclick="markAllNotificationsRead()">Mark all read</button>
               </div>
-              <div id="notifications-list" class="divide-y divide-slate-100 dark:divide-slate-700 max-h-72 overflow-y-auto text-sm">
-                <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('queue')">
-                  <div class="flex items-center justify-between">
-                    <p class="font-bold text-xs text-amber-600 dark:text-amber-400">[INSPECTION DUE]</p>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Just now</span>
-                  </div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Operative APEX registration requires confirmation.</p>
-                </div>
-                <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('radar')">
-                  <div class="flex items-center justify-between">
-                    <p class="font-bold text-xs text-rose-600 dark:text-rose-400">[ROGUE RADAR]</p>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">12m ago</span>
-                  </div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Sector 2 Containment alert active for rogue signatures.</p>
-                </div>
-                <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer" onclick="switchTab('users')">
-                  <div class="flex items-center justify-between">
-                    <p class="font-bold text-xs text-neutral-900 dark:text-neutral-100">[AUTH ACCORD]</p>
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">1h ago</span>
-                  </div>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">Personnel passkeys synced with SHA-256 chained audit ledger.</p>
-                </div>
+              <div id="notifications-list" class="divide-y divide-slate-100 dark:divide-slate-700/60 max-h-80 overflow-y-auto text-sm">
+                <!-- Dynamically populated via loadAdminNotifications() -->
               </div>
             </div>
           </div>
@@ -318,7 +351,7 @@
       </header>
 
       <!-- Scrollable Main View -->
-      <main class="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-slate-900">
+      <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900">
 
         <!-- ════════════════════════════════════════════
              1. DASHBOARD TAB
@@ -326,87 +359,117 @@
         <div id="tab-dashboard" class="tab-content space-y-6">
           
           <!-- Summary Stat Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Stat Card 1 -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Total Operatives</p>
-                <h3 id="stat-total-heroes" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">2,419</h3>
-                <span class="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-md mt-2">
+            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-cyan-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Operatives</p>
+                  <h3 id="stat-total-heroes" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-cyan-400 transition-colors">2,419</h3>
+                </div>
+                <div class="p-3 bg-brand-500/10 text-brand-500 rounded-xl border border-brand-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="users" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
                   <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +4.2% this term
                 </span>
-              </div>
-              <div class="p-4 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 rounded-2xl">
-                <i data-lucide="users" class="w-6 h-6"></i>
+                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">GLOBAL REGISTER</span>
               </div>
             </div>
 
             <!-- Stat Card 2 -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Active Licensures</p>
-                <h3 id="stat-licensed-heroes" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">9</h3>
-                <span class="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-md mt-2">
+            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Active Licenses</p>
+                  <h3 id="stat-licensed-heroes" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-emerald-400 transition-colors">9</h3>
+                </div>
+                <div class="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="award" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
                   <i data-lucide="shield-check" class="w-3 h-3 mr-1"></i> Across 5 sectors
                 </span>
-              </div>
-              <div class="p-4 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl">
-                <i data-lucide="award" class="w-6 h-6"></i>
+                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">100% AUDITED</span>
               </div>
             </div>
 
             <!-- Stat Card 3 -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Pending Queue</p>
-                <h3 id="stat-pending-queue" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">14</h3>
-                <span class="inline-flex items-center text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 rounded-md mt-2">
+            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-amber-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pending Queue</p>
+                  <h3 id="stat-pending-queue" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-amber-400 transition-colors">14</h3>
+                </div>
+                <div class="p-3 bg-amber-500/10 text-amber-500 rounded-xl border border-amber-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="file-clock" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
                   <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Requires review
                 </span>
-              </div>
-              <div class="p-4 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-2xl">
-                <i data-lucide="file-clock" class="w-6 h-6"></i>
+                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">INTAKE ACTIVE</span>
               </div>
             </div>
 
             <!-- Stat Card 4 -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Personnel Accounts</p>
-                <h3 id="stat-personnel-count" class="text-2xl font-bold mt-1 text-slate-900 dark:text-white">6</h3>
-                <span class="inline-flex items-center text-xs font-bold text-neutral-800 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-md mt-2">
+            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-purple-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+              <div class="flex items-start justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Personnel Accounts</p>
+                  <h3 id="stat-personnel-count" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-purple-400 transition-colors">6</h3>
+                </div>
+                <div class="p-3 bg-purple-500/10 text-purple-500 rounded-xl border border-purple-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="key-round" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600/50 px-2 py-0.5 rounded-md">
                   <i data-lucide="user-check" class="w-3 h-3 mr-1"></i> Clearance L1 - L5
                 </span>
-              </div>
-              <div class="p-4 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl">
-                <i data-lucide="key-round" class="w-6 h-6"></i>
+                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">AUTH SYNCHED</span>
               </div>
             </div>
           </div>
 
           <!-- Recent Applications Table -->
-          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-              <div>
-                <h3 class="text-base font-bold text-slate-900 dark:text-white">Active Operative Intake Queue</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Pending evaluation records and credential verifications</p>
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm overflow-hidden">
+            <div class="p-5 md:p-6 border-b border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-900/30">
+              <div class="flex items-center gap-3">
+                <div class="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">Active Operative Intake Queue</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Click any operative row to inspect complete dossier, verifications &amp; audit history.</p>
+                </div>
               </div>
-              <button onclick="switchTab('queue')" class="text-sm font-bold text-slate-900 dark:text-white hover:text-slate-600 dark:hover:text-slate-300 hover:underline">View All Queue</button>
+              <div class="flex items-center gap-2">
+                <button onclick="switchTab('queue')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 rounded-xl border border-cyan-500/20 transition-all">
+                  <span>View Full Queue</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
             </div>
             <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
+              <table class="w-full text-left border-collapse min-w-[700px]">
                 <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
-                    <th class="py-3.5 px-6">Operative & Callsign</th>
-                    <th class="py-3.5 px-6">Sector / Region</th>
-                    <th class="py-3.5 px-6">Primary Power</th>
-                    <th class="py-3.5 px-6">Threat Class</th>
-                    <th class="py-3.5 px-6">Status</th>
-                    <th class="py-3.5 px-6 text-right">Actions</th>
+                  <tr class="bg-slate-50 dark:bg-slate-900/70 text-slate-500 dark:text-slate-400 text-[11px] uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-700/60 font-mono">
+                    <th class="py-3 px-6">OPERATIVE &amp; CALLSIGN</th>
+                    <th class="py-3 px-6">SECTOR / REGION</th>
+                    <th class="py-3 px-6">PRIMARY POWER</th>
+                    <th class="py-3 px-6">THREAT CLASS</th>
+                    <th class="py-3 px-6">STATUS</th>
+                    <th class="py-3 px-6 text-right">ACTIONS</th>
                   </tr>
                 </thead>
-                <tbody id="dashboard-queue-table" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm">
-                  <!-- Injected via JavaScript -->
+                <tbody id="dashboard-queue-table" class="divide-y divide-slate-100 dark:divide-slate-700/60 text-sm">
+                  <!-- Injected dynamically via JavaScript with interactive rows -->
                 </tbody>
               </table>
             </div>
@@ -727,9 +790,48 @@
             </div>
           </div>
 
+          <!-- Tactical Map Controls & Layer HUD Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-xs">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] mr-1">Cartography:</span>
+              <button type="button" onclick="selectTacticalLayer('street')" id="btnLayerStreet" class="px-2.5 py-1.5 rounded-lg font-semibold bg-brand-500/15 text-brand-600 dark:text-brand-400 border border-brand-500/30 hover:bg-brand-500/25 transition-all flex items-center gap-1.5">
+                <i data-lucide="map" class="w-3.5 h-3.5"></i>
+                <span>Street View</span>
+              </button>
+              <button type="button" onclick="selectTacticalLayer('satellite')" id="btnLayerSatellite" class="px-2.5 py-1.5 rounded-lg font-semibold bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all flex items-center gap-1.5">
+                <i data-lucide="satellite" class="w-3.5 h-3.5"></i>
+                <span>Satellite Recon</span>
+              </button>
+              <button type="button" onclick="selectTacticalLayer('voyager')" id="btnLayerVoyager" class="px-2.5 py-1.5 rounded-lg font-semibold bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all flex items-center gap-1.5">
+                <i data-lucide="navigation" class="w-3.5 h-3.5"></i>
+                <span>City Voyager</span>
+              </button>
+              <button type="button" onclick="selectTacticalLayer('dark')" id="btnLayerDark" class="px-2.5 py-1.5 rounded-lg font-semibold bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all flex items-center gap-1.5">
+                <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                <span>Stealth Dark</span>
+              </button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] mr-1">Targets:</span>
+              <button type="button" onclick="focusTacticalSector(1)" class="px-2.5 py-1.5 rounded-lg font-semibold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition-all flex items-center gap-1">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i>
+                <span>Sector 1</span>
+              </button>
+              <button type="button" onclick="focusTacticalSector(5)" class="px-2.5 py-1.5 rounded-lg font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 transition-all flex items-center gap-1">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i>
+                <span>Sector 5</span>
+              </button>
+              <button type="button" onclick="fitAllTacticalOperatives()" class="px-2.5 py-1.5 rounded-lg font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1">
+                <i data-lucide="maximize" class="w-3.5 h-3.5"></i>
+                <span>Fit All Assets</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Leaflet Map Box -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden p-2">
-            <div id="adminTacticalMap" style="height: 480px; width: 100%; border-radius: 12px;"></div>
+            <div id="adminTacticalMap" style="height: 520px; width: 100%; border-radius: 12px;"></div>
           </div>
         </div>
 
@@ -860,9 +962,10 @@
           <img id="modal-passkey-hero-avatar" src="/img/apex.jpg" alt="Avatar" class="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700">
           <div class="flex-1 min-w-0">
             <h4 id="modal-passkey-hero-name" class="font-bold text-sm text-slate-900 dark:text-white">APEX (Samuel Wright)</h4>
-            <p class="text-xs text-slate-500 dark:text-slate-400">
-              Username: <strong id="modal-passkey-hero-username" class="text-brand-600 dark:text-brand-400 font-mono">apex</strong> · <span id="modal-passkey-hero-status" class="text-emerald-600 font-bold">Licensed</span>
-            </p>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="text-xs text-slate-500 dark:text-slate-400">Account: <strong id="modal-passkey-hero-username" class="text-brand-600 dark:text-brand-400 font-mono">apex</strong></span>
+              <span id="modal-passkey-hero-status" class="text-[11px] px-2 py-0.5 rounded font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">Licensed</span>
+            </div>
           </div>
         </div>
 
@@ -916,9 +1019,9 @@
         <div>
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Security Role *</label>
           <select id="prov-role" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
-            <option value="HERO">HERO · Clearance L1</option>
-            <option value="REGISTRAR">REGISTRAR · Clearance L3</option>
-            <option value="SUPER_ADMIN" id="opt-superadmin-role">SUPER_ADMIN · Clearance L5</option>
+            <option value="HERO">HERO [Clearance L1]</option>
+            <option value="REGISTRAR">REGISTRAR [Clearance L3]</option>
+            <option value="SUPER_ADMIN" id="opt-superadmin-role">SUPER_ADMIN [Clearance L5]</option>
           </select>
         </div>
         <div class="pt-2 flex justify-end gap-3">
@@ -930,91 +1033,381 @@
   </div>
 
   <!-- ════════════════════════════════════════════
-       MODAL 3: EDIT HERO MODAL
+       MODAL 3: EDIT HERO MODAL (Comprehensive - Every Single Field Editable)
        ════════════════════════════════════════════ -->
-  <div id="hero-edit-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h3 id="hero-edit-title" class="font-bold text-base text-slate-900 dark:text-white">Edit Operative Profile</h3>
+  <div id="hero-edit-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-3xl mx-4 overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-5 h-5 text-brand-600 dark:text-brand-400"></i>
+          <div>
+            <h3 id="hero-edit-title" class="font-bold text-base text-slate-900 dark:text-white">Edit Operative Profile</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Every piece of information is editable. Changes are logged to the SHA-256 Audit Ledger under your account.</p>
+          </div>
+        </div>
         <button onclick="closeHeroEditModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form onsubmit="handleHeroEditSubmit(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
+
+      <form onsubmit="handleHeroEditSubmit(event)" class="p-6 space-y-5 overflow-y-auto flex-1">
         <input type="hidden" id="edit-hero-id">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Callsign / Alias *</label>
-            <input type="text" id="edit-alias" required class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+
+        <!-- 1. Confidential Civilian Vault Identity -->
+        <div class="p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/40 dark:bg-rose-950/20 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold text-rose-700 dark:text-rose-400 tracking-wider flex items-center gap-1.5">
+              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+              1. CONFIDENTIAL CIVILIAN VAULT IDENTITY (LEVEL 3+ RESTRICTED)
+            </span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-bold border border-rose-300 dark:border-rose-800">AES-256 ENCRYPTED</span>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Civilian Legal Real Name *</label>
-            <input type="text" id="edit-real-name" required class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Civilian Legal Real Name *</label>
+              <input type="text" id="edit-real-name" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-medium">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Government National ID / Gov ID *</label>
+              <input type="text" id="edit-gov-id" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-medium">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Date of Birth</label>
+              <input type="text" id="edit-dob" placeholder="e.g. Aug. 21, 1983" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Civilian Age</label>
+              <input type="number" id="edit-age" placeholder="34" min="0" max="999" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Gender</label>
+              <select id="edit-gender" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                <option value="Unspecified">Unspecified</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Contact Phone / Handler Line</label>
+              <input type="text" id="edit-contact-number" placeholder="+1 (555) 839-4910" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Emergency Contact &amp; Relation</label>
+              <input type="text" id="edit-emergency-contact" placeholder="Dr. Karen Wright (Spouse)" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Confidential Safehouse Address</label>
+              <input type="text" id="edit-safehouse-address" placeholder="742 Lexington Ave, Penthouse 44" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Biometric DNA Ref Code</label>
+              <input type="text" id="edit-biometric-dna" placeholder="APX-998-CYBER-KINETIC" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-mono">
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Primary Power Classification *</label>
-            <input type="text" id="edit-primary-power" required class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+        <!-- 2. Hero Callsign, Licensure & Standing -->
+        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 space-y-3">
+          <span class="text-xs font-extrabold text-brand-600 dark:text-brand-400 tracking-wider block">
+            2. HERO CALLSIGN, LICENSURE &amp; STANDING
+          </span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Callsign / Alias *</label>
+              <input type="text" id="edit-alias" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-bold">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Operational Status *</label>
+              <select id="edit-status" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+                <option value="Licensed">Licensed</option>
+                <option value="Under Review">Under Review</option>
+                <option value="REVIEWING">REVIEWING</option>
+                <option value="Approved">Approved</option>
+                <option value="Suspended">Suspended</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Locked Out">Locked Out</option>
+                <option value="Returned for Correction">Returned for Correction</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Official License Number</label>
+              <input type="text" id="edit-license-number" placeholder="GHRMS-LIC-9GH-8430" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-800 dark:text-slate-100">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Sector Jurisdiction</label>
+              <select id="edit-sector" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                <option value="Sector 1 - Metro Downtown">Sector 1 - Metro Downtown</option>
+                <option value="Sector 2 - Industrial District">Sector 2 - Industrial District</option>
+                <option value="Sector 3 - Suburbs North">Sector 3 - Suburbs North</option>
+                <option value="Sector 4 - Coastal Wharf">Sector 4 - Coastal Wharf</option>
+                <option value="Sector 5 - High-Tech Valley">Sector 5 - High-Tech Valley</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Registry Gov Code</label>
+              <input type="text" id="edit-gov-code" placeholder="9GH-8430" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Registration Step</label>
+              <select id="edit-registration-step" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+                <option value="1">Step 1 — Intake</option>
+                <option value="2">Step 2 — Abilities</option>
+                <option value="3">Step 3 — Calibration</option>
+                <option value="4">Step 4 — Certified</option>
+              </select>
+            </div>
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Secondary Power</label>
-            <input type="text" id="edit-secondary-power" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Avatar / Profile Picture URL</label>
+            <input type="text" id="edit-avatar" placeholder="/img/apex.jpg or /uploads/avatars/face.jpg" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4">
+        <!-- 3. Superhuman Power Specs & Combat Profile -->
+        <div class="p-4 rounded-xl border border-sky-200 dark:border-sky-900/50 bg-sky-50/30 dark:bg-sky-950/20 space-y-3">
+          <span class="text-xs font-extrabold text-sky-700 dark:text-sky-400 tracking-wider block">
+            3. SUPERHUMAN POWER SPECIFICATIONS &amp; COMBAT PROFILE
+          </span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Primary Power Classification *</label>
+              <input type="text" id="edit-primary-power" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-bold">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Primary Output (1–100%)</label>
+              <input type="number" id="edit-primary-pct" placeholder="80" min="1" max="100" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+          </div>
           <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Threat Tier</label>
-            <select id="edit-threat-tier" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
-              <option value="0">Tier 0 - Cosmic</option>
-              <option value="1">Tier 1 - Planetary</option>
-              <option value="2">Tier 2 - Continental</option>
-              <option value="3">Tier 3 - Regional</option>
-              <option value="4">Tier 4 - City</option>
-              <option value="5">Tier 5 - Street</option>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Comprehensive Power Description</label>
+            <textarea id="edit-power-desc" rows="2" placeholder="Full power description and physiological mechanisms..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Secondary Power</label>
+              <input type="text" id="edit-secondary-power" placeholder="e.g. Flight, Thermal Shielding" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Secondary Output (1–100%)</label>
+              <input type="number" id="edit-secondary-pct" placeholder="60" min="1" max="100" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Tactical Combat Style</label>
+              <input type="text" id="edit-combat-style" placeholder="e.g. Vanguard Striker, Frontline Breacher" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Abilities &amp; Non-Powered Skills</label>
+              <input type="text" id="edit-abilities-skills" placeholder="e.g. Krav Maga, Tactical Leadership" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Operational Strengths</label>
+              <textarea id="edit-strengths" rows="2" placeholder="Kinetic tolerance, tactical calm..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Limitations / Weaknesses</label>
+              <textarea id="edit-weaknesses" rows="2" placeholder="Psychological triggers, thermal depletion..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Threat Calibration, Field Readiness & Mentorship -->
+        <div class="p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/30 dark:bg-amber-950/20 space-y-3">
+          <span class="text-xs font-extrabold text-amber-700 dark:text-amber-400 tracking-wider block">
+            4. THREAT CALIBRATION, FIELD READINESS &amp; MENTORSHIP
+          </span>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Threat Tier</label>
+              <select id="edit-threat-tier" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+                <option value="0">Tier 0 - Cosmic (Reality-Altering)</option>
+                <option value="1">Tier 1 - Planetary (Continental)</option>
+                <option value="2">Tier 2 - High (Severe / Tactical Asset)</option>
+                <option value="3">Tier 3 - Regional (State Level)</option>
+                <option value="4">Tier 4 - City (Municipal)</option>
+                <option value="5">Tier 5 - Street (Neighborhood)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Power Control Level</label>
+              <input type="text" id="edit-control-level" placeholder="Mastered / Absolute (Tier-A)" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Combat Rating (1–100%)</label>
+              <input type="number" id="edit-combat-rating" placeholder="85" min="1" max="100" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Tactical Gear Manifest (Comma Separated)</label>
+            <input type="text" id="edit-gear-manifest" placeholder="Kevlar Weave Suit, EMP Disrupter, Grapple Hook" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Training Records &amp; Certifications</label>
+              <textarea id="edit-training" rows="2" placeholder="Academy honors, tactical hours logged..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Assessment Notes &amp; Risk Parameters</label>
+              <textarea id="edit-assessment-notes" rows="2" placeholder="Official officer evaluation notes..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Assigned Mentor (Sidekick Division)</label>
+            <select id="edit-mentor" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
+              <option value="">— None / Independent Operative —</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Status</label>
-            <select id="edit-status" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
-              <option value="Licensed">Licensed</option>
-              <option value="Under Review">Under Review</option>
-              <option value="Suspended">Suspended</option>
-              <option value="Rogue">Rogue</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Sector</label>
-            <select id="edit-sector" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
-              <option value="Sector 1 - Metro Downtown">Sector 1</option>
-              <option value="Sector 2 - Industrial District">Sector 2</option>
-              <option value="Sector 3 - Suburbs North">Sector 3</option>
-              <option value="Sector 4 - Coastal Wharf">Sector 4</option>
-              <option value="Sector 5 - High-Tech Valley">Sector 5</option>
-            </select>
-          </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Assigned Mentor (for Sidekick Division)</label>
-          <select id="edit-mentor" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
-            <option value="">— None / Independent Operative —</option>
-          </select>
-        </div>
-
-        <div class="pt-4 flex justify-between items-center gap-3">
+        <div class="pt-2 flex justify-between items-center gap-3">
           <button type="button" onclick="triggerPasskeyFromEditModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs transition-all" title="Launch security passkey reset modal for this operative">
             <i data-lucide="key" class="w-4 h-4"></i>
             Reset Security Passkey
           </button>
           <div class="flex justify-end gap-3">
             <button type="button" onclick="closeHeroEditModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
-            <button type="submit" class="px-5 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md">Save Changes</button>
+            <button type="submit" id="btnAdminSaveHero" class="px-5 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md flex items-center gap-2">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>Save All Changes &amp; Audit</span>
+            </button>
           </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       IN-PAGE DOCUMENT VIEWER & LIGHTBOX (Same Tab + Enlarge + Print)
+       ════════════════════════════════════════════ -->
+  <div id="docViewerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 hidden backdrop-blur-sm">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-4xl mx-4 overflow-hidden max-h-[94vh] flex flex-col">
+      <div class="flex items-center justify-between px-6 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90">
+        <div class="flex items-center gap-3 min-w-0">
+          <i data-lucide="file-text" class="w-5 h-5 text-brand-600 dark:text-brand-400 shrink-0"></i>
+          <div class="min-w-0">
+            <h3 id="docViewerTitle" class="font-bold text-sm text-slate-900 dark:text-white truncate">[DOCUMENT PREVIEW]</h3>
+            <p id="docViewerMeta" class="text-xs text-slate-500 dark:text-slate-400 truncate">Accord Standard 701-A // Official Supporting Document Verification</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <button type="button" onclick="printCurrentDoc()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>Print Document</span>
+          </button>
+          <a id="btnDocViewerDownload" href="#" download class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download</span>
+          </a>
+          <button type="button" onclick="closeDocViewer()" class="p-1.5 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-950 flex-1 overflow-auto flex items-center justify-center min-h-[460px]">
+        <div id="docViewerContent" class="w-full flex items-center justify-center">
+          <!-- Dynamically populated enlarged image or iframe -->
+        </div>
+      </div>
+
+      <div class="px-6 py-2.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+        <span class="font-mono text-[11px] text-sky-600 dark:text-sky-400">SECURE VAULT ATTACHMENT</span>
+        <button type="button" onclick="toggleDocZoom()" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 transition-colors">
+          Toggle Fullsize / Zoom
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       MODAL: AUDIT RECORD & DIFF INSPECTOR
+       ════════════════════════════════════════════ -->
+  <div id="audit-diff-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 hidden backdrop-blur-xs">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-2xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+          <div>
+            <h3 class="font-bold text-base text-slate-900 dark:text-white">Audit Entry &amp; Modification Log</h3>
+            <p id="audit-diff-subtitle" class="text-xs text-slate-500 dark:text-slate-400 font-mono">Event Details &amp; Field Diffs</p>
+          </div>
+        </div>
+        <button onclick="closeAuditDiffModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 overflow-y-auto flex-1 text-xs">
+        <!-- Account Card -->
+        <div class="p-3.5 bg-slate-100 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Originating Account</span>
+            <span id="audit-diff-role" class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30">ROLE</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-mono font-bold text-slate-900 dark:text-white" id="audit-diff-account">@username</span>
+            <span class="text-slate-500 dark:text-slate-400" id="audit-diff-name">(Full Name)</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-800">
+            <div>IP Address: <span id="audit-diff-ip" class="font-mono text-slate-700 dark:text-slate-300">127.0.0.1</span></div>
+            <div>Timestamp: <span id="audit-diff-time" class="font-mono text-slate-700 dark:text-slate-300">—</span></div>
+          </div>
+        </div>
+
+        <!-- Target Hero -->
+        <div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div>
+            <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Target Operative Record</span>
+            <span id="audit-diff-target" class="font-bold text-sm text-slate-900 dark:text-white">—</span>
+          </div>
+          <span id="audit-diff-action" class="font-mono text-xs font-bold text-brand-600 dark:text-brand-400">HERO_PROFILE_EDITED</span>
+        </div>
+
+        <!-- Diff Table -->
+        <div>
+          <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-2">Changed Fields &amp; Value Diff:</span>
+          <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900/60 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                  <th class="p-2.5">Field</th>
+                  <th class="p-2.5">Previous Value (Old)</th>
+                  <th class="p-2.5">Updated Value (New)</th>
+                </tr>
+              </thead>
+              <tbody id="audit-diff-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SHA-256 Hash block -->
+        <div class="p-3 bg-slate-100 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Cryptographic SHA-256 Block Hash</span>
+          <div id="audit-diff-hash" class="font-mono text-[11px] text-slate-700 dark:text-slate-300 break-all select-all">000000000000000000</div>
+        </div>
+      </div>
+
+      <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
+        <button onclick="closeAuditDiffModal()" class="px-4 py-1.5 text-xs font-bold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-xl transition-colors">
+          Close Inspector
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1131,11 +1524,57 @@
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════
+       SECURITY DIRECTIVE CONFIRMATION MODAL
+       ════════════════════════════════════════════ -->
+  <div id="ghra-confirm-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 hidden backdrop-blur-sm transition-opacity duration-200">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all duration-200 scale-95" id="ghra-confirm-box">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80 flex items-center gap-3 bg-slate-50 dark:bg-slate-900/60">
+        <div id="ghra-confirm-icon-wrap" class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+          <i id="ghra-confirm-icon" data-lucide="shield-alert" class="w-5 h-5"></i>
+        </div>
+        <div class="min-w-0">
+          <h3 id="ghra-confirm-title" class="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider truncate">Security Directive Confirmation</h3>
+          <p id="ghra-confirm-subtitle" class="text-xs text-slate-500 dark:text-slate-400 truncate">Clearance Level 5 Authorization Required</p>
+        </div>
+      </div>
+      <div class="p-6 space-y-4">
+        <p id="ghra-confirm-message" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+        
+        <div id="ghra-confirm-input-wrap" class="hidden space-y-1.5">
+          <label id="ghra-confirm-input-label" class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Directive Notes / Reason</label>
+          <textarea id="ghra-confirm-input" rows="2" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500"></textarea>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-cyan-400 shrink-0"></i>
+          <span>Action will be cryptographically signed to the audit ledger.</span>
+        </div>
+      </div>
+      <div class="px-6 py-3.5 border-t border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3">
+        <button type="button" id="ghra-confirm-cancel-btn" onclick="closeConfirmDirectiveModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700/60 rounded-xl transition-all">
+          Abort Directive
+        </button>
+        <button type="button" id="ghra-confirm-action-btn" class="px-5 py-2 text-xs font-bold text-white rounded-xl shadow-md transition-all flex items-center gap-1.5">
+          <span>Authorize Directive</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed bottom-6 right-6 z-[100000] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- Scripts -->
-  <script src="/js/leaflet.js"></script>
-  <script src="/js/admin.js?v=4.0"></script>
+  <script src="/js/leaflet.js?v=5.0"></script>
+  <script src="/js/admin.js?v=5.0"></script>
+  <script src="/js/sidebar-resizer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.GHRMSSidebarEngine) {
+        GHRMSSidebarEngine.initAdminSidebar();
+      }
+    });
+  </script>
 </body>
 </html>

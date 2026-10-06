@@ -195,12 +195,27 @@ class AuthService {
         }
 
         $user = $users[$username];
+
+        // Suspension Check: Deactivated or suspended accounts cannot authenticate
+        if ((isset($user['status']) && $user['status'] === 'suspended') || (isset($user['is_active']) && $user['is_active'] === false)) {
+            CryptoService::appendAudit('SECURITY_GATEWAY', $user['role'] ?? 'UNKNOWN', 'LOGIN_BLOCKED_SUSPENDED', $username, [
+                'reason' => 'Account is administratively suspended or deactivated',
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'
+            ]);
+            return null;
+        }
+
         if (!password_verify($password, $user['password_hash'])) {
             CryptoService::appendAudit('SECURITY_GATEWAY', 'ANONYMOUS', 'LOGIN_FAILED', $username, [
                 'reason' => 'Invalid password hash',
                 'ip' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'
             ]);
             return null;
+        }
+
+        // Prevent session fixation attacks by regenerating session ID upon privilege elevation
+        if (session_status() === PHP_SESSION_ACTIVE && !headers_sent()) {
+            @session_regenerate_id(true);
         }
 
         // Update last_login in users.json
@@ -220,6 +235,7 @@ class AuthService {
         $_SESSION['avatar'] = $user['avatar'];
         $_SESSION['clearance_level'] = $user['clearance_level'];
         $_SESSION['logged_in_at'] = time();
+        $_SESSION['last_activity'] = time();
         $_SESSION['last_login'] = $loginTime;
 
         // Audit log
@@ -232,14 +248,25 @@ class AuthService {
     }
 
     /**
+     * Validate password security policy
+     */
+    public static function validatePasswordPolicy(string $password): ?string {
+        if (strlen($password) < 6) {
+            return "Passkey must be at least 6 characters long.";
+        }
+        if (strlen($password) > 128) {
+            return "Passkey exceeds maximum allowable length of 128 characters.";
+        }
+        return null;
+    }
+
+    /**
      * Terminate current session
      */
-    public static function logout(): void {
-        self::initSession();
-        $currentUser = self::getCurrentUser();
-        if ($currentUser) {
-            CryptoService::appendAudit($currentUser['name'], $currentUser['role'], 'USER_LOGOUT', $currentUser['username'], []);
-        }
+    /**
+     * Clear and destroy active session cookies securely
+     */
+    public static function destroySessionCookies(): void {
         $_SESSION = [];
         if (ini_get("session.use_cookies") && !headers_sent()) {
             $params = session_get_cookie_params();
@@ -249,8 +276,20 @@ class AuthService {
             );
         }
         if (session_status() === PHP_SESSION_ACTIVE) {
-            session_destroy();
+            @session_destroy();
         }
+    }
+
+    /**
+     * Terminate current session
+     */
+    public static function logout(): void {
+        self::initSession();
+        $currentUser = self::getCurrentUser();
+        if ($currentUser) {
+            CryptoService::appendAudit($currentUser['name'], $currentUser['role'], 'USER_LOGOUT', $currentUser['username'], []);
+        }
+        self::destroySessionCookies();
     }
 
     /**
@@ -260,6 +299,51 @@ class AuthService {
         self::initSession();
         if (empty($_SESSION['user_id'])) {
             return null;
+        }
+
+        $username = $_SESSION['user_id'];
+
+        // Enforce maximum absolute session duration (default: 86400s / 24h)
+        $maxLifetime = (int)(getenv('SESSION_LIFETIME') ?: 86400);
+        if (!empty($_SESSION['logged_in_at']) && (time() - (int)$_SESSION['logged_in_at']) > $maxLifetime) {
+            CryptoService::appendAudit('SECURITY_GATEWAY', $_SESSION['role'] ?? 'ANONYMOUS', 'SESSION_EXPIRED_MAX_LIFETIME', $username, [
+                'reason' => 'Session exceeded maximum allowable duration'
+            ]);
+            self::destroySessionCookies();
+            return null;
+        }
+
+        // Enforce idle timeout (default: 1800s / 30m of user inactivity)
+        $idleTimeout = (int)(getenv('SESSION_IDLE_TIMEOUT') ?: 1800);
+        if (!empty($_SESSION['last_activity']) && (time() - (int)$_SESSION['last_activity']) > $idleTimeout) {
+            CryptoService::appendAudit('SECURITY_GATEWAY', $_SESSION['role'] ?? 'ANONYMOUS', 'SESSION_EXPIRED_IDLE', $username, [
+                'reason' => 'Session expired due to inactivity'
+            ]);
+            self::destroySessionCookies();
+            return null;
+        }
+        $_SESSION['last_activity'] = time();
+
+        if (defined('FILE_USERS') && file_exists(FILE_USERS)) {
+            $users = JsonStorage::read(FILE_USERS, []);
+            $userData = $users[$username] ?? null;
+
+            if (!$userData || (isset($userData['status']) && $userData['status'] === 'suspended') || (isset($userData['is_active']) && $userData['is_active'] === false)) {
+                // Immediate session revocation for suspended/inactive/deleted account
+                CryptoService::appendAudit('SECURITY_GATEWAY', $_SESSION['role'] ?? 'ANONYMOUS', 'SESSION_REVOKED_SUSPENDED', $username, [
+                    'reason' => 'Account is suspended, inactive, or removed from authority registry'
+                ]);
+                self::destroySessionCookies();
+                return null;
+            }
+
+            // Sync role or clearance if updated administratively
+            if (isset($userData['role'])) {
+                $_SESSION['role'] = $userData['role'];
+            }
+            if (isset($userData['clearance_level'])) {
+                $_SESSION['clearance_level'] = $userData['clearance_level'];
+            }
         }
 
         return [

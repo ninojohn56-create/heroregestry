@@ -600,7 +600,7 @@
   <!-- Top Header -->
   <header class="ghrms-header">
     <div class="ghrms-brand">
-      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+      <a href="/login" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="GHRMS Authority">
         <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
         <div class="ghrms-title-group">
           <span class="ghrms-acronym">GHRMS</span>
@@ -613,8 +613,8 @@
     <div class="header-right">
       <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()"
         style="padding: 6px 14px; font-size: 0.78rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;"
-        title="Return to Dashboard or Gateway">
-        <span>←</span> <span id="returnNavLabel">Dashboard / Gateway</span>
+        title="Return to Dashboard">
+        <span>←</span> <span id="returnNavLabel">Dashboard</span>
       </button>
       <a href="/login" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none;" id="authNavBtn">
         <span>[AUTH]</span> <span>Sign In</span>
@@ -1713,18 +1713,23 @@
         const cont = document.getElementById('existingDocsContainer');
         const list = document.getElementById('existingDocsList');
         cont.style.display = 'block';
-        list.innerHTML = h.supporting_documents.map(d => `
+        list.innerHTML = h.supporting_documents.map(d => {
+          const docId = d.doc_id || d.id;
+          const origName = d.original_name || 'View File';
+          const docType = d.document_type || 'Document';
+          return `
           <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 6px 10px; border-radius: 4px; font-size: 0.75rem;">
             <div>
-              <strong>${d.document_type || 'Document'}</strong>: 
-              <a href="/api/heroes/${encodeURIComponent(h.id)}/documents/${encodeURIComponent(d.doc_id)}" target="_blank" class="doc-link">${d.original_name || 'View File'}</a>
+              <strong>${docType}</strong>: 
+              <button type="button" onclick="openRegisterDocViewer('${encodeURIComponent(h.id)}', '${encodeURIComponent(docId)}', '${origName.replace(/'/g, "\\'")}')" class="doc-link" style="background:none; border:none; color:var(--primary-accent); text-decoration:underline; cursor:pointer; font-size:inherit; padding:0; font-family:inherit;">${origName}</button>
               <span style="color: var(--text-muted); font-size: 0.68rem; margin-left: 6px;">(${new Date(d.uploaded_at).toLocaleDateString()})</span>
             </div>
             <span class="status-doc-badge ${d.verification_status === 'Verified' ? 'verified' : (d.verification_status === 'Rejected' ? 'rejected' : 'pending')}">
               ${d.verification_status || 'Pending'}
             </span>
           </div>
-        `).join('');
+        `;
+        }).join('');
       }
     }
 
@@ -1749,7 +1754,7 @@
             if (window.history.length > 1) {
               window.history.back();
             } else {
-              window.location.href = '/';
+              window.location.href = '/login';
             }
           }
         })
@@ -1757,9 +1762,78 @@
           if (window.history.length > 1) {
             window.history.back();
           } else {
-            window.location.href = '/';
+            window.location.href = '/login';
           }
         });
+    }
+
+    // Document viewer in same tab
+    let regCurrentDocUrl = null;
+    let regIsDocZoomed = false;
+
+    function openRegisterDocViewer(heroId, docId, title) {
+      regCurrentDocUrl = `/api/heroes/${encodeURIComponent(heroId)}/documents/${encodeURIComponent(docId)}`;
+      regIsDocZoomed = false;
+      const modal = document.getElementById('registerDocViewerModal');
+      const content = document.getElementById('regDocContent');
+      const titleEl = document.getElementById('regDocTitle');
+      const dlBtn = document.getElementById('regDocDlBtn');
+
+      if (!modal || !content) return;
+      if (titleEl) titleEl.textContent = `[EVIDENCE: ${title || 'DOCUMENT'}]`;
+      if (dlBtn) dlBtn.href = regCurrentDocUrl;
+
+      const isPdf = title && title.toLowerCase().endsWith('.pdf');
+      if (isPdf) {
+        content.innerHTML = `<iframe id="regDocIframe" src="${regCurrentDocUrl}" style="width:100%; height:68vh; border:none; border-radius:6px; background:#fff;"></iframe>`;
+      } else {
+        content.innerHTML = `
+          <div style="text-align:center; width:100%;">
+            <img id="regDocImg" src="${regCurrentDocUrl}" alt="Document" style="max-width:100%; max-height:70vh; object-fit:contain; border-radius:6px; cursor:zoom-in; transition: transform 0.2s;" onclick="toggleRegisterDocZoom()">
+            <div style="font-size:0.7rem; color:var(--text-muted); margin-top:8px;">Click image to toggle zoom</div>
+          </div>
+        `;
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeRegisterDocViewer() {
+      const modal = document.getElementById('registerDocViewerModal');
+      if (modal) modal.style.display = 'none';
+      const content = document.getElementById('regDocContent');
+      if (content) content.innerHTML = '';
+      regCurrentDocUrl = null;
+      regIsDocZoomed = false;
+    }
+
+    function toggleRegisterDocZoom() {
+      const img = document.getElementById('regDocImg');
+      if (!img) return;
+      regIsDocZoomed = !regIsDocZoomed;
+      if (regIsDocZoomed) {
+        img.style.maxHeight = 'none';
+        img.style.transform = 'scale(1.25)';
+        img.style.cursor = 'zoom-out';
+      } else {
+        img.style.maxHeight = '70vh';
+        img.style.transform = 'scale(1)';
+        img.style.cursor = 'zoom-in';
+      }
+    }
+
+    function printRegisterDoc() {
+      if (!regCurrentDocUrl) return;
+      const iframe = document.getElementById('regDocIframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        return;
+      }
+      const printWin = window.open('', '_blank', 'width=900,height=700');
+      if (printWin) {
+        printWin.document.write(`<!DOCTYPE html><html><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;"><img src="${regCurrentDocUrl}" onload="window.print();window.close();" style="max-width:100%;max-height:95vh;"></body></html>`);
+        printWin.document.close();
+      }
     }
 
     // Run on load
@@ -1768,6 +1842,26 @@
       initIntakeState();
     });
   </script>
+
+  <!-- In-Page Document Viewer Modal -->
+  <div id="registerDocViewerModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; width:92%; max-width:860px; max-height:92vh; display:flex; flex-direction:column; overflow:hidden;">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border-color); background:var(--bg-surface);">
+        <span id="regDocTitle" style="font-weight:800; font-size:0.85rem; font-family:var(--font-mono); color:var(--text-main);">[DOCUMENT PREVIEW]</span>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button type="button" onclick="printRegisterDoc()" style="background:var(--primary-accent); color:#000; border:none; padding:4px 12px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🖨️ Print</button>
+          <a id="regDocDlBtn" href="#" download style="background:rgba(255,255,255,0.08); color:var(--text-main); text-decoration:none; padding:4px 10px; font-size:0.75rem; border-radius:6px; border:1px solid var(--border-color);">⬇️ Download</a>
+          <button type="button" onclick="closeRegisterDocViewer()" style="background:none; border:none; color:var(--text-muted); font-size:1.1rem; cursor:pointer; font-weight:800; padding:0 6px;">✕</button>
+        </div>
+      </div>
+      <div id="regDocContent" style="padding:16px; flex:1; overflow:auto; display:flex; align-items:center; justify-content:center; background:#070a12; min-height:420px;">
+      </div>
+      <div style="padding:8px 18px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-muted); background:var(--bg-surface);">
+        <span>GHRMS Secure Identity Attachment</span>
+        <button type="button" onclick="toggleRegisterDocZoom()" style="background:none; border:none; color:var(--primary-accent); cursor:pointer; font-size:0.7rem;">Toggle Zoom</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

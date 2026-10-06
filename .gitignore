@@ -20,3 +20,14 @@ Thumbs.db
 # Python Virtual Environments
 .venv/
 venv/
+
+# GHRA Backups & Runtime Transient Buckets
+backend/data/backups/
+backend/backups/
+backend/data/ratelimit/
+public/uploads/avatars/face_*.jpg
+public/uploads/avatars/face_*.png
+
+# Temporary Office Lockfiles
+unused/.~lock.*
+unused/~$*

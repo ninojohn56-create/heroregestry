@@ -61,8 +61,8 @@
 	}
 
 .leaflet-container img.leaflet-tile {
-	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
-	mix-blend-mode: plus-lighter;
+	/* Avoid Chromium compositing bug: ensure tiles render normally */
+	mix-blend-mode: normal !important;
 }
 
 .leaflet-container.leaflet-touch-zoom {
