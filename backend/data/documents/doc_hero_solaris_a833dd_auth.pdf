@@ -12,7 +12,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Courier >>
 endobj
 5 0 obj
-<< /Length 1525 >>
+<< /Length 1543 >>
 stream
 BT
 /F1 11 Tf
@@ -25,7 +25,7 @@ BT
 (OPERATIVE IDENTIFICATION:) '
 (  Callsign Alias:          SOLARIS) '
 (  Civilian Legal Name:     Elena Rostova) '
-(  Federal Government Code: 9GH-9988) '
+(  Government Code:         9GH-9988) '
 (  Active License Number:   GHRMS-REVOKED-SOL88) '
 (  Current Standing:        Rogue) '
 () '
@@ -33,7 +33,7 @@ BT
 (  Primary Power:           Thermonuclear Plasma) '
 (  Secondary Specialty:     Solar Flare Disruption) '
 (  Assigned Threat Tier:    A-Class) '
-(  Authorized Sector:       Sector 3 - Commercial Hub) '
+(  Authorized Sector:       Sector 3 - Karaos & Borbon Uplands District) '
 () '
 (TACTICAL LIMITS & EMERGENCY MEDICAL PROTOCOLS:) '
 (  1. Kinetic dampening protocol authorized for civilian containment.) '
@@ -44,7 +44,7 @@ BT
 (OFFICIAL AUDIT VERIFICATION:) '
 (  Authenticated by:        Intake Registrar Sarah Chen / Commander Vance) '
 (  Chained Ledger Block:    SHA-256 Ledger Record Registered) '
-(  Document Date:           2026-10-06 13:23:47 UTC) '
+(  Document Date:           2026-10-06 13:57:25 UTC) '
 (--------------------------------------------------------------------------------) '
 (RESTRICTED DISCLOSURE: UNAUTHORIZED DUPLICATION PUNISHABLE UNDER ACCORD LAW) '
 ET
@@ -61,5 +61,5 @@ xref
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-1885
+1903
 %%EOF

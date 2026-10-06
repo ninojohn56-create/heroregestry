@@ -12,7 +12,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Courier >>
 endobj
 5 0 obj
-<< /Length 1526 >>
+<< /Length 1545 >>
 stream
 BT
 /F1 11 Tf
@@ -25,7 +25,7 @@ BT
 (OPERATIVE IDENTIFICATION:) '
 (  Callsign Alias:          VANGUARD TITAN) '
 (  Civilian Legal Name:     Marcus Jonathan Vance) '
-(  Federal Government Code: 9GH-0042) '
+(  Government Code:         9GH-0042) '
 (  Active License Number:   GHRMS-LIC-0042) '
 (  Current Standing:        Licensed) '
 () '
@@ -33,7 +33,7 @@ BT
 (  Primary Power:           Kinetic Mastery) '
 (  Secondary Specialty:     Bio-enhancement) '
 (  Assigned Threat Tier:    S-Class) '
-(  Authorized Sector:       Sector 1 - Metro Downtown) '
+(  Authorized Sector:       Sector 1 - Poblacion Central Commercial Grid) '
 () '
 (TACTICAL LIMITS & EMERGENCY MEDICAL PROTOCOLS:) '
 (  1. Kinetic dampening protocol authorized for civilian containment.) '
@@ -44,7 +44,7 @@ BT
 (OFFICIAL AUDIT VERIFICATION:) '
 (  Authenticated by:        Intake Registrar Sarah Chen / Commander Vance) '
 (  Chained Ledger Block:    SHA-256 Ledger Record Registered) '
-(  Document Date:           2026-10-06 13:23:47 UTC) '
+(  Document Date:           2026-10-06 13:57:25 UTC) '
 (--------------------------------------------------------------------------------) '
 (RESTRICTED DISCLOSURE: UNAUTHORIZED DUPLICATION PUNISHABLE UNDER ACCORD LAW) '
 ET
@@ -61,5 +61,5 @@ xref
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-1886
+1905
 %%EOF

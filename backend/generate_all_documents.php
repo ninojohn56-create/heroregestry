@@ -52,7 +52,7 @@ function generateIdCardPng(string $filePath, array $hero): void {
     $govCode = $hero['gov_code'] ?? '9GH-XXXX';
     $power = $hero['primary_power'] ?? 'Classified Ability';
     $tier = $hero['threat_class'] ?? ($hero['threat_tier_label'] ?? ('Tier ' . ($hero['threat_tier'] ?? 1)));
-    $sector = $hero['region'] ?? 'Sector 1 - Metro Downtown';
+    $sector = $hero['region'] ?? 'Sector 1 - Poblacion Central Commercial Grid';
     $license = $hero['license_number'] ?? 'GHRMS-LIC-PENDING';
 
     imagestring($im, 5, 230, 110, "CALLSIGN: {$alias}", $textGold);
@@ -150,7 +150,7 @@ function generateTacticalDossierPdf(string $filePath, array $hero): void {
     $power = $hero['primary_power'] ?? 'Metahuman Output';
     $secondary = $hero['secondary_power'] ?? 'None registered';
     $tier = $hero['threat_class'] ?? ('Tier ' . ($hero['threat_tier'] ?? 1));
-    $sector = $hero['region'] ?? 'Sector 1 - Metro Downtown';
+    $sector = $hero['region'] ?? 'Sector 1 - Poblacion Central Commercial Grid';
     $license = $hero['license_number'] ?? 'GHRMS-LIC-PENDING';
     $status = $hero['status'] ?? 'Active';
 
@@ -162,7 +162,7 @@ function generateTacticalDossierPdf(string $filePath, array $hero): void {
         "OPERATIVE IDENTIFICATION:",
         "  Callsign Alias:          {$alias}",
         "  Civilian Legal Name:     {$realName}",
-        "  Federal Government Code: {$govCode}",
+        "  Government Code:         {$govCode}",
         "  Active License Number:   {$license}",
         "  Current Standing:        {$status}",
         "",

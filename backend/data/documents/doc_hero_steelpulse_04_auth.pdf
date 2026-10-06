@@ -12,7 +12,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Courier >>
 endobj
 5 0 obj
-<< /Length 1518 >>
+<< /Length 1539 >>
 stream
 BT
 /F1 11 Tf
@@ -25,7 +25,7 @@ BT
 (OPERATIVE IDENTIFICATION:) '
 (  Callsign Alias:          STEEL PULSE) '
 (  Civilian Legal Name:     Ravi Singh) '
-(  Federal Government Code: 9GH-8433) '
+(  Government Code:         9GH-8433) '
 (  Active License Number:   GHRMS-LIC-PENDING) '
 (  Current Standing:        REVIEWING) '
 () '
@@ -33,7 +33,7 @@ BT
 (  Primary Power:           Energy Projection) '
 (  Secondary Specialty:     Concussive Force) '
 (  Assigned Threat Tier:    C-Class) '
-(  Authorized Sector:       Sector 4 - Coastal Wharf) '
+(  Authorized Sector:       Sector 4 - Bitan-agan & Lapinigan River Basin) '
 () '
 (TACTICAL LIMITS & EMERGENCY MEDICAL PROTOCOLS:) '
 (  1. Kinetic dampening protocol authorized for civilian containment.) '
@@ -44,7 +44,7 @@ BT
 (OFFICIAL AUDIT VERIFICATION:) '
 (  Authenticated by:        Intake Registrar Sarah Chen / Commander Vance) '
 (  Chained Ledger Block:    SHA-256 Ledger Record Registered) '
-(  Document Date:           2026-10-06 13:23:47 UTC) '
+(  Document Date:           2026-10-06 13:57:25 UTC) '
 (--------------------------------------------------------------------------------) '
 (RESTRICTED DISCLOSURE: UNAUTHORIZED DUPLICATION PUNISHABLE UNDER ACCORD LAW) '
 ET
@@ -61,5 +61,5 @@ xref
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-1878
+1899
 %%EOF

@@ -1,11 +1,11 @@
 [
     {
         "id": "inc_2026_01",
-        "title": "Bridge Structural Fracture - Shockwave Impact",
-        "region": "Sector 1 - Metro Downtown",
+        "title": "Poblacion Commercial Crossing Fracture - Shockwave Impact",
+        "region": "Sector 1 - Poblacion Central Commercial Grid",
         "coordinates": {
-            "lat": 40.71,
-            "lng": -74.002
+            "lat": 8.5115,
+            "lng": 125.982
         },
         "power_type": "Enhanced Strength",
         "severity": "High",
@@ -15,15 +15,15 @@
         "civic_recovery_status": "Claim Approved - Fund Allocated",
         "photo_evidence": "concrete_fracture_01.jpg",
         "notes": "Structural pier stabilization required after neutralizing rogue kinetic assailant.",
-        "timestamp": "2026-10-03T13:23:46+00:00"
+        "timestamp": "2026-10-03T13:57:09+00:00"
     },
     {
         "id": "inc_2026_02",
-        "title": "Grid Substation Surge & Arc Discharge",
-        "region": "Sector 2 - Industrial District",
+        "title": "Hubang Highway Substation Surge & Arc Discharge",
+        "region": "Sector 2 - Hubang Highway & Logistics Corridor",
         "coordinates": {
-            "lat": 40.732,
-            "lng": -73.94
+            "lat": 8.527,
+            "lng": 125.975
         },
         "power_type": "Technomancy",
         "severity": "Critical",
@@ -33,15 +33,15 @@
         "civic_recovery_status": "Pending Assessor Review",
         "photo_evidence": "electrical_burn_grid.jpg",
         "notes": "Thermal containment failure during unverified high-output combat.",
-        "timestamp": "2026-10-05T19:23:46+00:00"
+        "timestamp": "2026-10-05T19:57:09+00:00"
     },
     {
         "id": "inc_2026_03",
-        "title": "Pier 14 Craneway Collapse",
-        "region": "Sector 4 - Coastal Wharf",
+        "title": "Caimpugan Marsh Peat Barrier Collapse",
+        "region": "Sector 5 - Caimpugan Peatland Sanctuary & Marsh Shield",
         "coordinates": {
-            "lat": 40.68,
-            "lng": -74.041
+            "lat": 8.479,
+            "lng": 125.953
         },
         "power_type": "Energy Projection",
         "severity": "Severe",
@@ -51,6 +51,6 @@
         "civic_recovery_status": "Pending Civic Review",
         "photo_evidence": "pier_collapse.jpg",
         "notes": "High-velocity energy rounds cleaved crane anchors during defense.",
-        "timestamp": "2026-10-05T13:23:46+00:00"
+        "timestamp": "2026-10-05T13:57:09+00:00"
     }
 ]

@@ -1448,8 +1448,8 @@ function initTacticalRadar() {
 
     if (!adminState.leafletMap) {
         adminState.leafletMap = L.map('adminTacticalMap', {
-            center: [40.7228, -73.9960],
-            zoom: 12,
+            center: [8.5110, 125.9800],
+            zoom: 13,
             zoomControl: true,
             attributionControl: true
         });
@@ -1506,12 +1506,12 @@ function initTacticalRadar() {
 
         adminState.heroMarkersGroup = L.layerGroup().addTo(adminState.leafletMap);
 
-        // Sector 1: Metro Downtown Containment Zone
+        // Sector 1: Poblacion Central Commercial Grid Containment Zone (San Francisco, ADS)
         const sector1Coords = [
-            [40.7450, -74.0150],
-            [40.7450, -73.9750],
-            [40.7000, -73.9750],
-            [40.7000, -74.0150]
+            [8.5220, 125.9720],
+            [8.5220, 125.9930],
+            [8.5010, 125.9930],
+            [8.5010, 125.9720]
         ];
         L.polygon(sector1Coords, {
             color: '#0284c7',
@@ -1519,14 +1519,14 @@ function initTacticalRadar() {
             fillOpacity: 0.22,
             weight: 2.5,
             dashArray: '6, 6'
-        }).bindPopup('<div style="font-family:sans-serif;padding:4px;"><strong style="color:#0284c7;font-size:13px;">Sector 1: Metro Downtown</strong><br><span style="font-size:11px;color:#475569;">Primary civilian containment grid &amp; rapid response zone.</span></div>').addTo(adminState.leafletMap);
+        }).bindPopup('<div style="font-family:sans-serif;padding:4px;"><strong style="color:#0284c7;font-size:13px;">Sector 1: Poblacion Central Commercial Grid</strong><br><span style="font-size:11px;color:#475569;">Municipal core, municipal hall &amp; rapid civic response zone (San Francisco, ADS).</span></div>').addTo(adminState.leafletMap);
 
-        // Sector 5: High-Tech Valley Containment Zone
+        // Sector 5: Caimpugan Peatland Sanctuary & Marsh Shield (San Francisco, ADS)
         const sector5Coords = [
-            [40.7700, -73.9950],
-            [40.7700, -73.9650],
-            [40.7450, -73.9650],
-            [40.7450, -73.9950]
+            [8.4950, 125.9400],
+            [8.4950, 125.9680],
+            [8.4650, 125.9680],
+            [8.4650, 125.9400]
         ];
         L.polygon(sector5Coords, {
             color: '#9333ea',
@@ -1534,7 +1534,7 @@ function initTacticalRadar() {
             fillOpacity: 0.22,
             weight: 2.5,
             dashArray: '6, 6'
-        }).bindPopup('<div style="font-family:sans-serif;padding:4px;"><strong style="color:#7e22ce;font-size:13px;">Sector 5: High-Tech Valley</strong><br><span style="font-size:11px;color:#475569;">Metahuman research corridor &amp; quantum containment shield.</span></div>').addTo(adminState.leafletMap);
+        }).bindPopup('<div style="font-family:sans-serif;padding:4px;"><strong style="color:#7e22ce;font-size:13px;">Sector 5: Caimpugan Peatland Sanctuary &amp; Marsh Shield</strong><br><span style="font-size:11px;color:#475569;">Protected wetland dome &amp; ecological containment perimeter (Agusan Marsh).</span></div>').addTo(adminState.leafletMap);
     }
 
     // Robust size recalculation across multiple render cycles
@@ -1611,11 +1611,11 @@ function focusTacticalSector(sectorNum) {
     adminState.leafletMap.invalidateSize();
 
     if (sectorNum === 1) {
-        adminState.leafletMap.flyTo([40.7225, -73.9950], 14, { duration: 1.2 });
-        showToast('Tactical camera locked to Sector 1: Metro Downtown Grid', 'info');
+        adminState.leafletMap.flyTo([8.5118, 125.9822], 15, { duration: 1.2 });
+        showToast('Tactical camera locked to Sector 1: Poblacion Central Commercial Grid', 'info');
     } else if (sectorNum === 5) {
-        adminState.leafletMap.flyTo([40.7575, -73.9800], 14, { duration: 1.2 });
-        showToast('Tactical camera locked to Sector 5: High-Tech Valley Corridor', 'info');
+        adminState.leafletMap.flyTo([8.4795, 125.9532], 14, { duration: 1.2 });
+        showToast('Tactical camera locked to Sector 5: Caimpugan Peatland Sanctuary & Marsh Shield', 'info');
     }
 }
 
@@ -1635,8 +1635,8 @@ function plotTacticalHeroMarkers() {
     const bounds = L.latLngBounds();
 
     adminState.heroes.forEach(h => {
-        const lat = h.coordinates?.lat || (40.7128 + (Math.random() - 0.5) * 0.08);
-        const lng = h.coordinates?.lng || (-74.0060 + (Math.random() - 0.5) * 0.08);
+        const lat = h.coordinates?.lat || (8.5110 + (Math.random() - 0.5) * 0.04);
+        const lng = h.coordinates?.lng || (125.9800 + (Math.random() - 0.5) * 0.04);
         const isRogue = (h.status === 'Rogue' || h.status === 'SUSPENDED');
         const isLicensed = (h.status === 'Licensed' || h.status === 'Approved' || h.status === 'LICENSED');
         const color = isRogue ? '#ef4444' : (isLicensed ? '#06b6d4' : '#f59e0b');
@@ -1701,9 +1701,9 @@ function plotTacticalHeroMarkers() {
     });
 
     // Also include containment zones in initial bounds frame
-    bounds.extend([40.7450, -74.0150]);
-    bounds.extend([40.7000, -73.9650]);
-    bounds.extend([40.7700, -73.9650]);
+    bounds.extend([8.5220, 125.9720]);
+    bounds.extend([8.5010, 125.9930]);
+    bounds.extend([8.4795, 125.9532]);
 
     if (bounds.isValid() && adminState.leafletMap) {
         adminState.leafletMap.fitBounds(bounds, { padding: [45, 45], maxZoom: 13 });
@@ -2057,7 +2057,7 @@ function openAddHeroModal() {
     document.getElementById('edit-secondary-power').value = '';
     document.getElementById('edit-threat-tier').value = '3';
     document.getElementById('edit-status').value = 'Under Review';
-    document.getElementById('edit-sector').value = 'Sector 1 - Metro Downtown';
+    document.getElementById('edit-sector').value = 'Sector 1 - Poblacion Central Commercial Grid';
 
     populateMentorSelect();
 
@@ -2086,7 +2086,7 @@ async function openHeroEditModal(heroId) {
     setVal('edit-gov-id', hero.gov_code || hero.id_number || '');
     setVal('edit-status', hero.status || 'Licensed');
     setVal('edit-license-number', hero.license_number || '');
-    setVal('edit-sector', hero.region || 'Sector 1 - Metro Downtown');
+    setVal('edit-sector', hero.region || 'Sector 1 - Poblacion Central Commercial Grid');
     setVal('edit-gov-code', hero.gov_code || '');
     setVal('edit-registration-step', hero.registration_step || '4');
     setVal('edit-avatar', hero.avatar || hero.profile_picture || '');

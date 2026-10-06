@@ -1706,10 +1706,10 @@ function initDamageDrawer() {
     if (gpsBtn) {
         gpsBtn.onclick = () => {
             const input = document.getElementById('dmgCoords');
-            const lat = (40.7128 + (Math.random() - 0.5) * 0.02).toFixed(4);
-            const lng = (-74.0060 + (Math.random() - 0.5) * 0.02).toFixed(4);
+            const lat = (8.5110 + (Math.random() - 0.5) * 0.02).toFixed(4);
+            const lng = (125.9800 + (Math.random() - 0.5) * 0.02).toFixed(4);
             if (input) input.value = `${lat}, ${lng} (Auto-Tagged)`;
-            showToast('GPS coordinates locked onto municipal grid.', 'success');
+            showToast('GPS coordinates locked onto municipal grid (San Francisco, ADS).', 'success');
         };
     }
 
@@ -1723,7 +1723,7 @@ function initDamageDrawer() {
                 hero_id: heroState.heroId,
                 title: 'Post-Battle Civic Collateral Assessment',
                 power_type: power, estimated_damage_usd: amount,
-                notes, lat: 40.7128, lng: -74.0060
+                notes, lat: 8.5110, lng: 125.9800
             });
             if (res.success) {
                 showToast('Damage claim dispatched to Municipal Civic Recovery!', 'success');

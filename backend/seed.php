@@ -17,13 +17,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-8430',
         'real_bio' => [
             'real_name' => 'Samuel Wright',
-            'gov_id' => 'FED-9GH-8430',
+            'gov_id' => 'ADS-9GH-8430',
             'age' => 34,
             'dob' => 'Aug. 21, 1983',
-            'location' => 'NYC - Sector 1 Metro',
+            'location' => 'Barangay 2 Poblacion, San Francisco, Agusan del Sur',
             'biometric_dna_ref' => 'APX-998-CYBER-KINETIC',
-            'safehouse_address' => '742 Lexington Ave, Penthouse 44, New York, NY',
-            'handler_contact' => '+1 (555) 839-4910'
+            'safehouse_address' => 'Purok 4, Quezon St., Brgy. 2 Poblacion, San Francisco, ADS',
+            'handler_contact' => '+63 (917) 839-4910'
         ],
         'primary_power' => 'Enhanced Strength',
         'primary_level' => 'Level 8/10',
@@ -34,18 +34,18 @@ $seedHeroesData = [
         'threat_class' => 'A-Class',
         'threat_tier' => 2,
         'threat_tier_label' => 'A-Class (Continental)',
-        'region' => 'Sector 1 - Metro Downtown',
-        'status' => 'REVIEWING', // In UI: REVIEWING
+        'region' => 'Sector 1 - Poblacion Central Commercial Grid',
+        'status' => 'REVIEWING',
         'license_number' => 'GHRMS-LIC-9GH-8430',
         'registration_step' => 2,
         'badge_secret' => bin2hex(random_bytes(16)),
         'badge_color' => 'yellow',
         'sidekicks' => ['Aero Scout'],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.7128, 'lng' => -74.0060, 'grid' => 'MTR-8430'],
+        'coordinates' => ['lat' => 8.5122, 'lng' => 125.9818, 'grid' => 'SF-POB-8430'],
         'created_at' => date('c', strtotime('-2 days')),
         'emergency_contacts' => [
-            ['name' => 'Dr. Karen Wright', 'relation' => 'Spouse', 'phone' => '+1 (555) 012-9844']
+            ['name' => 'Dr. Karen Wright', 'relation' => 'Spouse', 'phone' => '+63 (917) 012-9844']
         ]
     ],
     
@@ -56,13 +56,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-8431',
         'real_bio' => [
             'real_name' => 'Alice Vance',
-            'gov_id' => 'FED-9GH-8431',
+            'gov_id' => 'ADS-9GH-8431',
             'age' => 28,
             'dob' => 'May 14, 1989',
-            'location' => 'Sector 5 High-Tech Valley',
+            'location' => 'Barangay Caimpugan Peatland Corridor, San Francisco, ADS',
             'biometric_dna_ref' => 'LUM-114-TECHNO-ARC',
-            'safehouse_address' => '500 Innovation Parkway, Sub-grid 2',
-            'handler_contact' => '+1 (555) 019-3321'
+            'safehouse_address' => 'Eco-Research Station 3, Caimpugan Peat Dome, San Francisco, ADS',
+            'handler_contact' => '+63 (918) 019-3321'
         ],
         'primary_power' => 'Technomancy',
         'primary_level' => 'Level 9/10',
@@ -73,7 +73,7 @@ $seedHeroesData = [
         'threat_class' => 'A-Class',
         'threat_tier' => 2,
         'threat_tier_label' => 'A-Class (Continental)',
-        'region' => 'Sector 5 - High-Tech Valley',
+        'region' => 'Sector 5 - Caimpugan Peatland Sanctuary & Marsh Shield',
         'status' => 'REVIEWING',
         'license_number' => null,
         'registration_step' => 2,
@@ -81,7 +81,7 @@ $seedHeroesData = [
         'badge_color' => 'yellow',
         'sidekicks' => ['Byte'],
         'mentor' => 'APEX',
-        'coordinates' => ['lat' => 40.7589, 'lng' => -73.9851, 'grid' => 'TEC-8431'],
+        'coordinates' => ['lat' => 8.4795, 'lng' => 125.9532, 'grid' => 'SF-CAI-8431'],
         'created_at' => date('c', strtotime('-3 days')),
         'emergency_contacts' => []
     ],
@@ -92,13 +92,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-8432',
         'real_bio' => [
             'real_name' => 'Marcus Thorne',
-            'gov_id' => 'FED-9GH-8432',
+            'gov_id' => 'ADS-9GH-8432',
             'age' => 38,
             'dob' => 'Jan. 09, 1980',
-            'location' => 'Sector 2 Industrial',
+            'location' => 'Barangay Hubang Transport Terminal, San Francisco, ADS',
             'biometric_dna_ref' => 'ATL-701-TITAN-CORE',
-            'safehouse_address' => '220 Foundry Row, Heavy Silo B',
-            'handler_contact' => '+1 (555) 014-9988'
+            'safehouse_address' => 'Pan-Philippine Highway, Purok 1A, Brgy. Hubang, San Francisco, ADS',
+            'handler_contact' => '+63 (919) 014-9988'
         ],
         'primary_power' => 'Super Strength',
         'primary_level' => 'Level 9/10',
@@ -109,7 +109,7 @@ $seedHeroesData = [
         'threat_class' => 'B-Class',
         'threat_tier' => 3,
         'threat_tier_label' => 'B-Class (Regional)',
-        'region' => 'Sector 2 - Industrial District',
+        'region' => 'Sector 2 - Hubang Highway & Logistics Corridor',
         'status' => 'REVIEWING',
         'license_number' => null,
         'registration_step' => 2,
@@ -117,7 +117,7 @@ $seedHeroesData = [
         'badge_color' => 'yellow',
         'sidekicks' => [],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.7306, 'lng' => -73.9352, 'grid' => 'IND-8432'],
+        'coordinates' => ['lat' => 8.5276, 'lng' => 125.9752, 'grid' => 'SF-HUB-8432'],
         'created_at' => date('c', strtotime('-5 days')),
         'emergency_contacts' => []
     ],
@@ -128,13 +128,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-8433',
         'real_bio' => [
             'real_name' => 'Ravi Singh',
-            'gov_id' => 'FED-9GH-8433',
+            'gov_id' => 'ADS-9GH-8433',
             'age' => 31,
             'dob' => 'Nov. 30, 1986',
-            'location' => 'Sector 4 Coastal Wharf',
+            'location' => 'Barangay Bitan-agan River Basin, San Francisco, ADS',
             'biometric_dna_ref' => 'STL-442-ENERGY-PULSE',
-            'safehouse_address' => 'Pier 12 Harbor Facility, Unit 9',
-            'handler_contact' => '+1 (555) 017-4400'
+            'safehouse_address' => 'River Basin Outpost, Brgy. Bitan-agan, San Francisco, ADS',
+            'handler_contact' => '+63 (920) 017-4400'
         ],
         'primary_power' => 'Energy Projection',
         'primary_level' => 'Level 7/10',
@@ -145,7 +145,7 @@ $seedHeroesData = [
         'threat_class' => 'C-Class',
         'threat_tier' => 4,
         'threat_tier_label' => 'C-Class (City)',
-        'region' => 'Sector 4 - Coastal Wharf',
+        'region' => 'Sector 4 - Bitan-agan & Lapinigan River Basin',
         'status' => 'REVIEWING',
         'license_number' => null,
         'registration_step' => 2,
@@ -153,7 +153,7 @@ $seedHeroesData = [
         'badge_color' => 'yellow',
         'sidekicks' => ['Pulse Runner'],
         'mentor' => 'ATLAS',
-        'coordinates' => ['lat' => 40.6782, 'lng' => -74.0445, 'grid' => 'CST-8433'],
+        'coordinates' => ['lat' => 8.4912, 'lng' => 125.9870, 'grid' => 'SF-BIT-8433'],
         'created_at' => date('c', strtotime('-6 days')),
         'emergency_contacts' => []
     ],
@@ -164,13 +164,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-0042',
         'real_bio' => [
             'real_name' => 'Marcus Jonathan Vance',
-            'gov_id' => 'FED-904-22-8110',
+            'gov_id' => 'ADS-904-22-8110',
             'age' => 41,
             'dob' => 'Oct. 12, 1977',
-            'location' => 'Sector 1 Downtown Metro',
+            'location' => 'Barangay 3 Poblacion Civic Center, San Francisco, ADS',
             'biometric_dna_ref' => 'VNG-001-ALPHA-PRIME',
-            'safehouse_address' => '442 Ironworks Ave, Sub-level 3',
-            'handler_contact' => '+1 (555) 019-2834'
+            'safehouse_address' => 'Municipal Command Post, Brgy. 3 Poblacion, San Francisco, ADS',
+            'handler_contact' => '+63 (917) 019-2834'
         ],
         'primary_power' => 'Kinetic Mastery',
         'primary_level' => 'Level 10/10',
@@ -181,7 +181,7 @@ $seedHeroesData = [
         'threat_class' => 'S-Class',
         'threat_tier' => 1,
         'threat_tier_label' => 'S-Class (Planetary)',
-        'region' => 'Sector 1 - Metro Downtown',
+        'region' => 'Sector 1 - Poblacion Central Commercial Grid',
         'status' => 'Licensed',
         'license_number' => 'GHRMS-LIC-0042',
         'registration_step' => 3,
@@ -189,7 +189,7 @@ $seedHeroesData = [
         'badge_color' => 'green',
         'sidekicks' => ['Aero Scout', 'Shadow Dart'],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.7128, 'lng' => -74.0060, 'grid' => 'MTR-0042'],
+        'coordinates' => ['lat' => 8.5090, 'lng' => 125.9842, 'grid' => 'SF-POB-0042'],
         'created_at' => date('c', strtotime('-1 year')),
         'emergency_contacts' => []
     ],
@@ -200,12 +200,12 @@ $seedHeroesData = [
         'gov_code' => '9GH-0099',
         'real_bio' => [
             'real_name' => 'Unit 09 / David Alan Cross',
-            'gov_id' => 'FED-000-XX-ROGUE',
+            'gov_id' => 'ADS-000-XX-ROGUE',
             'age' => 36,
             'dob' => 'Unverified',
-            'location' => 'Sector 4 Coastal Derelict',
+            'location' => 'Barangay Karaos Mountain Ridge, San Francisco, ADS',
             'biometric_dna_ref' => 'CYB-00X-REDACTED',
-            'safehouse_address' => 'Pier 19 Abandoned Naval Silo',
+            'safehouse_address' => 'Highland Forest Watchpost, Brgy. Karaos, San Francisco, ADS',
             'handler_contact' => 'DISAVOWED'
         ],
         'primary_power' => 'Cybernetic Railgun',
@@ -217,7 +217,7 @@ $seedHeroesData = [
         'threat_class' => 'A-Class',
         'threat_tier' => 1,
         'threat_tier_label' => 'A-Class (Planetary)',
-        'region' => 'Sector 4 - Coastal Wharf',
+        'region' => 'Sector 3 - Karaos & Borbon Uplands District',
         'status' => 'Rogue',
         'license_number' => 'GHRMS-REVOKED-0099',
         'registration_step' => 3,
@@ -225,7 +225,7 @@ $seedHeroesData = [
         'badge_color' => 'red',
         'sidekicks' => [],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.6800, 'lng' => -74.0410, 'grid' => 'CST-0099'],
+        'coordinates' => ['lat' => 8.5385, 'lng' => 125.9928, 'grid' => 'SF-KAR-0099'],
         'created_at' => date('c', strtotime('-6 months')),
         'emergency_contacts' => []
     ],
@@ -236,12 +236,12 @@ $seedHeroesData = [
         'gov_code' => '9GH-9988',
         'real_bio' => [
             'real_name' => 'Elena Rostova',
-            'gov_id' => 'FED-SOL-9988',
+            'gov_id' => 'ADS-SOL-9988',
             'age' => 29,
             'dob' => 'July 18, 1996',
-            'location' => 'Sector 3 Commercial Outskirts',
+            'location' => 'Barangay Borbon Agro-Solar Array, San Francisco, ADS',
             'biometric_dna_ref' => 'SOL-882-PLASMA-AMBER',
-            'safehouse_address' => 'Bunker 14 Sub-Level, Sector 3',
+            'safehouse_address' => 'Borbon Ridge Substation, San Francisco, ADS',
             'handler_contact' => 'FLAGGED_MONITORING'
         ],
         'primary_power' => 'Thermonuclear Plasma',
@@ -253,7 +253,7 @@ $seedHeroesData = [
         'threat_class' => 'A-Class',
         'threat_tier' => 1,
         'threat_tier_label' => 'A-Class (Planetary)',
-        'region' => 'Sector 3 - Commercial Hub',
+        'region' => 'Sector 3 - Karaos & Borbon Uplands District',
         'status' => 'Rogue',
         'license_number' => 'GHRMS-REVOKED-SOL88',
         'registration_step' => 3,
@@ -261,7 +261,7 @@ $seedHeroesData = [
         'badge_color' => 'red',
         'sidekicks' => [],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.7500, 'lng' => -73.9900, 'grid' => 'COM-9988'],
+        'coordinates' => ['lat' => 8.5442, 'lng' => 125.9815, 'grid' => 'SF-BOR-9988'],
         'created_at' => date('c', strtotime('-2 months')),
         'emergency_contacts' => []
     ],
@@ -272,13 +272,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-7701',
         'real_bio' => [
             'real_name' => 'Leo Sterling',
-            'gov_id' => 'FED-AER-7701',
+            'gov_id' => 'ADS-AER-7701',
             'age' => 21,
             'dob' => 'March 04, 2004',
-            'location' => 'Sector 1 Metro Downtown',
+            'location' => 'Barangay 1 Poblacion Telemetry Mast, San Francisco, ADS',
             'biometric_dna_ref' => 'AER-102-GLIDE-SPEED',
-            'safehouse_address' => 'Lexington Apprentice Quarters, Unit 12',
-            'handler_contact' => '+1 (555) 012-9844'
+            'safehouse_address' => 'Rooftop Communications Post, Brgy. 1 Poblacion, San Francisco, ADS',
+            'handler_contact' => '+63 (917) 012-9844'
         ],
         'primary_power' => 'High-Velocity Gliding',
         'primary_level' => 'Level 7/10',
@@ -289,7 +289,7 @@ $seedHeroesData = [
         'threat_class' => 'B-Class',
         'threat_tier' => 4,
         'threat_tier_label' => 'B-Class (City)',
-        'region' => 'Sector 1 - Metro Downtown',
+        'region' => 'Sector 1 - Poblacion Central Commercial Grid',
         'status' => 'Licensed',
         'license_number' => 'GHRMS-LIC-AER-7701',
         'registration_step' => 3,
@@ -298,7 +298,7 @@ $seedHeroesData = [
         'sidekicks' => [],
         'mentor' => 'APEX',
         'role_tag' => 'Sidekick',
-        'coordinates' => ['lat' => 40.7135, 'lng' => -74.0045, 'grid' => 'MTR-7701'],
+        'coordinates' => ['lat' => 8.5142, 'lng' => 125.9798, 'grid' => 'SF-POB-7701'],
         'created_at' => date('c', strtotime('-4 months')),
         'emergency_contacts' => []
     ],
@@ -309,13 +309,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-7702',
         'real_bio' => [
             'real_name' => 'Maya Lin',
-            'gov_id' => 'FED-PLS-7702',
+            'gov_id' => 'ADS-PLS-7702',
             'age' => 23,
             'dob' => 'October 11, 2002',
-            'location' => 'Sector 2 Industrial District',
+            'location' => 'Barangay Lapinigan Rapid Transit Post, San Francisco, ADS',
             'biometric_dna_ref' => 'PLS-441-KINETIC-SPRINT',
-            'safehouse_address' => 'Heavy Silo Annex, Bed 4',
-            'handler_contact' => '+1 (555) 014-9988'
+            'safehouse_address' => 'Lapinigan Floodway Station, Brgy. Lapinigan, San Francisco, ADS',
+            'handler_contact' => '+63 (919) 014-9988'
         ],
         'primary_power' => 'Kinetic Acceleration',
         'primary_level' => 'Level 7/10',
@@ -326,7 +326,7 @@ $seedHeroesData = [
         'threat_class' => 'C-Class',
         'threat_tier' => 4,
         'threat_tier_label' => 'C-Class (City)',
-        'region' => 'Sector 2 - Industrial District',
+        'region' => 'Sector 4 - Bitan-agan & Lapinigan River Basin',
         'status' => 'Under Review',
         'license_number' => null,
         'registration_step' => 2,
@@ -335,7 +335,7 @@ $seedHeroesData = [
         'sidekicks' => [],
         'mentor' => 'ATLAS',
         'role_tag' => 'Sidekick',
-        'coordinates' => ['lat' => 40.7310, 'lng' => -73.9360, 'grid' => 'IND-7702'],
+        'coordinates' => ['lat' => 8.4965, 'lng' => 125.9918, 'grid' => 'SF-LAP-7702'],
         'created_at' => date('c', strtotime('-10 days')),
         'emergency_contacts' => []
     ],
@@ -346,13 +346,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-887F',
         'real_bio' => [
             'real_name' => 'John Ckson',
-            'gov_id' => 'FED-JCK-887F',
+            'gov_id' => 'ADS-JCK-887F',
             'age' => 32,
             'dob' => 'May 22, 1993',
-            'location' => 'Sector 1 - Metro Downtown',
+            'location' => 'Barangay Hubang Highway Logistics, San Francisco, ADS',
             'biometric_dna_ref' => 'JCK-887-PHOTONIC',
-            'safehouse_address' => '310 Broadway Ave, Apt 11',
-            'handler_contact' => '+1 (555) 011-3388'
+            'safehouse_address' => 'Highway Logistics Center, Brgy. Hubang, San Francisco, ADS',
+            'handler_contact' => '+63 (917) 011-3388'
         ],
         'primary_power' => 'Photonic Manipulation',
         'primary_level' => 'Level 8/10',
@@ -363,7 +363,7 @@ $seedHeroesData = [
         'threat_class' => 'B-Class',
         'threat_tier' => 3,
         'threat_tier_label' => 'B-Class (Regional)',
-        'region' => 'Sector 1 - Metro Downtown',
+        'region' => 'Sector 2 - Hubang Highway & Logistics Corridor',
         'status' => 'Licensed',
         'license_number' => 'GHRMS-LIC-JCK-887F',
         'registration_step' => 3,
@@ -371,7 +371,7 @@ $seedHeroesData = [
         'badge_color' => 'green',
         'sidekicks' => [],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.7140, 'lng' => -74.0070, 'grid' => 'MTR-887F'],
+        'coordinates' => ['lat' => 8.5235, 'lng' => 125.9768, 'grid' => 'SF-HUB-887F'],
         'created_at' => date('c', strtotime('-1 month')),
         'emergency_contacts' => []
     ],
@@ -382,13 +382,13 @@ $seedHeroesData = [
         'gov_code' => '9GH-4C51',
         'real_bio' => [
             'real_name' => 'Dawn Miller',
-            'gov_id' => 'FED-DWN-4C51',
+            'gov_id' => 'ADS-DWN-4C51',
             'age' => 26,
             'dob' => 'December 08, 1998',
-            'location' => 'Sector 5 - High-Tech Valley',
+            'location' => 'Barangay Caimpugan Wetland Sanctuary, San Francisco, ADS',
             'biometric_dna_ref' => 'DWN-4C5-RADIANT',
-            'safehouse_address' => '101 Horizon Way, Unit 4B',
-            'handler_contact' => '+1 (555) 019-4411'
+            'safehouse_address' => 'Peatland Ecology Field Station, Brgy. Caimpugan, San Francisco, ADS',
+            'handler_contact' => '+63 (918) 019-4411'
         ],
         'primary_power' => 'Radiant Light Shielding',
         'primary_level' => 'Level 8/10',
@@ -399,7 +399,7 @@ $seedHeroesData = [
         'threat_class' => 'B-Class',
         'threat_tier' => 3,
         'threat_tier_label' => 'B-Class (Regional)',
-        'region' => 'Sector 5 - High-Tech Valley',
+        'region' => 'Sector 5 - Caimpugan Peatland Sanctuary & Marsh Shield',
         'status' => 'Under Review',
         'license_number' => null,
         'registration_step' => 2,
@@ -407,7 +407,7 @@ $seedHeroesData = [
         'badge_color' => 'yellow',
         'sidekicks' => [],
         'mentor' => null,
-        'coordinates' => ['lat' => 40.7600, 'lng' => -73.9840, 'grid' => 'TEC-4C51'],
+        'coordinates' => ['lat' => 8.4825, 'lng' => 125.9578, 'grid' => 'SF-CAI-4C51'],
         'created_at' => date('c', strtotime('-5 days')),
         'emergency_contacts' => []
     ]
@@ -439,9 +439,9 @@ function seedGHRMSData(): array {
     $incidents = [
         [
             'id' => 'inc_2026_01',
-            'title' => 'Bridge Structural Fracture - Shockwave Impact',
-            'region' => 'Sector 1 - Metro Downtown',
-            'coordinates' => ['lat' => 40.7100, 'lng' => -74.0020],
+            'title' => 'Poblacion Commercial Crossing Fracture - Shockwave Impact',
+            'region' => 'Sector 1 - Poblacion Central Commercial Grid',
+            'coordinates' => ['lat' => 8.5115, 'lng' => 125.9820],
             'power_type' => 'Enhanced Strength',
             'severity' => 'High',
             'estimated_damage_usd' => 350000,
@@ -454,9 +454,9 @@ function seedGHRMSData(): array {
         ],
         [
             'id' => 'inc_2026_02',
-            'title' => 'Grid Substation Surge & Arc Discharge',
-            'region' => 'Sector 2 - Industrial District',
-            'coordinates' => ['lat' => 40.7320, 'lng' => -73.9400],
+            'title' => 'Hubang Highway Substation Surge & Arc Discharge',
+            'region' => 'Sector 2 - Hubang Highway & Logistics Corridor',
+            'coordinates' => ['lat' => 8.5270, 'lng' => 125.9750],
             'power_type' => 'Technomancy',
             'severity' => 'Critical',
             'estimated_damage_usd' => 820000,
@@ -469,9 +469,9 @@ function seedGHRMSData(): array {
         ],
         [
             'id' => 'inc_2026_03',
-            'title' => 'Pier 14 Craneway Collapse',
-            'region' => 'Sector 4 - Coastal Wharf',
-            'coordinates' => ['lat' => 40.6800, 'lng' => -74.0410],
+            'title' => 'Caimpugan Marsh Peat Barrier Collapse',
+            'region' => 'Sector 5 - Caimpugan Peatland Sanctuary & Marsh Shield',
+            'coordinates' => ['lat' => 8.4790, 'lng' => 125.9530],
             'power_type' => 'Energy Projection',
             'severity' => 'Severe',
             'estimated_damage_usd' => 540000,
@@ -489,13 +489,13 @@ function seedGHRMSData(): array {
     $settings = [
         'system_alert_level' => 'ELEVATED - OMEGA-3',
         'rogue_broadcast_active' => false,
-        'rogue_broadcast_message' => 'ATTENTION ALL OPERATIVES: Sector 4 Containment Active. Standby for Registry directives.',
+        'rogue_broadcast_message' => 'ATTENTION ALL OPERATIVES: Sector 5 Containment Active. Standby for Registry directives.',
         'containment_zones' => [
             [
                 'id' => 'zone_cst_alpha',
-                'name' => 'Zone Alpha - Coastal Quarantine',
-                'center' => ['lat' => 40.6782, 'lng' => -74.0445],
-                'radius_km' => 2.2,
+                'name' => 'Zone Alpha - Caimpugan Peatland & Marsh Containment',
+                'center' => ['lat' => 8.4780, 'lng' => 125.9520],
+                'radius_km' => 3.5,
                 'threat_tier' => 1,
                 'status' => 'Active Containment'
             ]

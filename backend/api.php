@@ -971,7 +971,7 @@ try {
         // Hero Public Identity
         $alias = trim((string)($body['callsign'] ?? ($body['alias'] ?? ($body['hero_name'] ?? ''))));
         $primaryPower = trim((string)($body['primary_power'] ?? ''));
-        $region = trim((string)($body['region'] ?? ($body['sector'] ?? 'Sector 1 - Metro Downtown')));
+        $region = trim((string)($body['region'] ?? ($body['sector'] ?? 'Sector 1 - Poblacion Central Commercial Grid')));
 
         if (!$isDraft && (empty($alias) || empty($primaryPower))) {
             jsonError("Hero Callsign/Alias and Primary Superhuman Power are required.");
@@ -1059,9 +1059,9 @@ try {
             'sidekicks' => !empty($body['sidekicks']) ? (array)$body['sidekicks'] : [],
             'mentor' => !empty($body['mentor']) ? trim($body['mentor']) : null,
             'coordinates' => [
-                'lat' => (float)($body['lat'] ?? (40.7128 + (mt_rand(-50, 50) / 1000))),
-                'lng' => (float)($body['lng'] ?? (-74.0060 + (mt_rand(-50, 50) / 1000))),
-                'grid' => 'SECT-' . mt_rand(1000, 9999)
+                'lat' => (float)($body['lat'] ?? (8.5110 + (mt_rand(-30, 30) / 1000))),
+                'lng' => (float)($body['lng'] ?? (125.9800 + (mt_rand(-30, 30) / 1000))),
+                'grid' => 'SFADS-' . mt_rand(1000, 9999)
             ],
             'created_at' => date('c'),
             'updated_at' => date('c'),
@@ -2064,8 +2064,8 @@ try {
             'title' => $title,
             'region' => $body['region'] ?? $region,
             'coordinates' => [
-                'lat' => (float)($body['lat'] ?? 40.7128),
-                'lng' => (float)($body['lng'] ?? -74.0060)
+                'lat' => (float)($body['lat'] ?? 8.5110),
+                'lng' => (float)($body['lng'] ?? 125.9800)
             ],
             'power_type' => $powerType,
             'severity' => $severity,
@@ -2973,8 +2973,8 @@ try {
     // Route: GET /api/tactical-weather — OpenWeatherMap Tactical Meteorological Telemetry
     // -------------------------------------------------------------
     if ($parts[0] === 'tactical-weather' && $method === 'GET') {
-        $lat = isset($_GET['lat']) ? (float)$_GET['lat'] : 40.7128;
-        $lon = isset($_GET['lon']) ? (float)$_GET['lon'] : -74.0060;
+        $lat = isset($_GET['lat']) ? (float)$_GET['lat'] : 8.5110;
+        $lon = isset($_GET['lon']) ? (float)$_GET['lon'] : 125.9800;
         $heroId = $_GET['hero_id'] ?? null;
 
         if ($heroId) {
@@ -3038,7 +3038,7 @@ try {
         if (!$cachedData) {
             // Fallback nominal telemetry if offline
             $cachedData = [
-                'name' => 'Metro Sector 1',
+                'name' => 'San Francisco, Agusan del Sur',
                 'main' => ['temp' => 19.5, 'feels_like' => 19.0, 'humidity' => 55, 'pressure' => 1022],
                 'wind' => ['speed' => 3.6, 'deg' => 80],
                 'visibility' => 10000,
@@ -3066,7 +3066,7 @@ try {
             'success' => true,
             'source' => 'OpenWeatherMap.org Tactical API v2.5',
             'api_key_configured' => !empty(OPENWEATHER_API_KEY),
-            'sector_name' => $cachedData['name'] ?? 'Sector 1 Metro',
+            'sector_name' => $cachedData['name'] ?? 'San Francisco, Agusan del Sur',
             'coordinates' => ['lat' => $lat, 'lon' => $lon],
             'tactical_eval' => [
                 'flight_clearance' => $flightClearance,
@@ -3335,7 +3335,7 @@ try {
             'primary_power' => $matchedHero['primary_power'] ?? 'Kinetic',
             'secondary_power' => $matchedHero['secondary_power'] ?? 'None',
             'sector' => $matchedHero['sector'] ?? 1,
-            'region' => $matchedHero['region'] ?? 'Sector 1 - Metro Downtown',
+            'region' => $matchedHero['region'] ?? 'Sector 1 - Poblacion Central Commercial Grid',
             'gov_code' => $matchedHero['gov_code'] ?? '---',
             'license_number' => $matchedHero['license_number'] ?? 'PENDING-LIC-000',
             'tactical_directive' => $containmentDirective ? $containmentDirective['code'] : 'NORMAL_MONITORING',

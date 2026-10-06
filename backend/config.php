@@ -82,13 +82,13 @@ define('DOCUMENT_TYPES_OPTIONAL', ['Training Certificate', 'Authorization Docume
 // Power Classifications
 define('POWER_TYPES', ['Kinetic', 'Thermal', 'Arcane', 'Psionic', 'Cybernetic', 'Bio-enhancement', 'Electromagnetic']);
 
-// Municipal Sectors
+// Municipal Sectors — San Francisco, Agusan del Sur Jurisdiction
 define('MUNICIPAL_SECTORS', [
-    'Sector 1 - Metro Downtown',
-    'Sector 2 - Industrial District',
-    'Sector 3 - Suburbs North',
-    'Sector 4 - Coastal Wharf',
-    'Sector 5 - High-Tech Valley'
+    'Sector 1 - Poblacion Central Commercial Grid',
+    'Sector 2 - Hubang Highway & Logistics Corridor',
+    'Sector 3 - Karaos & Borbon Uplands District',
+    'Sector 4 - Bitan-agan & Lapinigan River Basin',
+    'Sector 5 - Caimpugan Peatland Sanctuary & Marsh Shield'
 ]);
 
 // Third-Party Tactical Integrations
