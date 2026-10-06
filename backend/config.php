@@ -21,11 +21,9 @@ if ($envFile && is_readable($envFile)) {
                 (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
                 $value = substr($value, 1, -1);
             }
-            if (getenv($key) === false) {
-                putenv("{$key}={$value}");
-                $_ENV[$key] = $value;
-                $_SERVER[$key] = $value;
-            }
+            putenv("{$key}={$value}");
+            $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
         }
     }
 }
