@@ -1583,6 +1583,8 @@
           const expDate = document.getElementById(item.expId)?.value || '';
 
           const fd = new FormData();
+          fd.append('document', file);
+          fd.append('file', file);
           fd.append('document_file', file);
           fd.append('document_type', item.type);
           if (expDate) fd.append('expiration_date', expDate);
@@ -1590,6 +1592,7 @@
           try {
             await fetch(`/api/heroes/${encodeURIComponent(heroId)}/documents`, {
               method: 'POST',
+              credentials: 'include',
               body: fd
             });
           } catch (e) {

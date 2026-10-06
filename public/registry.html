@@ -402,9 +402,6 @@
             <button class="btn btn-secondary" onclick="openVerifyModal()" style="font-size: 0.78rem; padding: 7px 14px;">
               [VERIFY HUNTER LICENSE]
             </button>
-            <a href="/register" class="btn btn-primary" style="font-size: 0.78rem; padding: 7px 14px; text-decoration: none;">
-              [REGISTER AWAKENED HUNTER]
-            </a>
           </div>
         </div>
 
@@ -889,8 +886,8 @@
         const avatar = h.avatar || (h.alias.toLowerCase().includes('lumina') ? '/img/lumina.jpg' : (h.alias.toLowerCase().includes('atlas') ? '/img/atlas.jpg' : '/img/apex.jpg'));
         const realNameHtml = (isStaff && h.real_name) ? `<div style="font-size:0.72rem; color:var(--accent-blue); margin-top:2px; font-weight:600; font-family:var(--font-mono);">CIVILIAN: ${h.real_name}</div>` : '';
         const editBtnHtml = isStaff ? `
-          <button type="button" class="btn-mini" onclick="openEditModal('${h.id}')" style="font-size:0.72rem; padding:4px 8px; background:rgba(255,255,255,0.1); border:1px solid var(--border-color); color:var(--text-main); font-weight:700; cursor:pointer;">
-            [EDIT RECORD]
+          <button type="button" class="btn-mini" onclick="openEditModal('${h.id}')" style="font-size:0.75rem; padding:5px 12px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.4); color:#38bdf8; font-weight:800; cursor:pointer; border-radius:4px;">
+            [EDIT MODE]
           </button>` : '';
 
         return `
@@ -1027,7 +1024,7 @@
       setVal('editTraining', hero.training_experience || '');
       setVal('editAssessmentNotes', hero.assessment_notes || '');
 
-      document.getElementById('editHeroModalTitle').textContent = `[EDIT OPERATIVE: ${hero.alias}]`;
+      document.getElementById('editHeroModalTitle').textContent = `[EDIT MODE: ${hero.alias}]`;
       document.getElementById('heroEditModal').classList.add('active');
 
       // Fetch review to populate decrypted confidential vault fields if available

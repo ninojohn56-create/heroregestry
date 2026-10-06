@@ -1184,15 +1184,21 @@ try {
 
         $viewerRole = $viewer['role'] ?? 'HERO';
         $isStaff = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR', 'ASSESSOR'], true);
-        $isOwnerHero = ($viewerRole === 'HERO' && (($viewer['hero_id'] ?? '') === $heroId || ($heroes[$heroId]['user_id'] ?? '') === ($viewer['username'] ?? '')));
+        $isOwnerHero = ($viewerRole === 'HERO' && (
+            ($viewer['hero_id'] ?? '') === $heroId ||
+            ($heroes[$heroId]['user_id'] ?? '') === ($viewer['username'] ?? '') ||
+            ($heroes[$heroId]['alias'] ?? '') === ($viewer['username'] ?? '') ||
+            ($heroes[$heroId]['callsign'] ?? '') === ($viewer['username'] ?? '') ||
+            strtolower($heroes[$heroId]['alias'] ?? '') === strtolower($viewer['name'] ?? '')
+        ));
 
         if (!$isStaff && !$isOwnerHero) {
             jsonError("ACCESS DENIED: Operatives can only upload documents to their own record.", 403);
         }
 
-        $file = $_FILES['document'] ?? ($_FILES['file'] ?? null);
+        $file = $_FILES['document'] ?? ($_FILES['file'] ?? ($_FILES['document_file'] ?? null));
         if (!$file) {
-            jsonError("No document file was uploaded. File input 'document' or 'file' is required.");
+            jsonError("No document file was uploaded. File input 'document', 'file', or 'document_file' is required.");
         }
         if ($file['error'] !== UPLOAD_ERR_OK) {
             jsonError("Upload error code: " . $file['error']);
@@ -1323,7 +1329,13 @@ try {
 
         $viewerRole = $viewer['role'] ?? 'HERO';
         $isStaff = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR', 'ASSESSOR'], true);
-        $isOwnerHero = ($viewerRole === 'HERO' && (($viewer['hero_id'] ?? '') === $heroId || ($heroes[$heroId]['user_id'] ?? '') === ($viewer['username'] ?? '')));
+        $isOwnerHero = ($viewerRole === 'HERO' && (
+            ($viewer['hero_id'] ?? '') === $heroId ||
+            ($heroes[$heroId]['user_id'] ?? '') === ($viewer['username'] ?? '') ||
+            ($heroes[$heroId]['alias'] ?? '') === ($viewer['username'] ?? '') ||
+            ($heroes[$heroId]['callsign'] ?? '') === ($viewer['username'] ?? '') ||
+            strtolower($heroes[$heroId]['alias'] ?? '') === strtolower($viewer['name'] ?? '')
+        ));
 
         if (!$isStaff && !$isOwnerHero) {
             jsonError("ACCESS DENIED: Insufficient clearance to inspect private operative documentation.", 403);
@@ -1350,6 +1362,10 @@ try {
             jsonError("Document file missing or inaccessible on disk.", 404);
         }
 
+        header_remove('X-Frame-Options');
+        header_remove('Content-Security-Policy');
+        header('X-Frame-Options: SAMEORIGIN');
+        header("Content-Security-Policy: default-src 'self' data: blob: 'unsafe-inline'; frame-ancestors 'self';");
         header('Content-Type: ' . ($found['mime_type'] ?? 'application/octet-stream'));
         header('Content-Length: ' . (string)filesize($filePath));
         header('Content-Disposition: inline; filename="' . addslashes($found['original_name'] ?? 'document') . '"');

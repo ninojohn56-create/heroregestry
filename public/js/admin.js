@@ -717,14 +717,15 @@ function renderHeroesTable() {
                 <td class="py-3.5 px-6">${statusBadge}</td>
                 <td class="py-3.5 px-6 text-right">
                     <div class="flex items-center justify-end gap-1.5">
+                        <button onclick="openHeroEditModal('${h.id}')" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-bold shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer" title="Select and enter Edit Mode for this Operative">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                            <span>Edit Mode</span>
+                        </button>
                         <button onclick="openOperativeInspector('${h.id}')" class="p-1.5 text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors" title="Launch Commander Assessor Panel">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                         </button>
                         <button onclick="openHeroPasskeyModal('${h.id}')" class="p-1.5 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors" title="Reset Operative Passkey">
                             <i data-lucide="key" class="w-4 h-4"></i>
-                        </button>
-                        <button onclick="openHeroEditModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors" title="Edit Profile">
-                            <i data-lucide="edit-3" class="w-4 h-4"></i>
                         </button>
                         <button onclick="openVaultModal('${h.id}')" class="p-1.5 text-slate-500 hover:text-purple-600 dark:text-slate-400 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-lg transition-colors" title="Decrypt AES-256 Vault Bio">
                             <i data-lucide="lock" class="w-4 h-4"></i>
@@ -2050,7 +2051,7 @@ async function openHeroEditModal(heroId) {
     const modal = document.getElementById('hero-edit-modal');
     if (!modal) return;
 
-    document.getElementById('hero-edit-title').textContent = `Edit Operative Profile: ${hero.alias}`;
+    document.getElementById('hero-edit-title').textContent = `[EDIT MODE] ${hero.alias} (${hero.id})`;
     document.getElementById('edit-hero-id').value = hero.id;
 
     const setVal = (id, val) => {
