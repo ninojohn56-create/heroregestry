@@ -1468,28 +1468,10 @@ function initTacticalRadar() {
             attribution: '&copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a>, Maxar, Earthstar Geographics'
         });
 
-        // Layer 3: Vibrant City Voyager (CartoDB Voyager)
-        const voyagerLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            subdomains: 'abcd',
-            className: 'carto-voyager-tiles',
-            attribution: '&copy; <a href="https://carto.com/" target="_blank" rel="noopener">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OSM</a>'
-        });
-
-        // Layer 4: Stealth Dark Matter (CartoDB Dark Matter)
-        const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            subdomains: 'abcd',
-            className: 'carto-dark-tiles',
-            attribution: '&copy; <a href="https://carto.com/" target="_blank" rel="noopener">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OSM</a>'
-        });
-
         // Store layers in state for toolbar button access
         adminState.tacticalLayers = {
             street: streetLayer,
-            satellite: satelliteLayer,
-            voyager: voyagerLayer,
-            dark: darkLayer
+            satellite: satelliteLayer
         };
         adminState.currentTacticalLayerKey = 'street';
 
@@ -1499,9 +1481,7 @@ function initTacticalRadar() {
         // Map Layer Switcher HUD Control
         L.control.layers({
             '🗺️ Street View (OSM)': streetLayer,
-            '🛰️ Satellite Recon (Esri)': satelliteLayer,
-            '🏙️ City Voyager (CARTO)': voyagerLayer,
-            '🌑 Stealth Dark (CARTO)': darkLayer
+            '🛰️ Satellite Recon (Esri)': satelliteLayer
         }, null, { position: 'topright' }).addTo(adminState.leafletMap);
 
         adminState.heroMarkersGroup = L.layerGroup().addTo(adminState.leafletMap);
@@ -1587,9 +1567,7 @@ function selectTacticalLayer(key) {
     // Update active toolbar button styling
     const buttons = {
         street: document.getElementById('btnLayerStreet'),
-        satellite: document.getElementById('btnLayerSatellite'),
-        voyager: document.getElementById('btnLayerVoyager'),
-        dark: document.getElementById('btnLayerDark')
+        satellite: document.getElementById('btnLayerSatellite')
     };
 
     Object.entries(buttons).forEach(([k, btn]) => {
