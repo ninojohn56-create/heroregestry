@@ -632,16 +632,16 @@
         <div>
           <h1
             style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em;">
-            Awakened Hunter Registration &amp; Mana Intake Stepper
+            Hunter Registration
           </h1>
           <p style="font-size: 0.76rem; color: var(--text-muted); margin: 3px 0 0; font-family: var(--font-mono);">
-            PHILIPPINE HUNTERS ASSOCIATION // 4-PHASE AWAKENED REGISTRATION &amp; EVALUATION PROTOCOL
+            PHILIPPINE HUNTERS ASSOCIATION // AWAKENED INTAKE
           </p>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <span id="regStatusTag"
             style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--primary-accent); background: var(--bg-surface); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px;">
-            FORM HAMS-701A
+            NEW APPLICATION
           </span>
         </div>
       </div>
@@ -653,7 +653,7 @@
           <div>
             <strong style="color: #fbbf24; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.05em;">Registration Returned for Correction</strong>
             <p id="correctionNotesText" style="font-size: 0.8rem; color: var(--text-main); margin: 4px 0 6px;"></p>
-            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Please review the requested changes, update the fields or upload additional documents, then resubmit your registration.</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Please review requested changes, update the fields or upload additional documents, then resubmit.</span>
           </div>
         </div>
       </div>
@@ -680,17 +680,14 @@
 
       <!-- STEP 1: Account Information & Personal Information -->
       <section class="step-pane active" id="paneStep1">
-        <div class="vault-security-badge">
-          <span
-            style="font-size: 0.9rem; font-family: var(--font-mono); color: var(--primary-accent); font-weight: 800;">[VAULT]</span>
-          <div>
-            <strong>Confidential Identity Vaulting:</strong> Real name, date of birth, contact number, residential safehouse, and emergency contacts are encrypted under AES-256-GCM. These records are accessible only to verified Hunters Association Registrar &amp; Mana Evaluator personnel.
-          </div>
+        <div class="vault-security-badge" style="padding: 8px 12px; margin-bottom: 14px;">
+          <span style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--primary-accent); font-weight: 800;">🔒 ENCRYPTED</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Personal identity records are encrypted and accessible only by authorized Association staff.</span>
         </div>
 
-        <!-- Biometric Face Photo Upload -->
+        <!-- Hunter License Photo Upload -->
         <div class="face-photo-card">
-          <div class="face-avatar-box" onclick="document.getElementById('regFaceFileInput').click()" title="Click to upload or take photo of your face">
+          <div class="face-avatar-box" onclick="document.getElementById('regFaceFileInput').click()" title="Click to upload portrait photo">
             <img id="regFacePreview" src="/img/apex.jpg" alt="Applicant Face Photo" style="width: 100%; height: 100%; object-fit: cover; display: block;">
             <div class="face-scanner-line"></div>
             <div class="face-overlay">
@@ -701,16 +698,16 @@
           <div style="flex: 1; min-width: 250px;">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
               <div style="display: flex; align-items: center; gap: 8px;">
-                <strong style="font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.04em;">Official Hunter Face Photo / License Portrait</strong>
-                <span id="faceBadgeStatus" style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35);">BIOMETRIC RECOGNITION</span>
+                <strong style="font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.04em;">Hunter License Photo</strong>
+                <span id="faceBadgeStatus" style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35);">PHOTO REQUIRED</span>
               </div>
             </div>
             <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.45;">
-              Upload a clear photo of your face (masked or unmasked). This picture is registered into the Hunters Association database for Sentinel Gate checkpoints and printed on your official Hunter License Card.
+              Upload a clear portrait photo for your official Hunter License Card.
             </p>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
               <button type="button" class="btn-step btn-prev" onclick="document.getElementById('regFaceFileInput').click()" style="padding: 7px 16px; font-size: 0.78rem; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
-                <span>📷 Upload Face Picture</span>
+                <span>📷 Upload Photo</span>
               </button>
               <button type="button" id="btnRemoveFace" onclick="resetFacePhoto()" class="btn-step btn-prev" style="padding: 7px 12px; font-size: 0.75rem; display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer;">
                 <span>Remove</span>
@@ -724,45 +721,42 @@
 
         <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
-            1. Account &amp; Hunter Credentials
+            Account Details
           </h2>
         </div>
 
         <div class="form-grid-2">
           <div class="form-field-group">
-            <label class="field-label-text" for="regCallsign">Hunter Callsign / Alias (Username) *</label>
-            <input type="text" class="ghrms-input" id="regCallsign" placeholder="e.g. nighthawk, solaris, shadow_vanguard" required>
-            <span style="font-size: 0.7rem; color: var(--text-muted);">This is your official Awakened Hunter callsign and system username.</span>
+            <label class="field-label-text" for="regCallsign">Hunter Callsign / Alias *</label>
+            <input type="text" class="ghrms-input" id="regCallsign" placeholder="e.g. shadow_vanguard, solaris" required>
           </div>
           <div class="form-field-group">
             <label class="field-label-text" for="regEmail">Email Address *</label>
-            <input type="email" class="ghrms-input" id="regEmail" placeholder="e.g. operative@heronet.org" required>
-            <span style="font-size: 0.7rem; color: var(--text-muted);">Used for registration updates, notifications, and verification alerts.</span>
+            <input type="email" class="ghrms-input" id="regEmail" placeholder="e.g. hunter@association.ph" required>
           </div>
         </div>
 
         <div class="form-grid-2" id="passwordGroupRow">
           <div class="form-field-group" id="regPasswordContainer" style="grid-column: 1 / -1;">
             <label class="field-label-text" for="regPassword">Security Passkey (Password) *</label>
-            <input type="password" class="ghrms-input" id="regPassword" placeholder="••••••••••••" value="hero123" required>
-            <span style="font-size: 0.7rem; color: var(--text-muted);" id="passwordHelpText">Minimum 6 characters. (Default preset: hero123)</span>
+            <input type="password" class="ghrms-input" id="regPassword" placeholder="Minimum 6 characters" required>
+            <span style="font-size: 0.7rem; color: var(--text-muted);" id="passwordHelpText">Minimum 6 characters.</span>
           </div>
           <div class="form-field-group" id="regIdFieldContainer" style="display: none;">
-            <label class="field-label-text" for="regRegIdDisplay">Hunter Registration ID</label>
-            <input type="text" class="ghrms-input" id="regRegIdDisplay" placeholder="Auto-generated on creation" readonly style="background: rgba(255,255,255,0.03); opacity: 0.85; font-family: var(--font-mono);">
-            <span style="font-size: 0.7rem; color: var(--text-muted);">Official HAMS Assigned Registry Identifier</span>
+            <label class="field-label-text" for="regRegIdDisplay">Hunter ID</label>
+            <input type="text" class="ghrms-input" id="regRegIdDisplay" placeholder="Auto-generated" readonly style="background: rgba(255,255,255,0.03); opacity: 0.85; font-family: var(--font-mono);">
           </div>
         </div>
 
         <div style="margin: 20px 0 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
-            2. Personal Civilian Information (Vault Encrypted)
+            Personal Information
           </h2>
         </div>
 
         <div class="form-grid-2">
           <div class="form-field-group">
-            <label class="field-label-text" for="regRealName">Real Legal Civilian Name *</label>
+            <label class="field-label-text" for="regRealName">Full Legal Name *</label>
             <input type="text" class="ghrms-input" id="regRealName" placeholder="e.g. Samuel J. Wright" required>
           </div>
           <div class="form-field-group">
@@ -778,47 +772,47 @@
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Non-Binary">Non-Binary</option>
-              <option value="Other">Other / Meta-Biomorphic</option>
+              <option value="Other">Other</option>
               <option value="Undisclosed">Prefer not to disclose</option>
             </select>
           </div>
           <div class="form-field-group">
             <label class="field-label-text" for="regContactNumber">Contact Number *</label>
-            <input type="text" class="ghrms-input" id="regContactNumber" placeholder="+1 (555) 019-4821" required>
+            <input type="text" class="ghrms-input" id="regContactNumber" placeholder="+63 917 123 4567" required>
           </div>
         </div>
 
         <div class="form-field-group" style="margin-bottom: 16px;">
-          <label class="field-label-text" for="regAddress">Residential / Safehouse Address *</label>
+          <label class="field-label-text" for="regAddress">Residential Address *</label>
           <input type="text" class="ghrms-input" id="regAddress" placeholder="e.g. Purok 3, Barangay 2 Poblacion, San Francisco, Agusan del Sur" required>
         </div>
 
         <div style="margin: 16px 0 10px; border-bottom: 1px dashed var(--border-color); padding-bottom: 4px;">
-          <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Emergency Contact Liaison / Guild Handler</span>
+          <span style="font-size: 0.74rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Emergency / Guild Contact</span>
         </div>
 
         <div class="form-grid-2">
           <div class="form-field-group">
             <label class="field-label-text" for="regEmergencyName">Emergency Contact Name *</label>
-            <input type="text" class="ghrms-input" id="regEmergencyName" placeholder="e.g. Dr. Arthur Vance" required>
+            <input type="text" class="ghrms-input" id="regEmergencyName" placeholder="e.g. Arthur Vance" required>
           </div>
           <div class="form-field-group">
             <label class="field-label-text" for="regEmergencyPhone">Emergency Contact Number *</label>
-            <input type="text" class="ghrms-input" id="regEmergencyPhone" placeholder="+1 (555) 019-8800" required>
+            <input type="text" class="ghrms-input" id="regEmergencyPhone" placeholder="+63 917 987 6543" required>
           </div>
         </div>
 
         <div class="form-field-group">
           <label class="field-label-text" for="regEmergencyRelationship">Relationship to Hunter *</label>
-          <input type="text" class="ghrms-input" id="regEmergencyRelationship" placeholder="e.g. Guild Master, Handler, Tactical Physician, Parent" value="Tactical Handler" required>
+          <input type="text" class="ghrms-input" id="regEmergencyRelationship" placeholder="e.g. Guild Master, Handler, Parent, Colleague" value="Guild Handler" required>
         </div>
       </section>
 
-      <!-- STEP 2: Hero Information -->
+      <!-- STEP 2: Combat Class & Awakening -->
       <section class="step-pane" id="paneStep2">
         <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
-            3. Awakened Combat Class &amp; Tactical Capabilities
+            Combat Class &amp; Tactical Capabilities
           </h2>
         </div>
 
@@ -912,7 +906,7 @@
       <section class="step-pane" id="paneStep3">
         <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
-            4. Mana &amp; Hunter Rank Evaluation Metrics
+            Mana &amp; Hunter Rank Evaluation
           </h2>
         </div>
 
@@ -920,10 +914,7 @@
         <div class="threat-slider-box">
           <div class="threat-slider-header">
             <div>
-              <label class="field-label-text" for="regThreatTier" style="margin:0; font-size: 0.85rem;">Evaluated Hunter Rank (Mana Rank) *</label>
-              <p style="font-size: 0.72rem; color: var(--text-muted); margin: 2px 0 0;">
-                Philippine Hunters Association Mana Core Scale (Rank 0: National-Level down to Rank 6: E-Rank).
-              </p>
+              <label class="field-label-text" for="regThreatTier" style="margin:0; font-size: 0.85rem;">Evaluated Hunter Rank *</label>
             </div>
             <span class="threat-tier-badge" id="threatTierLabel">B-Rank — Elite Strike Force</span>
           </div>
@@ -948,30 +939,28 @@
               <input type="range" id="regPowerLevelSlider" min="1" max="100" value="70" style="flex: 1;" oninput="document.getElementById('regPowerLevel').value = this.value">
               <input type="number" class="ghrms-input" id="regPowerLevel" min="1" max="100" value="70" style="width: 75px; text-align: center;" oninput="document.getElementById('regPowerLevelSlider').value = this.value">
             </div>
-            <span style="font-size: 0.7rem; color: var(--text-muted);">Calibrated raw mana discharge and destructive spell/strike potential.</span>
           </div>
           <div class="form-field-group">
-            <label class="field-label-text" for="regCombatRating">Dungeon Combat Effectiveness Rating (1 - 100) *</label>
+            <label class="field-label-text" for="regCombatRating">Dungeon Combat Effectiveness (1 - 100) *</label>
             <div style="display: flex; align-items: center; gap: 10px;">
               <input type="range" id="regCombatRatingSlider" min="1" max="100" value="75" style="flex: 1;" oninput="document.getElementById('regCombatRating').value = this.value">
               <input type="number" class="ghrms-input" id="regCombatRating" min="1" max="100" value="75" style="width: 75px; text-align: center;" oninput="document.getElementById('regCombatRatingSlider').value = this.value">
             </div>
-            <span style="font-size: 0.7rem; color: var(--text-muted);">Raid agility, magic beast combat reflexes, and tactical synergy.</span>
           </div>
         </div>
 
         <div class="form-grid-2" style="margin-top: 10px;">
           <div class="form-field-group">
-            <label class="field-label-text" for="regControlLevel">Mana Control &amp; Aura Suppression Level *</label>
+            <label class="field-label-text" for="regControlLevel">Mana Control Level *</label>
             <select class="ghrms-select" id="regControlLevel">
-              <option value="Novice">Novice — Volatile mana output, prone to mana leakage</option>
-              <option value="Competent" selected>Competent — Reliable mana reinforcement under raid stress</option>
+              <option value="Novice">Novice — Volatile mana output, prone to leakage</option>
+              <option value="Competent" selected>Competent — Reliable mana reinforcement under stress</option>
               <option value="Mastered">Mastered — Precision mana compression &amp; aura suppression</option>
               <option value="Absolute">Absolute — Grandmaster mana mastery &amp; domain authority</option>
             </select>
           </div>
           <div class="form-field-group">
-            <label class="field-label-text">Hunter Association Standing</label>
+            <label class="field-label-text">Hunter Standing</label>
             <div style="display: flex; gap: 12px; margin-top: 6px;">
               <label style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; cursor: pointer;">
                 <input type="radio" name="operativeRole" value="Hero" checked> Official Licensed Hunter
@@ -984,7 +973,7 @@
         </div>
 
         <div class="form-field-group" style="margin-top: 12px;">
-          <label class="field-label-text" for="regAssessmentNotes">Mana Core Diagnostics &amp; Dungeon Raid Safety Protocols</label>
+          <label class="field-label-text" for="regAssessmentNotes">Mana Core Diagnostics &amp; Raid Safety Protocols</label>
           <textarea class="ghrms-input" id="regAssessmentNotes" rows="3" placeholder="Notes on mana exhaustion risk, gate dungeon hazard containment, magic beast aggro management..." style="resize: vertical;"></textarea>
         </div>
       </section>
@@ -993,7 +982,7 @@
       <section class="step-pane" id="paneStep4">
         <div style="margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
-            5. Official Hunter Verification Credentials
+            Identity Verification Credentials
           </h2>
         </div>
 
@@ -1002,23 +991,22 @@
             <label class="field-label-text" for="regIdType">Official Verification ID Type *</label>
             <select class="ghrms-select" id="regIdType">
               <option value="Philippine National ID">Philippine National ID (PhilSys)</option>
-              <option value="Philippine Passport">Philippine Passport / DFA Diplomatic Passport</option>
-              <option value="Official Hunter Association License Badge">Official Hunter Association License Badge</option>
-              <option value="Driver's License">State Driver's License (LTO)</option>
-              <option value="Defense / PNP Clearance">National Defense / PNP Intelligence Clearance</option>
+              <option value="Philippine Passport">Philippine Passport</option>
+              <option value="Official Hunter Association License Badge">Hunter Association License Badge</option>
+              <option value="Driver's License">Driver's License (LTO)</option>
+              <option value="Defense / PNP Clearance">National Defense / PNP Clearance</option>
             </select>
           </div>
           <div class="form-field-group">
-            <label class="field-label-text" for="regIdNumber">Official ID / License Serial Number *</label>
+            <label class="field-label-text" for="regIdNumber">Official ID / Serial Number *</label>
             <input type="text" class="ghrms-input" id="regIdNumber" placeholder="e.g. HAMS-PH-849204-K or PSN-9281-0192" required>
-            <span style="font-size: 0.7rem; color: var(--text-muted);">Encrypted with your civil profile during Association review.</span>
           </div>
         </div>
 
         <div style="margin: 20px 0 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
-              6. Supporting Hunter Documents &amp; Certifications
+              Supporting Credentials &amp; Documents
             </h2>
             <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Accepted: PDF, PNG, JPG, WEBP (Max 12MB)</span>
           </div>
@@ -1028,10 +1016,10 @@
           <!-- Required: Official ID -->
           <div class="doc-upload-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <strong style="font-size: 0.82rem; color: var(--text-main);">Official Government ID Document</strong>
+              <strong style="font-size: 0.82rem; color: var(--text-main);">Government ID Document</strong>
               <span class="doc-badge-req">REQUIRED</span>
             </div>
-            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Scanned copy of Philippine National ID (PhilSys), Passport, or Government ID.</p>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Scanned copy of Philippine National ID (PhilSys) or Passport.</p>
             <input type="file" id="fileOfficialId" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
@@ -1045,7 +1033,7 @@
               <strong style="font-size: 0.82rem; color: var(--text-main);">Hunter License / Mana Core Certificate</strong>
               <span class="doc-badge-req">REQUIRED</span>
             </div>
-            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Official Hunter Association evaluation certificate, Mana Core resonance report, or provisional badge.</p>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Association evaluation certificate or Mana Core resonance report.</p>
             <input type="file" id="fileHeroCert" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
@@ -1059,7 +1047,7 @@
               <strong style="font-size: 0.82rem; color: var(--text-main);">Dungeon Academy / Raid Certification</strong>
               <span class="doc-badge-opt">OPTIONAL</span>
             </div>
-            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Hunter Academy combat diploma, tactical dungeon raid training, or emergency medical triage.</p>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Combat diploma or tactical raid training certificate.</p>
             <input type="file" id="fileTrainingCert" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
@@ -1073,7 +1061,7 @@
               <strong style="font-size: 0.82rem; color: var(--text-main);">Guild Sponsorship / Raid Waiver</strong>
               <span class="doc-badge-opt">OPTIONAL</span>
             </div>
-            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Recognized Guild sponsorship letter, gate raid operational waiver, or special jurisdiction clearance.</p>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Guild sponsorship letter or gate raid authorization waiver.</p>
             <input type="file" id="fileAuthDoc" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <label style="font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;">Exp Date (opt):</label>
@@ -1088,7 +1076,7 @@
             <strong style="font-size: 0.82rem; color: var(--text-main);">Auxiliary Credentials &amp; Mana Assay</strong>
             <span class="doc-badge-opt">OPTIONAL</span>
           </div>
-          <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Mana core spectral analysis, magic artifact weapon registration, or auxiliary guild documentation.</p>
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Mana core spectral analysis or artifact weapon registration.</p>
           <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 6px;">
             <input type="file" id="fileOtherDoc" accept=".pdf,.png,.jpg,.jpeg,.webp" class="ghrms-input" style="padding: 6px; font-size: 0.78rem;">
             <input type="date" id="expOtherDoc" class="ghrms-input" style="padding: 4px 8px; font-size: 0.75rem;" placeholder="Expiration Date">
@@ -1106,7 +1094,7 @@
           <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
             <input type="checkbox" id="regConsent" required checked style="width: 18px; height: 18px; margin-top: 2px;">
             <span style="font-size: 0.8rem; color: var(--text-main); line-height: 1.4;">
-              I certify under the Philippine Hunters Association Accords that all provided awakened identity, mana core diagnostics, and credential disclosures are accurate. I understand that fraudulent rank declaration or concealment of unregistered Calamity/S-Rank abilities incurs immediate revocation and Association sanctions.
+              I certify that all provided awakened identity, mana core diagnostics, and credential disclosures are accurate. I understand that fraudulent rank declarations or concealment of S-Rank abilities will incur immediate license revocation.
             </span>
           </label>
         </div>
@@ -1119,7 +1107,7 @@
             ← Previous
           </button>
           <button type="button" class="btn-step btn-draft" id="btnSaveDraft" onclick="saveDraft()" title="Save progress without submitting">
-            💾 Save as Draft
+            💾 Save Draft
           </button>
         </div>
 
@@ -1134,7 +1122,7 @@
           </button>
           <button type="button" class="btn-step btn-submit" id="btnSubmit" onclick="submitRegistration()"
             style="display: none;">
-            [SUBMIT REGISTRATION]
+            Submit Registration
           </button>
         </div>
       </div>
@@ -1533,7 +1521,7 @@
 
       const btnSubmit = document.getElementById('btnSubmit');
       btnSubmit.disabled = true;
-      btnSubmit.textContent = '[TRANSMITTING ENCRYPTED REGISTRATION...]';
+      btnSubmit.textContent = 'Submitting Registration...';
 
       const payload = getRegistrationPayload(false);
 
@@ -1572,7 +1560,7 @@
             if (data.hero?.id) {
               await uploadAttachedDocuments(data.hero.id);
             }
-            alert(`[REGISTRATION SUBMITTED]\n\nHunter Callsign: ${data.hero.alias}\nHunter Registration ID: ${data.hero.id}\nStatus: Submitted (Assigned to Association Evaluation Queue)\n\nRedirecting to your Hunter Portal...`);
+            alert(`[REGISTRATION SUBMITTED]\n\nHunter Callsign: ${data.hero.alias}\nHunter ID: ${data.hero.id}\nStatus: Submitted (Assigned to Association Evaluation Queue)\n\nRedirecting to your Hunter Portal...`);
             window.location.href = data.redirect || '/hero';
             return;
           }
@@ -1580,11 +1568,11 @@
 
         alert('Registration Submission Error: ' + (data?.error || 'Failed to submit registration packet.'));
         btnSubmit.disabled = false;
-        btnSubmit.textContent = '[SUBMIT REGISTRATION]';
+        btnSubmit.textContent = 'Submit Registration';
       } catch (err) {
         alert('Network connection error: ' + err.message);
         btnSubmit.disabled = false;
-        btnSubmit.textContent = '[SUBMIT REGISTRATION]';
+        btnSubmit.textContent = 'Submit Registration';
       }
     }
 
