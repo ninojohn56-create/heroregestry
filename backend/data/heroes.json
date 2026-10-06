@@ -17,7 +17,7 @@
         "status": "REVIEWING",
         "license_number": "GHRMS-LIC-9GH-8430",
         "registration_step": 2,
-        "badge_secret": "2cee9ad36aac7dc23878f80ab8f50a7b",
+        "badge_secret": "3ebf0517deac2b02c9b38302bf14992a",
         "badge_color": "yellow",
         "sidekicks": [
             "Aero Scout"
@@ -28,7 +28,7 @@
             "lng": -74.006,
             "grid": "MTR-8430"
         },
-        "created_at": "2026-10-04T13:14:50+00:00",
+        "created_at": "2026-10-04T13:23:46+00:00",
         "emergency_contacts": [
             {
                 "name": "Dr. Karen Wright",
@@ -37,21 +37,21 @@
             }
         ],
         "real_name": "Samuel Wright",
-        "vault_id": "vlt_832073a31c258f7f",
+        "vault_id": "vlt_b5f6254634763dbf",
         "supporting_documents": [
             {
                 "id": "doc_hero_apex_01_id",
                 "document_type": "Official ID",
                 "original_name": "apex_official_id.png",
                 "file_name": "doc_hero_apex_01_id.png",
-                "file_size": 8717,
+                "file_size": 8728,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -61,12 +61,12 @@
                 "file_name": "doc_hero_apex_01_cert.png",
                 "file_size": 10080,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -76,12 +76,12 @@
                 "file_name": "doc_hero_apex_01_auth.pdf",
                 "file_size": 2050,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -104,7 +104,7 @@
         "status": "REVIEWING",
         "license_number": null,
         "registration_step": 2,
-        "badge_secret": "a40dcbdff192296f1bb2d9dd4334346c",
+        "badge_secret": "d9332ec0124b1c5a65854ed2201b2842",
         "badge_color": "yellow",
         "sidekicks": [
             "Byte"
@@ -115,24 +115,24 @@
             "lng": -73.9851,
             "grid": "TEC-8431"
         },
-        "created_at": "2026-10-03T13:14:50+00:00",
+        "created_at": "2026-10-03T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Alice Vance",
-        "vault_id": "vlt_2b71ac62d4e9438a",
+        "vault_id": "vlt_309ab5f4d82836ae",
         "supporting_documents": [
             {
                 "id": "doc_hero_lumina_02_id",
                 "document_type": "Official ID",
                 "original_name": "lumina_official_id.png",
                 "file_name": "doc_hero_lumina_02_id.png",
-                "file_size": 8624,
+                "file_size": 8618,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -142,12 +142,12 @@
                 "file_name": "doc_hero_lumina_02_cert.png",
                 "file_size": 9891,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -157,18 +157,15 @@
                 "file_name": "doc_hero_lumina_02_auth.pdf",
                 "file_size": 2055,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
-        ],
-        "id_document": null,
-        "id_document_name": null,
-        "updated_at": "2026-10-06T13:14:52+00:00"
+        ]
     },
     "hero_atlas_03": {
         "id": "hero_atlas_03",
@@ -188,7 +185,7 @@
         "status": "REVIEWING",
         "license_number": null,
         "registration_step": 2,
-        "badge_secret": "45b025c80356617c7f734c1f0d413653",
+        "badge_secret": "dc2c923b5b7070bba98ef60dfaf7b7b5",
         "badge_color": "yellow",
         "sidekicks": [],
         "mentor": null,
@@ -197,24 +194,24 @@
             "lng": -73.9352,
             "grid": "IND-8432"
         },
-        "created_at": "2026-10-01T13:14:50+00:00",
+        "created_at": "2026-10-01T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Marcus Thorne",
-        "vault_id": "vlt_ec9b89de27e5b776",
+        "vault_id": "vlt_7332da055d0c78d5",
         "supporting_documents": [
             {
                 "id": "doc_hero_atlas_03_id",
                 "document_type": "Official ID",
                 "original_name": "atlas_official_id.png",
                 "file_name": "doc_hero_atlas_03_id.png",
-                "file_size": 8731,
+                "file_size": 8680,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -224,12 +221,12 @@
                 "file_name": "doc_hero_atlas_03_cert.png",
                 "file_size": 10016,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -239,12 +236,12 @@
                 "file_name": "doc_hero_atlas_03_auth.pdf",
                 "file_size": 2065,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -267,7 +264,7 @@
         "status": "REVIEWING",
         "license_number": null,
         "registration_step": 2,
-        "badge_secret": "db9e3398b052bdd4fc730ff0af116758",
+        "badge_secret": "bee15c15bc9c7418ad74b366834e3b54",
         "badge_color": "yellow",
         "sidekicks": [
             "Pulse Runner"
@@ -278,24 +275,24 @@
             "lng": -74.0445,
             "grid": "CST-8433"
         },
-        "created_at": "2026-09-30T13:14:50+00:00",
+        "created_at": "2026-09-30T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Ravi Singh",
-        "vault_id": "vlt_a2b3127a0f4161b4",
+        "vault_id": "vlt_d5bcfd53e7f351d4",
         "supporting_documents": [
             {
                 "id": "doc_hero_steelpulse_04_id",
                 "document_type": "Official ID",
                 "original_name": "steelpulse_official_id.png",
                 "file_name": "doc_hero_steelpulse_04_id.png",
-                "file_size": 8735,
+                "file_size": 8717,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -305,12 +302,12 @@
                 "file_name": "doc_hero_steelpulse_04_cert.png",
                 "file_size": 10058,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -320,12 +317,12 @@
                 "file_name": "doc_hero_steelpulse_04_auth.pdf",
                 "file_size": 2062,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -348,7 +345,7 @@
         "status": "Licensed",
         "license_number": "GHRMS-LIC-0042",
         "registration_step": 3,
-        "badge_secret": "6dae004d8122b0cd8553e4700f896383",
+        "badge_secret": "a5940513cfed5d0be7e78df523a3e19e",
         "badge_color": "green",
         "sidekicks": [
             "Aero Scout",
@@ -360,24 +357,24 @@
             "lng": -74.006,
             "grid": "MTR-0042"
         },
-        "created_at": "2025-10-06T13:14:50+00:00",
+        "created_at": "2025-10-06T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Marcus Jonathan Vance",
-        "vault_id": "vlt_bb133c6bdb590bdf",
+        "vault_id": "vlt_a7abe0f8f2babdd3",
         "supporting_documents": [
             {
                 "id": "doc_hero_vanguard_05_id",
                 "document_type": "Official ID",
                 "original_name": "vanguardtitan_official_id.png",
                 "file_name": "doc_hero_vanguard_05_id.png",
-                "file_size": 8793,
+                "file_size": 8786,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -387,12 +384,12 @@
                 "file_name": "doc_hero_vanguard_05_cert.png",
                 "file_size": 10208,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -402,12 +399,12 @@
                 "file_name": "doc_hero_vanguard_05_auth.pdf",
                 "file_size": 2070,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -430,7 +427,7 @@
         "status": "Rogue",
         "license_number": "GHRMS-REVOKED-0099",
         "registration_step": 3,
-        "badge_secret": "29ce9cfb95893d48610b2fb6dc782900",
+        "badge_secret": "dc1aadbedafc325b1e01a7bc8c4ab2be",
         "badge_color": "red",
         "sidekicks": [],
         "mentor": null,
@@ -439,24 +436,24 @@
             "lng": -74.041,
             "grid": "CST-0099"
         },
-        "created_at": "2026-04-06T13:14:50+00:00",
+        "created_at": "2026-04-06T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Unit 09 / David Alan Cross",
-        "vault_id": "vlt_3a60f787d8d4cfd7",
+        "vault_id": "vlt_d839d419c3d2cb39",
         "supporting_documents": [
             {
                 "id": "doc_hero_specter_06_id",
                 "document_type": "Official ID",
                 "original_name": "specterzero_official_id.png",
                 "file_name": "doc_hero_specter_06_id.png",
-                "file_size": 8952,
+                "file_size": 8933,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -466,12 +463,12 @@
                 "file_name": "doc_hero_specter_06_cert.png",
                 "file_size": 10324,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -481,12 +478,12 @@
                 "file_name": "doc_hero_specter_06_auth.pdf",
                 "file_size": 2079,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -509,7 +506,7 @@
         "status": "Rogue",
         "license_number": "GHRMS-REVOKED-SOL88",
         "registration_step": 3,
-        "badge_secret": "af5dd7929541b2dc9416e61f5d66baca",
+        "badge_secret": "57a778fff40d96153a2b45ee935b6c0b",
         "badge_color": "red",
         "sidekicks": [],
         "mentor": null,
@@ -518,24 +515,24 @@
             "lng": -73.99,
             "grid": "COM-9988"
         },
-        "created_at": "2026-08-06T13:14:50+00:00",
+        "created_at": "2026-08-06T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Elena Rostova",
-        "vault_id": "vlt_0c9e4c6c9fc99d4f",
+        "vault_id": "vlt_0cca23f93f6213b9",
         "supporting_documents": [
             {
                 "id": "doc_hero_solaris_a833dd_id",
                 "document_type": "Official ID",
                 "original_name": "solaris_official_id.png",
                 "file_name": "doc_hero_solaris_a833dd_id.png",
-                "file_size": 8720,
+                "file_size": 8678,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -545,12 +542,12 @@
                 "file_name": "doc_hero_solaris_a833dd_cert.png",
                 "file_size": 10028,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -560,12 +557,12 @@
                 "file_name": "doc_hero_solaris_a833dd_auth.pdf",
                 "file_size": 2069,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -588,7 +585,7 @@
         "status": "Licensed",
         "license_number": "GHRMS-LIC-AER-7701",
         "registration_step": 3,
-        "badge_secret": "6f5fa94c977f01e7b46db88b1fead31b",
+        "badge_secret": "976fe7852660adc3e3b0ea71bfbe368a",
         "badge_color": "green",
         "sidekicks": [],
         "mentor": "APEX",
@@ -598,24 +595,24 @@
             "lng": -74.0045,
             "grid": "MTR-7701"
         },
-        "created_at": "2026-06-06T13:14:50+00:00",
+        "created_at": "2026-06-06T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Leo Sterling",
-        "vault_id": "vlt_bb867612837bd989",
+        "vault_id": "vlt_c9713f21c57240cb",
         "supporting_documents": [
             {
                 "id": "doc_hero_aeroscout_07_id",
                 "document_type": "Official ID",
                 "original_name": "aeroscout_official_id.png",
                 "file_name": "doc_hero_aeroscout_07_id.png",
-                "file_size": 8787,
+                "file_size": 8786,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -625,12 +622,12 @@
                 "file_name": "doc_hero_aeroscout_07_cert.png",
                 "file_size": 10160,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -640,12 +637,12 @@
                 "file_name": "doc_hero_aeroscout_07_auth.pdf",
                 "file_size": 2073,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -668,7 +665,7 @@
         "status": "Under Review",
         "license_number": null,
         "registration_step": 2,
-        "badge_secret": "ce367c0dd4e953912024d65bbd9f3043",
+        "badge_secret": "03540d37be0e63cedd8ba0f4cda1d101",
         "badge_color": "yellow",
         "sidekicks": [],
         "mentor": "ATLAS",
@@ -678,24 +675,24 @@
             "lng": -73.936,
             "grid": "IND-7702"
         },
-        "created_at": "2026-09-26T13:14:50+00:00",
+        "created_at": "2026-09-26T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Maya Lin",
-        "vault_id": "vlt_21782d023e386816",
+        "vault_id": "vlt_56cc8b9901b0224c",
         "supporting_documents": [
             {
                 "id": "doc_hero_pulserunner_08_id",
                 "document_type": "Official ID",
                 "original_name": "pulserunner_official_id.png",
                 "file_name": "doc_hero_pulserunner_08_id.png",
-                "file_size": 8722,
+                "file_size": 8717,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -705,12 +702,12 @@
                 "file_name": "doc_hero_pulserunner_08_cert.png",
                 "file_size": 10009,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -720,12 +717,12 @@
                 "file_name": "doc_hero_pulserunner_08_auth.pdf",
                 "file_size": 2072,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -748,7 +745,7 @@
         "status": "Licensed",
         "license_number": "GHRMS-LIC-JCK-887F",
         "registration_step": 3,
-        "badge_secret": "cbc908ab62753cbcdccefc44f8c860ef",
+        "badge_secret": "1e2a9ac1295f48ff0f38611d81ebf81c",
         "badge_color": "green",
         "sidekicks": [],
         "mentor": null,
@@ -757,24 +754,24 @@
             "lng": -74.007,
             "grid": "MTR-887F"
         },
-        "created_at": "2026-09-06T13:14:50+00:00",
+        "created_at": "2026-09-06T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "John Ckson",
-        "vault_id": "vlt_a9d3a39066525322",
+        "vault_id": "vlt_a03636f51f28dd57",
         "supporting_documents": [
             {
                 "id": "doc_hero_johnckson_887ff2_id",
                 "document_type": "Official ID",
                 "original_name": "johnckson_official_id.png",
                 "file_name": "doc_hero_johnckson_887ff2_id.png",
-                "file_size": 8683,
+                "file_size": 8691,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -784,12 +781,12 @@
                 "file_name": "doc_hero_johnckson_887ff2_cert.png",
                 "file_size": 10006,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -799,12 +796,12 @@
                 "file_name": "doc_hero_johnckson_887ff2_auth.pdf",
                 "file_size": 2068,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]
@@ -827,7 +824,7 @@
         "status": "Under Review",
         "license_number": null,
         "registration_step": 2,
-        "badge_secret": "560ab0e1a5fb92370f544bc1f12715f7",
+        "badge_secret": "1eeaae11279b75b823dfecc7e4fd08ce",
         "badge_color": "yellow",
         "sidekicks": [],
         "mentor": null,
@@ -836,24 +833,24 @@
             "lng": -73.984,
             "grid": "TEC-4C51"
         },
-        "created_at": "2026-10-01T13:14:50+00:00",
+        "created_at": "2026-10-01T13:23:46+00:00",
         "emergency_contacts": [],
         "real_name": "Dawn Miller",
-        "vault_id": "vlt_6033b77ef2194656",
+        "vault_id": "vlt_b5019ccb6122c34e",
         "supporting_documents": [
             {
                 "id": "doc_hero_dawn_4c5106_id",
                 "document_type": "Official ID",
                 "original_name": "dawn_official_id.png",
                 "file_name": "doc_hero_dawn_4c5106_id.png",
-                "file_size": 8747,
+                "file_size": 8780,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-21T13:14:51+00:00",
-                "uploaded_at": "2026-09-21T13:14:51+00:00",
+                "upload_date": "2026-09-21T13:23:47+00:00",
+                "uploaded_at": "2026-09-21T13:23:47+00:00",
                 "expiration_date": "2035-12-31",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-09-22T13:14:51+00:00",
+                "verification_date": "2026-09-22T13:23:47+00:00",
                 "verification_notes": "Federal biometric identity confirmed authentic against vault"
             },
             {
@@ -863,12 +860,12 @@
                 "file_name": "doc_hero_dawn_4c5106_cert.png",
                 "file_size": 10042,
                 "mime_type": "image/png",
-                "upload_date": "2026-09-24T13:14:51+00:00",
-                "uploaded_at": "2026-09-24T13:14:51+00:00",
+                "upload_date": "2026-09-24T13:23:47+00:00",
+                "uploaded_at": "2026-09-24T13:23:47+00:00",
                 "expiration_date": null,
                 "verification_status": "Verified",
                 "verified_by": "Sarah Chen (REGISTRAR)",
-                "verification_date": "2026-09-26T13:14:51+00:00",
+                "verification_date": "2026-09-26T13:23:47+00:00",
                 "verification_notes": "Academy metahuman combat and containment certification verified"
             },
             {
@@ -878,12 +875,12 @@
                 "file_name": "doc_hero_dawn_4c5106_auth.pdf",
                 "file_size": 2067,
                 "mime_type": "application/pdf",
-                "upload_date": "2026-10-01T13:14:51+00:00",
-                "uploaded_at": "2026-10-01T13:14:51+00:00",
+                "upload_date": "2026-10-01T13:23:47+00:00",
+                "uploaded_at": "2026-10-01T13:23:47+00:00",
                 "expiration_date": "2028-06-30",
                 "verification_status": "Verified",
                 "verified_by": "Commander Vance (SUPER_ADMIN)",
-                "verification_date": "2026-10-02T13:14:51+00:00",
+                "verification_date": "2026-10-02T13:23:47+00:00",
                 "verification_notes": "Municipal emergency protocol clearance approved"
             }
         ]

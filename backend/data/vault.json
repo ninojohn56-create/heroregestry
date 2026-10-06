@@ -2950,5 +2950,203 @@
         "algo": "AES-256-CBC+HMAC-SHA256",
         "created_at": "2026-10-06T13:14:51+00:00",
         "updated_at": "2026-10-06T13:14:51+00:00"
+    },
+    "vlt_e2dc54ae83527e35": {
+        "vault_id": "vlt_e2dc54ae83527e35",
+        "ciphertext": "KZvJMJNx9Mm6ilozKH1FFWoFKTX+XmS84mFMqIf+quXUzRBqtElBGbLda3P70lx9TkHiOjNJpHDQmkHNbckszrTLQVdNc1NlSOLC9gvF+ssuZ4Pw8K3D2cC65ok4f8qDnLzaRWT8ntBjVYP6I+QUWvSDuoc2cYnIDmPatdoLR/qSrz0Rnzo4hc0hwFEfVnYewgcLI+HQBluTGt6VtzNTFQdxfPt0Qis5e4toIQzMv2MgzCH0nHOQISodmaglmwGSMg/2d1c+NIAWl9w4OM7S76ZhN0l8R0OhpC/ECPB2v/EVA0Kx5pt/YuwNq/Vz6RDyK8B1ViUe6IWkpInzorq2qQN+vIPb0286XdGFNqH+22Y=",
+        "iv": "daTpba8RFjU2oL21BsmcOg==",
+        "mac": "de6cc5011c14b2a1f958e57ca904145cce434c6846af1bf19c4ace02fb6f02ee",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_75f54eaf9d902281": {
+        "vault_id": "vlt_75f54eaf9d902281",
+        "ciphertext": "WLE0DU2rlc6AZ+6FE/8STRTZjI87Q5oYEMM7bI4i+GJRXgOh+tj0SNeo2WS+3D4cLQP+1PORZ9aFr0TRpyzpfsF/8+GdHBcQJ4YK1KVRjLAlRnzaauHOLI3d7DZbcERD0ng39NO9XVWcM2nccDSSOw03zD095UCdDlN65Rl3QVQGJUwG4uVyIHWdKbFQh5bakGJCnzjpo8TZJ8EG5XYkAzQ17DZdY7d9CNfDH8DoROWwNNhBf8ZfEsB+dAr6X1XKYQ+agYs+xjcuZ3sB7tePq9c7Qwi6bDDgE7KP4LOIfaqmyRdtJBIlHq5jpZug/w1Isyo81uiqKog/R4QNsu2sYzZX/duf83FJ+Fw3YTzZcJo=",
+        "iv": "EaJjdpKl0JGP9AbJ1cRy+g==",
+        "mac": "ca7503accaa9bff7d427450ad8b501706cba826ce177a37ecd4b9a9bbdeba1b3",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_9fc3e344a5a8e65f": {
+        "vault_id": "vlt_9fc3e344a5a8e65f",
+        "ciphertext": "wOCaW+JVIQOBjDFicQ2iZXbECeJHH6UerNNXNDhG98VCy9y3E5DyHFARUn9RjtRcnQ12LALRrwbWVWfrvwf3zcsKrYYE7YkW6SF/SQkEnuPO11t7eehlC8NhIYryuYbY5qNFtqT7dQZBgHvwcA93QV8UpWsevxfokXqLKfoDor3mbJNGFoRuSCulXHOtJWQplZxGaxHzrKxF2qQZ91W33H+ixFKRQ8cCkLNHPQkidxJBlF9Hg8NMD1varW6zxLIvsmMl0996lVU2UptrasXqTzffdNwdkGuR3WAVQu8AvcJAdR+eltC05+lBRSZt0FWeir3wU8y4bUqepj/Z6ZhK6g==",
+        "iv": "pURmTeeu4yPetGTN2KeTRg==",
+        "mac": "518cbb6cb3303ca322b67125db077a7ab80a7ac682ed1891ec159c7a0d97c63b",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_e7caaa2c7f62a465": {
+        "vault_id": "vlt_e7caaa2c7f62a465",
+        "ciphertext": "bvjaKAiOQS1MntJ9Uqr1ikyYE4cJheI/7AiIyinRCalvz7ue5UWSJAZAQarS+usW+/2Y4yJzITIGGvCw4DMgDACrjLuUy2fb0mAO/hP414kFYXAecnsgr3kkYvkV8sTbOFUWxyxBXUUztOvG0EiIioDQNqfoQpAG/SS5S7+gCpFHvaW3oEcrRGPOIspcZJnqf5ohDbiSYW+aps6nLxfKqR+DfFH+SSls5m6x02dnBi0yhttJXM8CtIkhNwbYZgc38Gcoye2VjoCqVHmxGWEHZocduGFNWdoq+HSGqk3CXU9kNOyBLxJIgo5bkTRH5Hg1vYLvupFdUV8A6T6JvJFJpA==",
+        "iv": "T4q7dpYeXmbYspPLfDhEpQ==",
+        "mac": "4f607e952869670ac59bd1958151f37af800ca268b2d333e4611099dcd2a40ad",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_dea760252ba48e82": {
+        "vault_id": "vlt_dea760252ba48e82",
+        "ciphertext": "tyawBjiGUQ+KuW7/COpTbAy2qt4Ob8T1Ldz99mMwlR8GDy2gIWN9OWSNtNPd6T7Fr0XUu1MWLgzw4mUJSZqzI64AGwNLdsN/K754fmCzovOaO0J936J7qq+NzA0f9QL+0h+0Lqc5CRs+Kg2YZLi4Vgdi6e95eHGhTqabAVj0PaO8eLpY8zLQkzobVeo56RZ0gD5oXkzu6PfsU/loG9IeKFnIPuPq9lIQiKSUXhrZMnoEnUNkRd3A/EPcy2szfpgQRqaU3lpQ8jQTD7xOxWr/OpIuC52XE+xyQVhWwMG1sev7P12hudEWed2UbTUeErZG4U4b5vrjXjp538Bu2OJ03cwnsrwXN1qM9bt5abFVts4=",
+        "iv": "dTqgwKd0lgak6yN5qf/KZw==",
+        "mac": "9d21e9d17b82d45f62d154c750075b875bc1ebe7e4ab22f8ab84c78b2732f575",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_d47e603da8750fc6": {
+        "vault_id": "vlt_d47e603da8750fc6",
+        "ciphertext": "/3IFIQmFNTDw5Hpo4PDiTHngMv99b/j1QU47OiepAAwbzrT7dJzUG2NzZIYh3ET2uFTbYmGxH24OYjGualPKoqqPFiHTXBEu/WteETOuBU3GW3f05svEt1VX8zZxBfi9iGdMxkCT0nHFoxcyiRprQpQfrEJypvLFYLgbX8RltmET0xDCZFYru4ItJb06LOiolyoDLQNSryEt3hQZt4CL+47EvVpTluEseUQ0KuZ7wRZFlwJYqKvLHaXNkobXywPgD7lF4tdX24H+xmWMVxI50fWUcFrWuThm8BOvxtQIUSnibqFAo+wXnwa51Xq8kQfjVTvN/2X8u/rXxMAUsGhDd0uTaMBDxCWAwpt5jKLFyh4=",
+        "iv": "c0lou+ixR0yDtgRAdNh8Wg==",
+        "mac": "83c876e8aa5b19b24d868f76c796db62eb2fee51b9bfbd70d8a7b74f8149626c",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_772647fe2b39fcc2": {
+        "vault_id": "vlt_772647fe2b39fcc2",
+        "ciphertext": "l46avrT3GPSj4sPLNxH67xuDs80wYgqvfs+gHRvBLtieZSYzuPiwybHm+OtLNnQ1l9oOFL0tYFGvbX5myiBKMo9D9GPKwQbHVpaicOhf6e8reUKkKHv/o4qkIFaoaYc/jT9UK8wxuQ4bCWp2qsURcWgIGm5ZxuIxXsFoCZ1JelF7qqq8Usr8WnN+DlmCaD0b8P8r4o8GfrsoWtDTcLo3gWRny4LBse+klEh1/B9T/XIjsrDFHxgxRyByzMpQerbT5dX59J+brC34FziFvDJtwyTxaMRuY1ydEKRDBbRxlGVZGk+bcAVT9t8NttTRM14PHcIjkUkXF3UMWeTcxct+zXgPKC1f6XsJMiVkUTSsRGs=",
+        "iv": "c4xkbxX5fjwOLop+HlwUsw==",
+        "mac": "fcc9f69b037f46473a512ca6834f30e1bef77d4ec70b9a8d13e0e82fb3bb74b7",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_572859db61f5b80b": {
+        "vault_id": "vlt_572859db61f5b80b",
+        "ciphertext": "thKpfl/5jAcOu/TxknaArrsUXHBsm9YqL7NvumLBTPKIe9TAeFOXCK9hj8EpKHsaeA/7nIHg39ziYNLjVrQJAg0XIivcUAr1+YUaiBRHJWGVC/dbj2WQ5PUbIRfiEOJkiCGve5hdfK2+uWJA92NITgrId9yHksWY3C0see2sU+N4ge/SF9+Va5jYei3gPp0dxpSs+Q0lg1y87/oEzcp5oK55BncoWAUXb6XjdXZlKvbjZcmWu6eqNPVjK0bCpbfDt2luIgYzIXCpbH5vUPxQmhY8TWY8hwmxvCaccoc96puA0ilm2jTHm5iiJDJvbLOOh3X/BX0ickqPmP/qBRhQozppI2XmTws5lsc/QrVk3j8=",
+        "iv": "SUSky+RY06Mac7CghrB81A==",
+        "mac": "9da8b4e78a7fc3e1431f61e5359c7b6c67031110bd94af73aaa23c34c80b6dbc",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_b3a96bc133331f82": {
+        "vault_id": "vlt_b3a96bc133331f82",
+        "ciphertext": "bUkg6VkMmfsiWnBHZJ1ruSO2sv3scca94aZcWrEMCHwxSrIkmvF+ciw907lrO94ZDBru/6zvQyUs5kChuEgYEncrIe3bmkvFaGaORIokI/LnxsVJyCOtB6+RVhallS/5mHaFqkjWoM6qvlaJCCYT9dsi2pLuuF5wcZGiacddyORg67NOJSFqJ8Ag0yVm+stTQrTYY84GoVCuL6XqPJlWCJ07LECk/YHM5qzrm8BRR+V4PsG94GSXTLnRU4NjJTQnLIPVY3Q/J8RC0eXri21yOVAm4DgaN4IRo8Xy5IDJl7I7wYshZvvsIM54nrE0PCurdODbqiK45Wxh/D9CdFv+CA==",
+        "iv": "op7MZ1QUSpZjxDaTUOFkyQ==",
+        "mac": "74a57abddc50c536faa670e62e348aea903b32cd64e36f4250be733118f2110d",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_5a6f6a3ed5ddcbb0": {
+        "vault_id": "vlt_5a6f6a3ed5ddcbb0",
+        "ciphertext": "wDtvL+FSnDPs2wAW/RT9TqWEPiUpEKYBH10CSXx9EUIAbhl62HSeVDOSTJInaqE03UWuishE/fbhZSY90L3ajULb4Oaz+01ASnFW7eqDhEsggossYDWUZCgYwogM4twcUOYcaUrAsiVLtBRWbYmYMIhQ4bABJAgGSzPAB3F6UgtssCT2q7dTnpo4qryl71KbKSn1ZsCRsX++xbbBUpU8pzOioA6mF/eO+PL/8v2BUhSPx6xWdJwuTWbG2mIkjKsneZCmyQkgfir4TjFUXOQuxTrssgzgrke/7b2Bz/fv0VLE3tGnuzfMDbSnQeWcT/X7L8mtZVPZKQakshMzD1NQdA==",
+        "iv": "dit1y3j38kvUPnGrW+k94A==",
+        "mac": "1b3f35819a3f03b5645a3979c0c96dee69856341aa6f5e70a8d9fa7de63ee306",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_4fffbdaf8eccc06b": {
+        "vault_id": "vlt_4fffbdaf8eccc06b",
+        "ciphertext": "aBMDEf31ImWHS7k81d1Ex+H/UGbMeH8mr/sdUv2Qj0EPteyuGar743gpL0zxMNCZDFV+HDImqy6wSLCDyVklcmmyrs5/RYnB2YT+fJAQ72Jv2OEvzENtyDl+jQSiTlIMmTh96YSHXdwSPGtBqwGJjJOFU5pHukDwj+obTe5ghp1FCPPeXgLp6xOoA9K2iwUtP7XxAroNBH4wth6X8P11wORjzr6Q0HqjRpcBVi0hz/4637D4836ryDsq3bFISCZGPRCorWIRY2HMCSKFkLHm0kV+bBxSooldbRvXCC4O9smkU4EFDuxPAi58I6+WZFs8geCYn4wsa9sf2XcPYOuTqw==",
+        "iv": "5vuhEIMcobWyodxxXj2dBQ==",
+        "mac": "3b6b45e25ab945e211838d1494fda9085d226f310b339c1e3787003f9532fd46",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:09+00:00",
+        "updated_at": "2026-10-06T13:23:09+00:00"
+    },
+    "vlt_b5f6254634763dbf": {
+        "vault_id": "vlt_b5f6254634763dbf",
+        "ciphertext": "aqILV/bBGLOc8FWcBAwG4SNpgHyprknaSTDqw4GCbIw7J0WENPPjgPL+V+PFMfKDho8kNfK9wxa3sSOyo90vYzynDPmFVPYKLqiLSSwscsTpL1FpNa3TvF4p86fpGgL4O7O/5cAYZTxneCw7ZNpeuyAH5ww8YHjEsB5Kr1XMIAPoGeygfWsc+Km7sZe7apn5NMZ7XluYh0EMPY2JPd5NsY03DAV1dV7EWUWroLoB4F/yqW240tgBrcMOEyoOgf1+NwyOSaIyTPYebAEQFBRzUbwHfSBRXhu1tGLOQxkOfGBm6KbKm2GxI0Z1MOJ4JLwuIbRmGhx3cuo8wa9kOwszOxEJTwIQcG1rSQe1c9xGMQ0=",
+        "iv": "UiZlNA0UBAt4aQ/v0/aXrg==",
+        "mac": "90a35ac122d659fb301b6f39b0c8fe54f314df94b68af87911afca56d0e0a2e0",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_309ab5f4d82836ae": {
+        "vault_id": "vlt_309ab5f4d82836ae",
+        "ciphertext": "S2IPeLgX9GuvOphUSNDYr5kYXh50JMvdR5XQ3ZRWl8W4KuFoTSsPe5iU7vgeuJquW3GC+mtZ4UGWjHND7UJ+H1VDNxlxY6UVenMByt2etyuShte1zA/aFCeqG64aHzAXCa7pRD3sXy9MlUVwfewsu9JjdORgeNjDes2Iua+37PwfAMn2+CHO+oaSTTUKT2lrq1t5kvbX6MYHeS1AsEHmSo9so32Q4yuJfqCdtW+FYfkinQZtEoprlwW1PkHqB/6WDiUXVintvxuqrtRgl386VGswDh+7Il8bJB70ZcYo8dR6Y7IlPM3F3sAGnDq7bKS2PYgn179GlKWL/AtAcIl6pg4R6tmGIYSNWXU88alR3Go=",
+        "iv": "Nt6O2H/G6z5kJkwgMzuOIQ==",
+        "mac": "2d91af25efeac888d78a29560c1fbe6d686599dc31a6dc59e14eed2bb7d2d9ba",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_7332da055d0c78d5": {
+        "vault_id": "vlt_7332da055d0c78d5",
+        "ciphertext": "RXSlj/CO3rZ4x6XCs5OoA/lzz3tx1PTuEekCKJfCFs12vCjQx3MeQQw/73G9vnUxQxSAfT+z9YJfcmQJJIDaAuZGbKa3pyeNAG+N5UMaLB2BaSzFybj/YHirY3QGYjUhg66zaQnORs6tRa0PfNmDBpLD4jAzhy93GcMF9XZbpCGr9PNyDCUlHqJAQAHH6jcHncdeinoosmBBxc6QTRc7Fshl7+t6yXSL8X6n2pa1MKLN2djV4C10/zrfDkpVSMTzLRqdzBKSLAIvQeNV3/zUmpB92t35lE00sCAgN8h7u2PGLahqZQva/f4CpUfJRLepYW8mWVDWQu1bzip2UMCsoQ==",
+        "iv": "H1shTJCFNMg4hpiyphmILw==",
+        "mac": "166ec668a7ce982454cbe8a7a7bb0a30427f4ec130e4bfab0aefc07d95640f60",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_d5bcfd53e7f351d4": {
+        "vault_id": "vlt_d5bcfd53e7f351d4",
+        "ciphertext": "JP6jH2MVoSeRy3GvcWTTxOyGXUFWgPZnD2zLMj6BZHOEeh6rXGw0cqiPb8rptMslorMCRiaP0sHCsHGpzm3pjRa6otCU0Ps+kVLy//Kw0sV7giZEopkE+jdZa2GaivMHrARE2TYJTwWNoKUkexnJD6zn1Aey0QQ7VaCEzDSJKhD35z68yMsdQx4zS+sztfa/vGDO/z74ivfmrL7E/J2No3fQX+4TTU3ms1iDvc0MJegaugmAPsswkgJI8Liw1xP09EmiYTVi9AP30WrfPYGcDXyyvjs/VxiQC94cJmhstQxLJNl+8gtBKLHMQg4PBv7VZy15hvYLDHYtp7j7SQVGrQ==",
+        "iv": "dat4zgncKOGgoGoJxDvr6Q==",
+        "mac": "ac55ab18e2613393200decb38d2a50746116579c7044b726b0616fdc0423874f",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_a7abe0f8f2babdd3": {
+        "vault_id": "vlt_a7abe0f8f2babdd3",
+        "ciphertext": "5naVJzblVUqHELWEWkCp82/QczDSyNomnt5Va57y6QJpd4Gt8Q8VWA1fWZpshBZhqpmzpgO7TzQczaS++POMyvx+bYPYIF2jfiHYo5lSPYkxvLM9RViYNn/EwA6Oa/sy51kiA89wLYAYkDAAwSRAMeHvLdbXnLyPDkprphf+AkZ+l1QXBv3iklfz0GZjzQrl8lNVJiOEvgcByTJzqejgxFtLNXMAGaLJO9c54Gly8ofo8W6/UDGRnGJ7VIdhfhOwuw/FZnpsIERKsmSx+dq8XqBqarNTey5XUPcnDTnuZTAIh2E3+cSDD1KO0+Zb/3N1vqklhB+K2+q3ODxjvYsMcfIlaVZpR2Uefzf9nnU/gNk=",
+        "iv": "k3eMYXFUNwuc9Ll0E7bkHg==",
+        "mac": "c950626825e05575227c72535101b5a459e956aa6d0a9322b94868fc196d381d",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_d839d419c3d2cb39": {
+        "vault_id": "vlt_d839d419c3d2cb39",
+        "ciphertext": "L+KmaqsOlDT1nMS5u67AlkK6ObUdaDMkA/1U2wZxP5eI1H6lDxtK2/VTxATvnHAISjHWTWAigNC47eoQHoP/89gxBwrPBtcRIVBrT17sX6QNWmXI0itY21gCax63ZuZlDN59GAgiGLzAgbyjsNOU2N5p3WY8XzJY0hEsM2M2a/zNUO0IjTsmOzirKI143OijVR/+a21jdCNaxrfUYlgMgz7ZNk5Lak5Y5SKm7vdJA9hU1vBGXKo2PMcQKij5xIE2A/M5VE/4E+yK20ngCLd9YM7H1n+xAMfloDw95LerSHnmc4xn1SSfAA3Ep8+6ZFJ5Hf0O7JBeQYBZ4HGCQHjg7NVSj0mXVtO/q4u/edPewoM=",
+        "iv": "uzffprdzAlxIFk+YvuWbFw==",
+        "mac": "d7b00be2b4be0e6b5a487ecfa358db33199c8247f60def19b6a1f45ff374b2c0",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_0cca23f93f6213b9": {
+        "vault_id": "vlt_0cca23f93f6213b9",
+        "ciphertext": "eoe7LeUmnxUS+LoVT3tvCV809hIbdSkXNz57a3Un3L7z6F8l9QUbnXS2OdhpIZJI3vLdW5jxe/lwsvKlVjiZeLZhH8OiAE9ZsY17eKLpqjAS6hZcvrotCmAlftq5lj1QAFyLovqNzwv208WnrdOFiyfBRIp9RfGdlhDY2BOJSHhG0kxlh4zjezXg2yOqZTsy7l2Yxk9L3a2doR5eU6xENnsbZ7rdkpi83ipZPlYE7Z/utSZ3VEnZdUswYXhlR8P6WKsJ3Ly7ITfajk5ru9/F76Wr7WAgHhMeZKqHNFipg2Ik9NEzbs6DQlftDKe8Gf93k/QAgtzcqlioUVvtK0Dijoi943Yp+AFrhmItVpj7q3A=",
+        "iv": "2sUHQheLvMwT47U3WIDk+w==",
+        "mac": "cb2857054dbd2d223d378c001ac2e67f2d295a67f381ca29a936d1a2445f1ced",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_c9713f21c57240cb": {
+        "vault_id": "vlt_c9713f21c57240cb",
+        "ciphertext": "FHaIUVw6CXnxZ4t5v6wWrqlgQVrJNWgasE8wDiW64qTckBdBZTqBsBSn7Z1Nd/Gd5Q2325TSqluW00GeuFLD+pM5W4ZoL5Tj5L6t9bZo8qdxZOoAyxCHznsBtimuZQpnCmKaUcOkDymWstqBWVW+LHn1++TNAdZQKGFfp+KiqZvM0qiZHSJdXV7Vd1OR2sPvLdTYWU68MJLxPWYizIgWWbYSg/sGvL3Lbglw/3CKTKNKj9SLg7Aroc6GBk5UoPl0hrkPEGc9zSiIWteXkYdAw1rU8tcWUmRt6SQY5nhd4f4CCqdO1336mCbhfffWBchG5hKplAEYGEpbIRikZTyr62ZRml5SMYaR2HBem/baPNs=",
+        "iv": "RCbWF+WW/6O5FdqP+5Gudw==",
+        "mac": "44744f21cb00878b3ce7bb5344862155ea83d4fc61aef55dbdc8ca1948565329",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_56cc8b9901b0224c": {
+        "vault_id": "vlt_56cc8b9901b0224c",
+        "ciphertext": "nskJ8xU58ORrRoU1fB7HfpcVtb/kkjqKo6ieAOJ+wgMrCOaDP2KOqhE6fndek/ddfu+J8POWBq8cxYUH+J0drriTRSkOvogT1+vYGReU4e3G8ywpG4+v0LFppyDchzoIPZ34p+rYj2t5+6d7OYZ88VGX9idcEXQBNFrBcP34uNJE37/vUpfLwlfYU7PTq6mxo1ebP3Dyxlk3ummwy8HQEYor645SHzhgNQCw+Iv0Z8VTTKe3uciLSVau3+9PER7HwyBlJftiuJl1VaaCjmI8NNEvJEktLPuZKZYSQz43Kfvfa7WUMxpSYmjisL50fncuzhnub2+r/ZqcpN9o1LKUNQ==",
+        "iv": "GODUYVJ74jS0+PLDsbAF+g==",
+        "mac": "69bac7285513c1aa8730dcbec90a7b14eca3bdf156cb4a0e6ee1cbcabbdbee33",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_a03636f51f28dd57": {
+        "vault_id": "vlt_a03636f51f28dd57",
+        "ciphertext": "u8SkvPha+JFnt2x0Tglb0abkXBR5ERrTprl7L0QSSVoun6UKTh/qa2JxrCsaxzPoyrJppdW/oi3Yo/oGbWAFF/x4ylBccsT68vV8XUgu0N2K56bRB4yJlI7B4oeUz2sWr2aLL0cx7FFCohZ+BEpzgANsD/2tZDrzn7w08zhKT9Rq+37L/EeUwCuVDBOIm0P6qerX8/s6P0ZxENeryNsh7i+i8xyToQ8JcDCdUgcjwsG8fjXAnnzn0JWX0UXyRtXsM6k7NoE/zZEYTqaRkeZPG8GabQyxCwvTriGCzuakc/BwSvibm769en8TlX2FmVhqEKbuNJ7UAArxsL4voTqe2Q==",
+        "iv": "x+uBj2K8wWVcb1aP7+tmpA==",
+        "mac": "ef459ddc56476bdfb5b15e018d1b4aa00a838d4a90202de114c8399f81196bfd",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
+    },
+    "vlt_b5019ccb6122c34e": {
+        "vault_id": "vlt_b5019ccb6122c34e",
+        "ciphertext": "9+JlkZA9OTo+ZmlgVR6JZ+UcV/UzKbjlmZjz9nsn7Gi9tOcT6nav0U9IhiMI3QX3iwE5YY52aBXkC7synZ/NDoRlN/vE/WwPpi4Gh7FYRYzRyo5kalSA6F86FgT7NHbyOm9HJnpXBWR0u5Nqd78YbcfFM6C+YwXvI05vgj6AegL/YjbMvDc3Di9z+nkE+3eC1/jqf3JS9tPpdFIpv2ebR80ArUDbXCSGJ82tBP4cQdfhmkS/pOMhh/Im45lb/xpT61FFrRBmmm2R3YiOcm3Hyu6zOqwyFCaiq0ILfEuYS4KR60K/gxiN/tjphUSyKQfG6yZr6z1EwhuEceP4fLrlaQ==",
+        "iv": "dHj9qlirNRyaLPw4NU763Q==",
+        "mac": "65dba74198ec66c05e486e88c0e1044530ff191459c1dddedd5e44853144fc51",
+        "algo": "AES-256-CBC+HMAC-SHA256",
+        "created_at": "2026-10-06T13:23:46+00:00",
+        "updated_at": "2026-10-06T13:23:46+00:00"
     }
 }
