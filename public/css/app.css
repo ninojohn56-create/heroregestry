@@ -1359,40 +1359,105 @@ body.resizing-active canvas {
   line-height: 1.2;
 }
 
-.threat-badge.a-class {
-  background-color: rgba(239, 68, 68, 0.15);
+.threat-badge.national,
+.threat-badge.national-level {
+  background-color: rgba(239, 68, 68, 0.22);
   color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.25);
+  font-weight: 800;
 }
 
+.threat-badge.s-rank,
+.threat-badge.s-class {
+  background-color: rgba(244, 63, 94, 0.18);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.5);
+  font-weight: 800;
+}
+
+.threat-badge.a-rank,
+.threat-badge.a-class {
+  background-color: rgba(249, 115, 22, 0.18);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.5);
+}
+
+.threat-badge.b-rank,
 .threat-badge.b-class {
-  background-color: rgba(245, 158, 11, 0.15);
+  background-color: rgba(245, 158, 11, 0.18);
   color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  border: 1px solid rgba(245, 158, 11, 0.45);
 }
 
+.threat-badge.c-rank,
 .threat-badge.c-class {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.threat-badge.d-rank,
+.threat-badge.d-class {
   background-color: rgba(148, 163, 184, 0.15);
   color: #cbd5e1;
   border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
-[data-theme="light"] .threat-badge.a-class {
-  background-color: #fef2f2;
-  color: #b91c1c;
-  border-color: #fecaca;
+.threat-badge.e-rank,
+.threat-badge.e-class {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
 }
 
+[data-theme="light"] .threat-badge.national,
+[data-theme="light"] .threat-badge.national-level {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+[data-theme="light"] .threat-badge.s-rank,
+[data-theme="light"] .threat-badge.s-class {
+  background-color: #ffe4e6;
+  color: #be123c;
+  border-color: #fda4af;
+}
+
+[data-theme="light"] .threat-badge.a-rank,
+[data-theme="light"] .threat-badge.a-class {
+  background-color: #ffedd5;
+  color: #c2410c;
+  border-color: #fdba74;
+}
+
+[data-theme="light"] .threat-badge.b-rank,
 [data-theme="light"] .threat-badge.b-class {
   background-color: #fffbeb;
   color: #b45309;
   border-color: #fde68a;
 }
 
+[data-theme="light"] .threat-badge.c-rank,
 [data-theme="light"] .threat-badge.c-class {
+  background-color: #f0f9ff;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+[data-theme="light"] .threat-badge.d-rank,
+[data-theme="light"] .threat-badge.d-class {
   background-color: #f1f5f9;
   color: #334155;
   border-color: #cbd5e1;
+}
+
+[data-theme="light"] .threat-badge.e-rank,
+[data-theme="light"] .threat-badge.e-class {
+  background-color: #f8fafc;
+  color: #475569;
+  border-color: #e2e8f0;
 }
 
 /* Status Badges */

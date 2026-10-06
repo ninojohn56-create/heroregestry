@@ -1178,12 +1178,13 @@
     let existingHeroStatus = null;
 
     const tierLabels = [
-      'Tier 0 — Cosmic',
-      'Tier 1 — Extreme',
-      'Tier 2 — High',
-      'Tier 3 — Moderate',
-      'Tier 4 — Low',
-      'Tier 5 — Street'
+      'National-Level Hunter',
+      'S-Rank — National / Calamity',
+      'A-Rank — High-Tier Raid Leader',
+      'B-Rank — Elite Strike Force',
+      'C-Rank — Mid-Tier Combatant',
+      'D-Rank — Low-Tier Clearer',
+      'E-Rank — Apprentice Awakened'
     ];
 
     function updateThreatLabel(val) {
@@ -1193,12 +1194,13 @@
       labelEl.textContent = tierLabels[idx] || tierLabels[3];
 
       const tierStyles = [
-        { bg: 'rgba(192, 132, 252, 0.2)', border: 'rgba(192, 132, 252, 0.6)', color: '#c084fc' }, // Tier 0 Cosmic
-        { bg: 'rgba(239, 68, 68, 0.2)', border: 'rgba(239, 68, 68, 0.6)', color: '#f87171' },     // Tier 1 Extreme
-        { bg: 'rgba(249, 115, 22, 0.2)', border: 'rgba(249, 115, 22, 0.6)', color: '#fb923c' },   // Tier 2 High
-        { bg: 'rgba(245, 158, 11, 0.2)', border: 'rgba(245, 158, 11, 0.6)', color: '#fbbf24' },   // Tier 3 Moderate
-        { bg: 'rgba(56, 189, 248, 0.2)', border: 'rgba(56, 189, 248, 0.6)', color: '#38bdf8' },   // Tier 4 Low
-        { bg: 'rgba(16, 185, 129, 0.2)', border: 'rgba(16, 185, 129, 0.6)', color: '#34d399' }    // Tier 5 Street
+        { bg: 'rgba(192, 132, 252, 0.2)', border: 'rgba(192, 132, 252, 0.6)', color: '#c084fc' }, // National Level
+        { bg: 'rgba(239, 68, 68, 0.2)', border: 'rgba(239, 68, 68, 0.6)', color: '#f87171' },     // S-Rank
+        { bg: 'rgba(249, 115, 22, 0.2)', border: 'rgba(249, 115, 22, 0.6)', color: '#fb923c' },   // A-Rank
+        { bg: 'rgba(14, 165, 233, 0.2)', border: 'rgba(14, 165, 233, 0.6)', color: '#38bdf8' },   // B-Rank
+        { bg: 'rgba(16, 185, 129, 0.2)', border: 'rgba(16, 185, 129, 0.6)', color: '#34d399' },   // C-Rank
+        { bg: 'rgba(59, 130, 246, 0.2)', border: 'rgba(59, 130, 246, 0.6)', color: '#60a5fa' },   // D-Rank
+        { bg: 'rgba(100, 116, 139, 0.2)', border: 'rgba(100, 116, 139, 0.6)', color: '#94a3b8' }  // E-Rank
       ];
       const s = tierStyles[idx] || tierStyles[3];
       labelEl.style.background = s.bg;

@@ -46,14 +46,15 @@ define('FILE_SETTINGS', DATA_DIR . '/settings.json');
 define('FILE_PENDING',  DATA_DIR . '/pending_updates.json');
 defined('FILE_USERS') || define('FILE_USERS', DATA_DIR . '/users.json');
 
-// Threat Tiers: 0 - Cosmic, 1 - Extreme, 2 - High, 3 - Moderate, 4 - Low, 5 - Street
+// Threat Tiers: Solo Leveling Hunter Ranks (S-Rank, A-Rank, B-Rank, C-Rank, D-Rank, E-Rank, National)
 define('THREAT_TIERS', [
-    0 => ['code' => 'Tier 0', 'name' => 'Cosmic', 'desc' => 'Reality-altering, existential threat protocol'],
-    1 => ['code' => 'Tier 1', 'name' => 'Extreme', 'desc' => 'Global strategic deterrent, continental impact capability'],
-    2 => ['code' => 'Tier 2', 'name' => 'High', 'desc' => 'Severe mass-casualty hazard, supervised tactical asset'],
-    3 => ['code' => 'Tier 3', 'name' => 'Moderate', 'desc' => 'High-yield kinetic/thermal capabilities, state-level containment'],
-    4 => ['code' => 'Tier 4', 'name' => 'Low', 'desc' => 'Superhuman strength, localized energy projection, municipal jurisdiction'],
-    5 => ['code' => 'Tier 5', 'name' => 'Street', 'desc' => 'Neighborhood-scale enforcement, localized physical prowess']
+    0 => ['code' => 'National', 'name' => 'National-Level Hunter', 'desc' => 'Supreme authority, Calamity Gate subjugator'],
+    1 => ['code' => 'S-Rank',   'name' => 'S-Rank Hunter',         'desc' => 'National strategic deterrent, Red Gate & Calamity raid commander'],
+    2 => ['code' => 'A-Rank',   'name' => 'A-Rank Hunter',         'desc' => 'High-tier strike team leader, high-difficulty Gate subjugator'],
+    3 => ['code' => 'B-Rank',   'name' => 'B-Rank Hunter',         'desc' => 'Elite raid party combatant, mid-to-high Gate specialist'],
+    4 => ['code' => 'C-Rank',   'name' => 'C-Rank Hunter',         'desc' => 'Standard dungeon raid combatant, municipal security'],
+    5 => ['code' => 'D-Rank',   'name' => 'D-Rank Hunter',         'desc' => 'Low-level dungeon clearer, basic resource harvesting'],
+    6 => ['code' => 'E-Rank',   'name' => 'E-Rank Hunter',         'desc' => 'Lowest Awakened tier, support and perimeter duties']
 ]);
 
 // Document storage directory
@@ -77,10 +78,20 @@ define('REGISTRATION_STATUSES', [
 
 // Document Types
 define('DOCUMENT_TYPES_REQUIRED', ['Official ID', 'Hero Certification']);
-define('DOCUMENT_TYPES_OPTIONAL', ['Training Certificate', 'Authorization Document', 'Other Supporting Documents']);
+define('DOCUMENT_TYPES_OPTIONAL', ['Training Certificate', 'Authorization Document', 'Guild Affiliation Record', 'Other Supporting Documents']);
 
-// Power Classifications
-define('POWER_TYPES', ['Kinetic', 'Thermal', 'Arcane', 'Psionic', 'Cybernetic', 'Bio-enhancement', 'Electromagnetic']);
+// Hunter Combat Class & Power Specialization
+define('POWER_TYPES', [
+    'Fighter',
+    'Mage',
+    'Tank',
+    'Assassin',
+    'Ranger',
+    'Healer',
+    'Enhanced Strength',
+    'Technomancy',
+    'Energy Projection'
+]);
 
 // Municipal Sectors — San Francisco, Agusan del Sur Jurisdiction
 define('MUNICIPAL_SECTORS', [

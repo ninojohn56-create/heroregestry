@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHRMS | Registrar Desk &amp; Assessor UI</title>
-  <meta name="description" content="GHRMS Registrar Desk & Assessor UI — Superhuman Intake Verification, Threat Classification, and Licensing Authority.">
+  <title>HAMS | Hunter Association Registrar Desk &amp; Mana Evaluator</title>
+  <meta name="description" content="HAMS Registrar Desk &amp; Mana Evaluator UI — Awakened Intake Verification, Hunter Rank Classification, and Licensing Authority.">
   <meta name="color-scheme" content="light dark">
 
   <script>
@@ -77,25 +77,25 @@
   <!-- Top System Header (Registrar Context) -->
   <header class="ghrms-header">
     <div class="ghrms-brand">
-      <a href="/registrar" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="GHRMS Registrar Desk">
-        <img src="/img/logo.jpg" alt="GHRMS Seal" class="ghrms-logo-img">
+      <a href="/registrar" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="HAMS Registrar Desk">
+        <img src="/img/logo.jpg" alt="HAMS Seal" class="ghrms-logo-img">
         <div class="ghrms-title-group">
-          <span class="ghrms-acronym">GHRMS</span>
+          <span class="ghrms-acronym">HAMS</span>
           <span class="ghrms-divider">|</span>
-          <span class="ghrms-fullname">REGISTRAR DESK &amp; ASSESSOR UI</span>
+          <span class="ghrms-fullname">HUNTERS ASSOCIATION // REGISTRAR &amp; MANA EVALUATION DESK</span>
         </div>
       </a>
     </div>
 
     <!-- Portal Identity Badge -->
     <div style="display: flex; align-items: center; gap: 0.5rem;">
-      <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #f59e0b; text-transform: uppercase; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); border-radius: 4px; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 6px;"><span>REGISTRAR DESK</span><span style="opacity: 0.4;">|</span><span>CLEARANCE L3</span></span>
+      <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #f59e0b; text-transform: uppercase; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); border-radius: 4px; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 6px;"><span>MANA EVALUATION DESK</span><span style="opacity: 0.4;">|</span><span>CLEARANCE L3</span></span>
     </div>
 
     <!-- Header Tools -->
     <div class="header-right">
-      <a href="/admin" id="btnReturnAdmin" class="header-tool-btn" style="display: none; color: #60a5fa; border-color: rgba(96, 165, 250, 0.45); background: rgba(59, 130, 246, 0.15);" title="Return to Main Super Admin Command Center">
-        <span>←</span> <span>MAIN COMMAND CENTER</span>
+      <a href="/admin" id="btnReturnAdmin" class="header-tool-btn" style="display: none; color: #60a5fa; border-color: rgba(96, 165, 250, 0.45); background: rgba(59, 130, 246, 0.15);" title="Return to Main Supreme Command Center">
+        <span>←</span> <span>SUPREME COMMAND CENTER</span>
       </a>
 
       <div class="header-user-badge" title="Active Registrar Session">
@@ -113,7 +113,7 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </span>
-        <input type="text" placeholder="Search operatives..." id="globalRegistrarSearch" autocomplete="off">
+        <input type="text" placeholder="Search hunters..." id="globalRegistrarSearch" autocomplete="off">
       </div>
 
       <div class="header-notif-wrapper">
@@ -129,7 +129,7 @@
         <div id="registrarNotifPanel" class="header-notif-popover" style="display: none;" role="region" aria-label="Registrar Notifications Popover">
           <div class="notif-popover-header">
             <div class="notif-popover-title">
-              <span>REGISTRAR DIRECTIVES</span>
+              <span>ASSOCIATION DIRECTIVES</span>
             </div>
             <button type="button" class="notif-mark-read-btn" id="btnRegistrarMarkRead" onclick="markRegistrarNotificationsRead()">Mark read</button>
           </div>
@@ -155,9 +155,9 @@
     </div>
   </header>
 
-  <!-- App Layout (Exact Image 2) -->
+  <!-- App Layout -->
   <div class="ghrms-app-layout">
-    <!-- Left Navigation (Image 2 Nav) -->
+    <!-- Left Navigation -->
     <nav class="ghrms-sidebar" id="regSidebar" aria-label="Registrar Navigation">
       <div class="sidebar-header-bar">
         <span class="nav-section-title sidebar-header-title">Navigation // Steps</span>
@@ -166,34 +166,34 @@
         </button>
       </div>
 
-      <div class="nav-section-title" style="padding: 0.5rem 1.25rem 0.25rem;">Accord Steps</div>
+      <div class="nav-section-title" style="padding: 0.5rem 1.25rem 0.25rem;">Association Workflow</div>
       <ul class="nav-item-list">
         <li>
-          <a class="nav-link active" href="/registrar" id="navLinkRegQueue" title="Registration Queue">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> <span class="nav-link-text">REGISTRATION QUEUE</span></span>
+          <a class="nav-link active" href="/registrar" id="navLinkRegQueue" title="Hunter Intake Queue">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> <span class="nav-link-text">INTAKE QUEUE</span></span>
             <span class="nav-pill active-pill" id="countQueuePendingBadge">0</span>
           </a>
         </li>
         <li>
-          <a class="nav-link" href="javascript:void(0)" id="navOpenPendingApprovals" title="Pending Update Approvals">
+          <a class="nav-link" href="javascript:void(0)" id="navOpenPendingApprovals" title="Pending License Approvals">
             <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> <span class="nav-link-text">PENDING APPROVALS</span></span>
             <span class="nav-pill slate" id="pendingApprovalsCount">0</span>
           </a>
         </li>
         <li>
-          <a class="nav-link" href="/registry" title="Superhuman Central Registry">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> <span class="nav-link-text">HERO PROFILES</span></span>
+          <a class="nav-link" href="/registry" title="Hunters Association Registry">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> <span class="nav-link-text">HUNTER PROFILES</span></span>
             <span class="nav-pill slate" id="navHeroProfilesCount">11</span>
           </a>
         </li>
         <li>
-          <a class="nav-link" href="/register" title="Superhuman Power Assessment Intake">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> <span class="nav-link-text">POWER ASSESSMENT</span></span>
+          <a class="nav-link" href="/register" title="Awakened Mana Assessment &amp; Intake">
+            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> <span class="nav-link-text">MANA EVALUATION</span></span>
           </a>
         </li>
       </ul>
 
-      <div class="nav-section-title" style="margin-top: 1.5rem; padding: 0.5rem 1.25rem 0.25rem;">Assessor Tools</div>
+      <div class="nav-section-title" style="margin-top: 1.5rem; padding: 0.5rem 1.25rem 0.25rem;">Evaluator Tools</div>
       <ul class="nav-item-list">
         <li>
           <a class="nav-link" href="javascript:void(0)" id="navOpenAuditLedger" title="Chained SHA-256 Audit Log">
@@ -213,9 +213,9 @@
         <div class="nav-section-title" style="color: #60a5fa; padding: 0 0.75rem 0.25rem;">Command Authority</div>
         <ul class="nav-item-list">
           <li>
-            <a class="nav-link" href="/admin" id="navLinkAdminReturn" title="Return to Main Super Admin Command Center" style="border-left: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.08);">
+            <a class="nav-link" href="/admin" id="navLinkAdminReturn" title="Return to Main Supreme Command Center" style="border-left: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.08);">
               <span class="nav-link-label" style="color: #93c5fd; font-weight: 800;">
-                <span style="font-family: var(--font-mono); font-weight: 800;">[★]</span> <span class="nav-link-text">MAIN COMMAND CENTER</span>
+                <span style="font-family: var(--font-mono); font-weight: 800;">[★]</span> <span class="nav-link-text">SUPREME COMMAND CENTER</span>
               </span>
               <span class="nav-pill" id="sidebarAdminBadge" style="background: rgba(59, 130, 246, 0.25); color: #bfdbfe; font-weight: 800;">L5</span>
             </a>
@@ -235,16 +235,16 @@
             <!-- PRIMARY ROSTER / QUEUE TOGGLE -->
             <div style="display: flex; gap: 0.35rem; width: 100%; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;" id="registrarViewModeTabs">
               <button type="button" class="btn-mini active" id="btnModeQueue" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 4px; font-weight: 800; background: var(--primary); border: 1px solid var(--border-focus); color: var(--bg-app); cursor: pointer;">
-                [1] REGISTRATION QUEUE (<span id="countPendingQueue">0</span>)
+                [1] INTAKE QUEUE (<span id="countPendingQueue">0</span>)
               </button>
               <button type="button" class="btn-mini" id="btnModeProfiles" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 4px; font-weight: 800; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
-                [2] HERO PROFILES (<span id="countActiveProfiles">0</span>)
+                [2] HUNTER ROSTER (<span id="countActiveProfiles">0</span>)
               </button>
             </div>
 
             <div class="card-heading" style="font-size: 0.8rem; margin-right: 0.5rem; display: flex; align-items: center; gap: 0.5rem;" id="currentRosterHeading">
-              <span>HERO PROFILES <span style="color: var(--text-subtle); font-weight: 400;">| VERIFIED ROSTER</span></span>
-              <button type="button" class="btn-mini" id="btnRestoreDetailsPanel" style="display: none; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 4px; font-weight: 700; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; cursor: pointer; align-items: center; gap: 4px;" title="Show Applicant Details Panel"><span>[◀ DETAILS]</span></button>
+              <span>HUNTER ROSTER <span style="color: var(--text-subtle); font-weight: 400;">| LICENSED HUNTERS</span></span>
+              <button type="button" class="btn-mini" id="btnRestoreDetailsPanel" style="display: none; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 4px; font-weight: 700; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; cursor: pointer; align-items: center; gap: 4px;" title="Show Hunter Details Panel"><span>[◀ DETAILS]</span></button>
             </div>
             <!-- DIVISION FILTER TABS -->
             <div style="display: flex; gap: 0.35rem;" id="registrarDivisionTabs">
@@ -252,10 +252,10 @@
                 ALL (<span id="countRegAll">0</span>)
               </button>
               <button type="button" class="btn-mini" data-division="Hero" id="btnRegTabHeroes" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
-                [HEROES] (<span id="countRegHeroes">0</span>)
+                [HUNTERS] (<span id="countRegHeroes">0</span>)
               </button>
               <button type="button" class="btn-mini" data-division="Sidekick" id="btnRegTabSidekicks" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
-                [SIDEKICKS] (<span id="countRegSidekicks">0</span>)
+                [APPRENTICES] (<span id="countRegSidekicks">0</span>)
               </button>
             </div>
             <div class="table-search-box" style="margin-left: auto;">
@@ -267,27 +267,27 @@
               <input type="text" placeholder="Search..." id="queueSearchInput" autocomplete="off">
             </div>
             <div style="font-size: 0.75rem; color: var(--text-muted);" id="queueCounterBadge">
-              11 Operatives
+              11 Hunters
             </div>
           </div>
 
           <!-- EMPTY QUEUE AUTO-ROUTED TO PROFILES BANNER -->
           <div id="emptyQueueNotice" style="display: none; margin: 0.75rem 1rem 0; padding: 0.65rem 0.85rem; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); font-size: 0.75rem; color: var(--text-main); align-items: center; justify-content: space-between;">
             <div>
-              <strong>✓ REGISTRATION QUEUE CLEAR:</strong> No applications are currently pending assessment. Displaying active <strong>Hero Profiles</strong> below.
+              <strong>✓ INTAKE QUEUE CLEAR:</strong> No applications are currently pending mana evaluation. Displaying active <strong>Hunter Roster</strong> below.
             </div>
-            <a href="/register" class="btn-mini btn-mini-assess" style="text-decoration:none; padding: 3px 8px; font-size: 0.7rem;">+ Intake New Hero</a>
+            <a href="/register" class="btn-mini btn-mini-assess" style="text-decoration:none; padding: 3px 8px; font-size: 0.7rem;">+ Intake New Hunter</a>
           </div>
 
           <div class="ghrms-table-wrap">
             <table class="ghrms-table">
               <thead>
                 <tr>
-                  <th>Operative / Classification</th>
-                  <th>Region / Sector</th>
-                  <th>Primary Power</th>
-                  <th>Threat Class</th>
-                  <th>Status</th>
+                  <th>Awakened Hunter / Role</th>
+                  <th>Gate Sector Jurisdiction</th>
+                  <th>Combat Class &amp; Skills</th>
+                  <th>Hunter Rank</th>
+                  <th>License Standing</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -300,10 +300,10 @@
 
         <div class="panel-split-resizer" id="regDetailsResizer" title="Drag to resize applicant details (double-click to reset)"></div>
 
-        <!-- Right Details Panel: APPLICANT DETAILS (Matches Image 2) -->
+        <!-- Right Details Panel: HUNTER EVALUATION DOSSIER -->
         <aside class="right-details-panel" id="regRightDetailsPanel">
           <div class="details-header" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-            <span id="detailsHeaderTitle">APPLICANT DETAILS: APEX <span style="font-weight: 400; color: var(--text-muted);">(Samuel Wright)</span></span>
+            <span id="detailsHeaderTitle">HUNTER EVALUATION DOSSIER: APEX <span style="font-weight: 400; color: var(--text-muted);">(Samuel Wright)</span></span>
             <button type="button" class="btn-mini" id="btnToggleDetailsCollapse" style="padding: 2px 7px; font-size: 0.65rem; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 3px; flex-shrink: 0;" title="Collapse Details Panel">[✕ COLLAPSE]</button>
           </div>
 
@@ -322,26 +322,26 @@
           <!-- DIVISION BADGE & MENTORSHIP HUD -->
           <div id="regDivisionCard" style="margin: 0.5rem 0 0.6rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
             <div>
-              <span style="font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.04em;">ACCORD RANK / DIVISION</span><br>
-              <span id="regDivisionBadge" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main);">[PRIMARY HERO DIVISION]</span>
+              <span style="font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.04em;">HUNTER RANK / GUILD AFFILIATION</span><br>
+              <span id="regDivisionBadge" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main);">[OFFICIAL LICENSED HUNTER]</span>
               <div id="regMentorshipSubtext" style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">
-                Attached Sidekicks: <strong id="regAttachedSidekicksText" style="color: var(--text-main);">None</strong>
+                Apprentice Hunters: <strong id="regAttachedSidekicksText" style="color: var(--text-main);">None</strong>
               </div>
             </div>
             <button type="button" class="btn-mini" id="btnRegPromoteSidekick" style="display: none; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: #c084fc; font-size: 0.7rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 4px; cursor: pointer; white-space: nowrap;">
-              [GRADUATE TO HERO]
+              [PROMOTE TO FULL HUNTER]
             </button>
           </div>
 
           <!-- Power Assessment Level Bars -->
           <div class="power-assessment-section">
             <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem;">
-              POWER ASSESSMENT
+              MANA MEASUREMENT &amp; COMBAT CLASS
             </div>
 
             <div class="power-bar-item">
               <div class="power-bar-label">
-                <span id="primaryPowerLabel">Primary Power: Enhanced Strength</span>
+                <span id="primaryPowerLabel">Combat Class / Skill: Fighter</span>
                 <span id="primaryPowerLevel" style="color: var(--primary-accent);">Level 8/10</span>
               </div>
               <div class="power-meter-track">
@@ -351,7 +351,7 @@
 
             <div class="power-bar-item">
               <div class="power-bar-label">
-                <span id="secondaryPowerLabel">Flight</span>
+                <span id="secondaryPowerLabel">Awakened Skill: Flight</span>
                 <span id="secondaryPowerLevel" style="color: var(--primary-accent);">Level 6/10</span>
               </div>
               <div class="power-meter-track">
@@ -363,36 +363,36 @@
             <div class="verification-checklist">
               <div class="checklist-row">
                 <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span style="flex: 1;">Identity Check (AES-256 Vault)</span>
+                <span style="flex: 1;">Awakened Identity Check (AES-256 Vault)</span>
                 <button class="btn-mini btn-mini-assess" id="btnDecryptBioVault" style="font-size: 0.65rem;">
                   [DECRYPT BIO]
                 </button>
               </div>
               <div class="checklist-row">
                 <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span>Psychological Profile Verified</span>
+                <span>Psychological &amp; Combat Aptitude Verified</span>
               </div>
               <div class="checklist-row">
                 <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span>Power Signature Analysis Clean</span>
+                <span>Mana Core Resonance Stability Clean</span>
               </div>
               <div class="checklist-row">
                 <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span>Criminal Record Clean</span>
+                <span>Rogue Hunter Record Clean</span>
               </div>
             </div>
 
             <!-- Verification Tags Strip -->
             <div class="verification-tags-strip">
-              <span>[VERIFIED] Status</span>
+              <span>[VERIFIED] Mana Core</span>
               <span>[VERIFIED] Background</span>
-              <span>[VERIFIED] Civic Records</span>
+              <span>[VERIFIED] Association Record</span>
             </div>
 
             <!-- Supporting Documents & Verification Section -->
             <div class="supporting-docs-section" style="margin-top: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 0.65rem;">
               <div class="card-header-bar" style="padding-bottom: 0.35rem; display: flex; justify-content: space-between; align-items: center;">
-                <span class="card-heading" style="font-size: 0.75rem;">SUPPORTING DOCUMENTS &amp; EVIDENCE</span>
+                <span class="card-heading" style="font-size: 0.75rem;">SUPPORTING CREDENTIALS &amp; MANA CERTIFICATES</span>
                 <button type="button" class="btn-mini" id="btnUploadDocRegistrar" onclick="document.getElementById('registrarDocFileInput').click()" style="font-size: 0.65rem; padding: 3px 8px; background: var(--status-blue-bg); border: 1px solid var(--status-blue-border); color: var(--status-blue); font-weight: 800; cursor: pointer; border-radius: var(--radius-sm); font-family: var(--font-mono);" title="Upload Document">
                   + [UPLOAD FILE]
                 </button>
@@ -407,38 +407,38 @@
           <!-- Confirmation Card -->
           <div class="confirmation-section">
             <div class="card-header-bar" style="padding-bottom: 0.35rem;">
-              <span class="card-heading" style="font-size: 0.75rem;">CONFIRMATION &amp; ACTIONS</span>
+              <span class="card-heading" style="font-size: 0.75rem;">EVALUATION CONFIRMATION &amp; ACTIONS</span>
               <button class="icon-button" style="font-size: 0.8rem;">[LOG]</button>
             </div>
-            <div class="field-subtext">Review, edit, or finalize the operative's registration record.</div>
+            <div class="field-subtext">Review, edit, or issue official license credentials for this Awakened Hunter.</div>
             <!-- Dynamic Revocation Warning Banner if revoked -->
             <div id="registrarRevocationBanner" style="display:none; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); border-radius: var(--radius-sm); padding: 0.5rem 0.65rem; margin-top: 0.4rem; font-size: 0.72rem; color: #f87171;">
               <strong>[REVOKED DIRECTIVE]:</strong> <span id="registrarRevocationReasonText"></span>
             </div>
             <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.5rem;">
               <div id="approvedStatusNotice" style="display:none; background:rgba(16,185,129,0.15); border:1px solid #10b981; border-radius:var(--radius-sm); padding:0.55rem; text-align:center; color:#34d399; font-weight:800; font-size:0.78rem; letter-spacing:0.04em;">
-                ✓ [OPERATIVE APPROVED &amp; LICENSED]
+                ✓ [HUNTER APPROVED &amp; LICENSED]
               </div>
               <button class="btn-confirm-final" id="btnFinalRegistration">
-                [FINAL REGISTRATION CONFIRMATION]
+                [CONFIRM HUNTER LICENSURE]
               </button>
               <button class="btn-mini btn-mini-assess" id="btnEditSelectedHero"
                 onclick="openEditModal(registrarState.selectedHeroId)"
                 style="padding: 0.5rem; font-size: 0.78rem; width: 100%;">
-                [EDIT ALL OPERATIVE INFO]
+                [EDIT HUNTER DOSSIER]
               </button>
               <button class="btn-mini" id="btnEnrollSidekick"
                 style="padding: 0.5rem; font-size: 0.78rem; width: 100%; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: #a78bfa; border-radius: var(--radius-sm); cursor: pointer;">
-                [ENROLL AS SIDEKICK]
+                [ENROLL AS GUILD APPRENTICE]
               </button>
               <button type="button" class="btn" id="btnChangeHeroPasskeyReg"
                 style="padding: 0.55rem; font-size: 0.78rem; width: 100%; font-weight: 700; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 2px 8px rgba(245,158,11,0.15);">
-                <span>🔑 [CHANGE HERO PASSKEY / PASSWORD]</span>
+                <span>🔑 [CHANGE HUNTER PASSKEY]</span>
               </button>
               <button type="button" class="btn" id="btnRegistrarPrintIdCard"
                 onclick="openHeroIdCardModal(registrarState.selectedHeroId)"
                 style="padding: 0.55rem; font-size: 0.78rem; width: 100%; font-weight: 800; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%); border: 1.5px solid #38bdf8; color: #38bdf8; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);">
-                <span>🪪</span> <span>[PRINT ACCREDITED ID CARD &amp; HOLOGRAM]</span>
+                <span>🪪</span> <span>[ISSUE OFFICIAL HUNTER LICENSE CARD]</span>
               </button>
             </div>
           </div>
@@ -672,21 +672,22 @@
           </div>
         </div>
 
-        <!-- 4. Threat Tier, Field Readiness & Mentorship -->
+        <!-- 4. Hunter Rank, Raid Readiness & Guild Mentorship -->
         <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
           <div style="font-size: 0.75rem; font-weight: 800; color: #fbbf24; letter-spacing: 0.05em; margin-bottom: 8px;">
-            4. THREAT CALIBRATION, FIELD READINESS &amp; MENTORSHIP
+            4. HUNTER RANK CALIBRATION, RAID READINESS &amp; GUILD MENTORSHIP
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
             <div class="form-field-group">
-              <label class="field-label-text">Threat Tier (0–5)</label>
+              <label class="field-label-text">Hunter Rank / Threat Tier (0–6)</label>
               <select class="ghrms-select" id="editThreatTier">
-                <option value="0">Tier 0 — Cosmic (Reality-Altering)</option>
-                <option value="1">Tier 1 — Extreme (Continental)</option>
-                <option value="2">Tier 2 — High (Severe / Tactical Asset)</option>
-                <option value="3">Tier 3 — Moderate (High-Yield State Level)</option>
-                <option value="4">Tier 4 — Low (Municipal Superhuman)</option>
-                <option value="5">Tier 5 — Street (Localized Neighborhood)</option>
+                <option value="0">National-Level (Special Class Hunter)</option>
+                <option value="1">Rank S: S-Rank (Calamity)</option>
+                <option value="2">Rank A: A-Rank (Raid Leader)</option>
+                <option value="3">Rank B: B-Rank (Elite Strike)</option>
+                <option value="4">Rank C: C-Rank (Combatant)</option>
+                <option value="5">Rank D: D-Rank (Clearer)</option>
+                <option value="6">Rank E: E-Rank (Apprentice)</option>
               </select>
             </div>
             <div class="form-field-group">

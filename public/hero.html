@@ -147,13 +147,13 @@
     </div>
   </header>
 
-  <!-- Emergency Rogue Alert Bar (Hidden until active) -->
+  <!-- Emergency Red Gate / Outbreak Alert Bar (Hidden until active) -->
   <aside class="ghrms-alert-bar" id="rogueBroadcastBanner">
     <div>
-      <span style="font-weight: 800; color: #ef4444; margin-right: 0.5rem;">[TACTICAL ALERT]</span>
-      <span id="rogueBroadcastMessage">EMERGENCY BROADCAST ACTIVE: Rogue alert in Sectors 2 &amp; 4.</span>
+      <span style="font-weight: 800; color: #ef4444; margin-right: 0.5rem;">[RED GATE ALERT]</span>
+      <span id="rogueBroadcastMessage">DUNGEON BREAK DETECTED: Emergency raid protocol active in Sector 5.</span>
     </div>
-    <span style="background: rgba(0,0,0,0.3); padding: 0.15rem 0.4rem; border-radius: 2px;">ACTIVE DIRECTIVE</span>
+    <span style="background: rgba(0,0,0,0.3); padding: 0.15rem 0.4rem; border-radius: 2px;">RAID DIRECTIVE</span>
   </aside>
 
   <!-- App Layout -->
@@ -902,12 +902,12 @@
   <div class="ghrms-modal-overlay" id="damageDrawerModal" role="dialog" aria-modal="true" aria-label="Damage Drawer">
     <div class="ghrms-modal-box">
       <div class="ghrms-modal-header">
-        <span>POST-BATTLE DAMAGE DRAWER (CIVIC RECOVERY)</span>
+        <span>DUNGEON RAID COLLATERAL DRAWER (CIVIC RECOVERY)</span>
         <button class="icon-button" id="closeDamageDrawerModalBtn">[X]</button>
       </div>
       <form class="ghrms-modal-body" id="damageReportForm">
         <div class="form-field-group">
-          <label class="field-label-text">Incident Location Tagging</label>
+          <label class="field-label-text">Dungeon Break / Gate Incident Tagging</label>
           <div style="display: flex; gap: 0.5rem;">
             <input type="text" class="ghrms-input" id="dmgCoords" value="8.5110, 125.9800 (Auto-Tagged)"
               style="flex: 1;" readonly>
@@ -916,12 +916,14 @@
         </div>
 
         <div class="form-field-group">
-          <label class="field-label-text">Power Type Discharged</label>
+          <label class="field-label-text">Hunter Combat Class &amp; Skill Discharged</label>
           <select class="ghrms-select" id="dmgPowerType">
-            <option value="Enhanced Strength">Enhanced Strength / Kinetic</option>
-            <option value="Flight">Flight Shockwave</option>
-            <option value="Technomancy">Technomancy / Energy Surge</option>
-            <option value="Thermal">Thermal / Pyrokinesis</option>
+            <option value="Fighter">Fighter / Kinetic Melee</option>
+            <option value="Mage">Mage / Elemental &amp; Arcane</option>
+            <option value="Tank">Tank / Shield Shockwave</option>
+            <option value="Assassin">Assassin / Shadow Strike</option>
+            <option value="Ranger">Ranger / Projectile Art</option>
+            <option value="Healer">Healer / Mana Barrier Surge</option>
           </select>
         </div>
 

@@ -2639,19 +2639,31 @@ function markAllNotificationsRead() {
 }
 
 // ──────────────────────────────────────────────
-// Threat & Status Badge Formatting Helpers
+// ──────────────────────────────────────────────
+// Hunter Rank & License Badge Formatting Helpers
 // ──────────────────────────────────────────────
 function getThreatBadgeHtml(tier) {
     const t = Number.isInteger(tier) ? tier : (parseInt(tier) || 3);
     const labels = {
-        0: 'Tier 0 — Cosmic',
-        1: 'Tier 1 — Extreme',
-        2: 'Tier 2 — High',
-        3: 'Tier 3 — Moderate',
-        4: 'Tier 4 — Low',
-        5: 'Tier 5 — Street'
+        0: 'National-Level Hunter',
+        1: 'S-Rank Hunter',
+        2: 'A-Rank Hunter',
+        3: 'B-Rank Hunter',
+        4: 'C-Rank Hunter',
+        5: 'D-Rank Hunter',
+        6: 'E-Rank Hunter'
     };
-    return `<span class="px-2.5 py-1 text-xs font-bold rounded-lg badge-tier-${t} inline-flex items-center gap-1.5 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full ${t === 1 ? 'bg-red-400' : t === 2 ? 'bg-orange-400' : t === 3 ? 'bg-cyan-400' : t === 4 ? 'bg-emerald-400' : t === 0 ? 'bg-purple-400' : 'bg-slate-400'}"></span><span>${labels[t] || 'Tier ' + t}</span></span>`;
+    const rankColors = {
+        0: 'bg-purple-400',
+        1: 'bg-red-400',
+        2: 'bg-orange-400',
+        3: 'bg-cyan-400',
+        4: 'bg-emerald-400',
+        5: 'bg-blue-400',
+        6: 'bg-slate-400'
+    };
+    const dotColor = rankColors[t] || 'bg-cyan-400';
+    return `<span class="px-2.5 py-1 text-xs font-bold rounded-lg badge-tier-${t} inline-flex items-center gap-1.5 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span><span>${labels[t] || 'Rank ' + t}</span></span>`;
 }
 
 function getStatusBadgeHtml(status) {
@@ -2661,27 +2673,35 @@ function getStatusBadgeHtml(status) {
     let dotColor = 'bg-slate-400';
 
     if (s === 'Approved' || s === 'Licensed') {
-        label = 'Approved';
+        label = 'Licensed Hunter';
         badgeClass = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
         dotColor = 'bg-emerald-400';
-    } else if (s === 'Under Review') {
-        label = 'Under Review';
+    } else if (s === 'Under Review' || s === 'REVIEWING') {
+        label = 'Mana Evaluation';
         badgeClass = 'bg-amber-500/10 text-amber-400 border border-amber-500/30';
         dotColor = 'bg-amber-400';
     } else if (s === 'Verified') {
-        label = 'Verified';
+        label = 'Mana Verified';
         badgeClass = 'bg-purple-500/10 text-purple-400 border border-purple-500/30';
         dotColor = 'bg-purple-400';
     } else if (s === 'Pending' || s === 'Submitted' || s === 'Draft') {
-        label = 'Pending';
+        label = 'Awakened / Intake';
         badgeClass = 'bg-sky-500/10 text-sky-400 border border-sky-500/30';
         dotColor = 'bg-sky-400';
-    } else if (s === 'Rejected' || s === 'Revoked' || s === 'Rogue') {
-        label = 'Rejected';
+    } else if (s === 'Rogue') {
+        label = 'Criminal Hunter';
         badgeClass = 'bg-rose-500/10 text-rose-400 border border-rose-500/30';
         dotColor = 'bg-rose-400';
-    } else if (s === 'Returned for Correction' || s === 'Requires Action' || s === 'Suspended') {
-        label = 'Requires Action';
+    } else if (s === 'Suspended') {
+        label = 'License Suspended';
+        badgeClass = 'bg-amber-500/10 text-amber-400 border border-amber-500/30';
+        dotColor = 'bg-amber-400';
+    } else if (s === 'Rejected' || s === 'Revoked') {
+        label = 'Disavowed';
+        badgeClass = 'bg-rose-500/10 text-rose-400 border border-rose-500/30';
+        dotColor = 'bg-rose-400';
+    } else if (s === 'Returned for Correction' || s === 'Requires Action') {
+        label = 'Requires Rescan';
         badgeClass = 'bg-orange-500/10 text-orange-400 border border-orange-500/30';
         dotColor = 'bg-orange-400';
     }

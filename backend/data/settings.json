@@ -1,18 +1,18 @@
 {
-    "system_alert_level": "ELEVATED - OMEGA-3",
+    "system_alert_level": "RED GATE ALERT - LEVEL 4",
     "rogue_broadcast_active": false,
-    "rogue_broadcast_message": "ATTENTION ALL OPERATIVES: Sector 5 Containment Active. Standby for Registry directives.",
+    "rogue_broadcast_message": "CRITICAL HUNTER DISPATCH: Dungeon Break detected in Sector 5 (Caimpugan Marsh Gate). All B-Rank and above Hunters deploy immediately!",
     "containment_zones": [
         {
             "id": "zone_cst_alpha",
-            "name": "Zone Alpha - Caimpugan Peatland & Marsh Containment",
+            "name": "Gate Zone Alpha - Caimpugan Peatland Dungeon Break",
             "center": {
                 "lat": 8.478,
                 "lng": 125.952
             },
             "radius_km": 3.5,
             "threat_tier": 1,
-            "status": "Active Containment"
+            "status": "Active Dungeon Raid Perimeter"
         }
     ]
 }

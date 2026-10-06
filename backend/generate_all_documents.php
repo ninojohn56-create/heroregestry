@@ -37,31 +37,31 @@ function generateIdCardPng(string $filePath, array $hero): void {
 
     // Top Header Banner
     imagefilledrectangle($im, 20, 20, $w - 20, 80, $headerBg);
-    imagestring($im, 5, 40, 30, "GLOBAL HERO REGISTRATION AUTHORITY (GHRMS)", $textWhite);
-    imagestring($im, 3, 40, 52, "FEDERAL SUPERHUMAN ACCORD // CIVILIAN & OPERATIVE CREDENTIAL", $borderCyan);
+    imagestring($im, 5, 40, 30, "HUNTERS ASSOCIATION // OFFICIAL LICENSE", $textWhite);
+    imagestring($im, 3, 40, 52, "AWAKENED BEING CREDENTIAL // SAN FRANCISCO, AGUSAN DEL SUR", $borderCyan);
 
     // Photo Box Placeholder
     imagefilledrectangle($im, 40, 110, 200, 310, $photoBg);
     imagerectangle($im, 40, 110, 200, 310, $borderCyan);
-    imagestring($im, 4, 75, 190, "[ BIOMETRIC ]", $textMuted);
+    imagestring($im, 4, 70, 190, "[ MANA CORE ]", $textMuted);
     imagestring($im, 4, 85, 220, "VERIFIED", $textGreen);
 
     // Hero Callsign & Identity Fields
-    $alias = strtoupper($hero['alias'] ?? 'OPERATIVE');
+    $alias = strtoupper($hero['alias'] ?? 'HUNTER');
     $realName = $hero['real_name'] ?? ($hero['real_bio']['real_name'] ?? 'Classified');
-    $govCode = $hero['gov_code'] ?? '9GH-XXXX';
-    $power = $hero['primary_power'] ?? 'Classified Ability';
-    $tier = $hero['threat_class'] ?? ($hero['threat_tier_label'] ?? ('Tier ' . ($hero['threat_tier'] ?? 1)));
+    $govCode = $hero['gov_code'] ?? 'HA-XXXX';
+    $power = $hero['primary_power'] ?? 'Awakened Ability';
+    $tier = $hero['threat_class'] ?? ($hero['threat_tier_label'] ?? ('Rank ' . ($hero['threat_tier'] ?? 1)));
     $sector = $hero['region'] ?? 'Sector 1 - Poblacion Central Commercial Grid';
-    $license = $hero['license_number'] ?? 'GHRMS-LIC-PENDING';
+    $license = $hero['license_number'] ?? 'HA-LIC-PENDING';
 
-    imagestring($im, 5, 230, 110, "CALLSIGN: {$alias}", $textGold);
-    imagestring($im, 4, 230, 145, "LEGAL NAME: {$realName}", $textWhite);
-    imagestring($im, 3, 230, 180, "GOVERNMENT CODE: {$govCode}", $textMuted);
-    imagestring($im, 4, 230, 210, "PRIMARY POWER:  {$power}", $borderCyan);
-    imagestring($im, 4, 230, 240, "THREAT RATING:  {$tier}", $textWhite);
-    imagestring($im, 3, 230, 270, "JURISDICTION:   {$sector}", $textMuted);
-    imagestring($im, 4, 230, 300, "LICENSE NO:     {$license}", $textGreen);
+    imagestring($im, 5, 230, 110, "HUNTER NAME:  {$alias}", $textGold);
+    imagestring($im, 4, 230, 145, "LEGAL NAME:   {$realName}", $textWhite);
+    imagestring($im, 3, 230, 180, "HUNTER ID:    {$govCode}", $textMuted);
+    imagestring($im, 4, 230, 210, "CLASS/POWER:  {$power}", $borderCyan);
+    imagestring($im, 4, 230, 240, "HUNTER RANK:  {$tier}", $textWhite);
+    imagestring($im, 3, 230, 270, "GATE SECTOR:  {$sector}", $textMuted);
+    imagestring($im, 4, 230, 300, "LICENSE NO:   {$license}", $textGreen);
 
     // Bottom Security Bar
     imagefilledrectangle($im, 20, 360, $w - 20, 460, $headerBg);
@@ -155,35 +155,35 @@ function generateTacticalDossierPdf(string $filePath, array $hero): void {
     $status = $hero['status'] ?? 'Active';
 
     $lines = [
-        "GLOBAL HERO REGISTRATION AUTHORITY (GHRMS)",
-        "CLASSIFIED TACTICAL DOSSIER // AUTHORIZATION PROTOCOL",
-        "SECURITY LEVEL: LEVEL 4 ACCORD SPECIFICATION",
+        "HUNTERS ASSOCIATION // REGISTRATION & LICENSING BUREAU",
+        "OFFICIAL HUNTER DOSSIER // AWAKENING & MANA EVALUATION RECORD",
+        "CLEARANCE LEVEL: ASSOCIATION EXECUTIVE ACCORD (SAN FRANCISCO, ADS)",
         "--------------------------------------------------------------------------------",
-        "OPERATIVE IDENTIFICATION:",
-        "  Callsign Alias:          {$alias}",
+        "AWAKENED HUNTER IDENTIFICATION:",
+        "  Hunter Alias:            {$alias}",
         "  Civilian Legal Name:     {$realName}",
-        "  Government Code:         {$govCode}",
-        "  Active License Number:   {$license}",
-        "  Current Standing:        {$status}",
+        "  Hunter Registry Code:    {$govCode}",
+        "  Official License Number: {$license}",
+        "  Licensing Standing:      {$status}",
         "",
-        "METAHUMAN CAPABILITIES & THREAT GRADING:",
-        "  Primary Power:           {$power}",
-        "  Secondary Specialty:     {$secondary}",
-        "  Assigned Threat Tier:    {$tier}",
-        "  Authorized Sector:       {$sector}",
+        "MANA CORE PROFILE & COMBAT CLASSIFICATION:",
+        "  Combat Class / Power:    {$power}",
+        "  Sub-Class / Skill:       {$secondary}",
+        "  Assigned Hunter Rank:    {$tier}",
+        "  Assigned Gate Sector:    {$sector}",
         "",
-        "TACTICAL LIMITS & EMERGENCY MEDICAL PROTOCOLS:",
-        "  1. Kinetic dampening protocol authorized for civilian containment.",
-        "  2. Non-lethal force mandate applies during municipal standard patrols.",
-        "  3. In event of power surge, deploy Sector Response Team 9 immediately.",
-        "  4. Emergency medical treatment requires high-clearance trauma bypass.",
+        "DUNGEON RAID PROTOCOLS & GATE ENGAGEMENT DIRECTIVES:",
+        "  1. Only B-Rank and above Hunters permitted for Red Gate & High-Tier Raids.",
+        "  2. Mana Core resonance must be recalibrated before high-difficulty Gate entry.",
+        "  3. In event of Dungeon Break, report immediately to Association Command Grid.",
+        "  4. Unauthorized Gate entry or false rank reporting punishable by Disavowal.",
         "",
-        "OFFICIAL AUDIT VERIFICATION:",
-        "  Authenticated by:        Intake Registrar Sarah Chen / Commander Vance",
-        "  Chained Ledger Block:    SHA-256 Ledger Record Registered",
+        "ASSOCIATION AUDIT VERIFICATION:",
+        "  Certified by:            Mana Evaluator Sarah Chen / Association Chairman",
+        "  Chained Ledger Block:    SHA-256 Tamper-Evident Hunter Registry Block",
         "  Document Date:           " . date('Y-m-d H:i:s T'),
         "--------------------------------------------------------------------------------",
-        "RESTRICTED DISCLOSURE: UNAUTHORIZED DUPLICATION PUNISHABLE UNDER ACCORD LAW"
+        "HUNTER ASSOCIATION OFFICIAL RECORD // UNAUTHORIZED TAMPERING STRICTLY FORBIDDEN"
     ];
 
     $streamContent = "BT\n/F1 11 Tf\n14 TL\n50 720 Td\n";

@@ -1,56 +1,56 @@
 [
     {
         "id": "inc_2026_01",
-        "title": "Poblacion Commercial Crossing Fracture - Shockwave Impact",
+        "title": "Poblacion Commercial Crossing - Gate Incursion Shockwave Impact",
         "region": "Sector 1 - Poblacion Central Commercial Grid",
         "coordinates": {
             "lat": 8.5115,
             "lng": 125.982
         },
-        "power_type": "Enhanced Strength",
+        "power_type": "Fighter",
         "severity": "High",
         "estimated_damage_usd": 350000,
         "reported_by_hero": "hero_apex_01",
         "matched_hero_alias": "APEX",
         "civic_recovery_status": "Claim Approved - Fund Allocated",
         "photo_evidence": "concrete_fracture_01.jpg",
-        "notes": "Structural pier stabilization required after neutralizing rogue kinetic assailant.",
-        "timestamp": "2026-10-03T14:13:14+00:00"
+        "notes": "Gate monster incursion fractured crossing; neutralized by A-Rank Hunter strike team.",
+        "timestamp": "2026-10-03T15:57:03+00:00"
     },
     {
         "id": "inc_2026_02",
-        "title": "Hubang Highway Substation Surge & Arc Discharge",
+        "title": "Hubang Highway Substation - Arc Discharge Beast Surge",
         "region": "Sector 2 - Hubang Highway & Logistics Corridor",
         "coordinates": {
             "lat": 8.527,
             "lng": 125.975
         },
-        "power_type": "Technomancy",
+        "power_type": "Mage",
         "severity": "Critical",
         "estimated_damage_usd": 820000,
         "reported_by_hero": "hero_lumina_02",
         "matched_hero_alias": "LUMINA",
         "civic_recovery_status": "Pending Assessor Review",
         "photo_evidence": "electrical_burn_grid.jpg",
-        "notes": "Thermal containment failure during unverified high-output combat.",
-        "timestamp": "2026-10-05T20:13:14+00:00"
+        "notes": "Lightning-type magic beast arc discharge during Gate subjugation raid.",
+        "timestamp": "2026-10-05T21:57:03+00:00"
     },
     {
         "id": "inc_2026_03",
-        "title": "Caimpugan Marsh Peat Barrier Collapse",
+        "title": "Caimpugan Marsh Peat Barrier - Red Gate Outbreak",
         "region": "Sector 5 - Caimpugan Peatland Sanctuary & Marsh Shield",
         "coordinates": {
             "lat": 8.479,
             "lng": 125.953
         },
-        "power_type": "Energy Projection",
+        "power_type": "Tank",
         "severity": "Severe",
         "estimated_damage_usd": 540000,
         "reported_by_hero": "hero_steelpulse_04",
         "matched_hero_alias": "STEEL PULSE",
         "civic_recovery_status": "Pending Civic Review",
         "photo_evidence": "pier_collapse.jpg",
-        "notes": "High-velocity energy rounds cleaved crane anchors during defense.",
-        "timestamp": "2026-10-05T14:13:14+00:00"
+        "notes": "Dimensional Red Gate rift opened in Peatland dome; containment secured by Association Hunters.",
+        "timestamp": "2026-10-05T15:57:03+00:00"
     }
 ]

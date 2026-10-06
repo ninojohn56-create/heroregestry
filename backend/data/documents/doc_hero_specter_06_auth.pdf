@@ -12,41 +12,41 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Courier >>
 endobj
 5 0 obj
-<< /Length 1554 >>
+<< /Length 1660 >>
 stream
 BT
 /F1 11 Tf
 14 TL
 50 720 Td
-(GLOBAL HERO REGISTRATION AUTHORITY \(GHRMS\)) '
-(CLASSIFIED TACTICAL DOSSIER // AUTHORIZATION PROTOCOL) '
-(SECURITY LEVEL: LEVEL 4 ACCORD SPECIFICATION) '
+(HUNTERS ASSOCIATION // REGISTRATION & LICENSING BUREAU) '
+(OFFICIAL HUNTER DOSSIER // AWAKENING & MANA EVALUATION RECORD) '
+(CLEARANCE LEVEL: ASSOCIATION EXECUTIVE ACCORD \(SAN FRANCISCO, ADS\)) '
 (--------------------------------------------------------------------------------) '
-(OPERATIVE IDENTIFICATION:) '
-(  Callsign Alias:          SPECTER ZERO) '
+(AWAKENED HUNTER IDENTIFICATION:) '
+(  Hunter Alias:            SPECTER ZERO) '
 (  Civilian Legal Name:     Unit 09 / David Alan Cross) '
-(  Government Code:         9GH-0099) '
-(  Active License Number:   GHRMS-REVOKED-0099) '
-(  Current Standing:        Rogue) '
+(  Hunter Registry Code:    9GH-0099) '
+(  Official License Number: GHRMS-REVOKED-0099) '
+(  Licensing Standing:      Rogue) '
 () '
-(METAHUMAN CAPABILITIES & THREAT GRADING:) '
-(  Primary Power:           Cybernetic Railgun) '
-(  Secondary Specialty:     Invisibility Cloak) '
-(  Assigned Threat Tier:    A-Class) '
-(  Authorized Sector:       Sector 3 - Karaos & Borbon Uplands District) '
+(MANA CORE PROFILE & COMBAT CLASSIFICATION:) '
+(  Combat Class / Power:    Cybernetic Railgun) '
+(  Sub-Class / Skill:       Invisibility Cloak) '
+(  Assigned Hunter Rank:    S-Rank) '
+(  Assigned Gate Sector:    Sector 3 - Karaos & Borbon Uplands District) '
 () '
-(TACTICAL LIMITS & EMERGENCY MEDICAL PROTOCOLS:) '
-(  1. Kinetic dampening protocol authorized for civilian containment.) '
-(  2. Non-lethal force mandate applies during municipal standard patrols.) '
-(  3. In event of power surge, deploy Sector Response Team 9 immediately.) '
-(  4. Emergency medical treatment requires high-clearance trauma bypass.) '
+(DUNGEON RAID PROTOCOLS & GATE ENGAGEMENT DIRECTIVES:) '
+(  1. Only B-Rank and above Hunters permitted for Red Gate & High-Tier Raids.) '
+(  2. Mana Core resonance must be recalibrated before high-difficulty Gate entry.) '
+(  3. In event of Dungeon Break, report immediately to Association Command Grid.) '
+(  4. Unauthorized Gate entry or false rank reporting punishable by Disavowal.) '
 () '
-(OFFICIAL AUDIT VERIFICATION:) '
-(  Authenticated by:        Intake Registrar Sarah Chen / Commander Vance) '
-(  Chained Ledger Block:    SHA-256 Ledger Record Registered) '
-(  Document Date:           2026-10-06 14:13:15 UTC) '
+(ASSOCIATION AUDIT VERIFICATION:) '
+(  Certified by:            Mana Evaluator Sarah Chen / Association Chairman) '
+(  Chained Ledger Block:    SHA-256 Tamper-Evident Hunter Registry Block) '
+(  Document Date:           2026-10-06 15:57:04 UTC) '
 (--------------------------------------------------------------------------------) '
-(RESTRICTED DISCLOSURE: UNAUTHORIZED DUPLICATION PUNISHABLE UNDER ACCORD LAW) '
+(HUNTER ASSOCIATION OFFICIAL RECORD // UNAUTHORIZED TAMPERING STRICTLY FORBIDDEN) '
 ET
 endstream
 endobj
@@ -61,5 +61,5 @@ xref
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-1914
+2020
 %%EOF

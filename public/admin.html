@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHRMS // Super Admin Command Center</title>
-  <meta name="description" content="Global Hero Registration Authority Management System — Super Admin Command Center.">
+  <title>Hunters Association // Supreme Command Center</title>
+  <meta name="description" content="Philippine Hunters Association Management System — Supreme Command Center (San Francisco, ADS).">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -171,8 +171,8 @@
             <i data-lucide="shield" class="w-6 h-6"></i>
           </div>
           <div class="min-w-0">
-            <h1 id="sidebarBrandTitle" class="font-bold text-base leading-snug tracking-normal text-slate-900 dark:text-white truncate">GHRMS Command</h1>
-            <span id="sidebarRoleSubtitle" class="text-xs text-rose-600 dark:text-rose-400 font-semibold uppercase tracking-wider block truncate">Supreme Command (L5)</span>
+            <h1 id="sidebarBrandTitle" class="font-bold text-base leading-snug tracking-normal text-slate-900 dark:text-white truncate">Hunters Association</h1>
+            <span id="sidebarRoleSubtitle" class="text-xs text-rose-600 dark:text-rose-400 font-semibold uppercase tracking-wider block truncate">Association Chairman (S-Rank)</span>
           </div>
         </a>
         <div class="flex items-center gap-1">
@@ -536,11 +536,11 @@
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
-                    <th class="py-3.5 px-6">Callsign / Civilian ID</th>
-                    <th class="py-3.5 px-6">Power Specification</th>
-                    <th class="py-3.5 px-6">Sector / Region</th>
-                    <th class="py-3.5 px-6">Threat Class</th>
-                    <th class="py-3.5 px-6">Status</th>
+                    <th class="py-3.5 px-6">Hunter Callsign / Name</th>
+                    <th class="py-3.5 px-6">Combat Class &amp; Skills</th>
+                    <th class="py-3.5 px-6">Gate Sector</th>
+                    <th class="py-3.5 px-6">Hunter Rank</th>
+                    <th class="py-3.5 px-6">License Standing</th>
                     <th class="py-3.5 px-6 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -765,7 +765,7 @@
             <div id="radarEmergencyActionContainer">
               <button id="btnToggleRogueBroadcast" onclick="toggleRogueContainmentBroadcast()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm shadow-md shadow-rose-600/20 transition-all">
                 <i data-lucide="radio" class="w-4 h-4"></i>
-                <span id="rogueBroadcastBtnText">Trigger Rogue Emergency Broadcast</span>
+                <span id="rogueBroadcastBtnText">Trigger RED GATE Emergency Broadcast</span>
               </button>
             </div>
           </div>
@@ -1224,14 +1224,15 @@
           </span>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
-              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Threat Tier</label>
+              <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Hunter Rank</label>
               <select id="edit-threat-tier" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
-                <option value="0">Tier 0 - Cosmic (Reality-Altering)</option>
-                <option value="1">Tier 1 - Planetary (Continental)</option>
-                <option value="2">Tier 2 - High (Severe / Tactical Asset)</option>
-                <option value="3">Tier 3 - Regional (State Level)</option>
-                <option value="4">Tier 4 - City (Municipal)</option>
-                <option value="5">Tier 5 - Street (Neighborhood)</option>
+                <option value="0">National-Level Hunter</option>
+                <option value="1">Rank S — S-Rank (National / Calamity)</option>
+                <option value="2">Rank A — A-Rank (High-Tier Raid Leader)</option>
+                <option value="3">Rank B — B-Rank (Elite Strike Force)</option>
+                <option value="4">Rank C — C-Rank (Mid-Tier Combatant)</option>
+                <option value="5">Rank D — D-Rank (Low-Tier Clearer)</option>
+                <option value="6">Rank E — E-Rank (Apprentice)</option>
               </select>
             </div>
             <div>

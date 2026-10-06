@@ -250,15 +250,30 @@ function renderQueueTable() {
 
         const isSidekick  = (h.role_tag === 'Sidekick') || !!h.mentor;
         const divBadge    = isSidekick
-            ? `<span style="font-size:0.6rem;padding:2px 6px;border-radius:4px;background:rgba(167,139,250,0.18);border:1px solid rgba(167,139,250,0.4);color:#c084fc;font-weight:700;">[SIDEKICK]</span>`
-            : `<span style="font-size:0.6rem;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.1);border:1px solid var(--border-color);color:var(--text-main);font-weight:700;">[HERO]</span>`;
+            ? `<span style="font-size:0.6rem;padding:2px 6px;border-radius:4px;background:rgba(167,139,250,0.18);border:1px solid rgba(167,139,250,0.4);color:#c084fc;font-weight:700;">[APPRENTICE]</span>`
+            : `<span style="font-size:0.6rem;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,0.1);border:1px solid var(--border-color);color:var(--text-main);font-weight:700;">[HUNTER]</span>`;
 
-        const threatLabel = h.threat_tier_label || 'Unknown';
-        const tierCode    = threatLabel.match(/\(([^)]+)\)/)?.[1] || 'UNK';
+        let tierCode = 'B-Rank';
+        if (h.threat_tier !== undefined && h.threat_tier !== null) {
+            const ranks = ['National', 'S-Rank', 'A-Rank', 'B-Rank', 'C-Rank', 'D-Rank', 'E-Rank'];
+            tierCode = ranks[parseInt(h.threat_tier, 10)] || 'B-Rank';
+        } else if (h.threat_tier_label) {
+            const m = h.threat_tier_label.match(/(National|S-Rank|A-Rank|B-Rank|C-Rank|D-Rank|E-Rank)/i);
+            if (m) tierCode = m[1];
+        }
         const tierClass   = tierCode.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        const mentorTag   = h.mentor ? `<span style="font-size:0.62rem;color:#c084fc;display:block;">↳ Mentor: <strong>${h.mentor}</strong></span>` : '';
+        const mentorTag   = h.mentor ? `<span style="font-size:0.62rem;color:#c084fc;display:block;">↳ Guild Mentor: <strong>${h.mentor}</strong></span>` : '';
         const sidekicks   = (h.sidekicks || []).length > 0
-            ? `<span style="font-size:0.62rem;color:var(--text-muted);display:block;">Sidekicks: <strong>${h.sidekicks.join(', ')}</strong></span>` : '';
+            ? `<span style="font-size:0.62rem;color:var(--text-muted);display:block;">Apprentices: <strong>${h.sidekicks.join(', ')}</strong></span>` : '';
+
+        let displayStatus = h.status || 'REVIEWING';
+        if (isHeroApproved(h.status)) {
+            displayStatus = 'Licensed Hunter';
+        } else if (h.status === 'Rogue' || h.status === 'Revoked') {
+            displayStatus = 'Criminal Hunter';
+        } else if (isPendingStatus(h.status)) {
+            displayStatus = 'Mana Evaluation';
+        }
 
         tr.innerHTML = `
             <td>
@@ -278,7 +293,7 @@ function renderQueueTable() {
             <td><span class="threat-badge ${tierClass}">${tierCode}</span></td>
             <td>
                 <span class="${isHeroApproved(h.status) ? 'status-pill-licensed' : (h.status === 'Rogue' || h.status === 'Revoked') ? 'status-pill-rogue' : 'status-pill-reviewing'}">
-                    ${h.status || 'REVIEWING'}
+                    ${displayStatus}
                 </span>
             </td>
             <td>

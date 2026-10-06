@@ -657,7 +657,7 @@ try {
 
             // Recalculate threat label if tier changed (staff only)
             if (!$isOwnerHero && isset($body['threat_tier'])) {
-                $tier = max(0, min(5, (int)$body['threat_tier']));
+                $tier = max(0, min(6, (int)$body['threat_tier']));
                 $h['threat_tier'] = $tier;
                 $tierInfo = THREAT_TIERS[$tier] ?? THREAT_TIERS[3];
                 $h['threat_tier_label'] = "{$tierInfo['name']} ({$tierInfo['code']})";
@@ -985,7 +985,7 @@ try {
         $heroId = 'hero_' . $cleanAliasSlug . '_' . bin2hex(random_bytes(3));
         $registrationId = 'GHRMS-REG-' . date('Y') . '-' . strtoupper(substr(md5($heroId), 0, 6));
 
-        $threatTier = isset($body['threat_tier']) ? max(0, min(5, (int)$body['threat_tier'])) : (isset($body['self_threat_rating']) ? max(0, min(5, (int)$body['self_threat_rating'])) : 3);
+        $threatTier = isset($body['threat_tier']) ? max(0, min(6, (int)$body['threat_tier'])) : (isset($body['self_threat_rating']) ? max(0, min(6, (int)$body['self_threat_rating'])) : 3);
         $tierInfo = THREAT_TIERS[$threatTier] ?? THREAT_TIERS[3];
 
         $isSidekick = (!empty($body['role_tag']) && in_array(strtolower((string)$body['role_tag']), ['sidekick', 'apprentice'], true)) ||
