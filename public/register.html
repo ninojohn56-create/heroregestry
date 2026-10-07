@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>HAMS // Awakened Hunter Onboarding &amp; Registration Stepper</title>
   <script>
     (function() {
@@ -22,6 +22,7 @@
     body {
       height: auto !important;
       min-height: 100vh !important;
+      min-height: 100dvh !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
     }
@@ -1991,39 +1992,39 @@
   </script>
 
   <!-- In-Page Document Viewer Modal -->
-  <div id="registerDocViewerModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
-    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; width:92%; max-width:860px; max-height:92vh; display:flex; flex-direction:column; overflow:hidden;">
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border-color); background:var(--bg-surface);">
-        <span id="regDocTitle" style="font-weight:800; font-size:0.85rem; font-family:var(--font-mono); color:var(--text-main);">[DOCUMENT PREVIEW]</span>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <button type="button" onclick="printRegisterDoc()" style="background:var(--primary-accent); color:#000; border:none; padding:4px 12px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🖨️ Print</button>
+  <div id="registerDocViewerModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding: 8px; overflow-y: auto;">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; width:100%; max-width:860px; max-height:94dvh; display:flex; flex-direction:column; overflow:hidden; margin: auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border-color); background:var(--bg-surface); gap: 8px; flex-shrink: 0;">
+        <span id="regDocTitle" style="font-weight:800; font-size:0.82rem; font-family:var(--font-mono); color:var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[DOCUMENT PREVIEW]</span>
+        <div style="display:flex; gap:6px; align-items:center; flex-shrink: 0;">
+          <button type="button" onclick="printRegisterDoc()" style="background:var(--primary-accent); color:#000; border:none; padding:4px 10px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🖨️ Print</button>
           <a id="regDocDlBtn" href="#" download style="background:rgba(255,255,255,0.08); color:var(--text-main); text-decoration:none; padding:4px 10px; font-size:0.75rem; border-radius:6px; border:1px solid var(--border-color);">⬇️ Download</a>
           <button type="button" onclick="closeRegisterDocViewer()" style="background:none; border:none; color:var(--text-muted); font-size:1.1rem; cursor:pointer; font-weight:800; padding:0 6px;">✕</button>
         </div>
       </div>
-      <div id="regDocContent" style="padding:16px; flex:1; overflow:auto; display:flex; align-items:center; justify-content:center; background:#070a12; min-height:420px;">
+      <div id="regDocContent" style="padding:12px; flex:1; overflow:auto; display:flex; align-items:center; justify-content:center; background:#070a12; min-height:clamp(200px, 45vh, 420px);">
       </div>
-      <div style="padding:8px 18px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-muted); background:var(--bg-surface);">
-        <span>HAMS Secure Awakened Hunter Credential Attachment</span>
-        <button type="button" onclick="toggleRegisterDocZoom()" style="background:none; border:none; color:var(--primary-accent); cursor:pointer; font-size:0.7rem;">Toggle Zoom</button>
+      <div style="padding:8px 14px; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items: center; font-size:0.7rem; color:var(--text-muted); background:var(--bg-surface); flex-shrink: 0;">
+        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 8px;">HAMS Secure Awakened Hunter Credential Attachment</span>
+        <button type="button" onclick="toggleRegisterDocZoom()" style="background:none; border:none; color:var(--primary-accent); cursor:pointer; font-size:0.7rem; white-space: nowrap;">Toggle Zoom</button>
       </div>
     </div>
   </div>
 
   <!-- Live Camera Modal -->
-  <div id="liveCameraModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:2100; align-items:center; justify-content:center; backdrop-filter:blur(6px); padding: 12px;">
-    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; width:100%; max-width:500px; overflow:hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column;">
+  <div id="liveCameraModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:2100; align-items:center; justify-content:center; backdrop-filter:blur(6px); padding: 8px; overflow-y: auto;">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; width:100%; max-width:500px; max-height:94dvh; overflow:hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; margin: auto;">
       <!-- Modal Header -->
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border-color); background:var(--bg-surface);">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-bottom:1px solid var(--border-color); background:var(--bg-surface); flex-shrink: 0;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
-          <span style="font-weight:800; font-size:0.85rem; font-family:var(--font-mono); color:var(--text-main); text-transform: uppercase; letter-spacing: 0.05em;">LIVE HUNTER ID CAMERA</span>
+          <span style="font-weight:800; font-size:0.82rem; font-family:var(--font-mono); color:var(--text-main); text-transform: uppercase; letter-spacing: 0.05em;">LIVE HUNTER ID CAMERA</span>
         </div>
         <button type="button" onclick="closeLiveCameraModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer; font-weight:800; padding:0 6px;">✕</button>
       </div>
 
       <!-- Camera Viewfinder Viewport -->
-      <div style="position: relative; background: #000; width: 100%; height: 380px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+      <div style="position: relative; background: #000; width: 100%; height: clamp(220px, 42vh, 380px); overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
         <!-- Video stream -->
         <video id="cameraStreamVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); display: block;"></video>
         <!-- Canvas for capture -->
@@ -2034,36 +2035,36 @@
         <!-- HUD Guide Overlay -->
         <div id="cameraHudOverlay" style="position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <!-- Oval Face Guide -->
-          <div style="width: 190px; height: 250px; border: 2px dashed rgba(56, 189, 248, 0.65); border-radius: 50%; box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); position: relative;">
+          <div style="width: clamp(140px, 34vw, 190px); height: clamp(170px, 30vh, 250px); border: 2px dashed rgba(56, 189, 248, 0.65); border-radius: 50%; box-shadow: 0 0 20px rgba(56, 189, 248, 0.2); position: relative;">
             <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 1px; height: 12px; background: #38bdf8;"></div>
             <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 1px; height: 12px; background: #38bdf8;"></div>
             <div style="position: absolute; left: -10px; top: 50%; transform: translateY(-50%); width: 12px; height: 1px; background: #38bdf8;"></div>
             <div style="position: absolute; right: -10px; top: 50%; transform: translateY(-50%); width: 12px; height: 1px; background: #38bdf8;"></div>
           </div>
-          <span style="margin-top: 10px; font-size: 0.68rem; font-family: var(--font-mono); color: #38bdf8; background: rgba(0,0,0,0.65); padding: 3px 8px; border-radius: 4px; letter-spacing: 0.05em;">ALIGN FACE WITHIN FRAME</span>
+          <span style="margin-top: 8px; font-size: 0.65rem; font-family: var(--font-mono); color: #38bdf8; background: rgba(0,0,0,0.65); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;">ALIGN FACE WITHIN FRAME</span>
         </div>
 
         <!-- Error notice if camera fails or permissions blocked -->
-        <div id="cameraErrorBox" style="display: none; position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95); padding: 24px; text-align: center; flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
-          <span style="font-size: 2.2rem; margin-bottom: 8px;">📷</span>
-          <strong style="color: #f87171; font-size: 0.88rem; margin-bottom: 6px;">Camera Access Notice</strong>
-          <p id="cameraErrorMsg" style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 16px; line-height: 1.4; max-width: 320px;">
+        <div id="cameraErrorBox" style="display: none; position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95); padding: 18px; text-align: center; flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
+          <span style="font-size: 2rem; margin-bottom: 6px;">📷</span>
+          <strong style="color: #f87171; font-size: 0.85rem; margin-bottom: 4px;">Camera Access Notice</strong>
+          <p id="cameraErrorMsg" style="font-size: 0.74rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.4; max-width: 320px;">
             Could not open live video stream. You can launch your mobile phone camera instead.
           </p>
-          <button type="button" onclick="triggerNativeMobileCamera()" style="padding: 9px 20px; background: var(--primary-accent); color: #000; font-weight: 800; border-radius: 6px; border: none; font-size: 0.82rem; cursor: pointer;">
+          <button type="button" onclick="triggerNativeMobileCamera()" style="padding: 9px 18px; background: var(--primary-accent); color: #000; font-weight: 800; border-radius: 6px; border: none; font-size: 0.8rem; cursor: pointer;">
             📱 Open Phone Camera
           </button>
         </div>
       </div>
 
       <!-- Modal Controls -->
-      <div style="padding: 14px 18px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;">
+      <div style="padding: 10px 14px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;">
         <!-- Live State Controls -->
-        <div id="cameraLiveControls" style="display: flex; justify-content: space-between; align-items: center;">
-          <button type="button" id="btnFlipCamera" onclick="flipCameraFacing()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 12px; font-size: 0.75rem; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Switch between front and back camera">
+        <div id="cameraLiveControls" style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <button type="button" id="btnFlipCamera" onclick="flipCameraFacing()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 7px 12px; font-size: 0.74rem; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;" title="Switch between front and back camera">
             <span>🔄 Flip Lens</span>
           </button>
-          <button type="button" onclick="captureLiveSnapshot()" style="background: #38bdf8; color: #000; border: none; padding: 9px 26px; font-size: 0.82rem; font-weight: 800; border-radius: 24px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);">
+          <button type="button" onclick="captureLiveSnapshot()" style="background: #38bdf8; color: #000; border: none; padding: 8px 22px; font-size: 0.8rem; font-weight: 800; border-radius: 24px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 0 14px rgba(56, 189, 248, 0.4); min-height: 40px;">
             <span>📸 CAPTURE PHOTO</span>
           </button>
           <button type="button" onclick="triggerNativeMobileCamera()" style="background: none; border: none; color: var(--text-muted); font-size: 0.72rem; cursor: pointer; text-decoration: underline;" title="Use Phone Native Camera App">
@@ -2072,11 +2073,11 @@
         </div>
 
         <!-- Captured State Controls (Shown after photo snapped) -->
-        <div id="cameraSnappedControls" style="display: none; justify-content: space-between; align-items: center; gap: 10px;">
-          <button type="button" onclick="retakeLiveSnapshot()" style="flex: 1; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 9px 16px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer;">
+        <div id="cameraSnappedControls" style="display: none; justify-content: space-between; align-items: center; gap: 8px;">
+          <button type="button" onclick="retakeLiveSnapshot()" style="flex: 1; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; font-size: 0.76rem; font-weight: 700; border-radius: 6px; cursor: pointer; min-height: 40px;">
             🔄 Retake Photo
           </button>
-          <button type="button" onclick="acceptLiveSnapshot()" style="flex: 1; background: #10b981; color: #000; border: none; padding: 9px 16px; font-size: 0.78rem; font-weight: 800; border-radius: 6px; cursor: pointer;">
+          <button type="button" onclick="acceptLiveSnapshot()" style="flex: 1; background: #10b981; color: #000; border: none; padding: 8px 14px; font-size: 0.76rem; font-weight: 800; border-radius: 6px; cursor: pointer; min-height: 40px;">
             ✓ Use This Photo
           </button>
         </div>

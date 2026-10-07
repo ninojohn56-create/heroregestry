@@ -2,7 +2,7 @@
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Hunters Association // Supreme Command Center</title>
   <meta name="description" content="Philippine Hunters Association Management System — Supreme Command Center (San Francisco, ADS).">
   
@@ -61,7 +61,18 @@
   <link rel="stylesheet" href="/css/app.css?v=5.0">
 
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    html, body {
+      font-family: 'Inter', sans-serif;
+      height: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    #app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      height: 100dvh;
+      max-height: 100dvh;
+    }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
@@ -139,6 +150,24 @@
       border: 1px solid rgba(14, 165, 233, 0.35) !important;
       box-shadow: inset 0 0 12px rgba(14, 165, 233, 0.08);
     }
+
+    /* Universal Responsive Suite for Phones, Tablets & Aspect Ratios */
+    @media (max-width: 768px) {
+      input, select, textarea {
+        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+      }
+      aside#sidebar {
+        width: 84vw !important;
+        max-width: 320px !important;
+      }
+      aside#sidebar .sidebar-user-box {
+        padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px)) !important;
+      }
+    }
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
   </style>
 
   <script>
@@ -156,16 +185,16 @@
 </head>
 <body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-200 overflow-hidden">
 
-  <div id="app" class="flex h-screen w-full overflow-hidden">
+  <div id="app" class="flex flex-col md:flex-row min-h-[100dvh] h-[100dvh] w-full overflow-hidden">
 
     <!-- Mobile Sidebar Backdrop -->
     <div id="sidebar-backdrop" class="fixed inset-0 z-40 bg-slate-900/50 hidden md:hidden transition-opacity backdrop-blur-xs"></div>
 
     <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col w-64 shrink-0 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full md:translate-x-0 transition-all duration-200 ease-in-out md:static md:inset-auto">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col w-[84vw] max-w-xs md:w-64 shrink-0 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform -translate-x-full md:translate-x-0 transition-all duration-200 ease-in-out md:static md:inset-auto">
       
       <!-- Sidebar Header -->
-      <div class="sidebar-header flex items-center justify-between h-16 px-4 border-b border-slate-200 dark:border-slate-700 shrink-0">
+      <div class="sidebar-header flex items-center justify-between h-14 sm:h-16 px-4 border-b border-slate-200 dark:border-slate-700 shrink-0">
         <a href="/admin" class="flex items-center gap-3 text-left overflow-hidden">
           <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-600 text-white shadow-md shadow-brand-500/20 shrink-0">
             <i data-lucide="shield" class="w-6 h-6"></i>
@@ -277,13 +306,13 @@
     <div class="flex flex-col flex-1 h-full overflow-hidden">
       
       <!-- Top Header -->
-      <header class="flex items-center justify-between h-16 px-4 md:px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700/80 z-30 shrink-0 gap-3 md:gap-4">
-        <div class="flex items-center gap-3 min-w-0">
+      <header class="flex items-center justify-between h-14 sm:h-16 px-3 sm:px-4 md:px-6 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700/80 z-30 shrink-0 gap-2 sm:gap-3 md:gap-4">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
           <button id="sidebar-toggle" onclick="handleSidebarToggle()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-cyan-400 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors shrink-0" title="Toggle Navigation Sidebar">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
           <div class="min-w-0">
-            <h2 id="page-title" class="text-base md:text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate">Super Admin Command Center</h2>
+            <h2 id="page-title" class="text-sm sm:text-base md:text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate">Super Admin Command Center</h2>
             <p id="page-subtitle" class="text-xs text-slate-500 dark:text-slate-400 hidden xl:block truncate">Global Superhuman Registration Authority — Supreme Command Directive (Level 5).</p>
           </div>
         </div>
@@ -306,13 +335,13 @@
           </span>
         </div>
 
-        <div class="flex items-center gap-2 md:gap-3 shrink-0">
+        <div class="flex items-center gap-1.5 sm:gap-2 md:gap-3 shrink-0">
           <!-- Global Search -->
-          <div class="relative hidden sm:block w-48 lg:w-72">
+          <div class="relative hidden sm:block w-36 md:w-48 lg:w-72">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
               <i data-lucide="search" class="w-4 h-4"></i>
             </span>
-            <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search operative, callsign, ID..." class="w-full pl-9 pr-4 py-2 text-xs md:text-sm bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-700 rounded-xl focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 transition-all text-slate-800 dark:text-slate-100">
+            <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Search operative, callsign, ID..." class="w-full pl-9 pr-4 py-1.5 sm:py-2 text-xs md:text-sm bg-slate-100 dark:bg-slate-900 border border-transparent dark:border-slate-700 rounded-xl focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 transition-all text-slate-800 dark:text-slate-100">
           </div>
 
           <!-- Dark Mode Toggle -->
@@ -329,7 +358,7 @@
             </button>
             
             <!-- Notifications Popover -->
-            <div id="notifications-panel" class="absolute right-0 mt-2 w-88 max-w-[calc(100vw-2rem)] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl hidden z-50 overflow-hidden transform transition-all duration-200">
+            <div id="notifications-panel" class="fixed sm:absolute right-2 sm:right-0 mt-2 w-[calc(100vw-1rem)] sm:w-80 max-w-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl hidden z-50 overflow-hidden transform transition-all duration-200">
               <div class="p-4 border-b border-slate-100 dark:border-slate-700/80 flex justify-between items-center bg-slate-50 dark:bg-slate-900/60">
                 <div class="flex items-center gap-2">
                   <i data-lucide="bell" class="w-4 h-4 text-cyan-400"></i>
@@ -490,15 +519,15 @@
           </div>
 
           <!-- Search & Filter Controls -->
-          <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div class="p-3 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
             <div class="relative w-full md:w-80">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
                 <i data-lucide="search" class="w-4 h-4"></i>
               </span>
               <input type="text" id="hero-filter-search" oninput="filterHeroesTable()" placeholder="Search by callsign, name, ID..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
             </div>
-            <div class="flex items-center gap-3 w-full md:w-auto flex-wrap">
-              <select id="hero-filter-sector" onchange="filterHeroesTable()" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+            <div class="flex items-center gap-2 sm:gap-3 w-full md:w-auto flex-wrap">
+              <select id="hero-filter-sector" onchange="filterHeroesTable()" class="flex-1 sm:flex-none min-w-[130px] px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
                 <option value="">All Municipal Sectors</option>
                 <option value="Sector 1">Sector 1 - Poblacion Central Commercial Grid</option>
                 <option value="Sector 2">Sector 2 - Hubang Highway &amp; Logistics Corridor</option>
@@ -506,14 +535,14 @@
                 <option value="Sector 4">Sector 4 - Bitan-agan &amp; Lapinigan River Basin</option>
                 <option value="Sector 5">Sector 5 - Caimpugan Peatland Sanctuary &amp; Marsh Shield</option>
               </select>
-              <select id="hero-filter-status" onchange="filterHeroesTable()" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+              <select id="hero-filter-status" onchange="filterHeroesTable()" class="flex-1 sm:flex-none min-w-[110px] px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
                 <option value="">All Statuses</option>
                 <option value="Licensed">Licensed</option>
                 <option value="Under Review">Under Review</option>
                 <option value="Suspended">Suspended</option>
                 <option value="Rogue">Rogue</option>
               </select>
-              <select id="hero-filter-division" onchange="filterHeroesTable()" class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+              <select id="hero-filter-division" onchange="filterHeroesTable()" class="flex-1 sm:flex-none min-w-[110px] px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
                 <option value="">All Divisions</option>
                 <option value="Hero">Primary Hero</option>
                 <option value="Sidekick">Sidekick Division</option>
@@ -524,7 +553,7 @@
           <!-- Heroes Table -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
+              <table class="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Hunter Callsign / Name</th>
@@ -547,27 +576,27 @@
              3. REGISTRATION QUEUE TAB
              ════════════════════════════════════════════ -->
         <div id="tab-queue" class="tab-content hidden space-y-6">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 class="text-lg font-bold text-slate-900 dark:text-white">Operative Registration &amp; Approvals</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400">Audit applicant records, verify background clearances, and approve licensing.</p>
             </div>
-            <div class="flex items-center gap-3">
-              <div class="relative w-48 sm:w-64">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <div class="relative w-full sm:w-64">
                 <input type="text" id="queue-search-input" oninput="handleQueueSearch(this.value)" placeholder="Search queue applicants..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <i data-lucide="search" class="w-3.5 h-3.5 absolute left-2.5 top-2 text-slate-400"></i>
               </div>
             </div>
           </div>
-          <div class="flex flex-wrap gap-2 pt-1">
-            <button onclick="filterQueue('all')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-black text-white dark:bg-white dark:text-black shadow-xs" data-q="all">All</button>
-            <button onclick="filterQueue('Submitted')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Submitted">Submitted</button>
-            <button onclick="filterQueue('Under Review')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Under Review">Under Review</button>
-            <button onclick="filterQueue('Returned for Correction')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Returned for Correction">Returned for Correction</button>
-            <button onclick="filterQueue('Verified')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Verified">Verified</button>
-            <button onclick="filterQueue('Approved')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Approved">Approved</button>
-            <button onclick="filterQueue('Rejected')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Rejected">Rejected</button>
-            <button onclick="filterQueue('pending_updates')" class="queue-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="pending_updates">Profile Updates (<span id="queue-pending-update-count">0</span>)</button>
+          <div class="flex items-center gap-2 pt-1 overflow-x-auto pb-1">
+            <button onclick="filterQueue('all')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-black text-white dark:bg-white dark:text-black shadow-xs" data-q="all">All</button>
+            <button onclick="filterQueue('Submitted')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Submitted">Submitted</button>
+            <button onclick="filterQueue('Under Review')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Under Review">Under Review</button>
+            <button onclick="filterQueue('Returned for Correction')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Returned for Correction">Returned for Correction</button>
+            <button onclick="filterQueue('Verified')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Verified">Verified</button>
+            <button onclick="filterQueue('Approved')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Approved">Approved</button>
+            <button onclick="filterQueue('Rejected')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="Rejected">Rejected</button>
+            <button onclick="filterQueue('pending_updates')" class="queue-tab-btn shrink-0 px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-q="pending_updates">Profile Updates (<span id="queue-pending-update-count">0</span>)</button>
           </div>
 
           <!-- Pending Updates Section if any -->
@@ -585,7 +614,7 @@
           <!-- Applications Queue Table -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
+              <table class="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Applicant</th>
@@ -620,7 +649,7 @@
           </div>
 
           <!-- Category filter buttons -->
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             <button onclick="filterUsersTable('all')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-black text-white dark:bg-white dark:text-black shadow-xs" data-u="all">All Accounts</button>
             <button onclick="filterUsersTable('heroes')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-u="heroes">Hero Operatives</button>
             <button onclick="filterUsersTable('staff')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-u="staff">Administrative Staff</button>
@@ -629,7 +658,7 @@
           <!-- Accounts Table -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
+              <table class="w-full text-left border-collapse min-w-[720px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Account Username &amp; Profile</th>
@@ -656,9 +685,9 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Cryptographic role hierarchy and security clearance specifications.</p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <!-- Role Card: Super Admin -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-amber-200 dark:border-amber-800 shadow-sm space-y-3">
+            <div class="p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-amber-200 dark:border-amber-800 shadow-sm space-y-3">
               <div class="flex items-center justify-between">
                 <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-700">SUPER_ADMIN</span>
                 <span class="text-xs font-mono font-bold text-amber-600">LEVEL 5</span>
@@ -669,7 +698,7 @@
             </div>
 
             <!-- Role Card: Standard Admin -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-indigo-200 dark:border-indigo-800 shadow-sm space-y-3">
+            <div class="p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-indigo-200 dark:border-indigo-800 shadow-sm space-y-3">
               <div class="flex items-center justify-between">
                 <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-300 dark:border-indigo-700">ADMIN</span>
                 <span class="text-xs font-mono font-bold text-indigo-600">LEVEL 4</span>
@@ -680,7 +709,7 @@
             </div>
 
             <!-- Role Card: Registrar -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm space-y-3">
+            <div class="p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm space-y-3">
               <div class="flex items-center justify-between">
                 <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700">REGISTRAR</span>
                 <span class="text-xs font-mono font-bold text-neutral-600 dark:text-neutral-400">LEVEL 3</span>
@@ -691,7 +720,7 @@
             </div>
 
             <!-- Role Card: Hero -->
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+            <div class="p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
               <div class="flex items-center justify-between">
                 <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600">HERO</span>
                 <span class="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">LEVEL 1</span>
@@ -707,17 +736,17 @@
              6. CHAINED AUDIT LEDGER TAB
              ════════════════════════════════════════════ -->
         <div id="tab-audit" class="tab-content hidden space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
               <h3 class="text-lg font-bold text-slate-900 dark:text-white">SHA-256 Chained Audit Ledger</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400">Cryptographically chained ledger verifying every credential change and directive.</p>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="exportAuditLedger()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-xl text-sm transition-all text-slate-800 dark:text-slate-100">
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="exportAuditLedger()" class="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-xl text-xs sm:text-sm transition-all text-slate-800 dark:text-slate-100">
                 <i data-lucide="download" class="w-4 h-4"></i>
                 <span>Export Audit CSV</span>
               </button>
-              <button onclick="verifyAuditChain()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow-md transition-all">
+              <button onclick="verifyAuditChain()" class="inline-flex items-center gap-2 px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all">
                 <i data-lucide="check-check" class="w-4 h-4"></i>
                 <span>Verify Cryptographic Chain</span>
               </button>
@@ -726,7 +755,7 @@
 
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
+              <table class="w-full text-left border-collapse min-w-[760px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
                     <th class="py-3.5 px-6">Timestamp</th>
@@ -762,28 +791,28 @@
           </div>
 
           <!-- Weather Telemetry Bar -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
             <div>
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Sector Temperature</span>
-              <p id="tacticalTempText" class="text-lg font-bold text-brand-600 dark:text-brand-400 mt-0.5">21°C</p>
+              <p id="tacticalTempText" class="text-base sm:text-lg font-bold text-brand-600 dark:text-brand-400 mt-0.5">21°C</p>
             </div>
             <div>
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Wind Velocity</span>
-              <p id="tacticalWindText" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">4.2 m/s NW</p>
+              <p id="tacticalWindText" class="text-base sm:text-lg font-bold text-slate-800 dark:text-white mt-0.5">4.2 m/s NW</p>
             </div>
             <div>
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Atmospheric Sky</span>
-              <p id="tacticalSkyText" class="text-lg font-bold text-slate-800 dark:text-white mt-0.5">Clear Sky</p>
+              <p id="tacticalSkyText" class="text-base sm:text-lg font-bold text-slate-800 dark:text-white mt-0.5">Clear Sky</p>
             </div>
             <div>
               <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Flight Safety Index</span>
-              <p id="tacticalFlightText" class="text-lg font-bold text-emerald-600 mt-0.5">Optimal</p>
+              <p id="tacticalFlightText" class="text-base sm:text-lg font-bold text-emerald-600 mt-0.5">Optimal</p>
             </div>
           </div>
 
           <!-- Tactical Map Controls & Layer HUD Bar -->
-          <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-xs">
-            <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap items-center justify-between gap-2.5 p-3 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-xs">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span class="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] mr-1">Cartography:</span>
               <button type="button" onclick="selectTacticalLayer('street')" id="btnLayerStreet" class="px-2.5 py-1.5 rounded-lg font-semibold bg-brand-500/15 text-brand-600 dark:text-brand-400 border border-brand-500/30 hover:bg-brand-500/25 transition-all flex items-center gap-1.5">
                 <i data-lucide="map" class="w-3.5 h-3.5"></i>
@@ -795,26 +824,26 @@
               </button>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span class="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] mr-1">Targets:</span>
               <button type="button" onclick="focusTacticalSector(1)" class="px-2.5 py-1.5 rounded-lg font-semibold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 hover:bg-sky-500/20 transition-all flex items-center gap-1">
                 <i data-lucide="crosshair" class="w-3.5 h-3.5"></i>
-                <span>Sector 1 (Poblacion)</span>
+                <span>Sector 1</span>
               </button>
               <button type="button" onclick="focusTacticalSector(5)" class="px-2.5 py-1.5 rounded-lg font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 transition-all flex items-center gap-1">
                 <i data-lucide="crosshair" class="w-3.5 h-3.5"></i>
-                <span>Sector 5 (Caimpugan)</span>
+                <span>Sector 5</span>
               </button>
               <button type="button" onclick="fitAllTacticalOperatives()" class="px-2.5 py-1.5 rounded-lg font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all flex items-center gap-1">
                 <i data-lucide="maximize" class="w-3.5 h-3.5"></i>
-                <span>Fit All Assets</span>
+                <span>Fit All</span>
               </button>
             </div>
           </div>
 
           <!-- Leaflet Map Box -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden p-2">
-            <div id="adminTacticalMap" style="height: 520px; width: 100%; border-radius: 12px;"></div>
+            <div id="adminTacticalMap" style="height: clamp(300px, 48vh, 520px); min-height: 280px; width: 100%; border-radius: 12px;"></div>
           </div>
         </div>
 
@@ -923,18 +952,18 @@
   <!-- ════════════════════════════════════════════
        MODAL 1: RESET HERO PASSKEY MODAL
        ════════════════════════════════════════════ -->
-  <div id="hero-passkey-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-amber-500/10">
+  <div id="hero-passkey-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-lg max-h-[94dvh] overflow-hidden flex flex-col my-auto">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-amber-500/10">
         <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400">
           <i data-lucide="key" class="w-5 h-5"></i>
           <h3 class="font-bold text-base">Reset Operative Security Passkey</h3>
         </div>
-        <button onclick="closeHeroPasskeyModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+        <button onclick="closeHeroPasskeyModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form onsubmit="handleHeroPasskeySubmit(event)" class="p-6 space-y-4">
+      <form onsubmit="handleHeroPasskeySubmit(event)" class="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1">
         <div>
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Target Operative / Callsign *</label>
           <select id="modal-passkey-hero-select" onchange="onModalHeroSelectChange(this.value)" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100"></select>
@@ -942,12 +971,12 @@
 
         <!-- Selected Hero Summary Card -->
         <div class="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-3">
-          <img id="modal-passkey-hero-avatar" src="/img/apex.jpg" alt="Avatar" class="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700">
+          <img id="modal-passkey-hero-avatar" src="/img/apex.jpg" alt="Avatar" class="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0">
           <div class="flex-1 min-w-0">
-            <h4 id="modal-passkey-hero-name" class="font-bold text-sm text-slate-900 dark:text-white">APEX (Samuel Wright)</h4>
+            <h4 id="modal-passkey-hero-name" class="font-bold text-sm text-slate-900 dark:text-white truncate">APEX (Samuel Wright)</h4>
             <div class="flex items-center gap-2 mt-1">
-              <span class="text-xs text-slate-500 dark:text-slate-400">Account: <strong id="modal-passkey-hero-username" class="text-brand-600 dark:text-brand-400 font-mono">apex</strong></span>
-              <span id="modal-passkey-hero-status" class="text-[11px] px-2 py-0.5 rounded font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">Licensed</span>
+              <span class="text-xs text-slate-500 dark:text-slate-400 truncate">Account: <strong id="modal-passkey-hero-username" class="text-brand-600 dark:text-brand-400 font-mono">apex</strong></span>
+              <span id="modal-passkey-hero-status" class="text-[11px] px-2 py-0.5 rounded font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shrink-0">Licensed</span>
             </div>
           </div>
         </div>
@@ -956,7 +985,7 @@
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">New Security Passkey *</label>
           <div class="flex gap-2">
             <input type="text" id="modal-new-passkey-input" required placeholder="Minimum 4 characters" class="flex-1 px-3 py-2 text-sm font-mono font-bold bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100" autocomplete="new-password">
-            <button type="button" onclick="generateRandomPasskeyModal()" class="px-3 py-2 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 rounded-xl text-xs font-bold hover:bg-brand-100 transition-all">
+            <button type="button" onclick="generateRandomPasskeyModal()" class="px-3 py-2 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 rounded-xl text-xs font-bold hover:bg-brand-100 transition-all shrink-0">
               [GENERATE]
             </button>
           </div>
@@ -967,9 +996,9 @@
           <strong>[CRYPTOGRAPHIC AUDIT]:</strong> This action is committed to the chained SHA-256 audit ledger.
         </div>
 
-        <div class="pt-2 flex justify-end gap-3">
-          <button type="button" onclick="closeHeroPasskeyModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
-          <button type="submit" class="px-5 py-2 text-sm font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl shadow-md">Save New Passkey</button>
+        <div class="pt-2 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
+          <button type="button" onclick="closeHeroPasskeyModal()" class="w-full sm:w-auto px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl min-h-[42px]">Cancel</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 text-sm font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl shadow-md min-h-[42px]">Save New Passkey</button>
         </div>
       </form>
     </div>
@@ -978,15 +1007,15 @@
   <!-- ════════════════════════════════════════════
        MODAL 2: PROVISION USER / ADMIN MODAL
        ════════════════════════════════════════════ -->
-  <div id="user-provision-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-brand-600/10">
+  <div id="user-provision-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md max-h-[94dvh] overflow-hidden flex flex-col my-auto">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-brand-600/10">
         <h3 class="font-bold text-base text-slate-900 dark:text-white">Provision New Account</h3>
-        <button onclick="closeProvisionUserModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+        <button onclick="closeProvisionUserModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form onsubmit="handleProvisionUserSubmit(event)" class="p-6 space-y-4">
+      <form onsubmit="handleProvisionUserSubmit(event)" class="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1">
         <div>
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Callsign / Username *</label>
           <input type="text" id="prov-username" required placeholder="e.g. marcus.vance" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
@@ -1007,9 +1036,9 @@
             <option value="SUPER_ADMIN" id="opt-superadmin-role">SUPER_ADMIN [Clearance L5]</option>
           </select>
         </div>
-        <div class="pt-2 flex justify-end gap-3">
-          <button type="button" onclick="closeProvisionUserModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
-          <button type="submit" class="px-5 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md">Confirm Provisioning</button>
+        <div class="pt-2 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
+          <button type="button" onclick="closeProvisionUserModal()" class="w-full sm:w-auto px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl min-h-[42px]">Cancel</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md min-h-[42px]">Confirm Provisioning</button>
         </div>
       </form>
     </div>
@@ -1018,34 +1047,34 @@
   <!-- ════════════════════════════════════════════
        MODAL 3: EDIT HERO MODAL (Comprehensive - Every Single Field Editable)
        ════════════════════════════════════════════ -->
-  <div id="hero-edit-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-3xl mx-4 overflow-hidden max-h-[92vh] flex flex-col">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-        <div class="flex items-center gap-2">
-          <i data-lucide="edit-3" class="w-5 h-5 text-brand-600 dark:text-brand-400"></i>
-          <div>
-            <h3 id="hero-edit-title" class="font-bold text-base text-slate-900 dark:text-white">Edit Operative Profile</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Every piece of information is editable. Changes are logged to the SHA-256 Audit Ledger under your account.</p>
+  <div id="hero-edit-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-3xl max-h-[94dvh] overflow-hidden flex flex-col my-auto">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+        <div class="flex items-center gap-2 min-w-0 mr-2">
+          <i data-lucide="edit-3" class="w-5 h-5 text-brand-600 dark:text-brand-400 shrink-0"></i>
+          <div class="min-w-0">
+            <h3 id="hero-edit-title" class="font-bold text-base text-slate-900 dark:text-white truncate">Edit Operative Profile</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block truncate">Every piece of information is editable. Changes are logged to the SHA-256 Audit Ledger under your account.</p>
           </div>
         </div>
-        <button onclick="closeHeroEditModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+        <button onclick="closeHeroEditModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1 shrink-0">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <form onsubmit="handleHeroEditSubmit(event)" class="p-6 space-y-5 overflow-y-auto flex-1">
+      <form onsubmit="handleHeroEditSubmit(event)" class="p-3 sm:p-5 md:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
         <input type="hidden" id="edit-hero-id">
 
         <!-- 1. Confidential Civilian Vault Identity -->
-        <div class="p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/40 dark:bg-rose-950/20 space-y-3">
-          <div class="flex items-center justify-between">
+        <div class="p-3.5 sm:p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/40 dark:bg-rose-950/20 space-y-3">
+          <div class="flex items-center justify-between flex-wrap gap-1.5">
             <span class="text-xs font-extrabold text-rose-700 dark:text-rose-400 tracking-wider flex items-center gap-1.5">
               <i data-lucide="lock" class="w-3.5 h-3.5"></i>
               1. CONFIDENTIAL CIVILIAN VAULT IDENTITY (LEVEL 3+ RESTRICTED)
             </span>
             <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-bold border border-rose-300 dark:border-rose-800">AES-256 ENCRYPTED</span>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Civilian Legal Real Name *</label>
               <input type="text" id="edit-real-name" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-medium">
@@ -1055,7 +1084,7 @@
               <input type="text" id="edit-gov-id" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-medium">
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Date of Birth</label>
               <input type="text" id="edit-dob" placeholder="e.g. Aug. 21, 1983" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
@@ -1075,7 +1104,7 @@
               </select>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Contact Phone / Handler Line</label>
               <input type="text" id="edit-contact-number" placeholder="+1 (555) 839-4910" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
@@ -1085,7 +1114,7 @@
               <input type="text" id="edit-emergency-contact" placeholder="Dr. Karen Wright (Spouse)" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Confidential Safehouse Address</label>
               <input type="text" id="edit-safehouse-address" placeholder="742 Lexington Ave, Penthouse 44" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
@@ -1098,11 +1127,11 @@
         </div>
 
         <!-- 2. Hero Callsign, Licensure & Standing -->
-        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 space-y-3">
+        <div class="p-3.5 sm:p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 space-y-3">
           <span class="text-xs font-extrabold text-brand-600 dark:text-brand-400 tracking-wider block">
             2. HERO CALLSIGN, LICENSURE &amp; STANDING
           </span>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Callsign / Alias *</label>
               <input type="text" id="edit-alias" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-bold">
@@ -1126,7 +1155,7 @@
               <input type="text" id="edit-license-number" placeholder="GHRMS-LIC-9GH-8430" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-mono text-slate-800 dark:text-slate-100">
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Sector Jurisdiction</label>
               <select id="edit-sector" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
@@ -1158,12 +1187,12 @@
         </div>
 
         <!-- 3. Superhuman Power Specs & Combat Profile -->
-        <div class="p-4 rounded-xl border border-sky-200 dark:border-sky-900/50 bg-sky-50/30 dark:bg-sky-950/20 space-y-3">
+        <div class="p-3.5 sm:p-4 rounded-xl border border-sky-200 dark:border-sky-900/50 bg-sky-50/30 dark:bg-sky-950/20 space-y-3">
           <span class="text-xs font-extrabold text-sky-700 dark:text-sky-400 tracking-wider block">
             3. SUPERHUMAN POWER SPECIFICATIONS &amp; COMBAT PROFILE
           </span>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="md:col-span-2">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            <div class="sm:col-span-2">
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Primary Power Classification *</label>
               <input type="text" id="edit-primary-power" required class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 font-bold">
             </div>
@@ -1176,8 +1205,8 @@
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Comprehensive Power Description</label>
             <textarea id="edit-power-desc" rows="2" placeholder="Full power description and physiological mechanisms..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="md:col-span-2">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            <div class="sm:col-span-2">
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Secondary Power</label>
               <input type="text" id="edit-secondary-power" placeholder="e.g. Flight, Thermal Shielding" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
             </div>
@@ -1186,7 +1215,7 @@
               <input type="number" id="edit-secondary-pct" placeholder="60" min="1" max="100" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Tactical Combat Style</label>
               <input type="text" id="edit-combat-style" placeholder="e.g. Vanguard Striker, Frontline Breacher" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
@@ -1196,7 +1225,7 @@
               <input type="text" id="edit-abilities-skills" placeholder="e.g. Krav Maga, Tactical Leadership" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Operational Strengths</label>
               <textarea id="edit-strengths" rows="2" placeholder="Kinetic tolerance, tactical calm..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
@@ -1209,11 +1238,11 @@
         </div>
 
         <!-- 4. Threat Calibration, Field Readiness & Mentorship -->
-        <div class="p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/30 dark:bg-amber-950/20 space-y-3">
+        <div class="p-3.5 sm:p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/30 dark:bg-amber-950/20 space-y-3">
           <span class="text-xs font-extrabold text-amber-700 dark:text-amber-400 tracking-wider block">
             4. THREAT CALIBRATION, FIELD READINESS &amp; MENTORSHIP
           </span>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Hunter Rank</label>
               <select id="edit-threat-tier" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
@@ -1239,7 +1268,7 @@
             <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Tactical Gear Manifest (Comma Separated)</label>
             <input type="text" id="edit-gear-manifest" placeholder="Kevlar Weave Suit, EMP Disrupter, Grapple Hook" class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1">Training Records &amp; Certifications</label>
               <textarea id="edit-training" rows="2" placeholder="Academy honors, tactical hours logged..." class="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100"></textarea>
@@ -1257,14 +1286,14 @@
           </div>
         </div>
 
-        <div class="pt-2 flex justify-between items-center gap-3">
-          <button type="button" onclick="triggerPasskeyFromEditModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs transition-all" title="Launch security passkey reset modal for this operative">
+        <div class="pt-3 border-t border-slate-200 dark:border-slate-700/60 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2.5 sm:gap-3">
+          <button type="button" onclick="triggerPasskeyFromEditModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs transition-all min-h-[42px]" title="Launch security passkey reset modal for this operative">
             <i data-lucide="key" class="w-4 h-4"></i>
-            Reset Security Passkey
+            <span>Reset Security Passkey</span>
           </button>
-          <div class="flex justify-end gap-3">
-            <button type="button" onclick="closeHeroEditModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
-            <button type="submit" id="btnAdminSaveHero" class="px-5 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md flex items-center gap-2">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+            <button type="button" onclick="closeHeroEditModal()" class="w-full sm:w-auto px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl text-center min-h-[42px]">Cancel</button>
+            <button type="submit" id="btnAdminSaveHero" class="w-full sm:w-auto px-5 py-2.5 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md flex items-center justify-center gap-2 min-h-[42px]">
               <i data-lucide="check" class="w-4 h-4"></i>
               <span>Save All Changes &amp; Audit</span>
             </button>
@@ -1277,24 +1306,25 @@
   <!-- ════════════════════════════════════════════
        IN-PAGE DOCUMENT VIEWER & LIGHTBOX (Same Tab + Enlarge + Print)
        ════════════════════════════════════════════ -->
-  <div id="docViewerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 hidden backdrop-blur-sm">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-4xl mx-4 overflow-hidden max-h-[94vh] flex flex-col">
-      <div class="flex items-center justify-between px-6 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90">
-        <div class="flex items-center gap-3 min-w-0">
+  <div id="docViewerModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 hidden backdrop-blur-sm overflow-y-auto">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-4xl max-h-[94dvh] flex flex-col my-auto overflow-hidden">
+      <div class="flex items-center justify-between px-3.5 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 gap-2 shrink-0">
+        <div class="flex items-center gap-2.5 min-w-0">
           <i data-lucide="file-text" class="w-5 h-5 text-brand-600 dark:text-brand-400 shrink-0"></i>
           <div class="min-w-0">
             <h3 id="docViewerTitle" class="font-bold text-sm text-slate-900 dark:text-white truncate">[DOCUMENT PREVIEW]</h3>
-            <p id="docViewerMeta" class="text-xs text-slate-500 dark:text-slate-400 truncate">Accord Standard 701-A // Official Supporting Document Verification</p>
+            <p id="docViewerMeta" class="text-xs text-slate-500 dark:text-slate-400 truncate hidden sm:block">Accord Standard 701-A // Official Supporting Document Verification</p>
           </div>
         </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <button type="button" onclick="printCurrentDoc()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all">
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <button type="button" onclick="printCurrentDoc()" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all">
             <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-            <span>Print Document</span>
+            <span class="hidden xs:inline sm:inline">Print Document</span>
+            <span class="xs:hidden sm:hidden">Print</span>
           </button>
-          <a id="btnDocViewerDownload" href="#" download class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all">
+          <a id="btnDocViewerDownload" href="#" download class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition-all">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span>Download</span>
+            <span class="hidden xs:inline sm:inline">Download</span>
           </a>
           <button type="button" onclick="closeDocViewer()" class="p-1.5 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg">
             <i data-lucide="x" class="w-5 h-5"></i>
@@ -1302,16 +1332,16 @@
         </div>
       </div>
 
-      <div class="p-4 bg-slate-950 flex-1 overflow-auto flex items-center justify-center min-h-[460px]">
+      <div class="p-2 sm:p-4 bg-slate-950 flex-1 overflow-auto flex items-center justify-center min-h-[220px] sm:min-h-[380px]">
         <div id="docViewerContent" class="w-full flex items-center justify-center">
           <!-- Dynamically populated enlarged image or iframe -->
         </div>
       </div>
 
-      <div class="px-6 py-2.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-        <span class="font-mono text-[11px] text-sky-600 dark:text-sky-400">SECURE VAULT ATTACHMENT</span>
-        <button type="button" onclick="toggleDocZoom()" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 transition-colors">
-          Toggle Fullsize / Zoom
+      <div class="px-4 sm:px-6 py-2 sm:py-2.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 shrink-0">
+        <span class="font-mono text-[10px] sm:text-[11px] text-sky-600 dark:text-sky-400 truncate mr-2">SECURE VAULT ATTACHMENT</span>
+        <button type="button" onclick="toggleDocZoom()" class="px-2.5 py-1 rounded bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 transition-colors shrink-0">
+          Toggle Zoom
         </button>
       </div>
     </div>
@@ -1320,40 +1350,40 @@
   <!-- ════════════════════════════════════════════
        MODAL: AUDIT RECORD & DIFF INSPECTOR
        ════════════════════════════════════════════ -->
-  <div id="audit-diff-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-2xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-        <div class="flex items-center gap-2">
-          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
-          <div>
-            <h3 class="font-bold text-base text-slate-900 dark:text-white">Audit Entry &amp; Modification Log</h3>
-            <p id="audit-diff-subtitle" class="text-xs text-slate-500 dark:text-slate-400 font-mono">Event Details &amp; Field Diffs</p>
+  <div id="audit-diff-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/70 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-2xl max-h-[94dvh] flex flex-col my-auto overflow-hidden">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 shrink-0">
+        <div class="flex items-center gap-2 min-w-0 mr-2">
+          <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0"></i>
+          <div class="min-w-0">
+            <h3 class="font-bold text-base text-slate-900 dark:text-white truncate">Audit Entry &amp; Modification Log</h3>
+            <p id="audit-diff-subtitle" class="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">Event Details &amp; Field Diffs</p>
           </div>
         </div>
-        <button onclick="closeAuditDiffModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+        <button onclick="closeAuditDiffModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1 shrink-0">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div class="p-6 space-y-4 overflow-y-auto flex-1 text-xs">
+      <div class="p-3.5 sm:p-6 space-y-3 sm:space-y-4 overflow-y-auto flex-1 text-xs">
         <!-- Account Card -->
-        <div class="p-3.5 bg-slate-100 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+        <div class="p-3 sm:p-3.5 bg-slate-100 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-700 dark:text-slate-300 uppercase text-[10px] tracking-wider">Originating Account</span>
             <span id="audit-diff-role" class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30">ROLE</span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <span class="text-sm font-mono font-bold text-slate-900 dark:text-white" id="audit-diff-account">@username</span>
             <span class="text-slate-500 dark:text-slate-400" id="audit-diff-name">(Full Name)</span>
           </div>
-          <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-800">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2 text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200 dark:border-slate-800">
             <div>IP Address: <span id="audit-diff-ip" class="font-mono text-slate-700 dark:text-slate-300">127.0.0.1</span></div>
             <div>Timestamp: <span id="audit-diff-time" class="font-mono text-slate-700 dark:text-slate-300">—</span></div>
           </div>
         </div>
 
         <!-- Target Hero -->
-        <div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center justify-between p-3 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-700 flex-wrap gap-2">
           <div>
             <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Target Operative Record</span>
             <span id="audit-diff-target" class="font-bold text-sm text-slate-900 dark:text-white">—</span>
@@ -1365,12 +1395,12 @@
         <div>
           <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-2">Changed Fields &amp; Value Diff:</span>
           <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
-            <table class="w-full text-left border-collapse text-xs">
+            <table class="w-full text-left border-collapse text-xs min-w-[340px]">
               <thead>
                 <tr class="bg-slate-50 dark:bg-slate-900/60 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
-                  <th class="p-2.5">Field</th>
-                  <th class="p-2.5">Previous Value (Old)</th>
-                  <th class="p-2.5">Updated Value (New)</th>
+                  <th class="p-2 sm:p-2.5">Field</th>
+                  <th class="p-2 sm:p-2.5">Previous Value (Old)</th>
+                  <th class="p-2 sm:p-2.5">Updated Value (New)</th>
                 </tr>
               </thead>
               <tbody id="audit-diff-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
@@ -1387,8 +1417,8 @@
         </div>
       </div>
 
-      <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 flex justify-end">
-        <button onclick="closeAuditDiffModal()" class="px-4 py-1.5 text-xs font-bold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-xl transition-colors">
+      <div class="px-4 sm:px-6 py-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 flex justify-end shrink-0">
+        <button onclick="closeAuditDiffModal()" class="w-full sm:w-auto px-4 py-2 text-xs font-bold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-xl transition-colors min-h-[40px] flex items-center justify-center">
           Close Inspector
         </button>
       </div>
@@ -1398,18 +1428,18 @@
   <!-- ════════════════════════════════════════════
        MODAL 4: AES-256 VAULT BIO MODAL
        ════════════════════════════════════════════ -->
-  <div id="vault-bio-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-xl mx-4 overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-900 text-white">
+  <div id="vault-bio-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/50 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-xl max-h-[94dvh] flex flex-col my-auto overflow-hidden">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-900 text-white shrink-0">
         <div class="flex items-center gap-2">
           <i data-lucide="lock" class="w-5 h-5 text-amber-400"></i>
           <h3 class="font-bold text-sm uppercase tracking-wider">AES-256 Identity Vault</h3>
         </div>
-        <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white">
+        <button onclick="closeVaultModal()" class="text-slate-400 hover:text-white p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <div id="vault-modal-content" class="p-6 space-y-3 font-mono text-xs">
+      <div id="vault-modal-content" class="p-4 sm:p-6 space-y-3 font-mono text-xs overflow-y-auto flex-1">
         <!-- Injected via JS -->
       </div>
     </div>
@@ -1418,18 +1448,18 @@
   <!-- ════════════════════════════════════════════
        MODAL 5: REVOKE HERO LICENSE MODAL
        ════════════════════════════════════════════ -->
-  <div id="revoke-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-rose-200 dark:border-rose-900 shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-rose-200 dark:border-rose-900 bg-rose-500/10">
+  <div id="revoke-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/50 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-rose-200 dark:border-rose-900 shadow-2xl w-full max-w-lg max-h-[94dvh] flex flex-col my-auto overflow-hidden">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-rose-200 dark:border-rose-900 bg-rose-500/10 shrink-0">
         <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400">
           <i data-lucide="alert-octagon" class="w-5 h-5"></i>
           <h3 class="font-bold text-base">Issue Revocation Directive</h3>
         </div>
-        <button onclick="closeRevokeModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+        <button onclick="closeRevokeModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form onsubmit="handleRevokeSubmit(event)" class="p-6 space-y-4">
+      <form onsubmit="handleRevokeSubmit(event)" class="p-4 sm:p-6 space-y-3 sm:space-y-4 overflow-y-auto flex-1">
         <input type="hidden" id="revoke-hero-id">
         <p class="text-xs text-slate-500 dark:text-slate-400">
           Revoking operative <strong id="revoke-hero-callsign" class="text-rose-600 dark:text-rose-400"></strong>'s license will suspend their credential privileges immediately.
@@ -1448,9 +1478,9 @@
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Official Directive Notice *</label>
           <textarea id="revoke-reason" required rows="3" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100" placeholder="State reasons for licensure revocation..."></textarea>
         </div>
-        <div class="pt-2 flex justify-end gap-3">
-          <button type="button" onclick="closeRevokeModal()" class="px-4 py-2 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl">Cancel</button>
-          <button type="submit" class="px-5 py-2 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md">Confirm Revocation</button>
+        <div class="pt-2 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
+          <button type="button" onclick="closeRevokeModal()" class="w-full sm:w-auto px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl min-h-[42px]">Cancel</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-md min-h-[42px]">Confirm Revocation</button>
         </div>
       </form>
     </div>
@@ -1459,18 +1489,18 @@
   <!-- ════════════════════════════════════════════
        MODAL 6: FIELD BADGE VERIFIER MODAL
        ════════════════════════════════════════════ -->
-  <div id="verifier-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 hidden backdrop-blur-xs">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-emerald-500/10">
+  <div id="verifier-modal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/50 hidden backdrop-blur-xs overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md max-h-[94dvh] flex flex-col my-auto overflow-hidden">
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-emerald-500/10 shrink-0">
         <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
           <i data-lucide="qr-code" class="w-5 h-5"></i>
           <h3 class="font-bold text-base">Anti-Spoof Field Badge Verifier</h3>
         </div>
-        <button onclick="closeVerifierModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+        <button onclick="closeVerifierModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <form onsubmit="handleBadgeVerification(event)" class="p-6 space-y-4">
+      <form onsubmit="handleBadgeVerification(event)" class="p-4 sm:p-6 space-y-3 sm:space-y-4 overflow-y-auto flex-1">
         <div>
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Select Operative</label>
           <select id="verifier-hero-select" onchange="fetchActiveBadgeToken(this.value)" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100"></select>
@@ -1479,7 +1509,7 @@
           <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">6-Digit Rotating Cryptographic Token</label>
           <input type="text" id="verifier-token-input" required maxlength="6" placeholder="e.g. 748291" class="w-full px-3 py-2 text-lg font-mono font-bold tracking-widest text-center bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100">
         </div>
-        <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-md transition-all">
+        <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-md transition-all min-h-[44px]">
           Verify Cryptographic Token
         </button>
         <div id="verifier-result-box" class="hidden p-4 rounded-xl text-xs font-mono"></div>
@@ -1490,9 +1520,9 @@
   <!-- ════════════════════════════════════════════
        COMMANDER OPERATIVE INSPECTOR DRAWER
        ════════════════════════════════════════════ -->
-  <div id="operative-inspector-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col hidden">
+  <div id="operative-inspector-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:max-w-xl bg-white dark:bg-slate-800 border-l border-slate-200 dark:border-slate-700 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col hidden">
     <!-- Header -->
-    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-900 text-white shrink-0">
+    <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-900 text-white shrink-0">
       <div class="flex items-center gap-2">
         <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
         <h3 class="font-bold text-sm uppercase tracking-wider">Commander Operative Assessor</h3>
@@ -1503,7 +1533,7 @@
     </div>
 
     <!-- Body Content -->
-    <div id="operative-inspector-content" class="p-6 space-y-5 overflow-y-auto flex-1 text-slate-800 dark:text-slate-100">
+    <div id="operative-inspector-content" class="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1 text-slate-800 dark:text-slate-100 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
       <!-- Injected via JS -->
     </div>
   </div>
@@ -1511,9 +1541,9 @@
   <!-- ════════════════════════════════════════════
        SECURITY DIRECTIVE CONFIRMATION MODAL
        ════════════════════════════════════════════ -->
-  <div id="ghra-confirm-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 hidden backdrop-blur-sm transition-opacity duration-200">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all duration-200 scale-95" id="ghra-confirm-box">
-      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80 flex items-center gap-3 bg-slate-50 dark:bg-slate-900/60">
+  <div id="ghra-confirm-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 hidden backdrop-blur-sm transition-opacity duration-200 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl w-full max-w-md max-h-[94dvh] flex flex-col my-auto overflow-hidden transform transition-all duration-200 scale-95" id="ghra-confirm-box">
+      <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 dark:border-slate-700/80 flex items-center gap-3 bg-slate-50 dark:bg-slate-900/60 shrink-0">
         <div id="ghra-confirm-icon-wrap" class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
           <i id="ghra-confirm-icon" data-lucide="shield-alert" class="w-5 h-5"></i>
         </div>
@@ -1522,7 +1552,7 @@
           <p id="ghra-confirm-subtitle" class="text-xs text-slate-500 dark:text-slate-400 truncate">Clearance Level 5 Authorization Required</p>
         </div>
       </div>
-      <div class="p-6 space-y-4">
+      <div class="p-4 sm:p-6 space-y-3 sm:space-y-4 overflow-y-auto flex-1">
         <p id="ghra-confirm-message" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
         
         <div id="ghra-confirm-input-wrap" class="hidden space-y-1.5">
@@ -1535,11 +1565,11 @@
           <span>Action will be cryptographically signed to the audit ledger.</span>
         </div>
       </div>
-      <div class="px-6 py-3.5 border-t border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3">
-        <button type="button" id="ghra-confirm-cancel-btn" onclick="closeConfirmDirectiveModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700/60 rounded-xl transition-all">
+      <div class="px-4 sm:px-6 py-3 sm:py-3.5 border-t border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-900/50 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 shrink-0">
+        <button type="button" id="ghra-confirm-cancel-btn" onclick="closeConfirmDirectiveModal()" class="w-full sm:w-auto px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700/60 rounded-xl transition-all min-h-[40px] flex items-center justify-center">
           Abort Directive
         </button>
-        <button type="button" id="ghra-confirm-action-btn" class="px-5 py-2 text-xs font-bold text-white rounded-xl shadow-md transition-all flex items-center gap-1.5">
+        <button type="button" id="ghra-confirm-action-btn" class="w-full sm:w-auto px-5 py-2 text-xs font-bold text-white rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 min-h-[40px]">
           <span>Authorize Directive</span>
         </button>
       </div>

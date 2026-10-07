@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>HAMS | Hunter Association Registrar Desk &amp; Mana Evaluator</title>
   <meta name="description" content="HAMS Registrar Desk &amp; Mana Evaluator UI — Awakened Intake Verification, Hunter Rank Classification, and Licensing Authority.">
   <meta name="color-scheme" content="light dark">
@@ -927,19 +927,19 @@
   </div>
 
   <!-- Official Superhuman Accreditation Credential ID Card Modal -->
-  <div class="ghrms-modal-overlay" id="heroIdCardModal" role="dialog" aria-modal="true" aria-label="Official Hero ID Card" style="display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 10000;">
-    <div class="ghrms-modal-box" style="max-width: 580px; width: 100%; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
-      <div class="ghrms-modal-header" style="background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.1rem;">🪪</span>
-          <span style="font-weight: 800; font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.05em; color: var(--text-main);">
-            OFFICIAL SUPERHUMAN ACCREDITATION CREDENTIAL
+  <div class="ghrms-modal-overlay" id="heroIdCardModal" role="dialog" aria-modal="true" aria-label="Official Hero ID Card" style="display: none; align-items: center; justify-content: center; padding: 0.5rem; z-index: 10000; overflow-y: auto;">
+    <div class="ghrms-modal-box" style="max-width: 580px; width: 100%; max-height: 94dvh; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); display: flex; flex-direction: column; margin: auto;">
+      <div class="ghrms-modal-header" style="background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+          <span style="font-size: 1.1rem; flex-shrink: 0;">🪪</span>
+          <span style="font-weight: 800; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.05em; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            OFFICIAL ACCREDITATION CREDENTIAL
           </span>
         </div>
-        <button class="icon-button" onclick="closeHeroIdCardModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; padding: 4px 8px;">[X]</button>
+        <button class="icon-button" onclick="closeHeroIdCardModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; padding: 4px 8px; flex-shrink: 0;">[X]</button>
       </div>
 
-      <div class="ghrms-modal-body" style="padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem;">
+      <div class="ghrms-modal-body" style="padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; overflow-y: auto; flex: 1;">
         
         <!-- THE PHYSICAL WALLET ID CARD CONTAINER -->
         <div id="printableHeroIdCard" class="hero-id-card-wrapper" style="position: relative; width: 100%; max-width: 500px; min-height: 295px; background: linear-gradient(145deg, #0b1120 0%, #0f172a 50%, #1e1b4b 100%); border: 2px solid #38bdf8; border-radius: 14px; padding: 16px; color: #ffffff; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.15); overflow: hidden; font-family: var(--font-sans);">

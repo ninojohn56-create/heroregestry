@@ -2879,6 +2879,34 @@ body.resizing-active canvas {
   .ghrms-stepper {
     min-width: 320px;
   }
+
+  .hero-id-card-wrapper {
+    padding: 10px !important;
+    min-height: auto !important;
+  }
+  .hero-id-card-wrapper > div[style*="grid-template-columns: 110px 1fr 100px"] {
+    grid-template-columns: 84px 1fr 76px !important;
+    gap: 8px !important;
+  }
+  .hero-id-card-wrapper #cardHeroAvatar {
+    width: 80px !important;
+    height: 96px !important;
+  }
+  .hero-id-card-wrapper .hologram-seal {
+    width: 42px !important;
+    height: 42px !important;
+  }
+  .hero-id-card-wrapper .hologram-seal > div {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .hero-id-card-wrapper #cardHeroAlias {
+    font-size: 1.05rem !important;
+  }
+  .hero-id-card-wrapper #cardHeroQrCanvas {
+    width: 64px !important;
+    height: 64px !important;
+  }
 }
 
 /* --------------------------------------------------------------------------

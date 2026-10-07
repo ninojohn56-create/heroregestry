@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>GHRMS | Hero &amp; Sidekick Portal</title>
   <meta name="description"
     content="GHRMS Hero & Sidekick Application Portal — Confidential Operative Intake & Power Specification.">
@@ -946,15 +946,15 @@
   </div>
 
   <!-- Modal: Face Photo / Profile Picture Upload -->
-  <div class="ghrms-modal-overlay" id="modalFacePhotoUpload" role="dialog" aria-modal="true" aria-label="Upload Face Photo" style="display: none;">
-    <div class="ghrms-modal-box" style="max-width: 440px;">
-      <div class="ghrms-modal-header">
+  <div class="ghrms-modal-overlay" id="modalFacePhotoUpload" role="dialog" aria-modal="true" aria-label="Upload Face Photo" style="display: none; padding: 10px; overflow-y: auto;">
+    <div class="ghrms-modal-box" style="max-width: 440px; max-height: 94dvh; display: flex; flex-direction: column; margin: auto;">
+      <div class="ghrms-modal-header" style="flex-shrink: 0;">
         <span style="font-size: 0.85rem; font-weight: 800; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
           <span>📷</span> <span>BIOMETRIC FACE PHOTO UPLOAD</span>
         </span>
         <button class="icon-button" onclick="closeFacePhotoUploadModal()">[X]</button>
       </div>
-      <div class="ghrms-modal-body" style="padding: 20px;">
+      <div class="ghrms-modal-body" style="padding: 16px; overflow-y: auto; flex: 1;">
         <div style="text-align: center; margin-bottom: 16px;">
           <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 12px; border-radius: 50%; overflow: hidden; border: 3px solid var(--border-focus); box-shadow: 0 0 20px rgba(59,130,246,0.3); background: var(--bg-card); cursor: pointer;" onclick="document.getElementById('facePhotoFileInputHero').click()">
             <img id="modalFacePreviewImg" src="/img/apex.jpg" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; display: block;">
