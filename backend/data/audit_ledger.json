@@ -1,7 +1,7 @@
 [
     {
-        "id": "evt_c1687db30308",
-        "timestamp": "2026-10-07T06:27:36+00:00",
+        "id": "evt_3ff310c680c8",
+        "timestamp": "2026-10-07T06:59:07+00:00",
         "actor": "SARAH_CHEN",
         "role": "REGISTRAR",
         "action": "REGISTRY_INIT",
@@ -10,11 +10,11 @@
             "message": "Hunters Association Management System online. Mana evaluation ledger authenticated."
         },
         "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-        "hash": "00593a35a2366a06a08a558a24b4f48fd7c0857c7c0cba287d846130535ff536"
+        "hash": "e3624574537c97324c43fcb21afe63ebf538725a192cd8beecece8036c5bd810"
     },
     {
-        "id": "evt_5be3c45931c3",
-        "timestamp": "2026-10-07T06:27:36+00:00",
+        "id": "evt_2749a7ab2bf9",
+        "timestamp": "2026-10-07T06:59:07+00:00",
         "actor": "SARAH_CHEN",
         "role": "REGISTRAR",
         "action": "QUEUE_INGESTION",
@@ -24,12 +24,12 @@
             "gov_code": "9GH-8430",
             "status": "REVIEWING"
         },
-        "prev_hash": "00593a35a2366a06a08a558a24b4f48fd7c0857c7c0cba287d846130535ff536",
-        "hash": "d536e8ffd3a6f6be369c3f43499f7818db7477f556635f59164c37ae3b1408b2"
+        "prev_hash": "e3624574537c97324c43fcb21afe63ebf538725a192cd8beecece8036c5bd810",
+        "hash": "e70343575b1242621593d9de5cd785d60b44645061413a1c691e9bff82a5f434"
     },
     {
-        "id": "evt_029d463ccdea",
-        "timestamp": "2026-10-07T06:27:36+00:00",
+        "id": "evt_ec8e18b784b8",
+        "timestamp": "2026-10-07T06:59:07+00:00",
         "actor": "SUPER_ADMIN_01",
         "role": "SUPER_ADMIN",
         "action": "SECURITY_AUDIT",
@@ -38,26 +38,26 @@
             "alias": "SPECTER ZERO",
             "action": "ROGUE_STATUS_FLAGGED"
         },
-        "prev_hash": "d536e8ffd3a6f6be369c3f43499f7818db7477f556635f59164c37ae3b1408b2",
-        "hash": "3c43b325c801d20a86cabb584f19be3673be825c90748cd35927ce07d517295f"
+        "prev_hash": "e70343575b1242621593d9de5cd785d60b44645061413a1c691e9bff82a5f434",
+        "hash": "a4b2ccf09f6ba824d1debb7afbb86cb2018a0db58a7cb24075d545912cf60d4f"
     },
     {
-        "id": "evt_c08a2df51d1c",
-        "timestamp": "2026-10-07T06:27:37+00:00",
+        "id": "evt_ffadf33562a4",
+        "timestamp": "2026-10-07T06:59:07+00:00",
         "actor": "Commander Vance",
         "role": "SUPER_ADMIN",
         "action": "SYSTEM_FACTORY_RESET",
         "target_id": "GHRMS_DATA",
         "details": {
-            "timestamp": "2026-10-07T06:27:37+00:00",
+            "timestamp": "2026-10-07T06:59:07+00:00",
             "heroes_restored": 11
         },
-        "prev_hash": "3c43b325c801d20a86cabb584f19be3673be825c90748cd35927ce07d517295f",
-        "hash": "a920d7a8a576c7551ba9356a433eb6e94e85f25bafeafb54d453378b0a15ec87"
+        "prev_hash": "a4b2ccf09f6ba824d1debb7afbb86cb2018a0db58a7cb24075d545912cf60d4f",
+        "hash": "1218502c5a968115cfe6941db4c0fbdea168df2b06e8c2bc44f13e33987fcfe4"
     },
     {
-        "id": "evt_7cdb3f6984ac",
-        "timestamp": "2026-10-07T06:27:37+00:00",
+        "id": "evt_2515e9022f2a",
+        "timestamp": "2026-10-07T06:59:07+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "USER_AUTHENTICATED",
@@ -66,12 +66,12 @@
             "role": "HERO",
             "clearance_level": 1
         },
-        "prev_hash": "a920d7a8a576c7551ba9356a433eb6e94e85f25bafeafb54d453378b0a15ec87",
-        "hash": "e62f19ce3230d37a50d89384ddfd653c98e4dee229ea19183414e5df42851f32"
+        "prev_hash": "1218502c5a968115cfe6941db4c0fbdea168df2b06e8c2bc44f13e33987fcfe4",
+        "hash": "8b26e69f65ef9e8e3422fbbafd10e477f29ded0fa7edfb85ca23411f0a53a838"
     },
     {
-        "id": "evt_056978f7c3a3",
-        "timestamp": "2026-10-07T06:27:37+00:00",
+        "id": "evt_99f2a0e0648d",
+        "timestamp": "2026-10-07T06:59:08+00:00",
         "actor": "Commander Vance",
         "role": "SUPER_ADMIN",
         "action": "USER_AUTHENTICATED",
@@ -80,28 +80,28 @@
             "role": "SUPER_ADMIN",
             "clearance_level": 5
         },
-        "prev_hash": "e62f19ce3230d37a50d89384ddfd653c98e4dee229ea19183414e5df42851f32",
-        "hash": "5e9e6ad6ca37beffc03ddbdace53ab6a27b0516dceb894e9e30fb41a5999e720"
+        "prev_hash": "8b26e69f65ef9e8e3422fbbafd10e477f29ded0fa7edfb85ca23411f0a53a838",
+        "hash": "43ebbec392bb61c11ea7f9d85b55d57cc1f5738f5867ade774d5b8ffc359ef8f"
     },
     {
-        "id": "evt_10203b6ef637",
-        "timestamp": "2026-10-07T06:27:37+00:00",
+        "id": "evt_9846189c6ef5",
+        "timestamp": "2026-10-07T06:59:08+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "DOCUMENT_UPLOADED",
         "target_id": "hero_lumina_02",
         "details": {
-            "doc_id": "doc_9a52d490d337",
+            "doc_id": "doc_08f8001b66f5",
             "doc_type": "Official ID",
             "original_name": "test_certification.png",
             "file_size": 68
         },
-        "prev_hash": "5e9e6ad6ca37beffc03ddbdace53ab6a27b0516dceb894e9e30fb41a5999e720",
-        "hash": "24259223e459d64ebce2d5c1d5e9ab234ac5fe89e26c5f00f81d524ee08faec7"
+        "prev_hash": "43ebbec392bb61c11ea7f9d85b55d57cc1f5738f5867ade774d5b8ffc359ef8f",
+        "hash": "ed7a48f4f9c0980b1faeae3a982e56996d9b9865193f604eb06fd774ed0b5989"
     },
     {
-        "id": "evt_73fe74df048e",
-        "timestamp": "2026-10-07T06:27:38+00:00",
+        "id": "evt_934803db375e",
+        "timestamp": "2026-10-07T06:59:08+00:00",
         "actor": "Samuel Wright (APEX)",
         "role": "HERO",
         "action": "USER_AUTHENTICATED",
@@ -110,28 +110,28 @@
             "role": "HERO",
             "clearance_level": 1
         },
-        "prev_hash": "24259223e459d64ebce2d5c1d5e9ab234ac5fe89e26c5f00f81d524ee08faec7",
-        "hash": "382bda22b9cc7a0d39ef69a9bc928971720374ac4dfeac9cbb8062aa5a3deaf8"
+        "prev_hash": "ed7a48f4f9c0980b1faeae3a982e56996d9b9865193f604eb06fd774ed0b5989",
+        "hash": "cd319630822291ec605c22f3d1e2c09a9019242b7871896f9738643b688d690a"
     },
     {
-        "id": "evt_3f5c3364583b",
-        "timestamp": "2026-10-07T06:27:38+00:00",
+        "id": "evt_6902db0ebec3",
+        "timestamp": "2026-10-07T06:59:08+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "DOCUMENT_DELETED",
         "target_id": "hero_lumina_02",
         "details": {
-            "doc_id": "doc_9a52d490d337",
+            "doc_id": "doc_08f8001b66f5",
             "doc_type": "Official ID",
-            "file_name": "doc_9a52d490d337.png",
+            "file_name": "doc_08f8001b66f5.png",
             "original_name": "test_certification.png"
         },
-        "prev_hash": "382bda22b9cc7a0d39ef69a9bc928971720374ac4dfeac9cbb8062aa5a3deaf8",
-        "hash": "b9099881af8c19e9f901d7cfc41a4e60f87c60699807e7f112b5237fb26b09a8"
+        "prev_hash": "cd319630822291ec605c22f3d1e2c09a9019242b7871896f9738643b688d690a",
+        "hash": "5a13a9b09af28fda5d24af27a4ebb3f209b7f932e83448433d4f9537ffedae55"
     },
     {
-        "id": "evt_daee1967bfb3",
-        "timestamp": "2026-10-07T06:27:38+00:00",
+        "id": "evt_97016e9fb4f1",
+        "timestamp": "2026-10-07T06:59:08+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "USER_AUTHENTICATED",
@@ -140,20 +140,20 @@
             "role": "HERO",
             "clearance_level": 1
         },
-        "prev_hash": "b9099881af8c19e9f901d7cfc41a4e60f87c60699807e7f112b5237fb26b09a8",
-        "hash": "1f06f93743bfdb976d8ee422d1eba8be6fddd32934f257f833538e8b6673a84c"
+        "prev_hash": "5a13a9b09af28fda5d24af27a4ebb3f209b7f932e83448433d4f9537ffedae55",
+        "hash": "1412b5d0409f044d44ba80f68186f51ba325e243fe3d2868aff1f64707f04394"
     },
     {
-        "id": "evt_1035249c04d0",
-        "timestamp": "2026-10-07T06:27:38+00:00",
+        "id": "evt_e4de15f24201",
+        "timestamp": "2026-10-07T06:59:08+00:00",
         "actor": "VAULT_ENGINE",
         "role": "SYSTEM",
         "action": "VAULT_INTEGRITY_VIOLATION",
-        "target_id": "vlt_9c7ba669f4621ea8",
+        "target_id": "vlt_fb1f2b3d3303f5a1",
         "details": {
             "reason": "MAC verification failed: ciphertext or IV tampered"
         },
-        "prev_hash": "1f06f93743bfdb976d8ee422d1eba8be6fddd32934f257f833538e8b6673a84c",
-        "hash": "446f95f978f1267be8576c0a4c4f3a3f31be5dc06507a4be56facab53597c4d7"
+        "prev_hash": "1412b5d0409f044d44ba80f68186f51ba325e243fe3d2868aff1f64707f04394",
+        "hash": "62a29d74d2746ac7303411fca6cbfe8cb56dec584ed9795943e2cdf5f8dfb257"
     }
 ]

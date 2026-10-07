@@ -261,15 +261,35 @@
       }
 
       .wizard-stepper-bar {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
       }
 
       .stepper-nav-tab {
+        padding: 10px 4px;
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+        border-right: 1px solid var(--border-color);
+        border-bottom: 2px solid transparent;
+        font-size: 0.68rem;
+      }
+
+      .stepper-nav-tab:last-child {
         border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 10px 14px;
-        justify-content: flex-start;
-        font-size: 0.78rem;
+      }
+
+      .stepper-nav-tab.active {
+        border-bottom: 2px solid var(--border-focus);
+      }
+
+      .stepper-nav-tab span:not(.tab-num) {
+        font-size: 0.62rem;
+        line-height: 1.15;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
       .step-pane {

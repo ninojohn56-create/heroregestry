@@ -125,6 +125,33 @@
       border-color: #cbd5e1 !important;
       color: #1e293b !important;
     }
+    @media (max-width: 768px) {
+      .ghrms-fullname,
+      .ghrms-divider {
+        display: none !important;
+      }
+      .sentinel-header-tools {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.4rem !important;
+        flex-wrap: wrap;
+      }
+      #btnReturnDashboard span:last-child {
+        display: none;
+      }
+      #btnOpenIncidentsModal span:last-child {
+        display: none;
+      }
+      .sentinel-grid {
+        grid-template-columns: 1fr !important;
+        padding: 0.6rem !important;
+        gap: 1rem !important;
+        height: auto !important;
+      }
+      .panel-split-resizer {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -143,7 +170,7 @@
     </div>
 
     <!-- Checkpoint Sector & Officer Controls -->
-    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+    <div class="sentinel-header-tools" style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem;">
         <span style="color: var(--text-muted); font-weight: 700;">CHECKPOINT SECTOR:</span>
         <select id="checkpointSectorSelect" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; font-family: var(--font-mono);">
