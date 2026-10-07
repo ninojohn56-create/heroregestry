@@ -375,112 +375,114 @@
       </header>
 
       <!-- Scrollable Main View -->
-      <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900">
+      <main class="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 pb-24 md:pb-6 bg-slate-50 dark:bg-slate-900">
 
         <!-- ════════════════════════════════════════════
              1. DASHBOARD TAB
              ════════════════════════════════════════════ -->
-        <div id="tab-dashboard" class="tab-content space-y-6">
+        <div id="tab-dashboard" class="tab-content space-y-4 sm:space-y-6">
           
-          <!-- Summary Stat Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Summary Stat Cards (Mobile 2x2 Matrix, Desktop 4 Cols) -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-5">
             <!-- Stat Card 1 -->
-            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-cyan-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+            <div class="stat-card p-3 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-cyan-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[105px] sm:min-h-[144px] group">
               <div class="flex items-start justify-between">
                 <div>
-                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Operatives</p>
-                  <h3 id="stat-total-heroes" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-cyan-400 transition-colors">2,419</h3>
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Operatives</p>
+                  <h3 id="stat-total-heroes" class="text-xl sm:text-3xl font-extrabold mt-1 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-cyan-400 transition-colors">2,419</h3>
                 </div>
-                <div class="p-3 bg-brand-500/10 text-brand-500 rounded-xl border border-brand-500/20 group-hover:scale-110 transition-transform">
-                  <i data-lucide="users" class="w-5 h-5"></i>
+                <div class="p-2 sm:p-3 bg-brand-500/10 text-brand-500 rounded-xl border border-brand-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                 </div>
               </div>
-              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
-                <span class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
-                  <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +4.2% this term
+              <div class="pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 sm:px-2 py-0.5 rounded-md">
+                  <i data-lucide="trending-up" class="w-3 h-3 mr-0.5 sm:mr-1"></i> +4.2%
                 </span>
-                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">GLOBAL REGISTER</span>
+                <span class="text-[9px] sm:text-[10px] font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">GLOBAL REGISTER</span>
               </div>
             </div>
 
             <!-- Stat Card 2 -->
-            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+            <div class="stat-card p-3 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-emerald-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[105px] sm:min-h-[144px] group">
               <div class="flex items-start justify-between">
                 <div>
-                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Active Licenses</p>
-                  <h3 id="stat-licensed-heroes" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-emerald-400 transition-colors">9</h3>
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Active Licenses</p>
+                  <h3 id="stat-licensed-heroes" class="text-xl sm:text-3xl font-extrabold mt-1 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-emerald-400 transition-colors">9</h3>
                 </div>
-                <div class="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 group-hover:scale-110 transition-transform">
-                  <i data-lucide="award" class="w-5 h-5"></i>
+                <div class="p-2 sm:p-3 bg-emerald-500/10 text-emerald-500 rounded-xl border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="award" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                 </div>
               </div>
-              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
-                <span class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
-                  <i data-lucide="shield-check" class="w-3 h-3 mr-1"></i> Across 5 sectors
+              <div class="pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 sm:px-2 py-0.5 rounded-md">
+                  <i data-lucide="shield-check" class="w-3 h-3 mr-0.5 sm:mr-1"></i> 5 Sectors
                 </span>
-                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">100% AUDITED</span>
+                <span class="text-[9px] sm:text-[10px] font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">100% AUDITED</span>
               </div>
             </div>
 
             <!-- Stat Card 3 -->
-            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-amber-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+            <div class="stat-card p-3 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-amber-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[105px] sm:min-h-[144px] group">
               <div class="flex items-start justify-between">
                 <div>
-                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pending Queue</p>
-                  <h3 id="stat-pending-queue" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-amber-400 transition-colors">14</h3>
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pending Queue</p>
+                  <h3 id="stat-pending-queue" class="text-xl sm:text-3xl font-extrabold mt-1 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-amber-400 transition-colors">14</h3>
                 </div>
-                <div class="p-3 bg-amber-500/10 text-amber-500 rounded-xl border border-amber-500/20 group-hover:scale-110 transition-transform">
-                  <i data-lucide="file-clock" class="w-5 h-5"></i>
+                <div class="p-2 sm:p-3 bg-amber-500/10 text-amber-500 rounded-xl border border-amber-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="file-clock" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                 </div>
               </div>
-              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
-                <span class="inline-flex items-center text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-md">
-                  <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Requires review
+              <div class="pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-[10px] sm:text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 sm:px-2 py-0.5 rounded-md">
+                  <i data-lucide="clock" class="w-3 h-3 mr-0.5 sm:mr-1"></i> Review
                 </span>
-                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">INTAKE ACTIVE</span>
+                <span class="text-[9px] sm:text-[10px] font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">INTAKE ACTIVE</span>
               </div>
             </div>
 
             <!-- Stat Card 4 -->
-            <div class="stat-card p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-purple-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between h-full min-h-[144px] group">
+            <div class="stat-card p-3 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-xs hover:shadow-md hover:border-purple-500/40 hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[105px] sm:min-h-[144px] group">
               <div class="flex items-start justify-between">
                 <div>
-                  <p class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Personnel Accounts</p>
-                  <h3 id="stat-personnel-count" class="text-3xl font-extrabold mt-1.5 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-purple-400 transition-colors">6</h3>
+                  <p class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Personnel</p>
+                  <h3 id="stat-personnel-count" class="text-xl sm:text-3xl font-extrabold mt-1 font-mono text-slate-900 dark:text-white tracking-tight group-hover:text-purple-400 transition-colors">6</h3>
                 </div>
-                <div class="p-3 bg-purple-500/10 text-purple-500 rounded-xl border border-purple-500/20 group-hover:scale-110 transition-transform">
-                  <i data-lucide="key-round" class="w-5 h-5"></i>
+                <div class="p-2 sm:p-3 bg-purple-500/10 text-purple-500 rounded-xl border border-purple-500/20 group-hover:scale-110 transition-transform">
+                  <i data-lucide="key-round" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                 </div>
               </div>
-              <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
-                <span class="inline-flex items-center text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600/50 px-2 py-0.5 rounded-md">
-                  <i data-lucide="user-check" class="w-3 h-3 mr-1"></i> Clearance L1 - L5
+              <div class="pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <span class="inline-flex items-center text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600/50 px-1.5 sm:px-2 py-0.5 rounded-md">
+                  <i data-lucide="user-check" class="w-3 h-3 mr-0.5 sm:mr-1"></i> L1 - L5
                 </span>
-                <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">AUTH SYNCHED</span>
+                <span class="text-[9px] sm:text-[10px] font-mono text-slate-400 dark:text-slate-500 hidden sm:inline">AUTH SYNCHED</span>
               </div>
             </div>
           </div>
 
-          <!-- Recent Applications Table -->
+          <!-- Recent Applications Intake Section -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm overflow-hidden">
-            <div class="p-5 md:p-6 border-b border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-900/30">
+            <div class="p-4 sm:p-5 md:p-6 border-b border-slate-200 dark:border-slate-700/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-900/30">
               <div class="flex items-center gap-3">
-                <div class="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <div class="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shrink-0">
                   <i data-lucide="shield-alert" class="w-5 h-5"></i>
                 </div>
                 <div>
-                  <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">Active Operative Intake Queue</h3>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Click any operative row to inspect complete dossier, verifications &amp; audit history.</p>
+                  <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white tracking-tight">Active Operative Intake Queue</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Click any operative card or row to inspect complete dossier.</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="switchTab('queue')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 rounded-xl border border-cyan-500/20 transition-all">
+                <button onclick="switchTab('queue')" class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 rounded-xl border border-cyan-500/20 transition-all">
                   <span>View Full Queue</span>
                   <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </button>
               </div>
             </div>
-            <div class="overflow-x-auto">
+
+            <!-- Desktop View: High Density Tabular Grid -->
+            <div class="hidden md:block overflow-x-auto">
               <table class="w-full text-left border-collapse min-w-[700px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/70 text-slate-500 dark:text-slate-400 text-[11px] uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-700/60 font-mono">
@@ -493,9 +495,14 @@
                   </tr>
                 </thead>
                 <tbody id="dashboard-queue-table" class="divide-y divide-slate-100 dark:divide-slate-700/60 text-sm">
-                  <!-- Injected dynamically via JavaScript with interactive rows -->
+                  <!-- Injected dynamically via JavaScript -->
                 </tbody>
               </table>
+            </div>
+
+            <!-- Mobile View: Tactile Interactive Operative Cards -->
+            <div id="dashboard-queue-mobile-cards" class="md:hidden p-3 space-y-2.5">
+              <!-- Populated dynamically via JS -->
             </div>
           </div>
 
@@ -510,8 +517,8 @@
               <h3 class="text-lg font-bold text-slate-900 dark:text-white">Hunter Operatives Directory</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400">Select any hunter below and click <strong>[Edit Mode]</strong> to update their rank, abilities, or standing.</p>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="openHeroPasskeyModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm shadow-md transition-all">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="openHeroPasskeyModal()" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm shadow-md transition-all">
                 <i data-lucide="key" class="w-4 h-4"></i>
                 <span>Reset Hunter Passkey</span>
               </button>
@@ -519,15 +526,15 @@
           </div>
 
           <!-- Search & Filter Controls -->
-          <div class="p-3 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-center justify-between">
-            <div class="relative w-full md:w-80">
+          <div class="p-3 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2.5">
+            <div class="relative w-full">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
                 <i data-lucide="search" class="w-4 h-4"></i>
               </span>
               <input type="text" id="hero-filter-search" oninput="filterHeroesTable()" placeholder="Search by callsign, name, ID..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-100">
             </div>
-            <div class="flex items-center gap-2 sm:gap-3 w-full md:w-auto flex-wrap">
-              <select id="hero-filter-sector" onchange="filterHeroesTable()" class="flex-1 sm:flex-none min-w-[130px] px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+              <select id="hero-filter-sector" onchange="filterHeroesTable()" class="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
                 <option value="">All Municipal Sectors</option>
                 <option value="Sector 1">Sector 1 - Poblacion Central Commercial Grid</option>
                 <option value="Sector 2">Sector 2 - Hubang Highway &amp; Logistics Corridor</option>
@@ -535,14 +542,14 @@
                 <option value="Sector 4">Sector 4 - Bitan-agan &amp; Lapinigan River Basin</option>
                 <option value="Sector 5">Sector 5 - Caimpugan Peatland Sanctuary &amp; Marsh Shield</option>
               </select>
-              <select id="hero-filter-status" onchange="filterHeroesTable()" class="flex-1 sm:flex-none min-w-[110px] px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+              <select id="hero-filter-status" onchange="filterHeroesTable()" class="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
                 <option value="">All Statuses</option>
                 <option value="Licensed">Licensed</option>
                 <option value="Under Review">Under Review</option>
                 <option value="Suspended">Suspended</option>
                 <option value="Rogue">Rogue</option>
               </select>
-              <select id="hero-filter-division" onchange="filterHeroesTable()" class="flex-1 sm:flex-none min-w-[110px] px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
+              <select id="hero-filter-division" onchange="filterHeroesTable()" class="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200">
                 <option value="">All Divisions</option>
                 <option value="Hero">Primary Hero</option>
                 <option value="Sidekick">Sidekick Division</option>
@@ -550,9 +557,10 @@
             </div>
           </div>
 
-          <!-- Heroes Table -->
+          <!-- Heroes Table & Mobile Cards -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
+            <!-- Desktop View: High Density Table -->
+            <div class="hidden md:block overflow-x-auto">
               <table class="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
@@ -568,6 +576,11 @@
                   <!-- Rendered dynamically via JS -->
                 </tbody>
               </table>
+            </div>
+
+            <!-- Mobile View: Interactive Operative Profile Cards -->
+            <div id="heroes-mobile-cards" class="md:hidden p-3 space-y-3">
+              <!-- Populated dynamically via JS -->
             </div>
           </div>
         </div>
@@ -611,9 +624,10 @@
             </div>
           </div>
 
-          <!-- Applications Queue Table -->
+          <!-- Applications Queue Table & Mobile Cards -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
+            <!-- Desktop View: Comprehensive Tabular Assessment -->
+            <div class="hidden md:block overflow-x-auto">
               <table class="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
@@ -630,6 +644,11 @@
                 </tbody>
               </table>
             </div>
+
+            <!-- Mobile View: Actionable Applicant Evaluation Cards -->
+            <div id="queue-mobile-cards" class="md:hidden p-3 space-y-3">
+              <!-- Populated dynamically via JS -->
+            </div>
           </div>
         </div>
 
@@ -642,7 +661,7 @@
               <h3 class="text-lg font-bold text-slate-900 dark:text-white">Personnel Accounts &amp; Passkeys</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400">Day-to-day password management. Standard Admins can reset credentials for regular heroes and staff.</p>
             </div>
-            <button onclick="openProvisionUserModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow-md shadow-brand-500/20 transition-all">
+            <button onclick="openProvisionUserModal()" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm shadow-md shadow-brand-500/20 transition-all">
               <i data-lucide="user-plus" class="w-4 h-4"></i>
               <span>+ Provision User / Admin</span>
             </button>
@@ -655,9 +674,10 @@
             <button onclick="filterUsersTable('staff')" class="users-tab-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400" data-u="staff">Administrative Staff</button>
           </div>
 
-          <!-- Accounts Table -->
+          <!-- Accounts Table & Mobile Cards -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
+            <!-- Desktop View: Grid View -->
+            <div class="hidden md:block overflow-x-auto">
               <table class="w-full text-left border-collapse min-w-[720px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
@@ -672,6 +692,11 @@
                   <!-- Rendered dynamically via JS -->
                 </tbody>
               </table>
+            </div>
+
+            <!-- Mobile View: Modern Personnel Identity Cards -->
+            <div id="users-mobile-cards" class="md:hidden p-3 space-y-2.5">
+              <!-- Populated dynamically via JS -->
             </div>
           </div>
         </div>
@@ -741,12 +766,12 @@
               <h3 class="text-lg font-bold text-slate-900 dark:text-white">SHA-256 Chained Audit Ledger</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400">Cryptographically chained ledger verifying every credential change and directive.</p>
             </div>
-            <div class="flex flex-wrap items-center gap-2">
-              <button onclick="exportAuditLedger()" class="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-xl text-xs sm:text-sm transition-all text-slate-800 dark:text-slate-100">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+              <button onclick="exportAuditLedger()" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-3.5 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 font-bold rounded-xl text-xs sm:text-sm transition-all text-slate-800 dark:text-slate-100">
                 <i data-lucide="download" class="w-4 h-4"></i>
                 <span>Export Audit CSV</span>
               </button>
-              <button onclick="verifyAuditChain()" class="inline-flex items-center gap-2 px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all">
+              <button onclick="verifyAuditChain()" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-3.5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all">
                 <i data-lucide="check-check" class="w-4 h-4"></i>
                 <span>Verify Cryptographic Chain</span>
               </button>
@@ -754,7 +779,8 @@
           </div>
 
           <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
+            <!-- Desktop View: Cryptographic Ledger Grid -->
+            <div class="hidden md:block overflow-x-auto">
               <table class="w-full text-left border-collapse min-w-[760px]">
                 <thead>
                   <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-bold">
@@ -770,6 +796,11 @@
                 </tbody>
               </table>
             </div>
+
+            <!-- Mobile View: Cryptographic Event Timeline Cards -->
+            <div id="audit-mobile-cards" class="md:hidden p-3 space-y-2 font-mono">
+              <!-- Populated dynamically via JS -->
+            </div>
           </div>
         </div>
 
@@ -782,9 +813,9 @@
               <h3 class="text-lg font-bold text-slate-900 dark:text-white">GIS Tactical Radar &amp; Containment</h3>
               <p class="text-xs text-slate-500 dark:text-slate-400">Live geospatial telemetry, sector containment perimeters, and atmospheric feeds.</p>
             </div>
-            <div id="radarEmergencyActionContainer">
-              <button id="btnToggleRogueBroadcast" onclick="toggleRogueContainmentBroadcast()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-sm shadow-md shadow-rose-600/20 transition-all">
-                <i data-lucide="radio" class="w-4 h-4"></i>
+            <div id="radarEmergencyActionContainer" class="w-full sm:w-auto">
+              <button id="btnToggleRogueBroadcast" onclick="toggleRogueContainmentBroadcast()" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs sm:text-sm shadow-md shadow-rose-600/20 transition-all">
+                <i data-lucide="radio" class="w-4 h-4 shrink-0"></i>
                 <span id="rogueBroadcastBtnText">Trigger RED GATE Emergency Broadcast</span>
               </button>
             </div>
@@ -856,8 +887,8 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Generate authenticated audit reports and export tabular dataset records.</p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <div class="p-4 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
               <div>
                 <div class="p-3 bg-brand-50 dark:bg-brand-900/35 text-brand-600 dark:text-brand-400 rounded-xl w-fit mb-4">
                   <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
@@ -866,12 +897,12 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Full registry including classifications, powers, threat tiers, and regions.</p>
               </div>
               <div class="flex gap-2 mt-4">
-                <button onclick="exportHeroesCsv()" class="flex-1 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition-all">CSV Export</button>
-                <button onclick="exportHeroesJson()" class="flex-1 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition-all">JSON Export</button>
+                <button onclick="exportHeroesCsv()" class="flex-1 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition-all">CSV Export</button>
+                <button onclick="exportHeroesJson()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition-all">JSON Export</button>
               </div>
             </div>
 
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+            <div class="p-4 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
               <div>
                 <div class="p-3 bg-purple-50 dark:bg-purple-900/35 text-purple-600 dark:text-purple-400 rounded-xl w-fit mb-4">
                   <i data-lucide="history" class="w-6 h-6"></i>
@@ -879,10 +910,10 @@
                 <h4 class="font-bold text-base text-slate-900 dark:text-white">Cryptographic Audit Export</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Export full SHA-256 chained transaction logs for legal verification.</p>
               </div>
-              <button onclick="exportAuditLedger()" class="mt-4 w-full py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-all">Download Audit CSV</button>
+              <button onclick="exportAuditLedger()" class="mt-4 w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-all">Download Audit CSV</button>
             </div>
 
-            <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+            <div class="p-4 sm:p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
               <div>
                 <div class="p-3 bg-emerald-50 dark:bg-emerald-900/35 text-emerald-600 dark:text-emerald-400 rounded-xl w-fit mb-4">
                   <i data-lucide="badge-check" class="w-6 h-6"></i>
@@ -890,7 +921,7 @@
                 <h4 class="font-bold text-base text-slate-900 dark:text-white">Anti-Spoof Field Badge Verifier</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Authenticate live rotating 30-second HMAC field credentials.</p>
               </div>
-              <button onclick="openBadgeVerifierModal()" class="mt-4 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all">Launch Badge Verifier</button>
+              <button onclick="openBadgeVerifierModal()" class="mt-4 w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all">Launch Badge Verifier</button>
             </div>
           </div>
         </div>
@@ -904,41 +935,41 @@
             <p class="text-xs text-slate-500 dark:text-slate-400">Configure global superhuman accord policies, maintenance modes, and canon state.</p>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-6">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 sm:p-6 space-y-4 sm:space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700 gap-3">
               <div>
                 <h4 class="font-bold text-sm text-slate-900 dark:text-white">Active Security Accord</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Master municipal accord jurisdiction.</p>
               </div>
-              <select class="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
+              <select class="w-full sm:w-auto px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100">
                 <option>Lex Talionis Accord 2026 (Active)</option>
                 <option>Metropolitan Protocol Revision 4</option>
               </select>
             </div>
 
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700 gap-3">
               <div>
                 <h4 class="font-bold text-sm text-slate-900 dark:text-white">Automated Biometric Threat Scoring</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Calculate threat tiers based on reported wattage and collateral indices.</p>
               </div>
-              <input type="checkbox" checked class="w-5 h-5 accent-brand-600 rounded">
+              <input type="checkbox" checked class="w-5 h-5 accent-brand-600 rounded shrink-0">
             </div>
 
-            <div id="containmentEmergencyRow" class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+            <div id="containmentEmergencyRow" class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700 gap-3">
               <div>
                 <h4 class="font-bold text-sm text-slate-900 dark:text-white">Containment Emergency Mode</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Trigger broadcast banner and quarantine unverified badges (Supreme Commander L5).</p>
               </div>
-              <input type="checkbox" id="settingsEmergencyCheck" onchange="toggleRogueContainmentBroadcast(this.checked)" class="w-5 h-5 accent-rose-600 rounded">
+              <input type="checkbox" id="settingsEmergencyCheck" onchange="toggleRogueContainmentBroadcast(this.checked)" class="w-5 h-5 accent-rose-600 rounded shrink-0">
             </div>
 
             <!-- Danger Zone: Super Admin (Clearance L5) -->
-            <div id="superAdminDangerZone" class="pt-4 p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-900/10 flex items-center justify-between">
+            <div id="superAdminDangerZone" class="pt-4 p-4 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/30 dark:bg-rose-900/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
                 <h4 class="font-bold text-sm text-rose-600 dark:text-rose-400">Restore Canon Factory Baseline</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Supreme Commander (L5) only: re-seed all canon users and baseline operatives.</p>
               </div>
-              <button id="btnFactoryReset" onclick="runFactoryReset()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-md">
+              <button id="btnFactoryReset" onclick="runFactoryReset()" class="w-full sm:w-auto px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shrink-0 flex items-center justify-center">
                 [RESTORE CANON DATA]
               </button>
             </div>
@@ -1576,8 +1607,36 @@
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════
+       MOBILE BOTTOM NAVIGATION BAR
+       ════════════════════════════════════════════ -->
+  <nav id="mobile-bottom-nav" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 md:hidden flex justify-around items-center h-16 px-1 shadow-lg" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+    <button onclick="switchTab('dashboard')" class="mobile-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-brand-600 dark:text-cyan-400 transition-colors" data-target="dashboard" title="Dashboard">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold mt-1">Dashboard</span>
+    </button>
+    <button onclick="switchTab('heroes')" class="mobile-nav-btn relative flex flex-col items-center justify-center flex-1 py-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors" data-target="heroes" title="Heroes">
+      <i data-lucide="users" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold mt-1">Heroes</span>
+      <span id="mobile-nav-heroes-count" class="absolute top-1 right-1/4 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[9px] px-1.5 py-0.2 rounded-full font-bold">11</span>
+    </button>
+    <button onclick="switchTab('queue')" class="mobile-nav-btn relative flex flex-col items-center justify-center flex-1 py-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors" data-target="queue" title="Queue">
+      <i data-lucide="file-text" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold mt-1">Queue</span>
+      <span id="mobile-nav-queue-badge" class="absolute top-1 right-1/4 bg-amber-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-bold">14</span>
+    </button>
+    <button onclick="switchTab('users')" class="mobile-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors" data-target="users" title="Personnel">
+      <i data-lucide="key-round" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold mt-1">Personnel</span>
+    </button>
+    <button onclick="handleSidebarToggle()" class="mobile-nav-btn flex flex-col items-center justify-center flex-1 py-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors" title="More Menus">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+      <span class="text-[10px] font-bold mt-1">More</span>
+    </button>
+  </nav>
+
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed bottom-6 right-6 z-[100000] flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 md:right-6 left-4 md:left-auto z-[100000] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- Scripts -->
   <script src="/js/leaflet.js?v=5.0"></script>

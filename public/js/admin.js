@@ -524,6 +524,17 @@ function switchTab(tabId) {
         activeLink.classList.add('active-tab', 'active', 'text-brand-600', 'dark:text-brand-400');
     }
 
+    // Update mobile bottom nav buttons
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        if (btn.dataset.target === tabId) {
+            btn.classList.add('text-brand-600', 'dark:text-cyan-400');
+            btn.classList.remove('text-slate-500', 'dark:text-slate-400');
+        } else if (btn.dataset.target) {
+            btn.classList.remove('text-brand-600', 'dark:text-cyan-400');
+            btn.classList.add('text-slate-500', 'dark:text-slate-400');
+        }
+    });
+
     // Dynamic header titles
     const isSuper = adminState.currentUser?.role === 'SUPER_ADMIN';
     const titles = {
@@ -589,9 +600,16 @@ function renderDashboard() {
     if (navPending) navPending.textContent = reviewQueue;
     if (navUsers) navUsers.textContent = personnelCount;
 
+    // Mobile bottom navigation badges
+    const mobileNavHeroes = document.getElementById('mobile-nav-heroes-count');
+    const mobileNavQueue = document.getElementById('mobile-nav-queue-badge');
+    if (mobileNavHeroes) mobileNavHeroes.textContent = totalHeroes;
+    if (mobileNavQueue) mobileNavQueue.textContent = reviewQueue;
+
     // Queue preview table
     const tbody = document.getElementById('dashboard-queue-table');
-    if (!tbody) return;
+    const mobileCardsContainer = document.getElementById('dashboard-queue-mobile-cards');
+    if (!tbody && !mobileCardsContainer) return;
 
     // Prioritize candidates awaiting evaluation or recent actions
     let previewList = adminState.heroes.filter(h => 
@@ -608,47 +626,96 @@ function renderDashboard() {
     }
 
     if (previewList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400 font-mono text-xs">No operatives currently awaiting evaluation in intake queue.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400 font-mono text-xs">No operatives currently awaiting evaluation in intake queue.</td></tr>`;
+        if (mobileCardsContainer) mobileCardsContainer.innerHTML = `<div class="p-6 text-center text-slate-500 dark:text-slate-400 font-mono text-xs">No operatives currently awaiting evaluation in intake queue.</div>`;
         return;
     }
 
-    tbody.innerHTML = previewList.map(h => {
-        const tierBadge = getThreatBadgeHtml(h.threat_tier);
-        const statusBadge = getStatusBadgeHtml(h.status);
-        const isApproved = h.status === 'Approved' || h.status === 'Licensed';
+    if (tbody) {
+        tbody.innerHTML = previewList.map(h => {
+            const tierBadge = getThreatBadgeHtml(h.threat_tier);
+            const statusBadge = getStatusBadgeHtml(h.status);
+            const isApproved = h.status === 'Approved' || h.status === 'Licensed';
 
-        return `
-            <tr onclick="openOperativeInspector('${h.id}')" class="cursor-pointer group hover:bg-slate-100/70 dark:hover:bg-slate-750/70 transition-all border-b border-slate-100 dark:border-slate-700/60" title="Click to inspect full dossier, credentials & audit history">
-                <td class="py-3.5 px-6">
-                    <div class="flex items-center gap-3">
-                        <img src="${h.avatar || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs group-hover:border-cyan-500/50 transition-colors">
-                        <div>
-                            <span class="font-bold text-slate-900 dark:text-white block group-hover:text-cyan-400 transition-colors text-sm">${escapeHtml(h.alias)}</span>
-                            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">${escapeHtml(h.real_name || 'Classified Identity')}</span>
+            return `
+                <tr onclick="openOperativeInspector('${h.id}')" class="cursor-pointer group hover:bg-slate-100/70 dark:hover:bg-slate-750/70 transition-all border-b border-slate-100 dark:border-slate-700/60" title="Click to inspect full dossier, credentials & audit history">
+                    <td class="py-3.5 px-6">
+                        <div class="flex items-center gap-3">
+                            <img src="${h.avatar || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-9 h-9 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs group-hover:border-cyan-500/50 transition-colors">
+                            <div>
+                                <span class="font-bold text-slate-900 dark:text-white block group-hover:text-cyan-400 transition-colors text-sm">${escapeHtml(h.alias)}</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">${escapeHtml(h.real_name || 'Classified Identity')}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-6 text-slate-600 dark:text-slate-400 text-xs font-medium">${escapeHtml(h.region || 'Sector 1')}</td>
+                    <td class="py-3.5 px-6">
+                        <span class="font-semibold text-slate-800 dark:text-slate-200 text-xs block">${escapeHtml(h.primary_power || 'N/A')}</span>
+                        ${h.secondary_power && h.secondary_power !== 'None' ? `<span class="text-[11px] text-slate-500 dark:text-slate-400 block truncate max-w-[140px]">+ ${escapeHtml(h.secondary_power)}</span>` : ''}
+                    </td>
+                    <td class="py-3.5 px-6">${tierBadge}</td>
+                    <td class="py-3.5 px-6">${statusBadge}</td>
+                    <td class="py-3.5 px-6 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+                        ${isApproved
+                            ? `<button disabled class="px-3 py-1.5 bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-semibold mr-1.5 cursor-default inline-flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Approved</span></button>`
+                            : `<button onclick="approveHeroRegistration('${h.id}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold mr-1.5 shadow-xs transition-all inline-flex items-center gap-1 cursor-pointer" title="Approve Licensure"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Approve</span></button>`
+                        }
+                        <button onclick="openHeroEditModal('${h.id}')" class="px-3 py-1.5 bg-slate-700/80 hover:bg-slate-600 text-slate-200 border border-slate-600/70 rounded-lg text-xs font-semibold mr-1.5 shadow-xs transition-all inline-flex items-center gap-1 cursor-pointer" title="Review Profile"><i data-lucide="file-search" class="w-3.5 h-3.5"></i><span>Review</span></button>
+                        <a href="/registrar?hero=${encodeURIComponent(h.id)}" class="px-3 py-1.5 bg-slate-100 hover:bg-white text-slate-900 dark:bg-slate-200 dark:hover:bg-white dark:text-slate-900 border border-slate-300 dark:border-slate-400 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-1 shadow-xs cursor-pointer" title="Conduct Face-to-Face Registrar Check">
+                            <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                            <span>Registrar Check</span>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    if (mobileCardsContainer) {
+        mobileCardsContainer.innerHTML = previewList.map(h => {
+            const tierBadge = getThreatBadgeHtml(h.threat_tier);
+            const statusBadge = getStatusBadgeHtml(h.status);
+            const isApproved = h.status === 'Approved' || h.status === 'Licensed';
+
+            return `
+                <div onclick="openOperativeInspector('${h.id}')" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-3.5 shadow-xs hover:border-cyan-500/40 transition-all cursor-pointer space-y-2.5">
+                    <div class="flex items-start justify-between gap-2.5">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <img src="${h.avatar || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm truncate leading-tight">${escapeHtml(h.alias)}</h4>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 font-mono block truncate">${escapeHtml(h.real_name || 'Classified Identity')}</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                            ${tierBadge}
+                            ${statusBadge}
                         </div>
                     </div>
-                </td>
-                <td class="py-3.5 px-6 text-slate-600 dark:text-slate-400 text-xs font-medium">${escapeHtml(h.region || 'Sector 1')}</td>
-                <td class="py-3.5 px-6">
-                    <span class="font-semibold text-slate-800 dark:text-slate-200 text-xs block">${escapeHtml(h.primary_power || 'N/A')}</span>
-                    ${h.secondary_power && h.secondary_power !== 'None' ? `<span class="text-[11px] text-slate-500 dark:text-slate-400 block truncate max-w-[140px]">+ ${escapeHtml(h.secondary_power)}</span>` : ''}
-                </td>
-                <td class="py-3.5 px-6">${tierBadge}</td>
-                <td class="py-3.5 px-6">${statusBadge}</td>
-                <td class="py-3.5 px-6 text-right whitespace-nowrap" onclick="event.stopPropagation()">
-                    ${isApproved
-                        ? `<button disabled class="px-3 py-1.5 bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 rounded-lg text-xs font-semibold mr-1.5 cursor-default inline-flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Approved</span></button>`
-                        : `<button onclick="approveHeroRegistration('${h.id}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold mr-1.5 shadow-xs transition-all inline-flex items-center gap-1" title="Approve Licensure"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Approve</span></button>`
-                    }
-                    <button onclick="openHeroEditModal('${h.id}')" class="px-3 py-1.5 bg-slate-700/80 hover:bg-slate-600 text-slate-200 border border-slate-600/70 rounded-lg text-xs font-semibold mr-1.5 shadow-xs transition-all inline-flex items-center gap-1" title="Review Profile"><i data-lucide="file-search" class="w-3.5 h-3.5"></i><span>Review</span></button>
-                    <a href="/registrar?hero=${encodeURIComponent(h.id)}" class="px-3 py-1.5 bg-slate-100 hover:bg-white text-slate-900 dark:bg-slate-200 dark:hover:bg-white dark:text-slate-900 border border-slate-300 dark:border-slate-400 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-1 shadow-xs" title="Conduct Face-to-Face Registrar Check">
-                        <i data-lucide="scale" class="w-3.5 h-3.5"></i>
-                        <span>Registrar Check</span>
-                    </a>
-                </td>
-            </tr>
-        `;
-    }).join('');
+                    <div class="grid grid-cols-2 gap-2 text-xs py-2 px-2.5 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800/80">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Sector</span>
+                            <span class="font-medium text-slate-700 dark:text-slate-300 truncate block">${escapeHtml(h.region || 'Sector 1')}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Power</span>
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 truncate block">${escapeHtml(h.primary_power || 'N/A')}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 pt-1" onclick="event.stopPropagation()">
+                        ${isApproved
+                            ? `<button disabled class="flex-1 py-1.5 px-2 bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-semibold cursor-default flex items-center justify-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Approved</span></button>`
+                            : `<button onclick="approveHeroRegistration('${h.id}')" class="flex-1 py-1.5 px-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center justify-center gap-1 cursor-pointer"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>Approve</span></button>`
+                        }
+                        <button onclick="openHeroEditModal('${h.id}')" class="flex-1 py-1.5 px-2 bg-slate-700/80 hover:bg-slate-600 text-slate-200 border border-slate-600/70 rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center justify-center gap-1 cursor-pointer"><i data-lucide="file-search" class="w-3.5 h-3.5"></i><span>Review</span></button>
+                        <a href="/registrar?hero=${encodeURIComponent(h.id)}" class="py-1.5 px-2.5 bg-slate-100 hover:bg-white text-slate-900 dark:bg-slate-200 dark:hover:bg-white dark:text-slate-900 border border-slate-300 dark:border-slate-400 rounded-xl text-xs font-semibold transition-all inline-flex items-center gap-1 shadow-xs cursor-pointer" title="Registrar Check">
+                            <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 
     if (window.lucide) lucide.createIcons();
 }
@@ -658,7 +725,8 @@ function renderDashboard() {
 // ──────────────────────────────────────────────
 function renderHeroesTable() {
     const tbody = document.getElementById('heroes-table-body');
-    if (!tbody) return;
+    const mobileContainer = document.getElementById('heroes-mobile-cards');
+    if (!tbody && !mobileContainer) return;
 
     const searchTerm = (document.getElementById('hero-filter-search')?.value || '').toLowerCase();
     const sectorFilter = document.getElementById('hero-filter-sector')?.value || '';
@@ -681,11 +749,12 @@ function renderHeroesTable() {
     });
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">No superhuman operatives match the specified filter criteria.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">No superhuman operatives match the specified filter criteria.</td></tr>`;
+        if (mobileContainer) mobileContainer.innerHTML = `<div class="p-6 text-center text-slate-500 dark:text-slate-400 text-xs">No superhuman operatives match the specified filter criteria.</div>`;
         return;
     }
 
-    tbody.innerHTML = filtered.map(h => {
+    if (tbody) tbody.innerHTML = filtered.map(h => {
         const tierBadge = getThreatBadgeHtml(h.threat_tier);
         const statusBadge = getStatusBadgeHtml(h.status);
         const divisionBadge = h.role_tag === 'Sidekick' ?
@@ -739,6 +808,67 @@ function renderHeroesTable() {
         `;
     }).join('');
 
+    if (mobileContainer) {
+        mobileContainer.innerHTML = filtered.map(h => {
+            const tierBadge = getThreatBadgeHtml(h.threat_tier);
+            const statusBadge = getStatusBadgeHtml(h.status);
+            const divisionBadge = h.role_tag === 'Sidekick' ?
+                '<span class="text-[10px] px-2 py-0.5 rounded-md bg-purple-50 text-purple-600 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800 font-bold ml-1.5">SIDEKICK</span>' : '';
+
+            return `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-3.5 shadow-xs space-y-3">
+                    <div class="flex items-start justify-between gap-2.5">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <img src="${h.avatar || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <h4 class="font-bold text-slate-900 dark:text-white text-sm truncate">${escapeHtml(h.alias)}</h4>
+                                    ${divisionBadge}
+                                </div>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600">${escapeHtml(h.id)}</span>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 truncate">${escapeHtml(h.real_name || 'Encrypted Vault')}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                            ${tierBadge}
+                            ${statusBadge}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs py-2 px-2.5 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Sector</span>
+                            <span class="font-medium text-slate-700 dark:text-slate-300 truncate block">${escapeHtml(h.region || 'Sector 1')}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Power</span>
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 truncate block">${escapeHtml(h.primary_power || 'N/A')}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 pt-1">
+                        <button onclick="openHeroEditModal('${h.id}')" class="flex-1 py-2 px-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                            <span>Edit Mode</span>
+                        </button>
+                        <button onclick="openOperativeInspector('${h.id}')" class="p-2 text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition-colors cursor-pointer" title="Launch Dossier Inspector">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="openHeroPasskeyModal('${h.id}')" class="p-2 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 hover:bg-amber-100 dark:hover:bg-amber-900/50 rounded-xl transition-colors cursor-pointer" title="Reset Passkey">
+                            <i data-lucide="key" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="openVaultModal('${h.id}')" class="p-2 text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-xl transition-colors cursor-pointer" title="AES-256 Vault">
+                            <i data-lucide="lock" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="openRevokeModal('${h.id}')" class="p-2 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/50 rounded-xl transition-colors cursor-pointer" title="Revoke Licensure">
+                            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
     if (window.lucide) lucide.createIcons();
 }
 
@@ -767,7 +897,8 @@ function handleQueueSearch(val) {
 
 function renderQueueTable() {
     const tbody = document.getElementById('queue-table-body');
-    if (!tbody) return;
+    const mobileContainer = document.getElementById('queue-mobile-cards');
+    if (!tbody && !mobileContainer) return;
 
     let list = adminState.heroes;
     const qf = adminState.queueFilter;
@@ -795,11 +926,12 @@ function renderQueueTable() {
     }
 
     if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">Queue is clear. No matching hero registrations found.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500 dark:text-slate-400">Queue is clear. No matching hero registrations found.</td></tr>`;
+        if (mobileContainer) mobileContainer.innerHTML = `<div class="p-6 text-center text-slate-500 dark:text-slate-400 text-xs">Queue is clear. No matching hero registrations found.</div>`;
         return;
     }
 
-    tbody.innerHTML = list.map(h => {
+    if (tbody) tbody.innerHTML = list.map(h => {
         const tierBadge = getThreatBadgeHtml(h.threat_tier);
         const statusBadge = getStatusBadgeHtml(h.status);
 
@@ -822,7 +954,7 @@ function renderQueueTable() {
             `;
         } else if (h.status === 'Verified') {
             actionButtons += `
-                <button onclick="approveHeroRegistration('${hero.id || h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-xs transition-all cursor-pointer">Approve</button>
+                <button onclick="approveHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-xs transition-all cursor-pointer">Approve</button>
                 <button onclick="requestHeroCorrections('${h.id}')" class="px-2.5 py-1.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-semibold shadow-xs transition-all cursor-pointer">Corrections</button>
             `;
         } else if (h.status === 'Returned for Correction' || h.status === 'Requires Action') {
@@ -870,6 +1002,82 @@ function renderQueueTable() {
             </tr>
         `;
     }).join('');
+
+    if (mobileContainer) {
+        mobileContainer.innerHTML = list.map(h => {
+            const tierBadge = getThreatBadgeHtml(h.threat_tier);
+            const statusBadge = getStatusBadgeHtml(h.status);
+
+            let actionButtons = `
+                <button onclick="openOperativeInspector('${h.id}')" class="px-2.5 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center gap-1 cursor-pointer">
+                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> Inspect
+                </button>
+            `;
+
+            if (h.status === 'Submitted') {
+                actionButtons += `
+                    <button onclick="moveHeroToReview('${h.id}')" class="px-2.5 py-1.5 bg-slate-700/80 hover:bg-slate-600 text-slate-200 border border-slate-600/70 rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Review</button>
+                    <button onclick="approveHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Approve</button>
+                `;
+            } else if (h.status === 'Under Review' || h.status === 'Pending') {
+                actionButtons += `
+                    <a href="/registrar?hero=${encodeURIComponent(h.id)}" class="px-2.5 py-1.5 bg-slate-100 hover:bg-white text-slate-900 dark:bg-slate-200 dark:hover:bg-white dark:text-slate-900 border border-slate-300 dark:border-slate-400 rounded-xl text-xs font-semibold transition-all inline-flex items-center gap-1 shadow-xs cursor-pointer">Registrar Check</a>
+                    <button onclick="approveHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Approve</button>
+                    <button onclick="requestHeroCorrections('${h.id}')" class="px-2.5 py-1.5 bg-orange-600 hover:bg-orange-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Corrections</button>
+                `;
+            } else if (h.status === 'Verified') {
+                actionButtons += `
+                    <button onclick="approveHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Approve</button>
+                    <button onclick="requestHeroCorrections('${h.id}')" class="px-2.5 py-1.5 bg-orange-600 hover:bg-orange-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Corrections</button>
+                `;
+            } else if (h.status === 'Returned for Correction' || h.status === 'Requires Action') {
+                actionButtons += `
+                    <button onclick="approveHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Force Approve</button>
+                    <button onclick="rejectHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Reject</button>
+                `;
+            } else if (h.status === 'Approved' || h.status === 'Licensed') {
+                actionButtons += `
+                    <span class="px-2.5 py-1 bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-semibold cursor-default inline-flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> Approved</span>
+                    <button onclick="openRevokeModal('${h.id}')" class="px-2.5 py-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 border border-rose-500/30 rounded-xl text-xs font-semibold transition-all cursor-pointer">Revoke</button>
+                `;
+            } else if (h.status === 'Rejected') {
+                actionButtons += `
+                    <button onclick="approveHeroRegistration('${h.id}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer">Reconsider</button>
+                `;
+            }
+
+            return `
+                <div onclick="openOperativeInspector('${h.id}')" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-3.5 shadow-xs space-y-3 cursor-pointer">
+                    <div class="flex items-start justify-between gap-2.5">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <img src="${h.avatar || h.profile_picture || '/img/apex.jpg'}" alt="${escapeHtml(h.alias)}" class="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm truncate leading-tight">${escapeHtml(h.alias)}</h4>
+                                <span class="text-xs text-slate-500 dark:text-slate-400 font-mono block truncate">${escapeHtml(h.id)}</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                            ${tierBadge}
+                            ${statusBadge}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs py-2 px-2.5 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Division / Region</span>
+                            <span class="font-medium text-slate-700 dark:text-slate-300 truncate block">${escapeHtml(h.classification || h.role_tag || 'Hero')} &bull; ${escapeHtml(h.region || 'Sector 1')}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Primary Power</span>
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 truncate block">${escapeHtml(h.primary_power || 'N/A')}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-wrap pt-1" onclick="event.stopPropagation()">
+                        ${actionButtons}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 
     if (window.lucide) lucide.createIcons();
 }
@@ -1180,7 +1388,8 @@ async function rejectPendingUpdate(updateId) {
 // ──────────────────────────────────────────────
 function renderUsersTable() {
     const tbody = document.getElementById('users-table-body');
-    if (!tbody) return;
+    const mobileContainer = document.getElementById('users-mobile-cards');
+    if (!tbody && !mobileContainer) return;
 
     let list = adminState.users;
     if (adminState.userFilter === 'heroes') {
@@ -1192,7 +1401,7 @@ function renderUsersTable() {
     const isActorSuper = adminState.currentUser?.role === 'SUPER_ADMIN';
     const isActorAdmin = adminState.currentUser?.role === 'ADMIN';
 
-    tbody.innerHTML = list.map(u => {
+    if (tbody) tbody.innerHTML = list.map(u => {
         const isSuperAdminAccount = u.role === 'SUPER_ADMIN' || u.username === 'commander';
         const roleColor = u.role === 'SUPER_ADMIN' ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700' :
                           u.role === 'ADMIN' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 border border-indigo-300 dark:border-indigo-700' :
@@ -1255,6 +1464,54 @@ function renderUsersTable() {
         `;
     }).join('');
 
+    if (mobileContainer) {
+        if (list.length === 0) {
+            mobileContainer.innerHTML = `<div class="p-6 text-center text-slate-500 dark:text-slate-400 text-xs">No personnel accounts found.</div>`;
+        } else {
+            mobileContainer.innerHTML = list.map(u => {
+                const isSuperAdminAccount = u.role === 'SUPER_ADMIN' || u.username === 'commander';
+                const roleColor = u.role === 'SUPER_ADMIN' ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700' :
+                                  u.role === 'ADMIN' ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 border border-indigo-300 dark:border-indigo-700' :
+                                  u.role === 'REGISTRAR' ? 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700' :
+                                  'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600';
+
+                let passkeyBtn = '';
+                if (isActorAdmin && isSuperAdminAccount) {
+                    passkeyBtn = `<span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 font-mono">[PROTECTED]</span>`;
+                } else {
+                    passkeyBtn = `
+                        <button onclick="openHeroPasskeyModalForUser('${escapeHtml(u.username)}')" class="px-2.5 py-1.5 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs inline-flex items-center gap-1 cursor-pointer">
+                            <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                            <span>Reset Passkey</span>
+                        </button>
+                    `;
+                }
+
+                return `
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-3.5 shadow-xs space-y-2.5">
+                        <div class="flex items-center justify-between gap-2.5">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <img src="${u.avatar || '/img/apex.jpg'}" alt="${escapeHtml(u.username)}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shrink-0">
+                                <div class="min-w-0">
+                                    <h4 class="font-mono font-bold text-slate-900 dark:text-white text-sm truncate">${escapeHtml(u.username)}</h4>
+                                    <span class="text-xs text-slate-500 dark:text-slate-400 truncate block">${escapeHtml(u.name || 'Personnel')}</span>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-lg ${roleColor} shrink-0">${u.role}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100 dark:border-slate-700/60 font-mono">
+                            <span class="text-slate-500 dark:text-slate-400">Clearance L${u.clearance_level || 1}</span>
+                            <span class="text-brand-600 dark:text-brand-400 truncate max-w-[120px]">${escapeHtml(u.hero_id || '— Staff —')}</span>
+                        </div>
+                        <div class="flex items-center justify-end gap-2 pt-1">
+                            ${passkeyBtn}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
     if (window.lucide) lucide.createIcons();
 }
 
@@ -1286,18 +1543,20 @@ async function deleteUserAccount(username) {
 // ──────────────────────────────────────────────
 function renderAuditTable() {
     const tbody = document.getElementById('audit-table-body');
-    if (!tbody) return;
+    const mobileContainer = document.getElementById('audit-mobile-cards');
+    if (!tbody && !mobileContainer) return;
 
     const list = adminState.auditLogs || [];
     if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500 dark:text-slate-400">Audit ledger empty or initializing...</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500 dark:text-slate-400">Audit ledger empty or initializing...</td></tr>`;
+        if (mobileContainer) mobileContainer.innerHTML = `<div class="p-6 text-center text-slate-500 dark:text-slate-400 text-xs">Audit ledger empty or initializing...</div>`;
         return;
     }
 
     // Display newest first
     const reversed = [...list].reverse();
 
-    tbody.innerHTML = reversed.slice(0, 50).map((entry, idx) => {
+    if (tbody) tbody.innerHTML = reversed.slice(0, 50).map((entry, idx) => {
         const timeStr = entry.timestamp ? new Date(entry.timestamp).toLocaleString() : 'Recent';
         const hashDisplay = entry.hash ? entry.hash.substring(0, 16) + '...' : 'GENESIS';
 
@@ -1357,6 +1616,36 @@ function renderAuditTable() {
             </tr>
         `;
     }).join('');
+
+    if (mobileContainer) {
+        mobileContainer.innerHTML = reversed.slice(0, 50).map((entry, idx) => {
+            const timeStr = entry.timestamp ? new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Recent';
+            const hashDisplay = entry.hash ? entry.hash.substring(0, 10) + '...' : 'GENESIS';
+            const username = entry.details?.account_username || (entry.actor ? entry.actor.split(' ')[0] : 'system');
+            const role = entry.role || entry.details?.account_role || 'SYS';
+            const roleBadge = role === 'SUPER_ADMIN' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' :
+                              role === 'ADMIN' ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300' :
+                              role === 'REGISTRAR' ? 'bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200' :
+                              'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
+
+            return `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 p-3 shadow-xs space-y-1.5 text-xs">
+                    <div class="flex items-center justify-between text-[11px] text-slate-400">
+                        <span class="font-mono text-cyan-600 dark:text-cyan-400">${timeStr}</span>
+                        <span class="font-mono text-[10px] text-slate-500 dark:text-slate-400">${hashDisplay}</span>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-bold text-slate-900 dark:text-white truncate">${escapeHtml(entry.action || entry.event)}</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${roleBadge} shrink-0">${role}</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                        <span>Actor: <strong class="text-slate-700 dark:text-slate-300">${escapeHtml(username)}</strong></span>
+                        <span class="truncate max-w-[140px] text-right">${escapeHtml(entry.target_id || entry.target || '—')}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 
     if (window.lucide) lucide.createIcons();
 }
