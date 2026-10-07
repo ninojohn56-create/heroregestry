@@ -243,157 +243,11 @@
       margin-bottom: 16px;
     }
 
-    @media (max-width: 650px) {
-      .wizard-container {
-        margin: 10px auto 30px;
-        padding: 0 10px;
-      }
-
-      .wizard-header {
-        padding: 14px 16px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .wizard-header h1 {
-        font-size: 1rem !important;
-      }
-
-      .wizard-stepper-bar {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .stepper-nav-tab {
-        padding: 10px 4px;
-        flex-direction: column;
-        gap: 4px;
-        text-align: center;
-        border-right: 1px solid var(--border-color);
-        border-bottom: 2px solid transparent;
-        font-size: 0.68rem;
-      }
-
-      .stepper-nav-tab:last-child {
-        border-right: none;
-      }
-
-      .stepper-nav-tab.active {
-        border-bottom: 2px solid var(--border-focus);
-      }
-
-      .stepper-nav-tab span:not(.tab-num) {
-        font-size: 0.62rem;
-        line-height: 1.15;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .step-pane {
-        padding: 18px 12px;
-      }
-
-      .vault-security-badge {
-        padding: 10px 12px;
-        font-size: 0.72rem;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .form-grid-2 {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .role-selection-grid {
-        grid-template-columns: 1fr !important;
-        gap: 10px !important;
-      }
-
-      .ghrms-input,
-      .ghrms-select,
-      textarea {
-        font-size: 16px !important;
-        /* Prevents iOS auto-zoom */
-        min-height: 42px;
-      }
-
-      .wizard-footer {
-        padding: 14px;
-        flex-direction: column-reverse;
-        gap: 10px;
-      }
-
-      .btn-step {
-        width: 100%;
-        justify-content: center;
-        padding: 13px;
-        font-size: 0.88rem;
-        min-height: 44px;
-      }
-
-      .ghrms-header {
-        padding: 0.5rem 0.75rem;
-        height: auto;
-        min-height: 52px;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .ghrms-fullname {
-        display: none;
-      }
-
-      .header-right {
-        gap: 0.35rem;
-      }
+    .tab-label-full {
+      display: inline;
     }
-
-    @media (max-width: 480px) {
-      .header-right .btn span:last-child {
-        display: none;
-      }
-
-      .header-right .btn {
-        padding: 6px 8px;
-        font-size: 0.75rem;
-      }
-    }
-
-    @media (orientation: landscape) and (max-height: 540px) {
-      .wizard-container {
-        margin: 8px auto 24px;
-        padding: 0 12px;
-      }
-
-      .wizard-header {
-        padding: 10px 16px;
-      }
-
-      .stepper-nav-tab {
-        padding: 8px 12px;
-        font-size: 0.72rem;
-      }
-
-      .step-pane {
-        padding: 14px 16px;
-      }
-
-      .form-grid-2 {
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-
-      .wizard-footer {
-        padding: 10px 16px;
-      }
-
-      .btn-step {
-        padding: 8px 14px;
-      }
+    .tab-label-short {
+      display: none;
     }
 
     .threat-slider-box {
@@ -422,6 +276,7 @@
       border: 1px solid var(--status-amber-border);
     }
 
+    /* Wizard Navigation Footer */
     .wizard-footer {
       padding: 18px 36px 24px;
       display: flex;
@@ -429,6 +284,33 @@
       align-items: center;
       border-top: 1px solid var(--border-color);
       background: rgba(16, 23, 38, 0.4);
+    }
+
+    .wizard-footer-step-indicator {
+      order: 2;
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      font-family: var(--font-mono);
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+
+    .wizard-footer-actions {
+      display: contents;
+    }
+
+    .wizard-footer-left {
+      order: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wizard-footer-right {
+      order: 3;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .btn-step {
@@ -441,6 +323,7 @@
       align-items: center;
       gap: 8px;
       transition: all 0.2s;
+      border: none;
     }
 
     .btn-prev {
@@ -484,9 +367,22 @@
       font-weight: 700;
       padding: 10px 20px;
     }
+
     .btn-draft:hover {
       background: rgba(59, 130, 246, 0.3);
       color: #ffffff;
+    }
+
+    .prev-full-text,
+    .draft-full-text,
+    .submit-full-text {
+      display: inline;
+    }
+
+    .prev-short-text,
+    .draft-short-text,
+    .submit-short-text {
+      display: none;
     }
 
     .doc-upload-grid {
@@ -495,9 +391,7 @@
       gap: 16px;
       margin-top: 12px;
     }
-    @media (max-width: 768px) {
-      .doc-upload-grid { grid-template-columns: 1fr; }
-    }
+
     .doc-upload-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -508,9 +402,11 @@
       gap: 8px;
       transition: border-color 0.2s;
     }
+
     .doc-upload-card:hover {
       border-color: var(--border-focus);
     }
+
     .doc-badge-req {
       font-size: 0.68rem;
       font-family: var(--font-mono);
@@ -522,6 +418,7 @@
       border-radius: 4px;
       display: inline-block;
     }
+
     .doc-badge-opt {
       font-size: 0.68rem;
       font-family: var(--font-mono);
@@ -533,6 +430,7 @@
       border-radius: 4px;
       display: inline-block;
     }
+
     .correction-alert-banner {
       background: rgba(245, 158, 11, 0.12);
       border: 1px solid rgba(245, 158, 11, 0.4);
@@ -541,6 +439,8 @@
       margin-bottom: 20px;
       display: none;
     }
+
+    /* Face Photo Card */
     .face-photo-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
@@ -552,10 +452,40 @@
       align-items: center;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
+
     .face-photo-card:hover {
       border-color: var(--border-focus);
       box-shadow: 0 0 16px rgba(255, 255, 255, 0.05);
     }
+
+    .face-photo-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .face-photo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .face-photo-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .face-photo-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .face-avatar-box {
       position: relative;
       width: 106px;
@@ -572,10 +502,12 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(59, 130, 246, 0.25);
       transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .face-avatar-box:hover {
       transform: scale(1.03);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 18px rgba(59, 130, 246, 0.45);
     }
+
     .face-scanner-line {
       position: absolute;
       top: 0;
@@ -587,14 +519,17 @@
       animation: faceScan 2.4s infinite ease-in-out;
       pointer-events: none;
     }
+
     @keyframes faceScan {
       0% { top: 0; opacity: 0.3; }
       50% { top: calc(100% - 2px); opacity: 1; }
       100% { top: 0; opacity: 0.3; }
     }
+
     .face-avatar-box:hover .face-overlay {
       opacity: 1 !important;
     }
+
     .face-overlay {
       position: absolute;
       inset: 0;
@@ -612,6 +547,318 @@
       text-align: center;
       padding: 6px;
       user-select: none;
+    }
+
+    /* Top Header Action Pills */
+    .nav-header-btn {
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-focus);
+    }
+
+    /* ==============================================================
+       RESPONSIVE MEDIA QUERIES (CONSOLIDATED OVERRIDES)
+       ============================================================== */
+    @media (max-width: 768px) {
+      .doc-upload-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .wizard-container {
+        margin: 10px auto 26px;
+        padding: 0 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .wizard-card {
+        border-radius: var(--radius-md);
+      }
+
+      .wizard-header {
+        padding: 14px 16px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .wizard-header h1 {
+        font-size: 1.05rem !important;
+      }
+
+      .wizard-header p {
+        font-size: 0.68rem !important;
+        white-space: normal;
+        word-break: break-word;
+      }
+
+      /* 4-Tab Stepper: Guaranteed Equal 25% Columns with Zero Right-Overflow */
+      .wizard-stepper-bar {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .stepper-nav-tab {
+        padding: 8px 2px 10px !important;
+        flex-direction: column !important;
+        gap: 4px !important;
+        text-align: center !important;
+        min-width: 0 !important;
+        border-right: 1px solid var(--border-color);
+        border-bottom: 2px solid transparent;
+      }
+
+      .stepper-nav-tab:last-child {
+        border-right: none !important;
+      }
+
+      .tab-num {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 0.7rem !important;
+      }
+
+      .tab-label-full {
+        display: none !important;
+      }
+
+      .tab-label-short {
+        display: block !important;
+        font-size: 0.72rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        text-align: center !important;
+      }
+
+      .step-pane {
+        padding: 16px 12px !important;
+        box-sizing: border-box !important;
+      }
+
+      .vault-security-badge {
+        padding: 10px 12px;
+        font-size: 0.72rem;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .form-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      .role-selection-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+
+      .ghrms-input,
+      .ghrms-select,
+      textarea {
+        font-size: 16px !important;
+        /* Prevents iOS auto-zoom */
+        min-height: 42px;
+        box-sizing: border-box !important;
+        max-width: 100% !important;
+      }
+
+      /* Centered Stacked Face Photo Card */
+      .face-photo-card {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 16px 12px !important;
+        gap: 12px !important;
+      }
+
+      .face-avatar-box {
+        width: 96px !important;
+        height: 96px !important;
+        min-width: 96px !important;
+        margin: 0 auto !important;
+      }
+
+      .face-photo-meta {
+        width: 100% !important;
+        min-width: 0 !important;
+        text-align: center !important;
+      }
+
+      .face-photo-header {
+        justify-content: center !important;
+        margin-bottom: 4px !important;
+      }
+
+      .face-photo-title-group {
+        justify-content: center !important;
+        gap: 6px !important;
+      }
+
+      .face-photo-actions {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        width: 100% !important;
+        margin-top: 4px !important;
+      }
+
+      .face-photo-actions .btn-step {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 10px 8px !important;
+        min-height: 42px !important;
+      }
+
+      #faceFileNameLabel {
+        text-align: center !important;
+        margin-top: 6px !important;
+      }
+
+      /* Unified Tactile Wizard Footer */
+      .wizard-footer {
+        padding: 12px 12px 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        background: var(--bg-card) !important;
+        border-top: 1px solid var(--border-color) !important;
+      }
+
+      .wizard-footer-step-indicator {
+        order: 1 !important;
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 0.72rem !important;
+        font-weight: 700 !important;
+        color: var(--text-muted) !important;
+        letter-spacing: 0.03em !important;
+        padding-bottom: 2px !important;
+      }
+
+      .wizard-footer-actions {
+        display: flex !important;
+        order: 2 !important;
+        width: 100% !important;
+        gap: 8px !important;
+        align-items: stretch !important;
+      }
+
+      .wizard-footer-left {
+        order: 1 !important;
+        display: flex !important;
+        gap: 6px !important;
+        flex: 1 !important;
+      }
+
+      .wizard-footer-right {
+        order: 2 !important;
+        display: flex !important;
+        gap: 6px !important;
+        flex: 1.2 !important;
+      }
+
+      .wizard-footer-left .btn-step,
+      .wizard-footer-right .btn-step {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 6px !important;
+        font-size: 0.84rem !important;
+        min-height: 44px !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Adaptive Compact Button Labels on Mobile */
+      .prev-full-text { display: none !important; }
+      .prev-short-text { display: inline !important; }
+      .draft-full-text { display: none !important; }
+      .draft-short-text { display: inline !important; }
+      .submit-full-text { display: none !important; }
+      .submit-short-text { display: inline !important; }
+
+      /* Top Header */
+      .ghrms-header {
+        padding: 0.5rem 0.75rem;
+        height: auto;
+        min-height: 50px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .ghrms-fullname {
+        display: none !important;
+      }
+
+      .header-right {
+        gap: 0.4rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-header-btn {
+        padding: 6px 9px;
+        font-size: 0.74rem;
+        gap: 4px;
+      }
+
+      .theme-toggle-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 540px) {
+      .wizard-container {
+        margin: 8px auto 20px;
+        padding: 0 10px;
+      }
+
+      .wizard-header {
+        padding: 10px 14px;
+      }
+
+      .step-pane {
+        padding: 12px 14px !important;
+      }
+
+      .wizard-footer {
+        padding: 10px 12px 14px !important;
+      }
     }
   </style>
 </head>
@@ -632,16 +879,15 @@
     </div>
 
     <div class="header-right">
-      <button type="button" id="btnReturnDashboard" class="btn btn-secondary" onclick="returnToOriginDashboard()"
-        style="padding: 6px 14px; font-size: 0.78rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;"
+      <button type="button" id="btnReturnDashboard" class="btn btn-secondary nav-header-btn" onclick="returnToOriginDashboard()"
         title="Return to Dashboard">
-        <span>←</span> <span id="returnNavLabel">Dashboard</span>
+        <span>←</span> <span id="returnNavLabel">Portal</span>
       </button>
-      <a href="/login" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none;" id="authNavBtn">
-        <span>[AUTH]</span> <span>Sign In</span>
+      <a href="/login" class="btn btn-secondary nav-header-btn" id="authNavBtn">
+        <span class="auth-icon">🔑</span> <span class="auth-label">Sign In</span>
       </a>
-      <button class="icon-button" id="themeToggleBtn" title="Toggle Light / Dark Mode">
-        <span id="themeToggleIcon" style="font-size:0.75rem;font-weight:700;font-family:var(--font-mono);">[MODE]</span>
+      <button class="icon-button theme-toggle-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode">
+        <span id="themeToggleIcon">🌙</span>
       </button>
     </div>
   </header>
@@ -683,19 +929,23 @@
       <div class="wizard-stepper-bar">
         <div class="stepper-nav-tab active" id="tabStep1" onclick="goToStep(1)">
           <div class="tab-num">1</div>
-          <span>Account &amp; Bio</span>
+          <span class="tab-label-full">Account &amp; Bio</span>
+          <span class="tab-label-short">Bio</span>
         </div>
         <div class="stepper-nav-tab" id="tabStep2" onclick="goToStep(2)">
           <div class="tab-num">2</div>
-          <span>Combat Class &amp; Awakening</span>
+          <span class="tab-label-full">Combat Class &amp; Awakening</span>
+          <span class="tab-label-short">Combat</span>
         </div>
         <div class="stepper-nav-tab" id="tabStep3" onclick="goToStep(3)">
           <div class="tab-num">3</div>
-          <span>Mana &amp; Hunter Rank</span>
+          <span class="tab-label-full">Mana &amp; Hunter Rank</span>
+          <span class="tab-label-short">Rank</span>
         </div>
         <div class="stepper-nav-tab" id="tabStep4" onclick="goToStep(4)">
           <div class="tab-num">4</div>
-          <span>Identity &amp; Credentials</span>
+          <span class="tab-label-full">Identity &amp; Credentials</span>
+          <span class="tab-label-short">Docs</span>
         </div>
       </div>
 
@@ -716,28 +966,28 @@
               <span style="letter-spacing: 0.05em;">CHANGE PHOTO</span>
             </div>
           </div>
-          <div style="flex: 1; min-width: 250px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
-              <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="face-photo-meta">
+            <div class="face-photo-header">
+              <div class="face-photo-title-group">
                 <strong style="font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.04em;">Hunter License Photo</strong>
-                <span id="faceBadgeStatus" style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35);">PHOTO REQUIRED</span>
+                <span id="faceBadgeStatus" style="font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35); white-space: nowrap;">PHOTO REQUIRED</span>
               </div>
             </div>
-            <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.45;">
+            <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0 0 10px; line-height: 1.45;">
               Upload a clear portrait photo for your official Hunter License Card.
             </p>
-            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-              <button type="button" class="btn-step btn-prev" onclick="document.getElementById('regFaceFileInput').click()" style="padding: 7px 14px; font-size: 0.78rem; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
+            <div class="face-photo-actions">
+              <button type="button" class="btn-step btn-prev" onclick="document.getElementById('regFaceFileInput').click()" style="padding: 8px 14px; font-size: 0.78rem; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer;">
                 <span>📁 Upload File</span>
               </button>
-              <button type="button" class="btn-step btn-next" onclick="openLiveCameraModal()" style="padding: 7px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+              <button type="button" class="btn-step btn-next" onclick="openLiveCameraModal()" style="padding: 8px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                 <span>📷 Open Camera</span>
               </button>
-              <button type="button" id="btnRemoveFace" onclick="resetFacePhoto()" class="btn-step btn-prev" style="padding: 7px 12px; font-size: 0.75rem; display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer;">
+              <button type="button" id="btnRemoveFace" onclick="resetFacePhoto()" class="btn-step btn-prev" style="padding: 8px 12px; font-size: 0.75rem; display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer;">
                 <span>Remove</span>
               </button>
-              <span id="faceFileNameLabel" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted);">PNG, JPG, or WEBP (Max 8MB)</span>
             </div>
+            <span id="faceFileNameLabel" style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); display: block; margin-top: 8px;">PNG, JPG, or WEBP (Max 8MB)</span>
             <input type="file" id="regFaceFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleFacePhotoSelect(this)">
             <input type="file" id="regFaceCameraFallback" accept="image/*" capture="user" style="display: none;" onchange="handleFacePhotoSelect(this)">
             <input type="hidden" id="regAvatarUrl" value="">
@@ -946,7 +1196,7 @@
           <input type="range" id="regThreatTier" min="0" max="6" value="3" step="1"
             style="width: 100%; cursor: pointer; accent-color: var(--primary-accent);" oninput="updateThreatLabel(this.value)">
           <div
-            style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-subtle); margin-top: 6px; font-family: var(--font-mono);">
+            style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-subtle); margin-top: 6px; font-family: var(--font-mono); flex-wrap: wrap; gap: 4px;">
             <span>0: National</span>
             <span>1: S-Rank</span>
             <span>2: A-Rank</span>
@@ -1029,7 +1279,7 @@
         </div>
 
         <div style="margin: 20px 0 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
             <h2 style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--primary-accent); text-transform: uppercase; letter-spacing: 0.06em; margin: 0;">
               Supporting Credentials &amp; Documents
             </h2>
@@ -1127,28 +1377,33 @@
 
       <!-- Wizard Navigation Footer -->
       <div class="wizard-footer">
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <button type="button" class="btn-step btn-prev" id="btnPrev" onclick="prevStep()" style="display: none;">
-            ← Previous
-          </button>
-          <button type="button" class="btn-step btn-draft" id="btnSaveDraft" onclick="saveDraft()" title="Save progress without submitting">
-            💾 Save Draft
-          </button>
-        </div>
-
-        <div style="font-size: 0.75rem; color: var(--text-subtle); font-family: var(--font-mono); text-align: center;"
-          id="stepIndicatorText">
+        <div class="wizard-footer-step-indicator" id="stepIndicatorText">
           STEP 1 OF 4: ACCOUNT &amp; BIO
         </div>
 
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button type="button" class="btn-step btn-next" id="btnNext" onclick="nextStep()">
-            Next Step →
-          </button>
-          <button type="button" class="btn-step btn-submit" id="btnSubmit" onclick="submitRegistration()"
-            style="display: none;">
-            Submit Registration
-          </button>
+        <div class="wizard-footer-actions">
+          <div class="wizard-footer-left">
+            <button type="button" class="btn-step btn-prev" id="btnPrev" onclick="prevStep()" style="display: none;">
+              <span class="prev-full-text">← Previous</span>
+              <span class="prev-short-text">← Prev</span>
+            </button>
+            <button type="button" class="btn-step btn-draft" id="btnSaveDraft" onclick="saveDraft()" title="Save progress without submitting">
+              <span class="draft-icon">💾</span>
+              <span class="draft-full-text">Save Draft</span>
+              <span class="draft-short-text">Draft</span>
+            </button>
+          </div>
+
+          <div class="wizard-footer-right">
+            <button type="button" class="btn-step btn-next" id="btnNext" onclick="nextStep()">
+              Next Step →
+            </button>
+            <button type="button" class="btn-step btn-submit" id="btnSubmit" onclick="submitRegistration()"
+              style="display: none;">
+              <span class="submit-full-text">Submit Registration</span>
+              <span class="submit-short-text">Submit ⚔</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1162,6 +1417,10 @@
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
+      }
+      const icon = document.getElementById('themeToggleIcon');
+      if (icon) {
+        icon.textContent = t === 'dark' ? '☀️' : '🌙';
       }
     }
     const savedTheme = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
@@ -1762,8 +2021,11 @@
         const meRes = await fetch('/api/auth/me');
         const meData = await meRes.json();
         if (meData.authenticated && meData.user) {
-          document.getElementById('authNavBtn').innerHTML = `<span>[USER]</span> <span>${meData.user.name || meData.user.username}</span>`;
-          document.getElementById('authNavBtn').href = meData.user.role === 'HERO' ? '/hero' : '/admin';
+          const authBtn = document.getElementById('authNavBtn');
+          if (authBtn) {
+            authBtn.innerHTML = `<span class="auth-icon">👤</span> <span class="auth-label">${escapeHtml(meData.user.name || meData.user.username)}</span>`;
+            authBtn.href = meData.user.role === 'HERO' ? '/hero' : '/admin';
+          }
 
           if (meData.user.hero_id) {
             const hRes = await fetch(`/api/heroes/${encodeURIComponent(meData.user.hero_id)}`);
