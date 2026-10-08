@@ -26,7 +26,7 @@ services:
       # Persistent datastores (heroes, users, vault, audit ledger, settings)
       - ./backend/data:/var/www/html/backend/data
       # Persistent uploaded files (biometrics, avatars, identity documents)
-      - ./public/uploads:/var/www/html/public/uploads
+      - ./frontend/uploads:/var/www/html/frontend/uploads
     healthcheck:
       test: ["CMD", "php", "check_system.php", "--json"]
       interval: 30s

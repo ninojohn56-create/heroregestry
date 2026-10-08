@@ -1,0 +1,45 @@
+# -------------------------------------------------------------
+# Global Hero Registration Authority (GHRMS)
+# Production Apache & InfinityFree / cPanel Configuration
+# -------------------------------------------------------------
+
+# 1. Default Directory Indexes (lowercase)
+DirectoryIndex index.php index.html
+
+# 2. Prevent directory indexing safely (wrapped so it never breaks hosts without AllowOverride Options)
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# 3. URL Rewriting Engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Prevent loop: do not rewrite if already targeting index.php
+    RewriteRule ^index\.php$ - [L]
+
+    # Block access to hidden dotfiles (.env, .git, .htaccess) while allowing standard requests
+    RewriteRule (^|/)\.(?!well-known) - [F,L,NC]
+
+    # Block direct access to internal backend and system directories
+    RewriteRule ^(backend|tests|unused|scratch|docs)(/|$) - [F,L,NC]
+
+    # Block sensitive server files and scripts
+    RewriteRule \.(log|ini|sh|bat|ps1|yml|yaml|sql|bak|dist)$ - [F,L,NC]
+    RewriteRule ^(Dockerfile|docker-compose\.ya?ml|nginx\.conf|php\.ini|README\.md)$ - [F,L,NC]
+
+    # Block direct external URL requests for /frontend/
+    RewriteCond %{THE_REQUEST} \s/+frontend(?:/|[?\s]) [NC]
+    RewriteRule ^frontend(?:/|$) - [F,L,NC]
+
+    # Route static frontend asset paths directly to frontend subfolder
+    RewriteRule ^(css|js|img|uploads)/(.*)$ frontend/$1/$2 [L,NC]
+
+    # If the requested resource is an existing file or directory, serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Route all other friendly URLs to the front-controller index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

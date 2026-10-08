@@ -34,11 +34,12 @@ $localIp = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Wi-Fi*", "Ethe
 Write-Host "================================================================================" -ForegroundColor Cyan
 Write-Host "   GLOBAL HERO REGISTRATION AUTHORITY (GHRMS) // FIELD SHARING GATEWAY" -ForegroundColor Yellow
 Write-Host "================================================================================" -ForegroundColor Cyan
-Write-Host "Local Machine:  http://localhost:${port}/login" -ForegroundColor Green
+Write-Host "Local Machine:      http://localhost:${port}/login" -ForegroundColor Green
 if ($localIp) {
-    Write-Host "LAN Access:     http://${localIp}:${port}/login" -ForegroundColor Green
-    Write-Host "Field Scanner:  http://${localIp}:${port}/sentinel (Sentinel Checkpoint Scanner)" -ForegroundColor Yellow
+    Write-Host "Local Wi-Fi / LAN:  http://${localIp}:${port}/login" -ForegroundColor Green
+    Write-Host "Field Scanner:      http://${localIp}:${port}/sentinel" -ForegroundColor Yellow
 }
+Write-Host "Friends Far Away:   Run 'share_online.bat' or visit http://heroregestry.freepage.cc/" -ForegroundColor Magenta
 Write-Host "================================================================================" -ForegroundColor Cyan
 
 # Preflight check

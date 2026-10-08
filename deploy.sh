@@ -37,18 +37,18 @@ fi
 
 # 3. Create required runtime directories and set secure permissions
 echo -e "${CYAN}[1/4] Ensuring datastore directories and POSIX permissions...${RESET}"
-mkdir -p backend/data/documents backend/data/ratelimit public/uploads/avatars
+mkdir -p backend/data/documents backend/data/ratelimit frontend/uploads/avatars
 
 if command -v id &>/dev/null && [ "$(id -u)" -eq 0 ]; then
     WEB_USER="www-data"
     if ! id "${WEB_USER}" &>/dev/null; then
         WEB_USER="nginx"
     fi
-    chown -R ${WEB_USER}:${WEB_USER} backend/data public/uploads
-    chmod -R 775 backend/data public/uploads
+    chown -R ${WEB_USER}:${WEB_USER} backend/data frontend/uploads
+    chmod -R 775 backend/data frontend/uploads
     echo -e "${GREEN}[OK] Storage permissions granted to ${WEB_USER}.${RESET}"
 else
-    chmod -R 775 backend/data public/uploads 2>/dev/null || true
+    chmod -R 775 backend/data frontend/uploads 2>/dev/null || true
     echo -e "${GREEN}[OK] Local directories initialized with 775 permissions.${RESET}"
 fi
 

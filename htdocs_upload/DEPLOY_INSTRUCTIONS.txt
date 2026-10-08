@@ -1,0 +1,47 @@
+# Ready-to-Upload Production Package (htdocs)
+
+This folder contains the production files required for hosting on InfinityFree, cPanel, or Apache.
+
+================================================================================
+CRITICAL: AVOIDING THE "403 FORBIDDEN / ACCESS DENIED" ERROR ON INFINITYFREE
+================================================================================
+
+If you see this error:
+"403 Forbidden: A common reason for a 403 Forbidden error is when you access a directory on a web server without specifying a particular file... If neither of these files are found in this directory..."
+
+This happens for two main reasons:
+
+1. WRONG UPLOAD LOCATION (MOST COMMON):
+   - Do NOT upload the entire folder named "htdocs_upload" into your server's "htdocs" folder!
+   - If you do that, the path becomes /htdocs/htdocs_upload/index.php, and your main /htdocs/ folder remains EMPTY!
+   - CORRECT WAY:
+     Open the "htdocs_upload" folder on your computer, select ALL files inside it, and upload them DIRECTLY into the server's "htdocs/" (or "public_html/") folder!
+     Your server's "htdocs/" should directly contain:
+     - index.php
+     - index.html
+     - .htaccess
+     - .env
+     - router.php
+     - check_system.php
+     - backend/
+     - frontend/
+
+2. FILE PERMISSIONS:
+   - On Linux servers, ensure folders have permission 755 (rwxr-xr-x) and files have permission 644 (rw-r--r--).
+   - If permissions are 600 or 700, the Apache web server cannot read them, returning a 403 error.
+
+3. DATA WRITE PERMISSIONS:
+   Ensure the following writable directories exist and are set to chmod 775 or 777:
+   - backend/data/
+   - backend/data/documents/
+   - backend/data/ratelimit/
+   - frontend/uploads/avatars/
+
+================================================================================
+ACCESSING YOUR APPLICATION:
+================================================================================
+- Home / Entry Gateway: https://your-domain.example/ (automatically loads index.php -> /login)
+- Direct Security Login: https://your-domain.example/login
+- Self-Registration:    https://your-domain.example/register
+- System Diagnostic:    https://your-domain.example/check_system.php
+- Health API Probe:     https://your-domain.example/api/health

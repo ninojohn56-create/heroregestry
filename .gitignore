@@ -5,6 +5,7 @@
 
 # Logs and runtime caches
 *.log
+*.zip
 scratch/
 tmp/
 temp/

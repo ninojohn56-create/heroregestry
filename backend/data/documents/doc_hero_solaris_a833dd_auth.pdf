@@ -12,21 +12,22 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Courier >>
 endobj
 5 0 obj
-<< /Length 1649 >>
+<< /Length 1590 >>
 stream
 BT
 /F1 11 Tf
 14 TL
 50 720 Td
 (HUNTERS ASSOCIATION // REGISTRATION & LICENSING BUREAU) '
-(OFFICIAL HUNTER DOSSIER // AWAKENING & MANA EVALUATION RECORD) '
+(DEMO COPY // NOT AN OFFICIAL HUNTER DOSSIER) '
+(SAMPLE DATA - NOT VERIFIED OR VALID FOR LICENSING) '
 (CLEARANCE LEVEL: ASSOCIATION EXECUTIVE ACCORD \(SAN FRANCISCO, ADS\)) '
 (--------------------------------------------------------------------------------) '
 (AWAKENED HUNTER IDENTIFICATION:) '
 (  Hunter Alias:            SOLARIS) '
 (  Civilian Legal Name:     Elena Rostova) '
 (  Hunter Registry Code:    9GH-9988) '
-(  Official License Number: GHRMS-REVOKED-SOL88) '
+(  Official License Number: PENDING HUMAN REVIEW) '
 (  Licensing Standing:      Rogue) '
 () '
 (MANA CORE PROFILE & COMBAT CLASSIFICATION:) '
@@ -41,12 +42,12 @@ BT
 (  3. In event of Dungeon Break, report immediately to Association Command Grid.) '
 (  4. Unauthorized Gate entry or false rank reporting punishable by Disavowal.) '
 () '
-(ASSOCIATION AUDIT VERIFICATION:) '
-(  Certified by:            Mana Evaluator Sarah Chen / Association Chairman) '
-(  Chained Ledger Block:    SHA-256 Tamper-Evident Hunter Registry Block) '
-(  Document Date:           2026-10-07 06:59:07 UTC) '
+(REVIEW STATUS:) '
+(  Status:                  Pending human review) '
+(  Reviewer:                None assigned) '
+(  Document Date:           2026-10-08 21:42:59 UTC) '
 (--------------------------------------------------------------------------------) '
-(HUNTER ASSOCIATION OFFICIAL RECORD // UNAUTHORIZED TAMPERING STRICTLY FORBIDDEN) '
+(DEMONSTRATION DOCUMENT // NO OFFICIAL AUTHORITY OR APPROVAL) '
 ET
 endstream
 endobj
@@ -61,5 +62,5 @@ xref
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-2009
+1950
 %%EOF

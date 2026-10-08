@@ -1,0 +1,219 @@
+#tab-heroes, #tab-queue, #tab-record-versions, #tab-changelog { display: none !important; }
+    html, body {
+      font-family: 'Inter', sans-serif;
+      height: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    #app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      height: 100dvh;
+      max-height: 100dvh;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    /* Threat Tier Badges: Distinguished, High-Security Calibration */
+    .badge-tier-0 { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .badge-tier-1 { background: rgba(239, 68, 68, 0.16); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-tier-2 { background: rgba(249, 115, 22, 0.16); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); }
+    .badge-tier-3 { background: rgba(14, 165, 233, 0.16); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4); }
+    .badge-tier-4 { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-tier-5 { background: rgba(100, 116, 139, 0.16); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.35); }
+
+    /* Dropdown options styling for cross-browser theme consistency */
+    select option {
+      background-color: #ffffff;
+      color: #0f172a;
+    }
+    .dark select option,
+    [data-theme="dark"] select option {
+      background-color: #0f141f;
+      color: #f8fafc;
+    }
+
+    /* ── Glossary Tooltips ─────────────────────────────── */
+    .ghra-term {
+      border-bottom: 1px dashed rgba(14,165,233,0.5);
+      cursor: help;
+      position: relative;
+      color: inherit;
+      transition: color 0.15s;
+    }
+    .ghra-term:hover { color: #38bdf8; }
+    .ghra-tooltip {
+      pointer-events: none;
+      position: fixed;
+      z-index: 99999;
+      background: #0f1827;
+      border: 1px solid rgba(14,165,233,0.35);
+      border-radius: 10px;
+      padding: 8px 13px;
+      max-width: 280px;
+      font-size: 11px;
+      line-height: 1.55;
+      color: #cbd5e1;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .ghra-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .ghra-tooltip .tt-title {
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #38bdf8;
+      margin-bottom: 3px;
+    }
+
+    /* ── Clickable Stat Cards ──────────────────────────── */
+    .stat-card-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: left;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      width: 100%;
+    }
+    .stat-card-link-hint {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .stat-card:hover .stat-card-link-hint { opacity: 1; }
+
+    /* Collapsible Sidebar Styles */
+    aside#sidebar {
+      width: 16rem;
+      min-width: 180px;
+      max-width: 480px;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s ease-in-out;
+    }
+    aside#sidebar .nav-link,
+    aside#sidebar nav a {
+      justify-content: flex-start !important;
+      border-left: none !important;
+      padding: 0.625rem 0.75rem !important;
+      font-size: 0.875rem !important;
+      transition: all 0.15s ease-in-out;
+    }
+    aside#sidebar.sidebar-collapsed { width: 4.5rem !important; min-width: 4.5rem !important; }
+    aside.sidebar-collapsed .sidebar-text,
+    aside.sidebar-collapsed .sidebar-badge,
+    aside.sidebar-collapsed .sidebar-group-title,
+    aside.sidebar-collapsed .sidebar-user-info,
+    aside.sidebar-collapsed #sidebarBrandTitle,
+    aside.sidebar-collapsed #sidebarRoleSubtitle { display: none !important; }
+    aside.sidebar-collapsed .nav-link,
+    aside.sidebar-collapsed nav a {
+      justify-content: center !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    aside.sidebar-collapsed .sidebar-header {
+      justify-content: center !important;
+      padding-left: 0.5rem !important;
+      padding-right: 0.5rem !important;
+    }
+    aside.sidebar-collapsed .sidebar-user-box { justify-content: center !important; padding: 0.5rem !important; }
+
+    /* Active Nav Tab Highlight with Cyan/Blue Enterprise Focus */
+    aside#sidebar .nav-link.active-tab,
+    aside#sidebar .nav-link.active {
+      background: rgba(14, 165, 233, 0.12) !important;
+      color: #0284c7 !important;
+      font-weight: 700 !important;
+      border: 1px solid rgba(14, 165, 233, 0.3) !important;
+    }
+    .dark aside#sidebar .nav-link.active-tab,
+    .dark aside#sidebar .nav-link.active,
+    [data-theme="dark"] aside#sidebar .nav-link.active-tab,
+    [data-theme="dark"] aside#sidebar .nav-link.active {
+      background: rgba(14, 165, 233, 0.18) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(14, 165, 233, 0.35) !important;
+      box-shadow: inset 0 0 12px rgba(14, 165, 233, 0.08);
+    }
+
+    /* Universal Responsive Suite for Phones, Tablets & Aspect Ratios */
+    @media (max-width: 768px) {
+      body {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      #app {
+        height: auto !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      .main-app-container {
+        height: auto !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        overflow: visible !important;
+      }
+      header.admin-top-header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 35 !important;
+      }
+      main.admin-main-scroll {
+        overflow-y: visible !important;
+        height: auto !important;
+        padding-bottom: 6.5rem !important;
+      }
+      input, select, textarea {
+        font-size: 16px !important; /* Prevents auto-zoom on iOS */
+      }
+      aside#sidebar {
+        width: 84vw !important;
+        max-width: 320px !important;
+      }
+      aside#sidebar .sidebar-user-box {
+        padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px)) !important;
+      }
+    }
+    .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+    }
+
+/* Extracted inline declarations */
+.extracted-style-6e22c58a7a6a {
+  display: none;
+}
+.extracted-style-88e4d432f483 {
+  height: clamp(300px, 48vh, 520px);
+  min-height: 280px;
+  width: 100%;
+  border-radius: 12px;
+}
+.extracted-style-05d02d0e3678 {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Extracted inline declarations */

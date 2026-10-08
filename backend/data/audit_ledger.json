@@ -1,7 +1,7 @@
 [
     {
-        "id": "evt_3ff310c680c8",
-        "timestamp": "2026-10-07T06:59:07+00:00",
+        "id": "evt_8c75c8d0e87e",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "SARAH_CHEN",
         "role": "REGISTRAR",
         "action": "REGISTRY_INIT",
@@ -10,11 +10,11 @@
             "message": "Hunters Association Management System online. Mana evaluation ledger authenticated."
         },
         "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-        "hash": "e3624574537c97324c43fcb21afe63ebf538725a192cd8beecece8036c5bd810"
+        "hash": "a40e53f9e1858af2e2aa411f03bfcc8a27fd76b1702bef6e1cd3f8406e9ab96d"
     },
     {
-        "id": "evt_2749a7ab2bf9",
-        "timestamp": "2026-10-07T06:59:07+00:00",
+        "id": "evt_22b9ccc7a09e",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "SARAH_CHEN",
         "role": "REGISTRAR",
         "action": "QUEUE_INGESTION",
@@ -24,12 +24,12 @@
             "gov_code": "9GH-8430",
             "status": "REVIEWING"
         },
-        "prev_hash": "e3624574537c97324c43fcb21afe63ebf538725a192cd8beecece8036c5bd810",
-        "hash": "e70343575b1242621593d9de5cd785d60b44645061413a1c691e9bff82a5f434"
+        "prev_hash": "a40e53f9e1858af2e2aa411f03bfcc8a27fd76b1702bef6e1cd3f8406e9ab96d",
+        "hash": "ce6a6b14a10562b59d7246b4c91895190b814071ada908927527c235f79900f5"
     },
     {
-        "id": "evt_ec8e18b784b8",
-        "timestamp": "2026-10-07T06:59:07+00:00",
+        "id": "evt_466413b6481b",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "SUPER_ADMIN_01",
         "role": "SUPER_ADMIN",
         "action": "SECURITY_AUDIT",
@@ -38,26 +38,26 @@
             "alias": "SPECTER ZERO",
             "action": "ROGUE_STATUS_FLAGGED"
         },
-        "prev_hash": "e70343575b1242621593d9de5cd785d60b44645061413a1c691e9bff82a5f434",
-        "hash": "a4b2ccf09f6ba824d1debb7afbb86cb2018a0db58a7cb24075d545912cf60d4f"
+        "prev_hash": "ce6a6b14a10562b59d7246b4c91895190b814071ada908927527c235f79900f5",
+        "hash": "db6464ef28be20438cb8bdcf59487094b13ba625ac7e148789bb5c5b9ed66d4d"
     },
     {
-        "id": "evt_ffadf33562a4",
-        "timestamp": "2026-10-07T06:59:07+00:00",
+        "id": "evt_3de0d3dd96ec",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "Commander Vance",
         "role": "SUPER_ADMIN",
         "action": "SYSTEM_FACTORY_RESET",
         "target_id": "GHRMS_DATA",
         "details": {
-            "timestamp": "2026-10-07T06:59:07+00:00",
+            "timestamp": "2026-10-08T21:42:59+00:00",
             "heroes_restored": 11
         },
-        "prev_hash": "a4b2ccf09f6ba824d1debb7afbb86cb2018a0db58a7cb24075d545912cf60d4f",
-        "hash": "1218502c5a968115cfe6941db4c0fbdea168df2b06e8c2bc44f13e33987fcfe4"
+        "prev_hash": "db6464ef28be20438cb8bdcf59487094b13ba625ac7e148789bb5c5b9ed66d4d",
+        "hash": "aba23c8665c2a4662271cebd1b85efe4ffe8e1d7572473f9c408516e413ffdd2"
     },
     {
-        "id": "evt_2515e9022f2a",
-        "timestamp": "2026-10-07T06:59:07+00:00",
+        "id": "evt_9ccf4302756a",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "USER_AUTHENTICATED",
@@ -66,12 +66,12 @@
             "role": "HERO",
             "clearance_level": 1
         },
-        "prev_hash": "1218502c5a968115cfe6941db4c0fbdea168df2b06e8c2bc44f13e33987fcfe4",
-        "hash": "8b26e69f65ef9e8e3422fbbafd10e477f29ded0fa7edfb85ca23411f0a53a838"
+        "prev_hash": "aba23c8665c2a4662271cebd1b85efe4ffe8e1d7572473f9c408516e413ffdd2",
+        "hash": "b2ad477536050e2011d9f9f52a93205e7cdb4f2c9989b289d5119bdbdb94aaab"
     },
     {
-        "id": "evt_99f2a0e0648d",
-        "timestamp": "2026-10-07T06:59:08+00:00",
+        "id": "evt_e84d073d4275",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "Commander Vance",
         "role": "SUPER_ADMIN",
         "action": "USER_AUTHENTICATED",
@@ -80,28 +80,28 @@
             "role": "SUPER_ADMIN",
             "clearance_level": 5
         },
-        "prev_hash": "8b26e69f65ef9e8e3422fbbafd10e477f29ded0fa7edfb85ca23411f0a53a838",
-        "hash": "43ebbec392bb61c11ea7f9d85b55d57cc1f5738f5867ade774d5b8ffc359ef8f"
+        "prev_hash": "b2ad477536050e2011d9f9f52a93205e7cdb4f2c9989b289d5119bdbdb94aaab",
+        "hash": "5b6f97ad80ac37a1b6f8770e05c20fd34512393da47245ed00e771d9447cab91"
     },
     {
-        "id": "evt_9846189c6ef5",
-        "timestamp": "2026-10-07T06:59:08+00:00",
+        "id": "evt_7a01cb45877b",
+        "timestamp": "2026-10-08T21:42:59+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "DOCUMENT_UPLOADED",
         "target_id": "hero_lumina_02",
         "details": {
-            "doc_id": "doc_08f8001b66f5",
-            "doc_type": "Official ID",
+            "doc_id": "doc_ee0ad1f26974",
+            "doc_type": "Other Supporting Documents",
             "original_name": "test_certification.png",
             "file_size": 68
         },
-        "prev_hash": "43ebbec392bb61c11ea7f9d85b55d57cc1f5738f5867ade774d5b8ffc359ef8f",
-        "hash": "ed7a48f4f9c0980b1faeae3a982e56996d9b9865193f604eb06fd774ed0b5989"
+        "prev_hash": "5b6f97ad80ac37a1b6f8770e05c20fd34512393da47245ed00e771d9447cab91",
+        "hash": "e9d2a7db3122d3835e59200036923f1d421c8e71941d5d111bf4692574b5f17e"
     },
     {
-        "id": "evt_934803db375e",
-        "timestamp": "2026-10-07T06:59:08+00:00",
+        "id": "evt_6900582a63f5",
+        "timestamp": "2026-10-08T21:43:00+00:00",
         "actor": "Samuel Wright (APEX)",
         "role": "HERO",
         "action": "USER_AUTHENTICATED",
@@ -110,28 +110,44 @@
             "role": "HERO",
             "clearance_level": 1
         },
-        "prev_hash": "ed7a48f4f9c0980b1faeae3a982e56996d9b9865193f604eb06fd774ed0b5989",
-        "hash": "cd319630822291ec605c22f3d1e2c09a9019242b7871896f9738643b688d690a"
+        "prev_hash": "e9d2a7db3122d3835e59200036923f1d421c8e71941d5d111bf4692574b5f17e",
+        "hash": "4eccd23d283a695a0eb1037094d5ef9b1e85f69adbe56cbc2e9ff649837b77d1"
     },
     {
-        "id": "evt_6902db0ebec3",
-        "timestamp": "2026-10-07T06:59:08+00:00",
+        "id": "evt_4e8bf6c8c6d9",
+        "timestamp": "2026-10-08T21:43:00+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "DOCUMENT_REVIEWED",
+        "target_id": "hero_lumina_02",
+        "details": {
+            "doc_id": "doc_hero_lumina_02_id",
+            "doc_type": "Official ID",
+            "new_status": "Verified",
+            "notes": "Test reviewer explicitly reviewed the generated sample document."
+        },
+        "prev_hash": "4eccd23d283a695a0eb1037094d5ef9b1e85f69adbe56cbc2e9ff649837b77d1",
+        "hash": "54eb5bd39ecaf0902101f3f9130f3ed6387872f7ad10501b35e5c56412804de0"
+    },
+    {
+        "id": "evt_25608a24c0bd",
+        "timestamp": "2026-10-08T21:43:00+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "DOCUMENT_DELETED",
         "target_id": "hero_lumina_02",
         "details": {
-            "doc_id": "doc_08f8001b66f5",
-            "doc_type": "Official ID",
-            "file_name": "doc_08f8001b66f5.png",
+            "doc_id": "doc_ee0ad1f26974",
+            "doc_type": "Other Supporting Documents",
+            "file_name": "doc_ee0ad1f26974.png",
             "original_name": "test_certification.png"
         },
-        "prev_hash": "cd319630822291ec605c22f3d1e2c09a9019242b7871896f9738643b688d690a",
-        "hash": "5a13a9b09af28fda5d24af27a4ebb3f209b7f932e83448433d4f9537ffedae55"
+        "prev_hash": "54eb5bd39ecaf0902101f3f9130f3ed6387872f7ad10501b35e5c56412804de0",
+        "hash": "1117c6556e763367b261c85463c3ab14672ce389c636868c7d973b933ea38940"
     },
     {
-        "id": "evt_97016e9fb4f1",
-        "timestamp": "2026-10-07T06:59:08+00:00",
+        "id": "evt_85a1e4e5fab6",
+        "timestamp": "2026-10-08T21:43:00+00:00",
         "actor": "Alice Vance (LUMINA)",
         "role": "HERO",
         "action": "USER_AUTHENTICATED",
@@ -140,20 +156,300 @@
             "role": "HERO",
             "clearance_level": 1
         },
-        "prev_hash": "5a13a9b09af28fda5d24af27a4ebb3f209b7f932e83448433d4f9537ffedae55",
-        "hash": "1412b5d0409f044d44ba80f68186f51ba325e243fe3d2868aff1f64707f04394"
+        "prev_hash": "1117c6556e763367b261c85463c3ab14672ce389c636868c7d973b933ea38940",
+        "hash": "0a77880157d788da58cc45010c94983fc9fafdfbfb4fdcda11e085bb9b7f5560"
     },
     {
-        "id": "evt_e4de15f24201",
-        "timestamp": "2026-10-07T06:59:08+00:00",
+        "id": "evt_662e770c5356",
+        "timestamp": "2026-10-08T21:43:00+00:00",
         "actor": "VAULT_ENGINE",
         "role": "SYSTEM",
         "action": "VAULT_INTEGRITY_VIOLATION",
-        "target_id": "vlt_fb1f2b3d3303f5a1",
+        "target_id": "vlt_477c4e2541c56a76",
         "details": {
             "reason": "MAC verification failed: ciphertext or IV tampered"
         },
-        "prev_hash": "1412b5d0409f044d44ba80f68186f51ba325e243fe3d2868aff1f64707f04394",
-        "hash": "62a29d74d2746ac7303411fca6cbfe8cb56dec584ed9795943e2cdf5f8dfb257"
+        "prev_hash": "0a77880157d788da58cc45010c94983fc9fafdfbfb4fdcda11e085bb9b7f5560",
+        "hash": "8449bce8fb5ad35e4bade64ad5a501027dc9ebf18ffc6adecdf832eb8924caba"
+    },
+    {
+        "id": "evt_c0cb2d5777d1",
+        "timestamp": "2026-10-08T21:43:00+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_PROVISIONAL_AUDITED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Ofc. Valdez (LAW_ENFORCEMENT)",
+            "status": "REVIEWING",
+            "totp_verified": null,
+            "threat": "A-Rank Hunter (Fighter)",
+            "alias": "APEX",
+            "hero_id": "hero_apex_01",
+            "qr_input": "GHRMS://HERO/9GH-8430"
+        },
+        "prev_hash": "8449bce8fb5ad35e4bade64ad5a501027dc9ebf18ffc6adecdf832eb8924caba",
+        "hash": "ad5737ce8e5b07054ff15d707fba124b3ead1456ba7424241ad2cd98ae51b845"
+    },
+    {
+        "id": "evt_8716742e01b4",
+        "timestamp": "2026-10-08T21:43:00+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_PROVISIONAL_AUDITED",
+        "target_id": "hero_lumina_02",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Ofc. Valdez (LAW_ENFORCEMENT)",
+            "status": "REVIEWING",
+            "totp_verified": null,
+            "threat": "A-Rank Hunter (Mage)",
+            "alias": "LUMINA",
+            "hero_id": "hero_lumina_02",
+            "qr_input": "GHRMS://HERO/hero_lumina_02"
+        },
+        "prev_hash": "ad5737ce8e5b07054ff15d707fba124b3ead1456ba7424241ad2cd98ae51b845",
+        "hash": "f002f2665bb3bb3401e953161062b70ba14c65935f08a8ba37f6e373046bfd18"
+    },
+    {
+        "id": "evt_d5eb1adffa59",
+        "timestamp": "2026-10-08T21:43:00+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_PROVISIONAL_AUDITED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Ofc. Valdez (LAW_ENFORCEMENT)",
+            "status": "REVIEWING",
+            "totp_verified": null,
+            "threat": "A-Rank Hunter (Fighter)",
+            "alias": "APEX",
+            "hero_id": "hero_apex_01",
+            "qr_input": "hero_apex_01"
+        },
+        "prev_hash": "f002f2665bb3bb3401e953161062b70ba14c65935f08a8ba37f6e373046bfd18",
+        "hash": "949f46920c3a488f81d57c873208f73388e8b26fe72fdb2c35099a42def59f90"
+    },
+    {
+        "id": "evt_63fda27f0a97",
+        "timestamp": "2026-10-08T21:43:00+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_PROVISIONAL_AUDITED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Ofc. Valdez (LAW_ENFORCEMENT)",
+            "status": "REVIEWING",
+            "totp_verified": null,
+            "threat": "A-Rank Hunter (Fighter)",
+            "alias": "APEX",
+            "hero_id": "hero_apex_01",
+            "qr_input": "GHRMS-LIC-9GH-8430"
+        },
+        "prev_hash": "949f46920c3a488f81d57c873208f73388e8b26fe72fdb2c35099a42def59f90",
+        "hash": "4f4d25f0fc04fe1a4e1576f59d5665dcf89b03fe6b1114badf288161e922aca1"
+    },
+    {
+        "id": "evt_c245a4d6072f",
+        "timestamp": "2026-10-08T21:43:00+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_UNREGISTERED_INTRUDER",
+        "target_id": "NON_EXISTENT_UNKNOWN_000",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Ofc. Valdez (LAW_ENFORCEMENT)",
+            "query": "GHRMS://HERO/NON_EXISTENT_UNKNOWN_000",
+            "result": "NOT_FOUND_UNREGISTERED"
+        },
+        "prev_hash": "4f4d25f0fc04fe1a4e1576f59d5665dcf89b03fe6b1114badf288161e922aca1",
+        "hash": "7bebb5febb4c8a9a4808e8493401ab263103bd19c5d649a56e84ef903fecd0f5"
+    },
+    {
+        "id": "evt_91afd9f93508",
+        "timestamp": "2026-10-08T21:43:05+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "7bebb5febb4c8a9a4808e8493401ab263103bd19c5d649a56e84ef903fecd0f5",
+        "hash": "02f914c1ec3f08391f0b069febf8fb2c3af27240b9e883b70b28ed34d06848e3"
+    },
+    {
+        "id": "evt_d58fa97f2991",
+        "timestamp": "2026-10-08T21:43:05+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "02f914c1ec3f08391f0b069febf8fb2c3af27240b9e883b70b28ed34d06848e3",
+        "hash": "eda027bd6dcb68ae7c40efde888f353d5d7466115ba98650e00695f4e5011418"
+    },
+    {
+        "id": "evt_d497743499be",
+        "timestamp": "2026-10-08T21:43:05+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "DOCUMENT_REVIEWED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "doc_id": "doc_hero_apex_01_id",
+            "doc_type": "Official ID",
+            "new_status": "Verified",
+            "notes": "Verified in automated pipeline test"
+        },
+        "prev_hash": "eda027bd6dcb68ae7c40efde888f353d5d7466115ba98650e00695f4e5011418",
+        "hash": "295d4436bc9386982011328f1ac30b3340c7c802c8c2c9b28acf97ab03656997"
+    },
+    {
+        "id": "evt_768060737ee8",
+        "timestamp": "2026-10-08T21:43:05+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "DOCUMENT_REVIEWED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "doc_id": "doc_hero_apex_01_cert",
+            "doc_type": "Hero Certification",
+            "new_status": "Verified",
+            "notes": "Verified in automated pipeline test"
+        },
+        "prev_hash": "295d4436bc9386982011328f1ac30b3340c7c802c8c2c9b28acf97ab03656997",
+        "hash": "a91d950ee7591bd9469c8f955406997d78508077fd3225104e2b1bf343d9c352"
+    },
+    {
+        "id": "evt_512d1252fa17",
+        "timestamp": "2026-10-08T21:43:05+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "VERIFY_IDENTITY",
+            "alias": "APEX",
+            "status": "Verified",
+            "threat_tier": 2
+        },
+        "prev_hash": "a91d950ee7591bd9469c8f955406997d78508077fd3225104e2b1bf343d9c352",
+        "hash": "a83582456fc081fdac121038c839d5919de4966cb70c5c022ef7f4cde0134c23"
+    },
+    {
+        "id": "evt_14087f5b48b0",
+        "timestamp": "2026-10-08T21:43:05+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "a83582456fc081fdac121038c839d5919de4966cb70c5c022ef7f4cde0134c23",
+        "hash": "c624455633868d0c698c349ff9f87f5e22269903938c39978c2484cd6d3e4886"
+    },
+    {
+        "id": "evt_4da982210cc8",
+        "timestamp": "2026-10-08T21:43:12+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "c624455633868d0c698c349ff9f87f5e22269903938c39978c2484cd6d3e4886",
+        "hash": "881e20c76ec75a97db7f670132431b62646bd03b24b557acc6d8ae2865530b60"
+    },
+    {
+        "id": "evt_d585d4562c0b",
+        "timestamp": "2026-10-08T21:43:12+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_CHECKPOINT_PASSED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Commander Vance (SUPER_ADMIN)",
+            "status": "Approved",
+            "totp_verified": null,
+            "threat": "A-Rank Hunter (Fighter)",
+            "alias": "APEX",
+            "hero_id": "hero_apex_01",
+            "qr_input": "GHRMS://HERO/9GH-8430"
+        },
+        "prev_hash": "881e20c76ec75a97db7f670132431b62646bd03b24b557acc6d8ae2865530b60",
+        "hash": "40d24c48bcb62b21b30c26dcba4d9c325f8045d412de0e0cfafdfad171e678d6"
+    },
+    {
+        "id": "evt_0ad6267abbb0",
+        "timestamp": "2026-10-08T21:43:12+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_PROVISIONAL_AUDITED",
+        "target_id": "hero_lumina_02",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Commander Vance (SUPER_ADMIN)",
+            "status": "REVIEWING",
+            "totp_verified": null,
+            "threat": "A-Rank Hunter (Mage)",
+            "alias": "LUMINA",
+            "hero_id": "hero_lumina_02",
+            "qr_input": "GHRMS://HERO/hero_lumina_02"
+        },
+        "prev_hash": "40d24c48bcb62b21b30c26dcba4d9c325f8045d412de0e0cfafdfad171e678d6",
+        "hash": "2066f96998484cea552b2888d4aea096a1f8e28e66dac5b10ea932321c8ab253"
+    },
+    {
+        "id": "evt_0addfd16ed22",
+        "timestamp": "2026-10-08T21:43:12+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_ROGUE_INTERCEPTED",
+        "target_id": "hero_specter_06",
+        "details": {
+            "checkpoint": "CHECKPOINT-01 // SECTOR 1 METRO",
+            "officer": "Commander Vance (SUPER_ADMIN)",
+            "status": "Rogue",
+            "totp_verified": null,
+            "threat": "S-Rank Criminal Hunter (Assassin)",
+            "alias": "SPECTER ZERO",
+            "hero_id": "hero_specter_06",
+            "qr_input": "GHRMS://HERO/hero_specter_06"
+        },
+        "prev_hash": "2066f96998484cea552b2888d4aea096a1f8e28e66dac5b10ea932321c8ab253",
+        "hash": "8da898f3c6d80a67c56d81627cef48513536844592915b4d650d8cb4b273f797"
+    },
+    {
+        "id": "evt_141bf8b3a5a1",
+        "timestamp": "2026-10-08T21:49:44+00:00",
+        "actor": "HERO_PORTAL",
+        "role": "APPLICANT",
+        "action": "HERO_ONBOARDING_SUBMITTED",
+        "target_id": "hero_automatedtesthero_8646_89976d",
+        "details": {
+            "alias": "AutomatedTestHero_8646",
+            "threat_tier": 4,
+            "region": "Sector 1 - Poblacion Central Commercial Grid",
+            "callsign": "automatedtesthero_8646",
+            "status": "Submitted",
+            "vault_id": "vlt_8adc4d09d3422b17"
+        },
+        "prev_hash": "8da898f3c6d80a67c56d81627cef48513536844592915b4d650d8cb4b273f797",
+        "hash": "684506845247f49604d573da365c34628a40c74440e55bb75e4d794cd9c242ac"
     }
 ]

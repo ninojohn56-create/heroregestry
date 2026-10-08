@@ -1,0 +1,161 @@
+{
+    "apex": {
+        "username": "apex",
+        "password_hash": "$2y$10$J7wa5LDjeFdCeteiFjfcj.okafYi1tmjTEaXO04hxU1TgnJw6TL.W",
+        "role": "HERO",
+        "name": "Samuel Wright (APEX)",
+        "hero_id": "hero_apex_01",
+        "avatar": "/img/apex.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-10-08T04:27:40+00:00",
+        "status": "active",
+        "is_active": true,
+        "updated_at": "2026-10-08T08:48:33+00:00",
+        "last_login": "2026-10-08T08:48:36+00:00"
+    },
+    "lumina": {
+        "username": "lumina",
+        "password_hash": "$2y$10$Jqay4TeBe7C6lRuVQEayPOzisxBu2fgIj8HqHhwH2FpOgdJsF77uO",
+        "role": "HERO",
+        "name": "Alice Vance (LUMINA)",
+        "hero_id": "hero_lumina_02",
+        "avatar": "/img/lumina.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-10-08T04:27:40+00:00",
+        "last_login": "2026-10-08T08:48:36+00:00"
+    },
+    "sarah.chen": {
+        "username": "sarah.chen",
+        "password_hash": "$2y$10$zgZ1Vib1TzmvMg2MfGBQw.7JL3Fk0m1kJp1hk09FSnHpFa8NKJOSm",
+        "role": "REGISTRAR",
+        "name": "Sarah Chen",
+        "hero_id": null,
+        "avatar": "/img/sarah_chen.jpg",
+        "clearance_level": 3,
+        "created_at": "2026-10-08T04:27:40+00:00",
+        "last_login": "2026-10-08T09:07:32+00:00",
+        "status": "active",
+        "is_active": true,
+        "updated_at": "2026-10-08T08:48:35+00:00"
+    },
+    "commander": {
+        "username": "commander",
+        "password_hash": "$2y$10$npqIS8vcqNsryRj4wCh8Q.qlGHpoXzcdH5gPUG7H57bxOEVsD1A2a",
+        "role": "SUPER_ADMIN",
+        "name": "Commander Vance",
+        "hero_id": null,
+        "avatar": "/img/logo.jpg",
+        "clearance_level": 5,
+        "created_at": "2026-10-08T04:27:40+00:00",
+        "last_login": "2026-10-08T09:07:32+00:00"
+    },
+    "admin": {
+        "username": "admin",
+        "password_hash": "$2y$10$oI5AF2cJOaiA7F/IpDRGMeseRLGbTKXN2GbPOd3q2Suo5O1/BMnbW",
+        "role": "ADMIN",
+        "name": "Admin Officer",
+        "hero_id": null,
+        "avatar": "/img/sarah_chen.jpg",
+        "clearance_level": 4,
+        "created_at": "2026-10-08T04:27:40+00:00",
+        "last_login": "2026-10-08T08:48:34+00:00"
+    },
+    "solaris": {
+        "username": "solaris",
+        "password_hash": "$2y$10$.i7W8sw8LfKfqLmjcdzRoOzp02AFg.fkhHYalvSpb97qL6D15WanG",
+        "role": "HERO",
+        "name": "Elena Rostova (SOLARIS)",
+        "hero_id": "hero_solaris_a833dd",
+        "avatar": "/img/solaris.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-10-08T04:27:40+00:00"
+    },
+    "atlas": {
+        "username": "atlas",
+        "password_hash": "$2y$10$6sfgj.OAWzANND.cCewXVOnjGbITkWk216lZSst//gLtVDS5NOO3S",
+        "role": "HERO",
+        "name": "ATLAS (Marcus Thorne)",
+        "hero_id": "hero_atlas_03",
+        "avatar": "/img/atlas.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-10-03T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:40+00:00"
+    },
+    "steelpulse": {
+        "username": "steelpulse",
+        "password_hash": "$2y$10$os22hXsu0R3PPL2hawDKrOYlgiX4DA0u5ghIpQ9bhfmYHoQqoYfS6",
+        "role": "HERO",
+        "name": "STEEL PULSE (Ravi Singh)",
+        "hero_id": "hero_steelpulse_04",
+        "avatar": "/img/atlas.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-10-02T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:40+00:00"
+    },
+    "vanguardtitan": {
+        "username": "vanguardtitan",
+        "password_hash": "$2y$10$BI0bF0lWsBCuiZlZH8.lJ.xg/QWEiQDoQUsqHheyi1s.vw.0Sv2K.",
+        "role": "HERO",
+        "name": "VANGUARD TITAN (Marcus Jonathan Vance)",
+        "hero_id": "hero_vanguard_05",
+        "avatar": "/img/apex.jpg",
+        "clearance_level": 1,
+        "created_at": "2025-10-08T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:40+00:00"
+    },
+    "specterzero": {
+        "username": "specterzero",
+        "password_hash": "$2y$10$0r7OL2HEu6N262HzKa3/YO7PdmMoslBnVYx16rVVMga4wbJKcqnB6",
+        "role": "HERO",
+        "name": "SPECTER ZERO (Unit 09 / David Alan Cross)",
+        "hero_id": "hero_specter_06",
+        "avatar": "/img/apex.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-04-08T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:40+00:00"
+    },
+    "aeroscout": {
+        "username": "aeroscout",
+        "password_hash": "$2y$10$fY./tN1NpFJ5n0SFQKGPO.cLVdF4scW88KXx5FRlpvzwP4ElxzknC",
+        "role": "HERO",
+        "name": "AERO SCOUT (Leo Sterling)",
+        "hero_id": "hero_aeroscout_07",
+        "avatar": "/img/aeroscout.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-06-08T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:41+00:00"
+    },
+    "pulserunner": {
+        "username": "pulserunner",
+        "password_hash": "$2y$10$/8SeYY6ujKtEDvm14zsfj.4MCIIU8e8D2akkS1ct9PRw/qquveVfW",
+        "role": "HERO",
+        "name": "PULSE RUNNER (Maya Lin)",
+        "hero_id": "hero_pulserunner_08",
+        "avatar": "/img/atlas.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-09-28T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:41+00:00"
+    },
+    "johnckson": {
+        "username": "johnckson",
+        "password_hash": "$2y$10$ijdBVZ63J44cRTTrhczC9OkMVcX1yINaSf6uNXkkxQqLcWUoS/VSO",
+        "role": "HERO",
+        "name": "JOHN CKSON (John Ckson)",
+        "hero_id": "hero_johnckson_887ff2",
+        "avatar": "/img/apex.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-09-08T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:41+00:00"
+    },
+    "dawn": {
+        "username": "dawn",
+        "password_hash": "$2y$10$Sj/c9roX2J3sNL.xlwWf3ed2wb97LrS/xnNx7OW1mKSNxumpVIJfG",
+        "role": "HERO",
+        "name": "DAWN (Dawn Miller)",
+        "hero_id": "hero_dawn_4c5106",
+        "avatar": "/img/lumina.jpg",
+        "clearance_level": 1,
+        "created_at": "2026-10-03T04:27:40+00:00",
+        "updated_at": "2026-10-08T04:27:41+00:00"
+    }
+}

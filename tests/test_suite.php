@@ -26,6 +26,12 @@ class GhraTestRunner {
         echo "Timestamp: " . date('c') . "\n";
         echo "=================================================================\n\n";
 
+        // Ensure reproducible baseline state
+        $cjInit = tempnam(sys_get_temp_dir(), 'ghra_init_');
+        $this->request('POST', '/api/auth/login', ['username' => 'commander', 'password' => 'admin123'], $cjInit);
+        $this->request('POST', '/api/admin/system/reset-data', ['confirm' => 'CONFIRM_FACTORY_RESET'], $cjInit);
+        @unlink($cjInit);
+
         // Group 1: Health & Liveness
         $this->testHealthEndpoint();
 
@@ -44,6 +50,7 @@ class GhraTestRunner {
         $this->testHeroThreatTierTamperingBlocked();
 
         // Group 5: Registration Workflow State Machine
+        $this->testFtfLicenseEvidenceGate();
         $this->testWorkflowIllegalTransitionBlocked();
         $this->testWorkflowValidLifecycle();
 
@@ -87,6 +94,9 @@ class GhraTestRunner {
 
         // Group 18: Security Headers & Content-Security-Policy Perimeter
         $this->testSecurityHeadersAndCsp();
+
+        // Group 19: Sentinel QR Code & Operative ID Verification Scanner
+        $this->testSentinelQrScanning();
 
         echo "\n=================================================================\n";
         echo "TEST EXECUTION SUMMARY\n";
@@ -327,12 +337,20 @@ class GhraTestRunner {
             'assessment_notes' => 'Self-promoted God-tier entity'
         ], $cjApex);
 
-        $this->assert($tamperRes['code'] === 200, "Update request returns HTTP 200");
+        $this->assert($tamperRes['code'] === 403, "Profile update trying to change license/threat fields is denied");
 
         // Verify operative record was NOT compromised
         $verifyRes = $this->request('GET', '/api/heroes/hero_apex_01', null, $cjApex);
         $threatTier = $verifyRes['json']['data']['threat_tier'] ?? null;
-        $this->assert($threatTier !== 0, "Threat tier tampering PREVENTED (tier remains un-escalated)");
+        $this->assert($threatTier !== 0, "Threat tier tampering PREVENTED at the API boundary");
+
+        $workflowForgery = $this->request('PUT', '/api/heroes/hero_apex_01', [
+            'status' => 'Licensed',
+            'license_number' => 'GHRMS-FAKE-LICENSE',
+            'verification_status' => 'Verified',
+            'verified_by' => 'Forged Reviewer'
+        ], $cjApex);
+        $this->assert($workflowForgery['code'] === 403, "Direct profile updates cannot forge status, license, or verification fields");
 
         @unlink($cjApex);
     }
@@ -367,11 +385,29 @@ class GhraTestRunner {
         ], $cjAdmin);
         $this->assert($reopenRes['code'] === 200, "Legal reopen via REINSTATE succeeded (HTTP 200)");
 
-        // 5. Verify identity then Approve
+        // 5. Identity verification must wait until required documents are reviewed.
         $verifyRes = $this->request('POST', '/api/heroes/hero_apex_01/assess', [
+            'action' => 'VERIFY_IDENTITY',
+            'notes' => 'Test identity review after evidence gate'
+        ], $cjAdmin);
+        $this->assert($verifyRes['code'] === 422, "Identity verification is blocked while required documents are pending");
+
+        $docReview = $this->request('POST', "/api/heroes/hero_apex_01/documents/doc_hero_apex_01_id/verify", [
+            'status' => 'Verified',
+            'notes' => 'Test reviewer inspected the demo document and confirmed the workflow gate.'
+        ], $cjAdmin);
+        $this->assert($docReview['code'] === 200, "Authorized reviewer can explicitly verify required document doc_hero_apex_01_id");
+
+        $missingIdentityNotes = $this->request('POST', '/api/heroes/hero_apex_01/assess', [
             'action' => 'VERIFY_IDENTITY'
         ], $cjAdmin);
-        $this->assert($verifyRes['code'] === 200, "Legal verification succeeded (HTTP 200)");
+        $this->assert($missingIdentityNotes['code'] === 422, "Identity verification requires reviewer notes");
+
+        $verifyRes = $this->request('POST', '/api/heroes/hero_apex_01/assess', [
+            'action' => 'VERIFY_IDENTITY',
+            'notes' => 'Test identity reviewed against the required document packet.'
+        ], $cjAdmin);
+        $this->assert($verifyRes['code'] === 200, "Identity verification succeeds only after required document review");
 
         $legalApprove = $this->request('POST', '/api/heroes/hero_apex_01/assess', [
             'action' => 'APPROVE'
@@ -379,6 +415,23 @@ class GhraTestRunner {
         $this->assert($legalApprove['code'] === 200, "Approval from Verified succeeded (HTTP 200)");
 
         @unlink($cjAdmin);
+    }
+
+    private function testFtfLicenseEvidenceGate(): void {
+        echo "\n10. FTF License Evidence Gate:\n";
+        $cookie = tempnam(sys_get_temp_dir(), 'ghra_ftf_gate_');
+        $this->request('POST', '/api/auth/login', ['username' => 'commander', 'password' => 'admin123'], $cookie);
+
+        $response = $this->request('POST', '/api/heroes/hero_apex_01/ftf-interview', [
+            'status' => 'Passed',
+            'notes' => 'Test interview must not override pending document review.',
+            'grant_license' => true
+        ], $cookie);
+        $this->assert($response['code'] === 422, 'FTF pass cannot grant a license before required evidence and identity review');
+
+        $hero = $this->request('GET', '/api/heroes/hero_apex_01', null, $cookie);
+        $this->assert(($hero['json']['data']['status'] ?? '') !== 'Licensed', 'Blocked FTF evidence gate leaves license status unchanged');
+        @unlink($cookie);
     }
 
     private function testWorkflowValidLifecycle(): void {
@@ -598,7 +651,7 @@ class GhraTestRunner {
         $cfile = new CURLFile($tmpFile, 'image/png', 'test_certification.png');
         $uploadRes = $this->requestMultipart('/api/heroes/hero_lumina_02/documents', [
             'document' => $cfile,
-            'type' => 'Power Certificate'
+            'type' => 'Other Supporting Documents'
         ], $cjHero);
         @unlink($tmpFile);
 
@@ -606,6 +659,21 @@ class GhraTestRunner {
         $docId = $uploadRes['json']['data']['id'] ?? '';
         $docVersion = $uploadRes['json']['data']['version'] ?? 0;
         $this->assert($docVersion >= 1, "Uploaded document has version tracking initialized (version: {$docVersion})");
+        $this->assert(($uploadRes['json']['data']['verification_status'] ?? '') === 'Pending', "Uploaded enrollment document starts Pending");
+
+        $missingDecision = $this->request('POST', "/api/heroes/hero_lumina_02/documents/{$docId}/verify", [
+            'notes' => 'No decision supplied'
+        ], $cjAdmin);
+        $this->assert($missingDecision['code'] === 400, "Missing document verification decision rejected");
+        $invalidDecision = $this->request('POST', "/api/heroes/hero_lumina_02/documents/{$docId}/verify", [
+            'status' => 'Approved',
+            'notes' => 'Unsupported decision'
+        ], $cjAdmin);
+        $this->assert($invalidDecision['code'] === 400, "Invalid document decision cannot default to Verified");
+        $missingDocNotes = $this->request('POST', "/api/heroes/hero_lumina_02/documents/{$docId}/verify", [
+            'status' => 'Verified'
+        ], $cjAdmin);
+        $this->assert($missingDocNotes['code'] === 400, "Document decision without reviewer notes rejected");
 
         // Step 2: Another hero attempts to delete Lumina's document (IDOR on deletion)
         $cjOtherHero = tempnam(sys_get_temp_dir(), 'ghra_other_hero_');
@@ -614,7 +682,12 @@ class GhraTestRunner {
         $this->assert($delIdor['code'] === 403, "Cross-hero document deletion BLOCKED (IDOR protection HTTP 403)");
         @unlink($cjOtherHero);
 
-        // Step 3: Attempt to delete a VERIFIED document (doc_hero_lumina_02_id under hero_lumina_02 is Verified in seed)
+        // Step 3: Verify a required document as authorized staff, then test immutability.
+        $markVerified = $this->request('POST', '/api/heroes/hero_lumina_02/documents/doc_hero_lumina_02_id/verify', [
+            'status' => 'Verified',
+            'notes' => 'Test reviewer explicitly reviewed the generated sample document.'
+        ], $cjAdmin);
+        $this->assert($markVerified['code'] === 200, "Authorized staff can verify a pending required document with notes");
         $delVerified = $this->request('DELETE', "/api/heroes/hero_lumina_02/documents/doc_hero_lumina_02_id", null, $cjAdmin);
         $this->assert($delVerified['code'] === 403, "Deletion of VERIFIED compliance document BLOCKED (HTTP 403)");
 
@@ -710,6 +783,44 @@ class GhraTestRunner {
         $this->assert(stripos($headers, 'X-Frame-Options: DENY') !== false, "X-Frame-Options: DENY enforced");
         $this->assert(stripos($headers, 'Content-Security-Policy') !== false, "Content-Security-Policy header enforced on API responses");
         $this->assert(stripos($headers, 'Permissions-Policy') !== false, "Permissions-Policy header enforced");
+    }
+
+    private function testSentinelQrScanning(): void {
+        echo "\n27. Sentinel QR Code & Operative ID Verification Scanner:\n";
+
+        // 1. Scan via GHRMS URI protocol with gov_code
+        $res1 = $this->request('POST', '/api/sentinel/scan', [
+            'qr_input' => 'GHRMS://HERO/9GH-8430'
+        ]);
+        $this->assert($res1['code'] === 200, "Sentinel scan resolves GHRMS://HERO/9GH-8430 (HTTP 200)");
+        $data1 = $res1['json'];
+        $this->assert(($data1['data']['alias'] ?? '') === 'APEX', "Resolved hero is APEX by gov_code");
+
+        // 2. Scan via GHRMS URI with hero ID
+        $res2 = $this->request('POST', '/api/sentinel/scan', [
+            'qr_input' => 'GHRMS://HERO/hero_lumina_02'
+        ]);
+        $this->assert($res2['code'] === 200, "Sentinel scan resolves GHRMS://HERO/hero_lumina_02 (HTTP 200)");
+        $data2 = $res2['json'];
+        $this->assert(($data2['data']['alias'] ?? '') === 'LUMINA', "Resolved hero is LUMINA by id");
+
+        // 3. Scan via direct ID
+        $res3 = $this->request('POST', '/api/sentinel/scan', [
+            'query' => 'hero_apex_01'
+        ]);
+        $this->assert($res3['code'] === 200, "Sentinel scan resolves plain hero ID hero_apex_01 (HTTP 200)");
+
+        // 4. Scan via License Number
+        $res4 = $this->request('POST', '/api/sentinel/scan', [
+            'payload' => 'GHRMS-LIC-9GH-8430'
+        ]);
+        $this->assert($res4['code'] === 200, "Sentinel scan resolves by license number (HTTP 200)");
+
+        // 5. Unregistered subject triggers security breach alert (404)
+        $res5 = $this->request('POST', '/api/sentinel/scan', [
+            'qr_input' => 'GHRMS://HERO/NON_EXISTENT_UNKNOWN_000'
+        ]);
+        $this->assert($res5['code'] === 404, "Unregistered QR code returns 404 alert breach");
     }
 }
 

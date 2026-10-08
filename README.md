@@ -7,6 +7,8 @@ The **Global Hero Registration & Management System (GHRMS)** is an enterprise-gr
 
 ## 🚀 Quick Start (Local Startup)
 
+**Requirements:** PHP 8.2+ with `openssl`, `mbstring`, `curl`, `fileinfo`, `json`, `session`, and `gd` enabled.
+
 ### On Windows
 To launch the system with automatic dependency validation, diagnostic checks, and browser launch:
 ```bat
@@ -19,10 +21,11 @@ start.bat
 
 ### On Linux / macOS / WSL
 ```bash
-# Make executable and launch:
-chmod +x share.sh deploy.sh
-./share.sh
+# Start the local application:
+chmod +x start.sh
+./start.sh
 ```
+Use `share.sh` only when you want its optional network/tunnel sharing behavior.
 
 ### Manual Command
 ```bash
@@ -33,6 +36,7 @@ php check_system.php
 php -S 127.0.0.1:8000 router.php
 ```
 Open **[http://localhost:8000/login](http://localhost:8000/login)** in your browser.
+For local testing, the default demo accounts are listed below. Replace them before any public deployment.
 
 ---
 
@@ -65,6 +69,8 @@ Open **[http://localhost:8000/login](http://localhost:8000/login)** in your brow
 
 ## 📦 Production Deployment
 
+For InfinityFree setup and its compatibility/security limits, see [INFINITYFREE_DEPLOYMENT.md](INFINITYFREE_DEPLOYMENT.md). InfinityFree is suitable only for a small demo if the account supports the required PHP extensions, rewrites, sessions, and writable JSON storage; do not put real identity or biometric data on free shared hosting.
+
 ### Option 1: Docker & Docker Compose (Recommended)
 The system includes a production-ready, multi-stage Alpine Linux container with all required PHP extensions (`openssl`, `mbstring`, `curl`, `fileinfo`, `gd`, `zip`).
 
@@ -81,7 +87,7 @@ docker compose ps
 # 4. View logs:
 docker compose logs -f
 ```
-Persistent data is mounted into `./backend/data` and `./public/uploads`.
+Persistent data is mounted into `./backend/data` and `./frontend/uploads`.
 
 ### Option 2: Linux Host with Systemd & Nginx
 Use the automated deployment engine:

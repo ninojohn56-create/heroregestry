@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>HAMS | Hunter Association Registrar Desk &amp; Mana Evaluator</title>
-  <meta name="description" content="HAMS Registrar Desk &amp; Mana Evaluator UI — Awakened Intake Verification, Hunter Rank Classification, and Licensing Authority.">
+  <title>GHRA | Hero Registration Authority Desk &amp; Application Review</title>
+  <meta name="description"
+    content="GHRA Registrar Desk &amp; Application Review — Hero Intake Verification, Rank Classification, and Licensing Authority.">
   <meta name="color-scheme" content="light dark">
 
   <script>
-    (function() {
+    (function () {
       const saved = localStorage.getItem('ghrms_theme') || localStorage.getItem('color-scheme') || 'dark';
       document.documentElement.setAttribute('data-theme', saved);
       if (saved === 'dark') {
@@ -20,81 +22,34 @@
   </script>
 
   <link rel="stylesheet" href="/css/app.css">
-  <style>
-    [data-theme="light"] #btnReturnAdmin {
-      color: #1d4ed8 !important;
-      border-color: #93c5fd !important;
-      background: #eff6ff !important;
-    }
-    [data-theme="light"] #headerUserRole {
-      color: #b45309 !important;
-    }
-    [data-theme="light"] #btnRegPromoteSidekick {
-      background: #f5f3ff !important;
-      border-color: #ddd6fe !important;
-      color: #6d28d9 !important;
-    }
-    [data-theme="light"] #registrarRevocationBanner {
-      background: #fef2f2 !important;
-      border-color: #fecaca !important;
-      color: #991b1b !important;
-    }
-    [data-theme="light"] #btnEnrollSidekick {
-      background: #f5f3ff !important;
-      border-color: #ddd6fe !important;
-      color: #6d28d9 !important;
-    }
-    [data-theme="light"] #btnChangeHeroPasskeyReg {
-      background: #fffbeb !important;
-      border-color: #fde68a !important;
-      color: #92400e !important;
-    }
-    [data-theme="light"] #revokeLicenseModal .ghrms-modal-header {
-      background: #fef2f2 !important;
-      border-color: #fecaca !important;
-      color: #991b1b !important;
-    }
-    [data-theme="light"] #revokeLicenseModal .ghrms-modal-header span {
-      color: #991b1b !important;
-    }
-    [data-theme="light"] #heroPasskeyResetModal .ghrms-modal-header {
-      background: #fffbeb !important;
-      border-color: #fde68a !important;
-      color: #92400e !important;
-    }
-    [data-theme="light"] #heroPasskeyResetModal .ghrms-modal-header span {
-      color: #92400e !important;
-    }
-    [data-theme="light"] #passkeyAuditNotice {
-      background: #f0fdf4 !important;
-      border-color: #bbf7d0 !important;
-      color: #166534 !important;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/registrar.css">
 </head>
+
 <body>
 
   <!-- Top System Header (Registrar Context) -->
   <header class="ghrms-header">
     <div class="ghrms-brand">
-      <a href="/registrar" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;" title="HAMS Registrar Desk">
-        <img src="/img/logo.jpg" alt="HAMS Seal" class="ghrms-logo-img">
+      <a href="/registrar" title="GHRA Registrar Desk" class="extracted-style-718e5b74ea84">
+        <img src="/img/logo.jpg" alt="GHRA Seal" class="ghrms-logo-img">
         <div class="ghrms-title-group">
-          <span class="ghrms-acronym">HAMS</span>
+          <span class="ghrms-acronym">GHRA</span>
           <span class="ghrms-divider">|</span>
-          <span class="ghrms-fullname">HUNTERS ASSOCIATION // REGISTRAR &amp; MANA EVALUATION DESK</span>
+          <span class="ghrms-fullname">HERO REGISTRATION AUTHORITY // REGISTRAR DESK</span>
         </div>
       </a>
     </div>
 
     <!-- Portal Identity Badge -->
-    <div style="display: flex; align-items: center; gap: 0.5rem;">
-      <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: #f59e0b; text-transform: uppercase; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); border-radius: 4px; padding: 0.2rem 0.6rem; display: inline-flex; align-items: center; gap: 6px;"><span>MANA EVALUATION DESK</span><span style="opacity: 0.4;">|</span><span>CLEARANCE L3</span></span>
+    <div class="extracted-style-a60992811119">
+      <span class="extracted-style-0315f585a651"><span>REGISTRAR DESK</span><span
+          class="extracted-style-c0744ab21faa">|</span><span>CLEARANCE L3</span></span>
     </div>
 
     <!-- Header Tools -->
     <div class="header-right">
-      <a href="/admin" id="btnReturnAdmin" class="header-tool-btn" style="display: none; color: #60a5fa; border-color: rgba(96, 165, 250, 0.45); background: rgba(59, 130, 246, 0.15);" title="Return to Main Supreme Command Center">
+      <a href="/admin" id="btnReturnAdmin" class="header-tool-btn extracted-style-cc4409223e21"
+        title="Return to Main Supreme Command Center">
         <span>←</span> <span>SUPREME COMMAND CENTER</span>
       </a>
 
@@ -102,36 +57,43 @@
         <img src="/img/sarah_chen.jpg" alt="Sarah Chen" class="user-avatar-circle" id="headerUserAvatar">
         <div class="user-info-text">
           <span class="user-name-line" id="headerUserName">SARAH CHEN</span>
-          <span class="user-role-line" id="headerUserRole" style="display: inline-flex; align-items: center; gap: 4px;"><span style="font-size: 0.68rem; font-weight: 800; font-family: var(--font-mono); color: #f59e0b; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 3px; padding: 1px 5px;">L3</span><span style="color: var(--text-muted);">Registrar</span></span>
+          <span class="user-role-line extracted-style-7d5b0910db01" id="headerUserRole"><span
+              class="extracted-style-a8e4ac33f638">L3</span><span
+              class="extracted-style-9d21da37c47e">Registrar</span></span>
         </div>
       </div>
 
       <div class="header-search">
         <span class="header-search-icon">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </span>
-        <input type="text" placeholder="Search hunters..." id="globalRegistrarSearch" autocomplete="off">
+        <input type="text" placeholder="Search heroes..." id="globalRegistrarSearch" autocomplete="off">
       </div>
 
       <div class="header-notif-wrapper">
-        <button class="header-tool-btn" id="registrarNotifBtn" title="Notifications & Queue Alerts" aria-expanded="false" aria-haspopup="true">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button class="header-tool-btn" id="registrarNotifBtn" title="Notifications & Queue Alerts"
+          aria-expanded="false" aria-haspopup="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
           </svg>
           <span>NOTIF</span>
-          <span class="header-notif-pill" id="registrarNotifPill" style="display: none;">0</span>
+          <span class="header-notif-pill extracted-style-6e22c58a7a6a" id="registrarNotifPill">0</span>
         </button>
 
-        <div id="registrarNotifPanel" class="header-notif-popover" style="display: none;" role="region" aria-label="Registrar Notifications Popover">
+        <div id="registrarNotifPanel" class="header-notif-popover extracted-style-6e22c58a7a6a" role="region"
+          aria-label="Registrar Notifications Popover">
           <div class="notif-popover-header">
             <div class="notif-popover-title">
-              <span>ASSOCIATION DIRECTIVES</span>
+              <span>REGISTRATION NOTICES</span>
             </div>
-            <button type="button" class="notif-mark-read-btn" id="btnRegistrarMarkRead" onclick="markRegistrarNotificationsRead()">Mark read</button>
+            <button type="button" class="notif-mark-read-btn" id="btnRegistrarMarkRead"
+              onclick="markRegistrarNotificationsRead()">Mark read</button>
           </div>
           <div id="registrarNotifList" class="notif-list">
             <div class="notif-empty">Scanning for intake updates...</div>
@@ -141,11 +103,12 @@
 
       <button class="header-tool-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode" aria-label="Toggle Theme">
         <span id="themeToggleIconSymbol" class="theme-icon-symbol">☼</span>
-        <span id="themeToggleIcon" style="font-size:0.72rem;font-weight:700;font-family:var(--font-mono);">LIGHT</span>
+        <span id="themeToggleIcon" class="extracted-style-04343c34b605">LIGHT</span>
       </button>
 
       <a href="/logout" class="header-signout-btn" title="Sign Out">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
           <polyline points="16 17 21 12 16 7"></polyline>
           <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -161,63 +124,81 @@
     <nav class="ghrms-sidebar" id="regSidebar" aria-label="Registrar Navigation">
       <div class="sidebar-header-bar">
         <span class="nav-section-title sidebar-header-title">Navigation // Steps</span>
-        <button type="button" class="sidebar-collapse-toggle-btn" id="regSidebarToggleBtn" title="Collapse / Expand Sidebar (Ctrl+B)">
+        <button type="button" class="sidebar-collapse-toggle-btn" id="regSidebarToggleBtn"
+          title="Collapse / Expand Sidebar (Ctrl+B)">
           <span class="collapse-icon">◀</span>
         </button>
       </div>
 
-      <div class="nav-section-title" style="padding: 0.5rem 1.25rem 0.25rem;">Association Workflow</div>
+      <div class="nav-section-title extracted-style-c02d6e69a48a">Association Workflow</div>
       <ul class="nav-item-list">
         <li>
-          <a class="nav-link active" href="/registrar" id="navLinkRegQueue" title="Hunter Intake Queue">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[1]</span> <span class="nav-link-text">INTAKE QUEUE</span></span>
-            <span class="nav-pill active-pill" id="countQueuePendingBadge">0</span>
+          <a class="nav-link active" href="/registrar?mode=queue" id="navLinkRegQueue" title="Hero Intake Queue">
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[1]</span> <span
+                class="nav-link-text">INTAKE QUEUE</span></span>
+            <span class="nav-pill active-pill" id="countQueuePendingBadge">(8)</span>
           </a>
         </li>
         <li>
-          <a class="nav-link" href="javascript:void(0)" id="navOpenPendingApprovals" title="Pending License Approvals">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[2]</span> <span class="nav-link-text">PENDING APPROVALS</span></span>
-            <span class="nav-pill slate" id="pendingApprovalsCount">0</span>
+          <a class="nav-link" href="/registrar?mode=profiles" id="navLinkRegRoster" title="Licensed Hero Roster">
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[2]</span> <span
+                class="nav-link-text">HERO ROSTER</span></span>
+            <span class="nav-pill slate" id="countRosterActiveBadge">(3)</span>
           </a>
         </li>
         <li>
-          <a class="nav-link" href="/registry" title="Hunters Association Registry">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[3]</span> <span class="nav-link-text">HUNTER PROFILES</span></span>
-            <span class="nav-pill slate" id="navHeroProfilesCount">11</span>
-          </a>
-        </li>
-        <li>
-          <a class="nav-link" href="/register" title="Awakened Mana Assessment &amp; Intake">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[4]</span> <span class="nav-link-text">MANA EVALUATION</span></span>
+          <a class="nav-link" href="/registrar?mode=revoked" id="navLinkRegRevoked" title="Revoked &amp; Suspended Hero Licenses">
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[3]</span> <span
+                class="nav-link-text">REVOKED LICENSES</span></span>
+            <span class="nav-pill slate" id="countRevokedLicensesBadge">(2)</span>
           </a>
         </li>
       </ul>
 
-      <div class="nav-section-title" style="margin-top: 1.5rem; padding: 0.5rem 1.25rem 0.25rem;">Evaluator Tools</div>
+      <div class="nav-section-title extracted-style-509ccad00506">Registrar Tools</div>
       <ul class="nav-item-list">
         <li>
+          <a class="nav-link" href="/registry" id="navOpenRegistryDirectory" title="Complete Hero Directory Archive">
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[4]</span> <span
+                class="nav-link-text">DIRECTORY ARCHIVE</span></span>
+            <span class="nav-pill slate" id="navHeroProfilesCount">(11)</span>
+          </a>
+        </li>
+        <li>
           <a class="nav-link" href="javascript:void(0)" id="navOpenAuditLedger" title="Chained SHA-256 Audit Log">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[5]</span> <span class="nav-link-text">CHAINED AUDIT LOG</span></span>
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[5]</span> <span
+                class="nav-link-text">CHAINED AUDIT LOG</span></span>
           </a>
         </li>
         <li>
           <a class="nav-link" href="/sentinel" title="Sentinel Checkpoint Terminal">
-            <span class="nav-link-label"><span style="font-family: var(--font-mono); font-weight: 700;">[6]</span> <span class="nav-link-text">SENTINEL TERMINAL</span></span>
-            <span class="nav-pill slate" style="background: rgba(16,185,129,0.18); border: 1px solid rgba(16,185,129,0.4); color: #34d399; font-weight: 800;">FIELD</span>
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[6]</span> <span
+                class="nav-link-text">SENTINEL TERMINAL</span></span>
+            <span class="nav-pill slate extracted-style-37f11302a9cc">FIELD</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" href="javascript:void(0)" id="navOpenVerifyModal"
+            title="Anti-Spoof Field Badge Token Authenticator">
+            <span class="nav-link-label"><span class="extracted-style-5f71e16b3bbd">[7]</span> <span
+                class="nav-link-text">AUTHENTICATE BADGE TOKEN</span></span>
+            <span class="nav-pill slate">TOTP</span>
           </a>
         </li>
       </ul>
 
       <!-- Super Admin Command Center Link (Shown for Super Admin / Admin) -->
-      <div id="sidebarAdminSection" style="display: none; margin-top: 1.5rem; padding: 0 0.5rem;">
-        <div class="nav-section-title" style="color: #60a5fa; padding: 0 0.75rem 0.25rem;">Command Authority</div>
+      <div id="sidebarAdminSection" class="extracted-style-a6533413ea9b">
+        <div class="nav-section-title extracted-style-30711fdd7558">Command Authority</div>
         <ul class="nav-item-list">
           <li>
-            <a class="nav-link" href="/admin" id="navLinkAdminReturn" title="Return to Main Supreme Command Center" style="border-left: 2px solid #3b82f6; background: rgba(59, 130, 246, 0.08);">
-              <span class="nav-link-label" style="color: #93c5fd; font-weight: 800;">
-                <span style="font-family: var(--font-mono); font-weight: 800;">[★]</span> <span class="nav-link-text">SUPREME COMMAND CENTER</span>
+            <a class="nav-link extracted-style-5f4277d5cd54" href="/admin" id="navLinkAdminReturn"
+              title="Return to Main Supreme Command Center">
+              <span class="nav-link-label extracted-style-9f1bc98aeb80">
+                <span class="extracted-style-befa663c13be">[★]</span> <span class="nav-link-text">SUPREME COMMAND
+                  CENTER</span>
               </span>
-              <span class="nav-pill" id="sidebarAdminBadge" style="background: rgba(59, 130, 246, 0.25); color: #bfdbfe; font-weight: 800;">L5</span>
+              <span class="nav-pill extracted-style-19b555f5157e" id="sidebarAdminBadge">L5</span>
             </a>
           </li>
         </ul>
@@ -228,65 +209,74 @@
     <!-- Center Content: Split-Screen Table + Details (Image 2) -->
     <main class="view-panel active">
       <div class="registrar-split-container">
-        
+
         <!-- Center Table: HERO REGISTRATION QUEUE | APPLICATIONS -->
         <div class="center-table-panel">
-          <div class="table-toolbar" style="flex-wrap: wrap; gap: 0.5rem;">
+          <div class="table-toolbar extracted-style-f83971c46239">
             <!-- PRIMARY ROSTER / QUEUE TOGGLE -->
-            <div style="display: flex; gap: 0.35rem; width: 100%; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;" id="registrarViewModeTabs">
-              <button type="button" class="btn-mini active" id="btnModeQueue" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 4px; font-weight: 800; background: var(--primary); border: 1px solid var(--border-focus); color: var(--bg-app); cursor: pointer;">
+            <div id="registrarViewModeTabs" class="extracted-style-299aba1ea02b">
+              <button type="button" class="btn-mini active extracted-style-138131ac5955" id="btnModeQueue">
                 [1] INTAKE QUEUE (<span id="countPendingQueue">0</span>)
               </button>
-              <button type="button" class="btn-mini" id="btnModeProfiles" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; border-radius: 4px; font-weight: 800; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
-                [2] HUNTER ROSTER (<span id="countActiveProfiles">0</span>)
+              <button type="button" class="btn-mini extracted-style-af9863f3b956" id="btnModeProfiles">
+                [2] HERO ROSTER (<span id="countActiveProfiles">0</span>)
+              </button>
+              <button type="button" class="btn-mini extracted-style-af9863f3b956" id="btnModeRevoked">
+                [3] REVOKED LICENSES (<span id="countRevokedLicenses">0</span>)
               </button>
             </div>
 
-            <div class="card-heading" style="font-size: 0.8rem; margin-right: 0.5rem; display: flex; align-items: center; gap: 0.5rem;" id="currentRosterHeading">
-              <span>HUNTER ROSTER <span style="color: var(--text-subtle); font-weight: 400;">| LICENSED HUNTERS</span></span>
-              <button type="button" class="btn-mini" id="btnRestoreDetailsPanel" style="display: none; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 4px; font-weight: 700; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; cursor: pointer; align-items: center; gap: 4px;" title="Show Hunter Details Panel"><span>[◀ DETAILS]</span></button>
+            <div class="card-heading extracted-style-395c71eec7c5" id="currentRosterHeading">
+              <span>HERO ROSTER <span class="extracted-style-82849070acfb">| LICENSED HEROES</span></span>
+              <button type="button" class="btn-mini extracted-style-d20b7a86b875" id="btnRestoreDetailsPanel"
+                title="Show Hero Details Panel"><span>[◀ DETAILS]</span></button>
             </div>
             <!-- DIVISION FILTER TABS -->
-            <div style="display: flex; gap: 0.35rem;" id="registrarDivisionTabs">
-              <button type="button" class="btn-mini active" data-division="all" id="btnRegTabAll" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: var(--primary); border: 1px solid var(--border-focus); color: var(--bg-app); cursor: pointer;">
+            <div id="registrarDivisionTabs" class="extracted-style-fb7669c6ff22">
+              <button type="button" class="btn-mini active extracted-style-ddaddddaa31d" data-division="all"
+                id="btnRegTabAll">
                 ALL (<span id="countRegAll">0</span>)
               </button>
-              <button type="button" class="btn-mini" data-division="Hero" id="btnRegTabHeroes" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
-                [HUNTERS] (<span id="countRegHeroes">0</span>)
+              <button type="button" class="btn-mini extracted-style-50182f2846c6" data-division="Hero"
+                id="btnRegTabHeroes">
+                [HEROES] (<span id="countRegHeroes">0</span>)
               </button>
-              <button type="button" class="btn-mini" data-division="Sidekick" id="btnRegTabSidekicks" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; border-radius: 4px; font-weight: 700; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;">
-                [APPRENTICES] (<span id="countRegSidekicks">0</span>)
+              <button type="button" class="btn-mini extracted-style-50182f2846c6" data-division="Sidekick"
+                id="btnRegTabSidekicks">
+                [SIDEKICKS] (<span id="countRegSidekicks">0</span>)
               </button>
             </div>
-            <div class="table-search-box" style="margin-left: auto;">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-subtle); flex-shrink: 0;">
+            <div class="table-search-box extracted-style-0c09c5ad1d32">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" class="extracted-style-4b83ed1fb270">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
               <span class="search-prefix">FIND:</span>
               <input type="text" placeholder="Search..." id="queueSearchInput" autocomplete="off">
             </div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);" id="queueCounterBadge">
-              11 Hunters
+            <div id="queueCounterBadge" class="extracted-style-cce8e0fdaf9d">
+              11 Heroes
             </div>
           </div>
 
           <!-- EMPTY QUEUE AUTO-ROUTED TO PROFILES BANNER -->
-          <div id="emptyQueueNotice" style="display: none; margin: 0.75rem 1rem 0; padding: 0.65rem 0.85rem; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); font-size: 0.75rem; color: var(--text-main); align-items: center; justify-content: space-between;">
+          <div id="emptyQueueNotice" class="extracted-style-ba4a15896341">
             <div>
-              <strong>✓ INTAKE QUEUE CLEAR:</strong> No applications are currently pending mana evaluation. Displaying active <strong>Hunter Roster</strong> below.
+              <strong>✓ INTAKE QUEUE CLEAR:</strong> No applications are currently pending registration review. Displaying
+              active <strong>Hero Roster</strong> below.
             </div>
-            <a href="/register" class="btn-mini btn-mini-assess" style="text-decoration:none; padding: 3px 8px; font-size: 0.7rem;">+ Intake New Hunter</a>
+            <a href="/register" class="btn-mini btn-mini-assess extracted-style-34fa800ef623">+ Register New Hero</a>
           </div>
 
           <div class="ghrms-table-wrap">
             <table class="ghrms-table">
               <thead>
                 <tr>
-                  <th>Awakened Hunter / Role</th>
-                  <th>Gate Sector Jurisdiction</th>
-                  <th>Combat Class &amp; Skills</th>
-                  <th>Hunter Rank</th>
+                  <th>Registered Hero / Role</th>
+                  <th>District / Sector Jurisdiction</th>
+                  <th>Combat Class &amp; Abilities</th>
+                  <th>Hero Tier / Rank</th>
                   <th>License Standing</th>
                   <th>Actions</th>
                 </tr>
@@ -298,13 +288,16 @@
           </div>
         </div>
 
-        <div class="panel-split-resizer" id="regDetailsResizer" title="Drag to resize applicant details (double-click to reset)"></div>
+        <div class="panel-split-resizer" id="regDetailsResizer"
+          title="Drag to resize applicant details (double-click to reset)"></div>
 
         <!-- Right Details Panel: HUNTER EVALUATION DOSSIER -->
         <aside class="right-details-panel" id="regRightDetailsPanel">
-          <div class="details-header" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-            <span id="detailsHeaderTitle">HUNTER EVALUATION DOSSIER: APEX <span style="font-weight: 400; color: var(--text-muted);">(Samuel Wright)</span></span>
-            <button type="button" class="btn-mini" id="btnToggleDetailsCollapse" style="padding: 2px 7px; font-size: 0.65rem; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 3px; flex-shrink: 0;" title="Collapse Details Panel">[✕ COLLAPSE]</button>
+          <div class="details-header extracted-style-3c55515aba71">
+            <span id="detailsHeaderTitle">HERO APPLICANT RECORD: APEX <span
+                class="extracted-style-e3231116d4a2">(Samuel Wright)</span></span>
+            <button type="button" class="btn-mini extracted-style-d393423b8a9d" id="btnToggleDetailsCollapse"
+              title="Collapse Details Panel">[✕ COLLAPSE]</button>
           </div>
 
           <!-- Hero Profile Header -->
@@ -312,7 +305,8 @@
             <img src="/img/apex.jpg" alt="Apex Avatar" class="applicant-big-avatar" id="detailsAvatarImg">
             <div class="applicant-profile-meta">
               <span class="applicant-realname" id="detailsRealNameText">Samuel Wright</span>
-              <span class="applicant-meta-row">ALIAS: <strong id="detailsAliasText" style="color: var(--text-main);">APEX</strong></span>
+              <span class="applicant-meta-row">ALIAS: <strong id="detailsAliasText"
+                  class="extracted-style-a8492c877bbf">APEX</strong></span>
               <span class="applicant-meta-row">Age: <span id="detailsAgeText">34</span></span>
               <span class="applicant-meta-row">DOB: <span id="detailsDobText">Aug. 21, 1983</span></span>
               <span class="applicant-meta-row">Location: <span id="detailsLocationText">NYC</span></span>
@@ -320,124 +314,163 @@
           </div>
 
           <!-- DIVISION BADGE & MENTORSHIP HUD -->
-          <div id="regDivisionCard" style="margin: 0.5rem 0 0.6rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+          <div id="regDivisionCard" class="extracted-style-a8aa9ea7548b">
             <div>
-              <span style="font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.04em;">HUNTER RANK / GUILD AFFILIATION</span><br>
-              <span id="regDivisionBadge" style="font-size: 0.78rem; font-weight: 800; color: var(--text-main);">[OFFICIAL LICENSED HUNTER]</span>
-              <div id="regMentorshipSubtext" style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">
-                Apprentice Hunters: <strong id="regAttachedSidekicksText" style="color: var(--text-main);">None</strong>
+              <span class="extracted-style-b5ab015f07b7">HERO CLASSIFICATION &amp; AFFILIATION</span><br>
+              <span id="regDivisionBadge" class="extracted-style-0d5cfb51cd9c">[OFFICIAL LICENSED HERO]</span>
+              <div id="regMentorshipSubtext" class="extracted-style-0218b7888460">
+                Apprentice Heroes / Sidekicks: <strong id="regAttachedSidekicksText"
+                  class="extracted-style-a8492c877bbf">None</strong>
               </div>
             </div>
-            <button type="button" class="btn-mini" id="btnRegPromoteSidekick" style="display: none; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: #c084fc; font-size: 0.7rem; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 4px; cursor: pointer; white-space: nowrap;">
-              [PROMOTE TO FULL HUNTER]
+            <button type="button" class="btn-mini extracted-style-ad963f6bdfaf" id="btnRegPromoteSidekick">
+              [PROMOTE TO FULL HERO]
             </button>
           </div>
 
           <!-- Power Assessment Level Bars -->
           <div class="power-assessment-section">
-            <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem;">
-              MANA MEASUREMENT &amp; COMBAT CLASS
+            <div class="extracted-style-2b982e9eb3b9">
+              POWER ASSESSMENT &amp; COMBAT CLASS
             </div>
 
             <div class="power-bar-item">
               <div class="power-bar-label">
-                <span id="primaryPowerLabel">Combat Class / Skill: Fighter</span>
-                <span id="primaryPowerLevel" style="color: var(--primary-accent);">Level 8/10</span>
+                <span id="primaryPowerLabel">Combat Class / Specialty: Fighter</span>
+                <span id="primaryPowerLevel" class="extracted-style-f1e921c7ab62">Level 8/10</span>
               </div>
               <div class="power-meter-track">
-                <div class="power-meter-fill" id="primaryMeterFill" style="width: 80%;"></div>
+                <div class="power-meter-fill extracted-style-ce2bcc3250d2" id="primaryMeterFill"></div>
               </div>
             </div>
 
             <div class="power-bar-item">
               <div class="power-bar-label">
-                <span id="secondaryPowerLabel">Awakened Skill: Flight</span>
-                <span id="secondaryPowerLevel" style="color: var(--primary-accent);">Level 6/10</span>
+                <span id="secondaryPowerLabel">Primary Power / Ability: Flight</span>
+                <span id="secondaryPowerLevel" class="extracted-style-f1e921c7ab62">Level 6/10</span>
               </div>
               <div class="power-meter-track">
-                <div class="power-meter-fill" id="secondaryMeterFill" style="width: 60%;"></div>
+                <div class="power-meter-fill extracted-style-e60cf6735986" id="secondaryMeterFill"></div>
               </div>
             </div>
 
-            <!-- Verification Checklist -->
-            <div class="verification-checklist">
-              <div class="checklist-row">
-                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span style="flex: 1;">Awakened Identity Check (AES-256 Vault)</span>
-                <button class="btn-mini btn-mini-assess" id="btnDecryptBioVault" style="font-size: 0.65rem;">
-                  [DECRYPT BIO]
-                </button>
-              </div>
-              <div class="checklist-row">
-                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span>Psychological &amp; Combat Aptitude Verified</span>
-              </div>
-              <div class="checklist-row">
-                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span>Mana Core Resonance Stability Clean</span>
-              </div>
-              <div class="checklist-row">
-                <span class="check-icon" style="font-family:var(--font-mono);font-size:0.65rem;font-weight:800;">[OK]</span>
-                <span>Rogue Hunter Record Clean</span>
-              </div>
-            </div>
-
-            <!-- Verification Tags Strip -->
-            <div class="verification-tags-strip">
-              <span>[VERIFIED] Mana Core</span>
-              <span>[VERIFIED] Background</span>
-              <span>[VERIFIED] Association Record</span>
-            </div>
-
-            <!-- Supporting Documents & Verification Section -->
-            <div class="supporting-docs-section" style="margin-top: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 0.65rem;">
-              <div class="card-header-bar" style="padding-bottom: 0.35rem; display: flex; justify-content: space-between; align-items: center;">
-                <span class="card-heading" style="font-size: 0.75rem;">SUPPORTING CREDENTIALS &amp; MANA CERTIFICATES</span>
-                <button type="button" class="btn-mini" id="btnUploadDocRegistrar" onclick="document.getElementById('registrarDocFileInput').click()" style="font-size: 0.65rem; padding: 3px 8px; background: var(--status-blue-bg); border: 1px solid var(--status-blue-border); color: var(--status-blue); font-weight: 800; cursor: pointer; border-radius: var(--radius-sm); font-family: var(--font-mono);" title="Upload Document">
+            <!-- STEP 1: Supporting Documents & Evidence Gating -->
+            <div class="supporting-docs-section" id="regDocsSection"
+              style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.85rem;">
+              <div class="card-header-bar extracted-style-5757fd003cc2">
+                <div>
+                  <span class="card-heading extracted-style-8b511f076fb1">STEP 1 // SUPPORTING CREDENTIALS &amp;
+                    EVIDENCE</span>
+                  <div id="regEvidenceGateStatus" class="evidence-gate-badge pending">
+                    <span>⏳</span> <span>Evidence Gate: Official ID &amp; Hero Certification review required</span>
+                  </div>
+                </div>
+                <button type="button" class="btn-mini extracted-style-a5d54d85ea90" id="btnUploadDocRegistrar"
+                  onclick="document.getElementById('registrarDocFileInput').click()" title="Upload Supporting Document">
                   + [UPLOAD FILE]
                 </button>
               </div>
-              <input type="file" id="registrarDocFileInput" style="display: none;" onchange="handleRegistrarDocUpload(event)" accept=".pdf,.png,.jpg,.jpeg,.webp">
-              <div id="registrarDocsList" style="display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.45rem;">
+              <input type="file" id="registrarDocFileInput" onchange="handleRegistrarDocUpload(event)"
+                accept=".pdf,.png,.jpg,.jpeg,.webp" class="extracted-style-6e22c58a7a6a">
+              <div id="registrarDocsList" class="extracted-style-6be31bc4da13">
                 <!-- Dynamically populated via renderRegistrarDocs() -->
+              </div>
+            </div>
+
+            <!-- STEP 2: Civilian Identity & Accords Certification -->
+            <div class="verification-checklist-container" id="regIdentitySection"
+              style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:0.85rem;margin-top:0.85rem;">
+              <div class="card-header-bar"
+                style="margin-bottom:0.5rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;">
+                <span class="card-heading"
+                  style="font-size:0.75rem;font-weight:800;letter-spacing:0.05em;color:var(--text-main);">
+                  STEP 2 // IDENTITY &amp; ELIGIBILITY VERIFICATION
+                </span>
+                <span id="regIdentityStatusBadge" class="doc-badge doc-badge-pending">PENDING</span>
+              </div>
+              <div class="field-subtext" style="font-size:0.7rem;color:var(--text-muted);margin-bottom:0.6rem;">
+                Cross-reference decrypted bio vault with certified supporting documents before verifying operative
+                identity.
+              </div>
+
+              <!-- Dynamic Verification Checklist -->
+              <div class="verification-checklist" id="regVerificationChecklist">
+                <div class="checklist-row">
+                  <span id="chkEvidenceGate" class="check-icon checklist-check-pending">[⏳]</span>
+                  <span id="chkEvidenceGateLabel">Official ID &amp; Hero Certification Documents Certified</span>
+                </div>
+                <div class="checklist-row">
+                  <span id="chkVaultDecrypted" class="check-icon checklist-check-pending">[⏳]</span>
+                  <span style="flex:1;">Civilian Legal Identity Checked (AES-256 Vault)</span>
+                  <button class="btn-mini btn-mini-assess extracted-style-a6c62bdf9337" id="btnDecryptBioVault">
+                    [DECRYPT BIO]
+                  </button>
+                </div>
+                <div class="checklist-row">
+                  <span class="check-icon checklist-check-ok">[OK]</span>
+                  <span>Psychological Aptitude &amp; Threat Tier Clean</span>
+                </div>
+                <div class="checklist-row">
+                  <span class="check-icon checklist-check-ok">[OK]</span>
+                  <span>Rogue Containment Infraction Audit Clean</span>
+                </div>
+              </div>
+
+              <!-- Dedicated Operative Identity Verification Action -->
+              <div style="margin-top:0.75rem;padding-top:0.65rem;border-top:1px solid var(--border-color);">
+                <div id="regIdentityVerifiedCard" style="display:none;" class="identity-verified-card">
+                  <div class="verified-title">✓ APPLICANT IDENTITY &amp; ELIGIBILITY VERIFIED</div>
+                  <div class="verified-meta" id="regIdentityVerifiedMeta">Certified by Sarah Chen</div>
+                  <div class="verified-notes" id="regIdentityVerifiedNotes">Audit Notes: "Civilian identity verified."
+                  </div>
+                </div>
+                <button type="button" id="btnVerifyOperativeIdentity" class="btn btn-verify-identity-active"
+                  style="width:100%;padding:0.65rem 1rem;font-weight:800;font-size:0.78rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:0.03em;transition:all 0.15s ease;">
+                  <span>✓</span> <span id="btnVerifyOperativeIdentityText">[VERIFY APPLICANT IDENTITY]</span>
+                </button>
+                <div id="regIdentityHelperText"
+                  style="font-size:0.68rem;color:var(--text-muted);text-align:center;margin-top:4px;">
+                  Certifies civilian identity and authorizes operative for field licensing.
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Confirmation Card -->
-          <div class="confirmation-section">
-            <div class="card-header-bar" style="padding-bottom: 0.35rem;">
-              <span class="card-heading" style="font-size: 0.75rem;">EVALUATION CONFIRMATION &amp; ACTIONS</span>
-              <button class="icon-button" style="font-size: 0.8rem;">[LOG]</button>
+          <!-- STEP 3: Licensing Accreditation & Directives -->
+          <div class="confirmation-section" id="regLicensingSection">
+            <div class="card-header-bar extracted-style-e28821912d56">
+              <span class="card-heading extracted-style-8b511f076fb1">STEP 3 // LICENSE ISSUANCE &amp;
+                APPROVAL</span>
+              <button class="icon-button extracted-style-aae30f4ce161" onclick="openBadgeVerifierModal()"
+                title="Anti-Spoof Field Badge Authenticator">[TOTP]</button>
             </div>
-            <div class="field-subtext">Review, edit, or issue official license credentials for this Awakened Hunter.</div>
+            <div class="field-subtext">Issue official field license, print identification credential, or manage
+              directives.</div>
             <!-- Dynamic Revocation Warning Banner if revoked -->
-            <div id="registrarRevocationBanner" style="display:none; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); border-radius: var(--radius-sm); padding: 0.5rem 0.65rem; margin-top: 0.4rem; font-size: 0.72rem; color: #f87171;">
+            <div id="registrarRevocationBanner" class="extracted-style-fb541ba4f633">
               <strong>[REVOKED DIRECTIVE]:</strong> <span id="registrarRevocationReasonText"></span>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.5rem;">
-              <div id="approvedStatusNotice" style="display:none; background:rgba(16,185,129,0.15); border:1px solid #10b981; border-radius:var(--radius-sm); padding:0.55rem; text-align:center; color:#34d399; font-weight:800; font-size:0.78rem; letter-spacing:0.04em;">
-                ✓ [HUNTER APPROVED &amp; LICENSED]
+            <div class="extracted-style-ca1a42391630">
+              <div id="approvedStatusNotice" class="extracted-style-1913b02d1800">
+                ✓ [HERO APPROVED &amp; LICENSED]
               </div>
               <button class="btn-confirm-final" id="btnFinalRegistration">
-                [CONFIRM HUNTER LICENSURE]
+                [★ APPROVE REGISTRATION &amp; ISSUE LICENSE]
               </button>
-              <button class="btn-mini btn-mini-assess" id="btnEditSelectedHero"
-                onclick="openEditModal(registrarState.selectedHeroId)"
-                style="padding: 0.5rem; font-size: 0.78rem; width: 100%;">
-                [EDIT HUNTER DOSSIER]
+              <div id="finalRegGuidanceText"
+                style="font-size:0.68rem;color:var(--text-muted);text-align:center;margin-top:3px;"></div>
+              <button class="btn-mini btn-mini-assess extracted-style-39913efbae05" id="btnEditSelectedHero"
+                onclick="openEditModal(registrarState.selectedHeroId)">
+                [EDIT HERO PROFILE]
               </button>
-              <button class="btn-mini" id="btnEnrollSidekick"
-                style="padding: 0.5rem; font-size: 0.78rem; width: 100%; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.4); color: #a78bfa; border-radius: var(--radius-sm); cursor: pointer;">
+              <button class="btn-mini extracted-style-33dbec875464" id="btnEnrollSidekick">
                 [ENROLL AS GUILD APPRENTICE]
               </button>
-              <button type="button" class="btn" id="btnChangeHeroPasskeyReg"
-                style="padding: 0.55rem; font-size: 0.78rem; width: 100%; font-weight: 700; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 2px 8px rgba(245,158,11,0.15);">
+              <button type="button" class="btn extracted-style-ccc674f838af" id="btnChangeHeroPasskeyReg">
                 <span>🔑 [CHANGE HUNTER PASSKEY]</span>
               </button>
-              <button type="button" class="btn" id="btnRegistrarPrintIdCard"
-                onclick="openHeroIdCardModal(registrarState.selectedHeroId)"
-                style="padding: 0.55rem; font-size: 0.78rem; width: 100%; font-weight: 800; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%); border: 1.5px solid #38bdf8; color: #38bdf8; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);">
+              <button type="button" class="btn extracted-style-210ec94e0e2a" id="btnRegistrarPrintIdCard"
+                onclick="openHeroIdCardModal(registrarState.selectedHeroId)">
                 <span>🪪</span> <span>[ISSUE OFFICIAL HUNTER LICENSE CARD]</span>
               </button>
             </div>
@@ -450,11 +483,11 @@
 
   <!-- AES-256 Vault Bio Decrypt Modal -->
   <div class="ghrms-modal-overlay" id="vaultBioModal" role="dialog" aria-modal="true" aria-label="Decrypted Bio Vault">
-    <div class="ghrms-modal-box" style="max-width: 460px;">
+    <div class="ghrms-modal-box extracted-style-30e7c9af875f">
       <div class="ghrms-modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="extracted-style-378e76576ae0">
           <span>AES-256 IDENTITY VAULT</span>
-          <span style="font-size: 0.68rem; padding: 1px 6px; border-radius: 3px; background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3);">PRIVILEGED SESSION</span>
+          <span class="extracted-style-4f47e4d1b8e3">PRIVILEGED SESSION</span>
         </div>
         <button class="icon-button" id="closeVaultModalBtn">[X]</button>
       </div>
@@ -465,34 +498,39 @@
   <!-- ════════════════════════════════════════════
        IN-PAGE DOCUMENT VIEWER & LIGHTBOX (Same Tab + Enlarge + Print)
        ════════════════════════════════════════════ -->
-  <div class="ghrms-modal-overlay" id="docViewerModal" role="dialog" aria-modal="true" aria-label="Official Document Viewer" style="z-index: 1200;">
-    <div class="ghrms-modal-box" style="max-width: 920px; width: 95%; max-height: 94vh; display: flex; flex-direction: column;">
-      <div class="ghrms-modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 1rem;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.15rem;">📄</span>
-          <span id="docViewerTitle" style="font-weight: 800; font-size: 0.95rem; letter-spacing: 0.04em;">[DOCUMENT PREVIEW]</span>
-          <span id="docViewerStatusBadge" class="doc-badge doc-badge-verified" style="font-size: 0.68rem; margin-left: 6px;">VERIFIED</span>
+  <div class="ghrms-modal-overlay extracted-style-31eafe74f5d6" id="docViewerModal" role="dialog" aria-modal="true"
+    aria-label="Official Document Viewer">
+    <div class="ghrms-modal-box extracted-style-d3afff874527">
+      <div class="ghrms-modal-header extracted-style-a27004ff9601">
+        <div class="extracted-style-378e76576ae0">
+          <span class="extracted-style-49518493b854">📄</span>
+          <span id="docViewerTitle" class="extracted-style-1a240a9888bb">[DOCUMENT PREVIEW]</span>
+          <span id="docViewerStatusBadge"
+            class="doc-badge doc-badge-verified extracted-style-4f3c11716ef5">VERIFIED</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button type="button" class="btn-mini btn-mini-assess" id="btnDocViewerPrint" onclick="printCurrentDoc()" style="padding: 4px 12px; font-size: 0.75rem; font-weight: 700; cursor: pointer;">
+        <div class="extracted-style-378e76576ae0">
+          <button type="button" class="btn-mini btn-mini-assess extracted-style-798b8b25dca5" id="btnDocViewerPrint"
+            onclick="printCurrentDoc()">
             🖨️ [PRINT DOCUMENT]
           </button>
-          <a id="btnDocViewerDownload" href="#" download class="btn-mini" style="text-decoration: none; padding: 4px 10px; font-size: 0.75rem; background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600;">
+          <a id="btnDocViewerDownload" href="#" download class="btn-mini extracted-style-5f021d13fe44">
             ⬇️ [DOWNLOAD]
           </a>
-          <button type="button" class="icon-button" id="closeDocViewerBtn" onclick="closeDocViewer()" style="padding: 4px 8px; font-weight: 800; cursor: pointer;">[X]</button>
+          <button type="button" class="icon-button extracted-style-4025c75ba411" id="closeDocViewerBtn"
+            onclick="closeDocViewer()">[X]</button>
         </div>
       </div>
-      <div class="ghrms-modal-body" style="padding: 1rem; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #070a12; min-height: 440px; flex: 1;">
-        <div id="docViewerContent" style="width: 100%; display: flex; justify-content: center; align-items: center;">
+      <div class="ghrms-modal-body extracted-style-c10319a26bb4">
+        <div id="docViewerContent" class="extracted-style-ff69944e3fc1">
           <!-- Dynamically populated: enlarged image or iframe PDF -->
         </div>
       </div>
-      <div style="padding: 0.5rem 1rem; border-top: 1px solid var(--border-color); background: var(--bg-surface); font-size: 0.72rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+      <div class="extracted-style-7dd268ea9a66">
         <span id="docViewerMeta">Accord Standard 701-A // Official Supporting Document Verification</span>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <span style="font-family: var(--font-mono); color: #38bdf8;">SECURE VAULT ATTACHMENT</span>
-          <button type="button" onclick="toggleDocZoom()" class="btn-mini" style="font-size: 0.68rem; padding: 2px 8px; background: rgba(255,255,255,0.05); color: var(--text-muted);">[TOGGLE FULLSIZE]</button>
+        <div class="extracted-style-d8c16219b6c4">
+          <span class="extracted-style-795335854ce1">SECURE VAULT ATTACHMENT</span>
+          <button type="button" onclick="toggleDocZoom()" class="btn-mini extracted-style-3c47a5737121">[TOGGLE
+            FULLSIZE]</button>
         </div>
       </div>
     </div>
@@ -502,20 +540,20 @@
        HERO EDIT MODAL (Full Registry Info Editable — Every Last Field)
        ════════════════════════════════════════════ -->
   <div class="ghrms-modal-overlay" id="heroEditModal" role="dialog" aria-modal="true" aria-label="Edit Hero Record">
-    <div class="ghrms-modal-box" style="max-width: 780px; width: 95%; max-height: 92vh; display: flex; flex-direction: column;">
-      <div class="ghrms-modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="ghrms-modal-box extracted-style-20b6c4e947f6">
+      <div class="ghrms-modal-header extracted-style-3490dbc8a70a">
         <span id="editHeroModalTitle">[EDIT OPERATIVE REGISTRY RECORD — ALL FIELDS EDITABLE]</span>
         <button class="icon-button" id="closeEditModalBtn">[X]</button>
       </div>
-      <form class="ghrms-modal-body" id="heroEditForm" style="gap: 1rem; overflow-y: auto; padding: 1rem;">
+      <form class="ghrms-modal-body extracted-style-4f36c88039a5" id="heroEditForm">
 
         <!-- 1. Confidential Civilian Vault Identity -->
-        <div style="border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.03); border-radius: var(--radius-sm); padding: 10px 14px;">
-          <div style="font-size: 0.75rem; font-weight: 800; color: #f87171; letter-spacing: 0.05em; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="extracted-style-04f0257bd0fb">
+          <div class="extracted-style-e2993018cf13">
             <span>1. 🔒 CONFIDENTIAL CIVILIAN VAULT IDENTITY (LEVEL 3+ RESTRICTED)</span>
-            <span style="font-size: 0.68rem; color: #fca5a5; font-family: var(--font-mono);">[AES-256 ENCRYPTED]</span>
+            <span class="extracted-style-70ad61ffe817">[AES-256 ENCRYPTED]</span>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="extracted-style-1e8a8820b26f">
             <div class="form-field-group">
               <label class="field-label-text">Civilian Legal Real Name *</label>
               <input type="text" class="ghrms-input" id="editHeroRealName" placeholder="e.g. Marcus Vance" required>
@@ -525,7 +563,7 @@
               <input type="text" class="ghrms-input" id="editHeroGovId" placeholder="e.g. FED-9GH-8430" required>
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-d20fb9b61c96">
             <div class="form-field-group">
               <label class="field-label-text">Date of Birth</label>
               <input type="text" class="ghrms-input" id="editHeroDob" placeholder="e.g. Aug. 21, 1983">
@@ -545,20 +583,22 @@
               </select>
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-ca7dfb065fe2">
             <div class="form-field-group">
               <label class="field-label-text">Contact Phone / Handler Line</label>
               <input type="text" class="ghrms-input" id="editHeroContact" placeholder="e.g. +1 (555) 839-4910">
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Emergency Contact Name &amp; Relation</label>
-              <input type="text" class="ghrms-input" id="editHeroEmergencyContact" placeholder="e.g. Dr. Karen Wright (Spouse)">
+              <input type="text" class="ghrms-input" id="editHeroEmergencyContact"
+                placeholder="e.g. Dr. Karen Wright (Spouse)">
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-ca7dfb065fe2">
             <div class="form-field-group">
               <label class="field-label-text">Confidential Safehouse Address</label>
-              <input type="text" class="ghrms-input" id="editHeroSafehouse" placeholder="e.g. 742 Lexington Ave, Penthouse 44">
+              <input type="text" class="ghrms-input" id="editHeroSafehouse"
+                placeholder="e.g. 742 Lexington Ave, Penthouse 44">
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Biometric DNA Reference Code</label>
@@ -568,11 +608,11 @@
         </div>
 
         <!-- 2. Hero Callsign, Licensure & Standing -->
-        <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
-          <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-accent); letter-spacing: 0.05em; margin-bottom: 8px;">
+        <div class="extracted-style-3fbf75892c5b">
+          <div class="extracted-style-0a2731a81bf1">
             2. HERO CALLSIGN, LICENSURE &amp; STANDING
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
+          <div class="extracted-style-8b298c9aeae9">
             <div class="form-field-group">
               <label class="field-label-text">Hero Alias / Callsign *</label>
               <input type="text" class="ghrms-input" id="editHeroAlias" placeholder="e.g. APEX" required>
@@ -596,10 +636,11 @@
               <input type="text" class="ghrms-input" id="editHeroLicense" placeholder="e.g. GHRMS-LIC-9GH-8430">
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-d20fb9b61c96">
             <div class="form-field-group">
               <label class="field-label-text">Assigned Sector Jurisdiction</label>
-              <input type="text" class="ghrms-input" id="editRegion" placeholder="Sector 1 - Poblacion Central Commercial Grid">
+              <input type="text" class="ghrms-input" id="editRegion"
+                placeholder="Sector 1 - Poblacion Central Commercial Grid">
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Registry Gov Code</label>
@@ -615,69 +656,77 @@
               </select>
             </div>
           </div>
-          <div class="form-field-group" style="margin-top: 8px;">
+          <div class="form-field-group extracted-style-5313025c2edb">
             <label class="field-label-text">Avatar / Profile Picture URL</label>
-            <input type="text" class="ghrms-input" id="editHeroAvatar" placeholder="e.g. /img/apex.jpg or /uploads/avatars/face_xxxx.jpg">
+            <input type="text" class="ghrms-input" id="editHeroAvatar"
+              placeholder="e.g. /img/apex.jpg or /uploads/avatars/face_xxxx.jpg">
           </div>
         </div>
 
         <!-- 3. Powers, Abilities & Combat Profile -->
-        <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
-          <div style="font-size: 0.75rem; font-weight: 800; color: #38bdf8; letter-spacing: 0.05em; margin-bottom: 8px;">
+        <div class="extracted-style-3fbf75892c5b">
+          <div class="extracted-style-4da9380db367">
             3. SUPERHUMAN POWER SPECIFICATIONS &amp; COMBAT PROFILE
           </div>
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem;">
+          <div class="extracted-style-3f9b5eb0b169">
             <div class="form-field-group">
               <label class="field-label-text">Primary Power Classification *</label>
-              <input type="text" class="ghrms-input" id="editPrimaryPower" placeholder="e.g. Enhanced Strength" required>
+              <input type="text" class="ghrms-input" id="editPrimaryPower" placeholder="e.g. Enhanced Strength"
+                required>
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Power Output Level (1–100%)</label>
               <input type="number" class="ghrms-input" id="editPrimaryPct" placeholder="80" min="1" max="100">
             </div>
           </div>
-          <div class="form-field-group" style="margin-top: 8px;">
+          <div class="form-field-group extracted-style-5313025c2edb">
             <label class="field-label-text">Comprehensive Power Description</label>
-            <textarea class="ghrms-input" id="editPowerDesc" rows="2" placeholder="Full power description and physiological mechanisms..."></textarea>
+            <textarea class="ghrms-input" id="editPowerDesc" rows="2"
+              placeholder="Full power description and physiological mechanisms..."></textarea>
           </div>
-          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-7b2d5d69644b">
             <div class="form-field-group">
               <label class="field-label-text">Secondary Powers Listing</label>
-              <input type="text" class="ghrms-input" id="editSecondaryPower" placeholder="e.g. Flight, Thermal Shielding">
+              <input type="text" class="ghrms-input" id="editSecondaryPower"
+                placeholder="e.g. Flight, Thermal Shielding">
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Secondary Output (1–100%)</label>
               <input type="number" class="ghrms-input" id="editSecondaryPct" placeholder="60" min="1" max="100">
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-ca7dfb065fe2">
             <div class="form-field-group">
               <label class="field-label-text">Tactical Combat Style &amp; Role</label>
-              <input type="text" class="ghrms-input" id="editCombatStyle" placeholder="e.g. Vanguard Striker, Frontline Breacher">
+              <input type="text" class="ghrms-input" id="editCombatStyle"
+                placeholder="e.g. Vanguard Striker, Frontline Breacher">
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Key Abilities &amp; Non-Powered Skills</label>
-              <input type="text" class="ghrms-input" id="editAbilitiesSkills" placeholder="e.g. Krav Maga, Tactical Leadership">
+              <input type="text" class="ghrms-input" id="editAbilitiesSkills"
+                placeholder="e.g. Krav Maga, Tactical Leadership">
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 8px;">
+          <div class="extracted-style-ca7dfb065fe2">
             <div class="form-field-group">
               <label class="field-label-text">Operational Strengths</label>
-              <textarea class="ghrms-input" id="editStrengths" rows="2" placeholder="Tactical strengths, crowd control, kinetic tolerance..."></textarea>
+              <textarea class="ghrms-input" id="editStrengths" rows="2"
+                placeholder="Tactical strengths, crowd control, kinetic tolerance..."></textarea>
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Limitations / Weaknesses &amp; Vulnerabilities</label>
-              <textarea class="ghrms-input" id="editWeaknesses" rows="2" placeholder="Psychological triggers, thermal depletion, medical vulnerabilities..."></textarea>
+              <textarea class="ghrms-input" id="editWeaknesses" rows="2"
+                placeholder="Psychological triggers, thermal depletion, medical vulnerabilities..."></textarea>
             </div>
           </div>
         </div>
 
         <!-- 4. Hunter Rank, Raid Readiness & Guild Mentorship -->
-        <div style="border: 1px solid var(--border-color); background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); padding: 10px 14px;">
-          <div style="font-size: 0.75rem; font-weight: 800; color: #fbbf24; letter-spacing: 0.05em; margin-bottom: 8px;">
+        <div class="extracted-style-3fbf75892c5b">
+          <div class="extracted-style-8712c7907f2e">
             4. HUNTER RANK CALIBRATION, RAID READINESS &amp; GUILD MENTORSHIP
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem;">
+          <div class="extracted-style-8b298c9aeae9">
             <div class="form-field-group">
               <label class="field-label-text">Hunter Rank / Threat Tier (0–6)</label>
               <select class="ghrms-select" id="editThreatTier">
@@ -692,45 +741,50 @@
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Power Control Level</label>
-              <input type="text" class="ghrms-input" id="editControlLevel" placeholder="e.g. Mastered / Absolute (Tier-A)">
+              <input type="text" class="ghrms-input" id="editControlLevel"
+                placeholder="e.g. Mastered / Absolute (Tier-A)">
             </div>
             <div class="form-field-group">
               <label class="field-label-text">Combat Effectiveness Rating (1–100%)</label>
               <input type="number" class="ghrms-input" id="editCombatRating" placeholder="75" min="1" max="100">
             </div>
           </div>
-          <div class="form-field-group" style="margin-top: 8px;">
+          <div class="form-field-group extracted-style-5313025c2edb">
             <label class="field-label-text">Tactical Gear Manifest (Comma Separated)</label>
-            <input type="text" class="ghrms-input" id="editHeroGear" placeholder="e.g. Kevlar Weave Suit, EMP Disrupter, Grapple Hook">
+            <input type="text" class="ghrms-input" id="editHeroGear"
+              placeholder="e.g. Kevlar Weave Suit, EMP Disrupter, Grapple Hook">
           </div>
-          <div class="form-field-group" style="margin-top: 8px;">
+          <div class="form-field-group extracted-style-5313025c2edb">
             <label class="field-label-text">Training Records &amp; Field Readiness</label>
-            <textarea class="ghrms-input" id="editTraining" rows="2" placeholder="Academy honors, tactical hours logged, disaster response certifications..."></textarea>
+            <textarea class="ghrms-input" id="editTraining" rows="2"
+              placeholder="Academy honors, tactical hours logged, disaster response certifications..."></textarea>
           </div>
-          <div class="form-field-group" style="margin-top: 8px;">
+          <div class="form-field-group extracted-style-5313025c2edb">
             <label class="field-label-text">Assessment Notes &amp; Risk Mitigation Directives</label>
-            <textarea class="ghrms-input" id="editAssessmentNotes" rows="2" placeholder="Official officer evaluation notes, psychological clearance, safety parameters..."></textarea>
+            <textarea class="ghrms-input" id="editAssessmentNotes" rows="2"
+              placeholder="Official officer evaluation notes, psychological clearance, safety parameters..."></textarea>
           </div>
           <!-- Sidekick / Mentor Selection -->
-          <div class="form-field-group" style="background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 8px;">
-            <label class="field-label-text" style="color: #a78bfa;">[SIDEKICK DIVISION] Assign Senior Mentor</label>
-            <div class="field-subtext" style="margin-bottom: 0.5rem;">Select a mentor to link this operative as their sidekick. Leave blank for independent hero status.</div>
+          <div class="form-field-group extracted-style-19b17ff2e037">
+            <label class="field-label-text extracted-style-b18427974bba">[SIDEKICK DIVISION] Assign Senior
+              Mentor</label>
+            <div class="field-subtext extracted-style-3d43560d7f56">Select a mentor to link this operative as their
+              sidekick. Leave blank for independent hero status.</div>
             <select class="ghrms-select" id="editMentorSelect">
               <option value="">— No mentor / Keep independent —</option>
             </select>
           </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 8px;">
-          <span style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);">
+        <div class="extracted-style-58543127cbcd">
+          <span class="extracted-style-ee376d79ada2">
             * All changes permanently committed to SHA-256 Audit Ledger under active account
           </span>
-          <div style="display: flex; gap: 0.5rem;">
-            <button type="button" class="btn btn-secondary" id="cancelEditBtn"
-              onclick="document.getElementById('heroEditModal').classList.remove('active')"
-              style="padding: 0.5rem 1rem; font-size: 0.8rem;">Cancel</button>
-            <button type="submit" class="btn-confirm-final" id="btnSaveEditHero"
-              style="padding: 0.5rem 1.4rem; font-size: 0.8rem;">[SAVE ALL CHANGES &amp; AUDIT]</button>
+          <div class="extracted-style-dc1de60044b9">
+            <button type="button" class="btn btn-secondary extracted-style-3b0acc6cab20" id="cancelEditBtn"
+              onclick="document.getElementById('heroEditModal').classList.remove('active')">Cancel</button>
+            <button type="submit" class="btn-confirm-final extracted-style-bc9eaf36b974" id="btnSaveEditHero">[SAVE ALL
+              CHANGES &amp; AUDIT]</button>
           </div>
         </div>
       </form>
@@ -740,26 +794,31 @@
   <!-- ════════════════════════════════════════════
        REVOKE LICENSE REASON MODAL (Registrar Desk)
        ════════════════════════════════════════════ -->
-  <div class="ghrms-modal-overlay" id="revokeLicenseModal" role="dialog" aria-modal="true" aria-label="Revoke Hero License">
-    <div class="ghrms-modal-box" style="max-width: 500px;">
-      <div class="ghrms-modal-header" style="background: rgba(239,68,68,0.12); border-bottom: 1px solid rgba(239,68,68,0.3); color: #f87171;">
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-weight: 800; font-family: var(--font-mono); color: #f87171;">[DIRECTIVE]</span>
-          <span style="font-weight: 800;">REVOKE HERO LICENSE: <span id="revokeModalAliasTitle">APEX</span></span>
+  <div class="ghrms-modal-overlay" id="revokeLicenseModal" role="dialog" aria-modal="true"
+    aria-label="Revoke Hero License">
+    <div class="ghrms-modal-box extracted-style-0f6ba93d4aac">
+      <div class="ghrms-modal-header extracted-style-d028e39ee07d">
+        <div class="extracted-style-a60992811119">
+          <span class="extracted-style-7c388a4978c9">[DIRECTIVE]</span>
+          <span class="extracted-style-3387c613ea30">REVOKE HERO LICENSE: <span
+              id="revokeModalAliasTitle">APEX</span></span>
         </div>
         <button class="icon-button" id="closeRevokeModalBtn">[X]</button>
       </div>
-      <form class="ghrms-modal-body" id="revokeLicenseForm" style="padding: 1.25rem; gap: 0.85rem;">
-        <div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
-          Revoking this license will suspend active credentials and notify the hero. Enter an official reason below or designate it as confidential.
+      <form class="ghrms-modal-body extracted-style-4e8b65d134c9" id="revokeLicenseForm">
+        <div class="extracted-style-9aad1a02c47a">
+          Revoking this license will suspend active credentials and notify the hero. Enter an official reason below or
+          designate it as confidential.
         </div>
 
         <div class="form-field-group">
           <label class="field-label-text">Revocation Category / Preset</label>
           <select class="ghrms-select" id="revokeReasonCategory">
-            <option value="Accord Violation (Code 104 - Collateral Threat)">Accord Violation (Code 104 - Collateral Threat)</option>
+            <option value="Accord Violation (Code 104 - Collateral Threat)">Accord Violation (Code 104 - Collateral
+              Threat)</option>
             <option value="Power Volatility & Containment Breach">Power Volatility & Containment Breach</option>
-            <option value="Failure of Mandatory Face-to-Face Evaluation">Failure of Mandatory Face-to-Face Evaluation</option>
+            <option value="Failure of Mandatory Face-to-Face Evaluation">Failure of Mandatory Face-to-Face Evaluation
+            </option>
             <option value="Civic Misconduct / Criminal Allegation">Civic Misconduct / Criminal Allegation</option>
             <option value="Classified Security Directive">Classified Security Directive (Confidential)</option>
             <option value="custom">Custom Specific Reason...</option>
@@ -768,23 +827,27 @@
 
         <div class="form-field-group">
           <label class="field-label-text">Official Reason & Notice for Operative *</label>
-          <textarea class="ghrms-input" id="revokeReasonText" rows="3" required placeholder="State why the license is being revoked or details of the directive..."></textarea>
-          <span style="font-size: 0.68rem; color: var(--text-subtle);">This reason will automatically appear on the hero's portal upon login.</span>
+          <textarea class="ghrms-input" id="revokeReasonText" rows="3" required
+            placeholder="State why the license is being revoked or details of the directive..."></textarea>
+          <span class="extracted-style-0889d39f8a19">This reason will automatically appear on the hero's portal upon
+            login.</span>
         </div>
 
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-sm);">
-          <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer;">
-            <input type="checkbox" id="revokeConfidentialCheck" style="margin-top: 2px;">
-            <div style="font-size: 0.75rem; color: var(--text-main);">
+        <div class="extracted-style-339a84651a26">
+          <label class="extracted-style-25a913702439">
+            <input type="checkbox" id="revokeConfidentialCheck" class="extracted-style-3e967279bfee">
+            <div class="extracted-style-5d46349f241e">
               <strong>[CLASSIFIED] Mark as Confidential Directive (Clearance L5)</strong><br>
-              <span style="color: var(--text-muted); font-size: 0.7rem;">Operative will be shown a Classified Security Directive notice without exposing sensitive internal details.</span>
+              <span class="extracted-style-04d7ef79d55e">Operative will be shown a Classified Security Directive notice
+                without exposing sensitive internal details.</span>
             </div>
           </label>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
-          <button type="button" class="btn btn-secondary" id="cancelRevokeBtn" style="padding: 0.45rem 1rem; font-size: 0.78rem;">Cancel</button>
-          <button type="submit" class="btn" style="background: #ef4444; border: 1px solid #f87171; color: #fff; font-weight: 700; padding: 0.45rem 1.25rem; font-size: 0.78rem; border-radius: var(--radius-sm); cursor: pointer;">
+        <div class="extracted-style-8cc456afba83">
+          <button type="button" class="btn btn-secondary extracted-style-6b41e478fe40"
+            id="cancelRevokeBtn">Cancel</button>
+          <button type="submit" class="btn extracted-style-ec7574f8ab2b">
             [CONFIRM REVOCATION]
           </button>
         </div>
@@ -796,17 +859,25 @@
        CHAINED AUDIT LEDGER MODAL (Registrar View)
        ════════════════════════════════════════════ -->
   <div class="ghrms-modal-overlay" id="auditLedgerModal" role="dialog" aria-modal="true" aria-label="Audit Ledger">
-    <div class="ghrms-modal-box" style="max-width: 760px; max-height: 520px;">
+    <div class="ghrms-modal-box extracted-style-bdb3f25a8e61">
       <div class="ghrms-modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="extracted-style-378e76576ae0">
           <span>CHAINED AUDIT LEDGER</span>
-          <span style="font-size: 0.68rem; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);">SHA-256</span>
+          <span class="extracted-style-5ac67b989fee">SHA-256</span>
         </div>
         <button class="icon-button" id="closeAuditModalBtn">[X]</button>
       </div>
-      <div class="ghrms-modal-body" style="max-height: 420px; overflow-y: auto;">
+      <div class="ghrms-modal-body extracted-style-f684324c44de">
         <table class="ghrms-table">
-          <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Target</th><th>Hash</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Target</th>
+              <th>Hash</th>
+            </tr>
+          </thead>
           <tbody id="auditTableBodyReg"></tbody>
         </table>
       </div>
@@ -816,15 +887,16 @@
   <!-- ════════════════════════════════════════════
        PENDING HERO UPDATE APPROVALS MODAL
        ════════════════════════════════════════════ -->
-  <div class="ghrms-modal-overlay" id="pendingApprovalsModal" role="dialog" aria-modal="true" aria-label="Pending Update Approvals">
-    <div class="ghrms-modal-box" style="max-width: 720px; max-height: 580px;">
+  <div class="ghrms-modal-overlay" id="pendingApprovalsModal" role="dialog" aria-modal="true"
+    aria-label="Pending Update Approvals">
+    <div class="ghrms-modal-box extracted-style-8db30ccaf68a">
       <div class="ghrms-modal-header">
         <span>[PENDING HERO UPDATE REQUESTS]</span>
         <button class="icon-button" id="closePendingModalBtn">[X]</button>
       </div>
-      <div class="ghrms-modal-body" style="max-height: 480px; overflow-y: auto; padding: 0;">
-        <div id="pendingApprovalsList" style="display: flex; flex-direction: column; gap: 0;"></div>
-        <div id="pendingApprovalsEmpty" style="display:none; text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem;">
+      <div class="ghrms-modal-body extracted-style-1a70c80ea13a">
+        <div id="pendingApprovalsList" class="extracted-style-6312ef9a2c7e"></div>
+        <div id="pendingApprovalsEmpty" class="extracted-style-f0191776d420">
           [ALL CLEAR] No pending update requests.
         </div>
       </div>
@@ -834,18 +906,20 @@
   <!-- ════════════════════════════════════════════
        HERO PASSKEY / PASSWORD RESET MODAL
        ════════════════════════════════════════════ -->
-  <div class="ghrms-modal-overlay" id="heroPasskeyResetModal" role="dialog" aria-modal="true" aria-label="Reset Hero Passkey">
-    <div class="ghrms-modal-box" style="max-width: 500px;">
-      <div class="ghrms-modal-header" style="background: rgba(245,158,11,0.1); border-bottom: 1px solid rgba(245,158,11,0.3); color: #fbbf24;">
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-weight: 800; font-family: var(--font-mono); color: #f59e0b;">[AUTH]</span>
-          <span style="font-weight: 800;">HERO SECURITY PASSKEY RESET</span>
+  <div class="ghrms-modal-overlay" id="heroPasskeyResetModal" role="dialog" aria-modal="true"
+    aria-label="Reset Hero Passkey">
+    <div class="ghrms-modal-box extracted-style-0f6ba93d4aac">
+      <div class="ghrms-modal-header extracted-style-86f721cbb897">
+        <div class="extracted-style-a60992811119">
+          <span class="extracted-style-695293279426">[AUTH]</span>
+          <span class="extracted-style-3387c613ea30">HERO SECURITY PASSKEY RESET</span>
         </div>
         <button class="icon-button" id="closePasskeyModalBtn">[X]</button>
       </div>
-      <form class="ghrms-modal-body" id="heroPasskeyResetForm" style="padding: 1.25rem; gap: 0.85rem;">
-        <div style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.45;">
-          Day-to-day passkey management for registered superhumans. Standard Admins and Registrars can issue or update credentials for operative portal access.
+      <form class="ghrms-modal-body extracted-style-4e8b65d134c9" id="heroPasskeyResetForm">
+        <div class="extracted-style-9aad1a02c47a">
+          Day-to-day passkey management for registered superhumans. Standard Admins and Registrars can issue or update
+          credentials for operative portal access.
         </div>
 
         <!-- Target Hero Selector (if opened from sidebar) / Info Banner -->
@@ -855,35 +929,40 @@
         </div>
 
         <!-- Selected Hero Summary Card -->
-        <div id="passkeyHeroSummaryCard" style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm);">
-          <img src="/img/apex.jpg" id="passkeyHeroAvatar" alt="Avatar" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover; border: 1px solid var(--border-color);">
-          <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 800; font-size: 0.82rem; color: var(--text-main);" id="passkeyHeroDisplayName">APEX (Samuel Wright)</div>
-            <div style="font-size: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-top: 3px;">
-              <span>Account: <strong id="passkeyHeroUsernameTag" style="color: var(--text-main); font-family: var(--font-mono);">apex</strong></span>
-              <span id="passkeyHeroStatusTag" style="color: #34d399; font-weight: 700; font-size: 0.68rem; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">Licensed</span>
+        <div id="passkeyHeroSummaryCard" class="extracted-style-3c3db8fcfe2a">
+          <img src="/img/apex.jpg" id="passkeyHeroAvatar" alt="Avatar" class="extracted-style-cb6dff4028d8">
+          <div class="extracted-style-396e68aca83e">
+            <div id="passkeyHeroDisplayName" class="extracted-style-12379f84e296">APEX (Samuel Wright)</div>
+            <div class="extracted-style-8d7be121ca00">
+              <span>Account: <strong id="passkeyHeroUsernameTag"
+                  class="extracted-style-3800a97934cc">apex</strong></span>
+              <span id="passkeyHeroStatusTag" class="extracted-style-b63be954c0c3">Licensed</span>
             </div>
           </div>
         </div>
 
         <div class="form-field-group">
           <label class="field-label-text" for="newHeroPasskeyInput">New Security Passkey *</label>
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="text" class="ghrms-input" id="newHeroPasskeyInput" placeholder="Min 4 characters (e.g. Hero@2026!)" required style="font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.05em;" autocomplete="new-password">
-            <button type="button" class="btn-mini" id="btnGenTempPasskey" style="background: rgba(255,255,255,0.1); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 700; white-space: nowrap; padding: 0 0.65rem; border-radius: 4px; cursor: pointer;">
+          <div class="extracted-style-dc1de60044b9">
+            <input type="text" class="ghrms-input extracted-style-bf94a6a5a82e" id="newHeroPasskeyInput"
+              placeholder="Min 4 characters (e.g. Hero@2026!)" required autocomplete="new-password">
+            <button type="button" class="btn-mini extracted-style-c9c1aba13bd5" id="btnGenTempPasskey">
               [GENERATE]
             </button>
           </div>
-          <span style="font-size: 0.68rem; color: var(--text-subtle);">Operative will use this passkey to sign into their portal at /hero.</span>
+          <span class="extracted-style-0889d39f8a19">Operative will use this passkey to sign into their portal at
+            /hero.</span>
         </div>
 
-        <div id="passkeyAuditNotice" style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.7rem; color: #a7f3d0;">
-          <strong>[AUDIT RECORD]:</strong> This passkey reset will be cryptographically hashed (BCRYPT) and registered in the chained SHA-256 audit ledger.
+        <div id="passkeyAuditNotice" class="extracted-style-295f85204e52">
+          <strong>[AUDIT RECORD]:</strong> This passkey reset will be cryptographically hashed (BCRYPT) and registered
+          in the chained SHA-256 audit ledger.
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
-          <button type="button" class="btn btn-secondary" id="cancelPasskeyResetBtn" style="padding: 0.45rem 1rem; font-size: 0.78rem;">Cancel</button>
-          <button type="submit" class="btn" style="background: #f59e0b; border: 1px solid #fbbf24; color: #000; font-weight: 800; padding: 0.45rem 1.25rem; font-size: 0.78rem; border-radius: var(--radius-sm); cursor: pointer;">
+        <div class="extracted-style-8cc456afba83">
+          <button type="button" class="btn btn-secondary extracted-style-6b41e478fe40"
+            id="cancelPasskeyResetBtn">Cancel</button>
+          <button type="submit" class="btn extracted-style-1bbbd3caea6a">
             [SAVE NEW PASSKEY]
           </button>
         </div>
@@ -894,171 +973,324 @@
   <!-- ════════════════════════════════════════════
        ANTI-SPOOF FIELD BADGE VERIFIER MODAL
        ════════════════════════════════════════════ -->
-  <div class="ghrms-modal-overlay" id="verifierModal" role="dialog" aria-modal="true" aria-label="Field Badge Verifier">
-    <div class="ghrms-modal-box" style="max-width: 440px;">
+  <!-- ════════════════════════════════════════════
+       SUPPORTING DOCUMENT VERIFICATION MODAL
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="docVerifyModal" role="dialog" aria-modal="true"
+    aria-label="Verify Supporting Document">
+    <div class="ghrms-modal-box" style="max-width: 480px;">
       <div class="ghrms-modal-header">
-        <span>ANTI-SPOOF FIELD BADGE VERIFIER</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color:#10b981; font-weight: 800;">✓</span>
+          <span>CERTIFY SUPPORTING DOCUMENT</span>
+        </div>
+        <button class="icon-button" onclick="closeDocVerifyModal()">[X]</button>
+      </div>
+      <div class="ghrms-modal-body">
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">
+          Certify that this supporting credential has been inspected and meets Accords standards.
+        </p>
+        <div
+          style="background:rgba(255,255,255,0.03);border:1px solid var(--border-color);border-radius:6px;padding:0.65rem;margin-bottom:0.85rem;font-size:0.78rem;">
+          <div><strong style="color:var(--text-muted);">Document Type:</strong> <span id="docVerifyType"
+              style="color:var(--text-main);font-weight:700;"></span></div>
+          <div><strong style="color:var(--text-muted);">File Name:</strong> <span id="docVerifyName"
+              style="font-family:var(--font-mono);"></span></div>
+          <div><strong style="color:var(--text-muted);">Operative:</strong> <span id="docVerifyHeroAlias"
+              style="font-weight:700;color:var(--primary);"></span></div>
+        </div>
+        <form onsubmit="event.preventDefault(); submitDocVerifyModal();">
+          <div class="form-field-group">
+            <label class="field-label-text" for="docVerifyNotes">Official Reviewer Certification Notes <span
+                style="color:#ef4444;">*</span></label>
+            <textarea class="ghrms-input" id="docVerifyNotes" rows="3"
+              placeholder="Enter findings, verification checks performed..." required></textarea>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:1rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeDocVerifyModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary"
+              style="background:#10b981;border-color:#059669;color:#ffffff;font-weight:800;">
+              [✓ CERTIFY DOCUMENT AS VERIFIED]
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SUPPORTING DOCUMENT REJECTION MODAL
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="docRejectModal" role="dialog" aria-modal="true"
+    aria-label="Reject Supporting Document">
+    <div class="ghrms-modal-box" style="max-width: 480px;">
+      <div class="ghrms-modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color:#ef4444; font-weight: 800;">✕</span>
+          <span>REJECT SUPPORTING DOCUMENT</span>
+        </div>
+        <button class="icon-button" onclick="closeDocRejectModal()">[X]</button>
+      </div>
+      <div class="ghrms-modal-body">
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">
+          Reject this document and provide an official reason for the applicant to rectify.
+        </p>
+        <div
+          style="background:rgba(255,255,255,0.03);border:1px solid var(--border-color);border-radius:6px;padding:0.65rem;margin-bottom:0.85rem;font-size:0.78rem;">
+          <div><strong style="color:var(--text-muted);">Document Type:</strong> <span id="docRejectType"
+              style="color:var(--text-main);font-weight:700;"></span></div>
+          <div><strong style="color:var(--text-muted);">File Name:</strong> <span id="docRejectName"
+              style="font-family:var(--font-mono);"></span></div>
+        </div>
+        <form onsubmit="event.preventDefault(); submitDocRejectModal();">
+          <div class="form-field-group">
+            <label class="field-label-text" for="docRejectNotes">Reason for Rejection <span
+                style="color:#ef4444;">*</span></label>
+            <textarea class="ghrms-input" id="docRejectNotes" rows="3"
+              placeholder="Explain why this document was rejected (e.g. illegible scan, expired, name mismatch)..."
+              required></textarea>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:1rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeDocRejectModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary"
+              style="background:#ef4444;border-color:#dc2626;color:#ffffff;font-weight:800;">
+              [✕ CONFIRM DOCUMENT REJECTION]
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       OPERATIVE IDENTITY & ACCORDS CERTIFICATION MODAL
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="identityVerifyModal" role="dialog" aria-modal="true"
+    aria-label="Verify Operative Identity">
+    <div class="ghrms-modal-box" style="max-width: 540px;">
+      <div class="ghrms-modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color:#a78bfa; font-weight: 800;">✓</span>
+          <span>CERTIFY OPERATIVE IDENTITY &amp; ACCORDS</span>
+        </div>
+        <button class="icon-button" onclick="closeIdentityVerifyModal()">[X]</button>
+      </div>
+      <div class="ghrms-modal-body">
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">
+          Official administrative directive: Confirm civilian legal identity verification and authorize operative for
+          Field Licensure.
+        </p>
+        <div
+          style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.3);border-radius:6px;padding:0.75rem;margin-bottom:0.85rem;font-size:0.78rem;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div><strong style="color:var(--text-muted);">Operative Alias:</strong> <span id="identityVerifyAlias"
+                style="font-weight:800;color:var(--text-main);"></span></div>
+            <div><strong style="color:var(--text-muted);">Operative ID:</strong> <span id="identityVerifyId"
+                style="font-family:var(--font-mono);font-size:0.72rem;"></span></div>
+            <div><strong style="color:var(--text-muted);">Threat Rank:</strong> <span id="identityVerifyTier"
+                style="font-weight:700;"></span></div>
+            <div><strong style="color:var(--text-muted);">Civilian Legal Name:</strong> <span
+                id="identityVerifyLegalName" style="color:#a78bfa;font-weight:700;"></span></div>
+          </div>
+          <div
+            style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(139,92,246,0.2);display:flex;flex-direction:column;gap:3px;font-size:0.72rem;color:var(--text-muted);">
+            <div>✓ Official ID credential verified</div>
+            <div>✓ Hero certification verified</div>
+            <div>✓ AES-256 protected civilian vault verified</div>
+          </div>
+        </div>
+        <form onsubmit="event.preventDefault(); submitIdentityVerifyModal();">
+          <div class="form-field-group">
+            <label class="field-label-text" for="identityVerifyNotes">Official Identity Verification Notes <span
+                style="color:#ef4444;">*</span></label>
+            <textarea class="ghrms-input" id="identityVerifyNotes" rows="3"
+              placeholder="Enter administrative vetting findings and identity confirmation notes..."
+              required></textarea>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:1rem;">
+            <button type="button" class="btn btn-secondary" onclick="closeIdentityVerifyModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary"
+              style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);border-color:#7c3aed;color:#ffffff;font-weight:800;">
+              [✓ CERTIFY IDENTITY &amp; PROCEED TO LICENSING]
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ANTI-SPOOF FIELD BADGE TOKEN AUTHENTICATOR
+       ════════════════════════════════════════════ -->
+  <div class="ghrms-modal-overlay" id="verifierModal" role="dialog" aria-modal="true" aria-label="Field Badge Verifier">
+    <div class="ghrms-modal-box extracted-style-7b1362f5f5da">
+      <div class="ghrms-modal-header">
+        <span>ANTI-SPOOF FIELD BADGE TOKEN AUTHENTICATOR</span>
         <button class="icon-button" id="closeVerifyModalBtn">[X]</button>
       </div>
-      <div class="ghrms-modal-body" style="padding: 1.25rem; gap: 0.75rem;">
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0;">
-          Authenticate 30-second rotating cryptographic QR token for field operatives.
+      <div class="ghrms-modal-body extracted-style-9e2c55328fd3">
+        <p class="extracted-style-e8131f60ed52">
+          Authenticate 30-second rotating cryptographic TOTP/QR field badge token for active field operatives.
         </p>
 
         <form id="verifierForm" onsubmit="event.preventDefault(); executeRegistrarVerification();">
-          <div class="form-field-group" style="margin-bottom: 12px;">
+          <div class="form-field-group extracted-style-c804002a4185">
             <label class="field-label-text" for="verifyHeroSelect">Select Hero / ID</label>
             <select class="ghrms-select" id="verifyHeroSelect"></select>
           </div>
 
-          <div class="form-field-group" style="margin-bottom: 16px;">
-            <label class="field-label-text" for="verifyTokenInput">6-Digit Rotating Badge Token</label>
-            <input type="text" class="ghrms-input" id="verifyTokenInput" placeholder="e.g. 748291" maxlength="6" style="font-family: var(--font-mono); font-size: 1.2rem; letter-spacing: 0.2em; text-align: center;" required>
+          <div class="form-field-group extracted-style-4933c08820a9">
+            <label class="field-label-text" for="verifyTokenInput">6-Digit Rotating Badge Token (TOTP)</label>
+            <input type="text" class="ghrms-input extracted-style-49dec8d0e0fc" id="verifyTokenInput"
+              placeholder="e.g. 748291" maxlength="6" required>
           </div>
 
-          <button type="submit" class="btn-confirm-final" style="width: 100%;">
-            [VERIFY CRYPTOGRAPHIC TOKEN]
+          <button type="submit" class="btn-confirm-final extracted-style-37ab52c9d67a">
+            [AUTHENTICATE 6-DIGIT TOKEN]
           </button>
         </form>
 
-        <div id="verificationResultBox" style="display: none; margin-top: 16px; padding: 14px; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5;"></div>
+        <div id="verificationResultBox" class="extracted-style-51f6abb47316"></div>
       </div>
     </div>
   </div>
 
   <!-- Official Superhuman Accreditation Credential ID Card Modal -->
-  <div class="ghrms-modal-overlay" id="heroIdCardModal" role="dialog" aria-modal="true" aria-label="Official Hero ID Card" style="display: none; align-items: center; justify-content: center; padding: 0.5rem; z-index: 10000; overflow-y: auto;">
-    <div class="ghrms-modal-box" style="max-width: 580px; width: 100%; max-height: 94dvh; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6); display: flex; flex-direction: column; margin: auto;">
-      <div class="ghrms-modal-header" style="background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
-        <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
-          <span style="font-size: 1.1rem; flex-shrink: 0;">🪪</span>
-          <span style="font-weight: 800; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.05em; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+  <div class="ghrms-modal-overlay extracted-style-e8a2864e7a6e" id="heroIdCardModal" role="dialog" aria-modal="true"
+    aria-label="Official Hero ID Card">
+    <div class="ghrms-modal-box extracted-style-70fc34f098b0">
+      <div class="ghrms-modal-header extracted-style-e791eb32528d">
+        <div class="extracted-style-7b695570c5c3">
+          <span class="extracted-style-ad5e8450b307">🪪</span>
+          <span class="extracted-style-004838fba00d" id="heroIdCardModalTitle">
             OFFICIAL ACCREDITATION CREDENTIAL
           </span>
         </div>
-        <button class="icon-button" onclick="closeHeroIdCardModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 1rem; cursor: pointer; padding: 4px 8px; flex-shrink: 0;">[X]</button>
+        <button class="icon-button extracted-style-6c91c0d89912" onclick="closeHeroIdCardModal()">[X]</button>
       </div>
 
-      <div class="ghrms-modal-body" style="padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; overflow-y: auto; flex: 1;">
-        
+      <div class="ghrms-modal-body extracted-style-9727d34703b5">
+
         <!-- THE PHYSICAL WALLET ID CARD CONTAINER -->
-        <div id="printableHeroIdCard" class="hero-id-card-wrapper" style="position: relative; width: 100%; max-width: 500px; min-height: 295px; background: linear-gradient(145deg, #0b1120 0%, #0f172a 50%, #1e1b4b 100%); border: 2px solid #38bdf8; border-radius: 14px; padding: 16px; color: #ffffff; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.15); overflow: hidden; font-family: var(--font-sans);">
-          
+        <div id="printableHeroIdCard" class="hero-id-card-wrapper extracted-style-c9b47eb4be9b">
+
           <!-- Microprint security background lines -->
-          <div class="card-microprint-bg" style="position: absolute; inset: 0; opacity: 0.08; background-image: repeating-linear-gradient(45deg, #38bdf8 0, #38bdf8 1px, transparent 0, transparent 8px); pointer-events: none;"></div>
+          <div class="card-microprint-bg extracted-style-69c883ccc761"></div>
 
           <!-- Top Header Strip: Federal Logo + Accord Title + Security Chip -->
-          <div style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid rgba(56, 189, 248, 0.4); padding-bottom: 8px; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <img src="/img/logo.jpg" alt="Seal" style="width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #38bdf8; object-fit: cover;">
+          <div class="extracted-style-65f75c685341">
+            <div class="extracted-style-378e76576ae0">
+              <img src="/img/logo.jpg" alt="Seal" class="extracted-style-f56e5c3e4016">
               <div>
-                <div style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; color: #38bdf8; line-height: 1;">
+                <div class="extracted-style-008b593a1997">
                   GLOBAL HERO REGISTRATION SYSTEM
                 </div>
-                <div style="font-size: 0.58rem; color: #94a3b8; font-family: var(--font-mono); letter-spacing: 0.08em; margin-top: 2px;">
+                <div class="extracted-style-e907c3b9cc19" id="cardSubTitle">
                   ACCORD SECURITY COMMISSION // FIELD CLEARANCE
                 </div>
               </div>
             </div>
-            
-            <div style="display: flex; align-items: center; gap: 6px;">
+
+            <div class="extracted-style-8da89a75a781">
               <!-- Smart Chip graphic -->
-              <div style="width: 28px; height: 20px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); border-radius: 3px; border: 1px solid #fef08a; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 4px rgba(0,0,0,0.5);">
-                <div style="width: 14px; height: 10px; border: 1px solid rgba(0,0,0,0.3); border-radius: 1px;"></div>
+              <div class="extracted-style-c7e6be9f8ba8">
+                <div class="extracted-style-664490f73ddd"></div>
               </div>
             </div>
           </div>
 
           <!-- Middle Content: Photo + Details + Hologram Seal + QR Code -->
-          <div style="position: relative; z-index: 2; display: grid; grid-template-columns: 110px 1fr 100px; gap: 12px; align-items: center;">
-            
+          <div class="extracted-style-53f814a5b0c1">
+
             <!-- Column 1: Portrait Photo -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
-              <div style="position: relative; width: 100px; height: 120px; border-radius: 8px; overflow: hidden; border: 2px solid #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); background: #000;">
-                <img id="cardHeroAvatar" src="/img/apex.jpg" alt="Hero Portrait" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); font-family: var(--font-mono); font-size: 0.52rem; color: #38bdf8; text-align: center; padding: 1px 0; font-weight: 700;">
+            <div class="extracted-style-8c5c8ad023d6">
+              <div class="extracted-style-821df97b3f35">
+                <img id="cardHeroAvatar" src="/img/apex.jpg" alt="Hero Portrait" class="extracted-style-fd2a1c234c66">
+                <div class="extracted-style-78b440c1f37d">
                   SEC-BIOMETRIC
                 </div>
               </div>
-              <span id="cardThreatTierBadge" style="font-size: 0.62rem; font-weight: 800; font-family: var(--font-mono); padding: 2px 6px; border-radius: 3px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fbbf24; white-space: nowrap; text-align: center;">
+              <span id="cardThreatTierBadge" class="extracted-style-ab773dcbd142">
                 TIER 4 (CITY)
               </span>
             </div>
 
             <!-- Column 2: Callsign & Legal Details -->
-            <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+            <div class="extracted-style-636a279f2c67">
               <div>
-                <div style="font-size: 0.58rem; color: #94a3b8; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">CALLSIGN ALIAS</div>
-                <div id="cardHeroAlias" style="font-size: 1.35rem; font-weight: 900; color: #ffffff; letter-spacing: -0.01em; line-height: 1.1; text-transform: uppercase;">
+                <div class="extracted-style-6fa9efd30c4d">CALLSIGN ALIAS</div>
+                <div id="cardHeroAlias" class="extracted-style-52d57a137fa6">
                   APEX
                 </div>
               </div>
 
-              <div style="margin-top: 3px;">
-                <div style="font-size: 0.58rem; color: #94a3b8; font-family: var(--font-mono); text-transform: uppercase;">LEGAL IDENTITY</div>
-                <div id="cardHeroRealName" style="font-size: 0.8rem; font-weight: 700; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              <div class="extracted-style-273c6fc681ac">
+                <div class="extracted-style-afd88ba578a3">LEGAL IDENTITY</div>
+                <div id="cardHeroRealName" class="extracted-style-33b3b2802d18">
                   Samuel Wright
                 </div>
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 2px;">
+              <div class="extracted-style-4038187be635">
                 <div>
-                  <div style="font-size: 0.55rem; color: #94a3b8; font-family: var(--font-mono);">GOV ID</div>
-                  <div id="cardHeroGovCode" style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #38bdf8;">
+                  <div class="extracted-style-8c9043d81772">GOV ID</div>
+                  <div id="cardHeroGovCode" class="extracted-style-17407d753102">
                     9GH-8430
                   </div>
                 </div>
                 <div>
-                  <div style="font-size: 0.55rem; color: #94a3b8; font-family: var(--font-mono);">SECTOR</div>
-                  <div id="cardHeroSector" style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 800; color: #a78bfa;">
+                  <div class="extracted-style-8c9043d81772">SECTOR</div>
+                  <div id="cardHeroSector" class="extracted-style-65b47a8c1fca">
                     SECTOR 07
                   </div>
                 </div>
               </div>
 
-              <div style="margin-top: 2px;">
-                <div style="font-size: 0.55rem; color: #94a3b8; font-family: var(--font-mono);">CLASSIFIED POWER</div>
-                <div id="cardHeroPower" style="font-size: 0.68rem; color: #e2e8f0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              <div class="extracted-style-3e967279bfee">
+                <div class="extracted-style-8c9043d81772">CLASSIFIED POWER</div>
+                <div id="cardHeroPower" class="extracted-style-67f9523f87d3">
                   Kinetic Absorption
                 </div>
               </div>
             </div>
 
             <!-- Column 3: Holographic Seal + Permanent QR Code -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-              
+            <div class="extracted-style-1a98ae18e96a">
+
               <!-- SHIMMERING RAINBOW HOLOGRAPHIC FOIL ACCORD SEAL -->
-              <div class="hologram-seal" title="Official Tamper-Evident Accord Hologram Seal" style="position: relative; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(244,63,94,0.45) 20%, rgba(56,189,248,0.45) 40%, rgba(251,191,36,0.55) 70%, rgba(167,139,250,0.5) 85%, rgba(255,255,255,0.7) 100%); background-size: 200% 200%; border: 1.5px solid rgba(255,255,255,0.8); box-shadow: 0 0 14px rgba(255,255,255,0.5), inset 0 0 6px rgba(255,255,255,0.4); animation: hologramShift 4.5s ease-in-out infinite;">
-                <div style="width: 42px; height: 42px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1;">
-                  <span style="font-size: 0.42rem; font-weight: 900; font-family: var(--font-mono); color: #0f172a; letter-spacing: 0.05em;">ACCORD</span>
-                  <span style="font-size: 0.58rem; color: #0f172a;">★</span>
-                  <span style="font-size: 0.38rem; font-weight: 800; font-family: var(--font-mono); color: #0f172a;">VERIFIED</span>
+              <div class="hologram-seal extracted-style-0ee252eb9620" id="cardHologramSeal"
+                title="Official Tamper-Evident Accord Hologram Seal">
+                <div class="extracted-style-bdbe1094b6b2">
+                  <span class="extracted-style-0ff380aef8f3" id="cardHoloWordTop">ACCORD</span>
+                  <span class="extracted-style-66ba0d74b26c" id="cardHoloSymbol">★</span>
+                  <span class="extracted-style-1aed7ea353e6" id="cardHoloWordBottom">VERIFIED</span>
                 </div>
               </div>
 
               <!-- CRISP HIGH-CONTRAST SCANNABLE QR CANVAS -->
-              <div style="background: #ffffff; padding: 4px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); line-height: 0;">
-                <canvas id="cardHeroQrCanvas" width="80" height="80" style="display: block; width: 80px; height: 80px;"></canvas>
+              <div class="extracted-style-cfd7ec7b838f">
+                <canvas id="cardHeroQrCanvas" width="80" height="80" class="extracted-style-02436b7bf0aa"></canvas>
               </div>
             </div>
 
           </div>
 
           <!-- Bottom Security Microprint Footer Bar -->
-          <div style="position: relative; z-index: 2; margin-top: 12px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 0.54rem; color: #94a3b8;">
+          <div class="extracted-style-4f3e10d023ca">
             <span id="cardLicenseNumber">LIC: GHRMS-LIC-9GH-8430</span>
-            <span style="letter-spacing: 0.08em; color: #38bdf8;">SEC-AUTH // ARTICLE 4 ACCORD COMPLIANT</span>
-            <span>MUNICIPAL CLEARANCE</span>
+            <span class="extracted-style-fb91efd26da5" id="cardFooterSecurityNote">SEC-AUTH // ARTICLE 4 ACCORD COMPLIANT</span>
+            <span id="cardFooterClearanceText">MUNICIPAL CLEARANCE</span>
           </div>
 
         </div>
 
         <!-- Action Control Buttons -->
-        <div class="print-hide" style="display: flex; gap: 0.75rem; width: 100%; max-width: 500px; justify-content: center; flex-wrap: wrap;">
-          <button type="button" class="btn btn-primary" onclick="printHeroIdCard()" style="flex: 1; min-width: 180px; font-weight: 800; font-size: 0.8rem; padding: 10px 16px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;">
+        <div class="print-hide extracted-style-71727facb4b1">
+          <button type="button" class="btn btn-primary extracted-style-93a054141a1c" onclick="printHeroIdCard()">
             <span>🖨️</span> <span>[PRINT ID CARD / SAVE PDF]</span>
           </button>
-          <button type="button" class="btn btn-secondary" onclick="downloadHeroIdCardPng()" style="flex: 1; min-width: 180px; font-weight: 800; font-size: 0.8rem; padding: 10px 16px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8;">
+          <button type="button" class="btn btn-secondary extracted-style-668e49772344"
+            onclick="downloadHeroIdCardPng()">
             <span>💾</span> <span>[DOWNLOAD BADGE (PNG)]</span>
           </button>
         </div>
@@ -1099,4 +1331,5 @@
     });
   </script>
 </body>
+
 </html>

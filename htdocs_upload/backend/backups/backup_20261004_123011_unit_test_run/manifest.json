@@ -1,0 +1,181 @@
+{
+    "created_at": "2026-10-04T12:30:11+00:00",
+    "timestamp": "20261004_123011",
+    "label": "unit_test_run",
+    "files": {
+        "heroes.json": {
+            "bytes": 40270,
+            "sha256": "ae32df0481ce370ae8a3f69175f84e5b7d12f0feb4da62425a219f67310369ca"
+        },
+        "vault.json": {
+            "bytes": 69942,
+            "sha256": "df43aceda1d1f8f6048600ddf3872d75b2277095eb19fdc882fe863b598d9b44"
+        },
+        "users.json": {
+            "bytes": 9941,
+            "sha256": "3cdb51270f3787b325c73cfe76b9ef200e206006cc1402594b3255c5ff6415f0"
+        },
+        "audit_ledger.json": {
+            "bytes": 31715,
+            "sha256": "4df51df3eeb4a28e228e841d3cc13a58daaeca8f07aa1a756869f191aeb052ab"
+        },
+        "incidents.json": {
+            "bytes": 2068,
+            "sha256": "5da34cbd01228c92fbf82dd26b9c02a789d1778de58af4e9382e14310b0a3ca3"
+        },
+        "settings.json": {
+            "bytes": 560,
+            "sha256": "b15adebdf4327430030b166bcf9c7e3697c74403bbbcbed86018eff2220a2e64"
+        },
+        "pending_updates.json": {
+            "bytes": 2,
+            "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+    },
+    "documents": {
+        "doc_1723cedc4e82.png": {
+            "bytes": 70,
+            "sha256": "6b7fa434f92a8b80aab02d9bf1a12e49ffcae424e4013a1c4f68b67e3d2bbcd0"
+        },
+        "doc_4bb74649b5d3.png": {
+            "bytes": 70,
+            "sha256": "6b7fa434f92a8b80aab02d9bf1a12e49ffcae424e4013a1c4f68b67e3d2bbcd0"
+        },
+        "doc_666198e36454.png": {
+            "bytes": 2616,
+            "sha256": "cfb756d4106797573003cabded374ebb8174e640cfb6e22aef6f3df35e0d7a75"
+        },
+        "doc_hero_aeroscout_07_auth.pdf": {
+            "bytes": 2073,
+            "sha256": "a6dbebf8f574ee56a6e25ec5597a848738bc3e4e2e0a16853d8bd2e6f135963c"
+        },
+        "doc_hero_aeroscout_07_cert.png": {
+            "bytes": 10161,
+            "sha256": "0c5a3b1fbc1a8e4e3b889d55447bef96449aea7929b4cc4b3193978980c12d6f"
+        },
+        "doc_hero_aeroscout_07_id.png": {
+            "bytes": 8796,
+            "sha256": "a1344b20620bb5ee2ca49dff2bf9c66ec8f514177dfe33010f29f4d3eaab73e3"
+        },
+        "doc_hero_apex_01_auth.pdf": {
+            "bytes": 2050,
+            "sha256": "e36052a55163c29386aa224a26fca3c937f5774d5a90ac1d13fdbeb5a7a5c540"
+        },
+        "doc_hero_apex_01_cert.png": {
+            "bytes": 10077,
+            "sha256": "4d293516a2eb06e62eb0098cc7b3cc4bd7ce37639e40e9c4dba42322270442ea"
+        },
+        "doc_hero_apex_01_id.png": {
+            "bytes": 8717,
+            "sha256": "d70711b50521e7eb15b409f6deacf3a731d3f074b27f2a8f6ae42ee68c7dfce2"
+        },
+        "doc_hero_atlas_03_auth.pdf": {
+            "bytes": 2065,
+            "sha256": "a52298a246d85fb6f3463c7ecb6432f999272b451d01fb12b928aea509ea8370"
+        },
+        "doc_hero_atlas_03_cert.png": {
+            "bytes": 10015,
+            "sha256": "d5945c9a0dd4e9104cf5f5950d7173e3f3ef8c0c985f9dfe258e9388aea4afdf"
+        },
+        "doc_hero_atlas_03_id.png": {
+            "bytes": 8676,
+            "sha256": "a3487cffb7e80a4c0251f8364e49f9cb0816d9fc60ab722540f3bcaf61a276ae"
+        },
+        "doc_hero_dawn_4c5106_auth.pdf": {
+            "bytes": 2067,
+            "sha256": "3cac1aa993f561ca389e2bfaa2132528e277dcd5d9519a6b4aa116715683f10f"
+        },
+        "doc_hero_dawn_4c5106_cert.png": {
+            "bytes": 10044,
+            "sha256": "be2c9bbd037568c93421d688b0871bd92de30cca6d528571fcbbfab41e4c20da"
+        },
+        "doc_hero_dawn_4c5106_id.png": {
+            "bytes": 8780,
+            "sha256": "e1788be96b14b5f753c86a89af6a103c8a24f9f4a0575aaa7e6df37fd55bc79e"
+        },
+        "doc_hero_johnckson_887ff2_auth.pdf": {
+            "bytes": 2068,
+            "sha256": "649558f1bac36526949d4a89d5ba7f608db4ed0e4d57755757f230f7d2f49a54"
+        },
+        "doc_hero_johnckson_887ff2_cert.png": {
+            "bytes": 10007,
+            "sha256": "f8c6eafb1430e0b1c8d044d5de786ad0bb634c24f5d8e18ca70d0d1a6329ae85"
+        },
+        "doc_hero_johnckson_887ff2_id.png": {
+            "bytes": 8678,
+            "sha256": "2828447300f26efc292efae1baed755794f00f0bbabfd2831d22bc6299537900"
+        },
+        "doc_hero_lumina_02_auth.pdf": {
+            "bytes": 2055,
+            "sha256": "5bee506e92f8a5457aee1dea371f6fd5a7c862f7d0a7872cff0cbfb7ca91aa7c"
+        },
+        "doc_hero_lumina_02_cert.png": {
+            "bytes": 9888,
+            "sha256": "a3d2a105fea693f768a8e1a655c31e592349b0deef8fd444d01249f5873591c1"
+        },
+        "doc_hero_lumina_02_id.png": {
+            "bytes": 8621,
+            "sha256": "f8497f21b2647a91d0f817f81563155fa3351a1acbb8cdd021edf1ddc37db4e2"
+        },
+        "doc_hero_pulserunner_08_auth.pdf": {
+            "bytes": 2072,
+            "sha256": "153262ddec180f3b0c907a0b809c75080c0c7074c91bc9e40ae381d9b5f41e86"
+        },
+        "doc_hero_pulserunner_08_cert.png": {
+            "bytes": 10009,
+            "sha256": "af999ebd25291a3c5428f0640316d8e2aa595c72860438e9fe816d62b5bf38d5"
+        },
+        "doc_hero_pulserunner_08_id.png": {
+            "bytes": 8707,
+            "sha256": "e16144664e6a581a4d8ec5ce92677580d56f50e13ad0b9043180b9b6def38722"
+        },
+        "doc_hero_solaris_a833dd_auth.pdf": {
+            "bytes": 2069,
+            "sha256": "51eabf144a4ce2a0612232ee454380ea818583ce5259c771b356990a1e1a80e9"
+        },
+        "doc_hero_solaris_a833dd_cert.png": {
+            "bytes": 10029,
+            "sha256": "fdb42e82001f8b99ca13189e57ec34a2a4c81697e1b8db87b3ce298e0cba70f8"
+        },
+        "doc_hero_solaris_a833dd_id.png": {
+            "bytes": 8696,
+            "sha256": "b1d1f3ec79058b5eb48180bcd1453eeb8088e1eb09a6bf8c3c064e8f3da4b118"
+        },
+        "doc_hero_specter_06_auth.pdf": {
+            "bytes": 2079,
+            "sha256": "f1381eaf235583fd58f91739b607aaaa0aecd585a14f64ce91d70ed0db9c33d9"
+        },
+        "doc_hero_specter_06_cert.png": {
+            "bytes": 10325,
+            "sha256": "83d9dbf64a5045ecd675b586671ad55c4ba276340ef4dac00d62770ff0a41cc7"
+        },
+        "doc_hero_specter_06_id.png": {
+            "bytes": 8946,
+            "sha256": "7e834214de07c7558f189450b540e1c6f9f618bee34d9ae6e940a2ffebc129a7"
+        },
+        "doc_hero_steelpulse_04_auth.pdf": {
+            "bytes": 2062,
+            "sha256": "958e2b9da56e3237ac9ea5ee4873efe5fcb163bd86c0d4d800ad236ee9c0ece2"
+        },
+        "doc_hero_steelpulse_04_cert.png": {
+            "bytes": 10055,
+            "sha256": "84047c06b958a9222b4cbd33d8fd3cfc0b00b08f5ef5cfedb4e5f4ec6e7fe02e"
+        },
+        "doc_hero_steelpulse_04_id.png": {
+            "bytes": 8731,
+            "sha256": "6a3f020ddf93417ef4b85043b82169bd5c1f07874c9d4fdb14756667e1389a48"
+        },
+        "doc_hero_vanguard_05_auth.pdf": {
+            "bytes": 2070,
+            "sha256": "12c231c5a057f77bbf86521245d59e335b0e6967f1b41188cc0f16a04a0b2fb1"
+        },
+        "doc_hero_vanguard_05_cert.png": {
+            "bytes": 10205,
+            "sha256": "06f672c9b7c6d33bc0d26be252006ebc2873f3451f39788a862565b21f128de4"
+        },
+        "doc_hero_vanguard_05_id.png": {
+            "bytes": 8758,
+            "sha256": "67c1fd8669437621012aa4126f9472b4a4f4b77fcb145bd6311bc67d541b4873"
+        }
+    }
+}

@@ -85,7 +85,7 @@ EXPLOIT 1: SERVER CRASH VIA UNAUTHENTICATED AVATAR FLOODING (DENIAL OF SERVICE)
     curl -X POST http://target/api/upload-avatar -F "file=@8mb_dummy.jpg"
   done
 - Result:
-  Within minutes, /public/uploads/avatars/ consumes all available disk space.
+  Within minutes, /frontend/uploads/avatars/ consumes all available disk space.
   When disk space hits 100%, JsonStorage::write() cannot write heroes.json or
   users.json. The entire server crashes, and all user sessions fail.
 
@@ -102,7 +102,7 @@ EXPLOIT 2: LOGIN BRUTE-FORCING & ACCOUNT HIJACKING
   threat ratings.
 
 EXPLOIT 3: STORED CROSS-SITE SCRIPTING (XSS) IN HERO DIRECTORY
-- Locations: public/registry.html (line 753) and public/js/registrar.js (line 265)
+- Locations: frontend/registry.html (line 753) and frontend/js/registrar.js (line 265)
 - Flaw: When heroes register, their alias and powers are saved to heroes.json.
   When staff view the directory, JavaScript injects those fields directly into
   .innerHTML without HTML entity escaping.
@@ -209,7 +209,7 @@ public static function writeSafe(string $filePath, $data): bool {
 
 
 SOLUTION 3: ENFORCE HTML OUTPUT ENCODING (STOP XSS)
-In public/registry.html and public/js/registrar.js, escape all user variables:
+In frontend/registry.html and frontend/js/registrar.js, escape all user variables:
 
 ```javascript
 function escapeHtml(str) {

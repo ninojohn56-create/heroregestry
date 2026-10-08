@@ -12,7 +12,7 @@ This guide provides a comprehensive checklist and script for presenting your sof
 
 ## 2. System Personas & User Roles (RBAC)
 Explain the 4 user types and their boundaries:
-1. **Hero Operative (Level 1)**: Self-registers, provides tactical specifications, uploads biometric face photo, tracks application status, and displays dynamic QR field badge.
+1. **Hero  (Level 1)**: Self-registers, provides tactical specifications, uploads biometric face photo, tracks application status, and displays dynamic QR field badge.
 2. **Police Sentinel (Level 2)**: Operates checkpoint scanners in the field; scans hero QR codes for 1-second verification; triggers rogue containment alerts.
 3. **Registrar Officer (Level 3)**: Vets incoming applications; verifies supporting medical/power documents; decrypts civilian real names only after entering an audited justification; issues licenses (`GHRMS-LIC-...`).
 4. **Super Admin (Level 5)**: Supreme oversight; provisions user accounts; inspects the immutable SHA-256 chained audit ledger; configures system parameters.
@@ -66,5 +66,5 @@ Be prepared to explain why each technology was selected:
 ---
 
 ## 6. Project Timeline & Delivery
-* Display the **Gantt Chart** starting on **September 9** (initial baseline check) through **October 2** (containerization, authentic verification documents, document lightbox, full field editability, and cryptographic audit ledger attribution).
+* Display the **Gantt Chart** starting on **September 9** (initial baseline check) through **October 8, 2026** (containerization, verification documents, document lightbox, audit attribution, admin workflow cleanup, and frontend/CSS separation).
 * Highlight that all work was executed **solo** with clear step-by-step milestones.

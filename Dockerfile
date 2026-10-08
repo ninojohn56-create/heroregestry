@@ -44,12 +44,12 @@ COPY . /var/www/html/
 RUN mkdir -p \
         /var/www/html/backend/data/documents \
         /var/www/html/backend/data/ratelimit \
-        /var/www/html/public/uploads/avatars \
+        /var/www/html/frontend/uploads/avatars \
     && chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/backend/data /var/www/html/public/uploads
+    && chmod -R 775 /var/www/html/backend/data /var/www/html/frontend/uploads
 
 # Declare persistent volumes for stateful data and uploaded assets
-VOLUME ["/var/www/html/backend/data", "/var/www/html/public/uploads"]
+VOLUME ["/var/www/html/backend/data", "/var/www/html/frontend/uploads"]
 
 # Expose HTTP port
 EXPOSE 8000

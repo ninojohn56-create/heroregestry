@@ -1,0 +1,56 @@
+[
+    {
+        "id": "inc_2026_01",
+        "title": "Bridge Structural Fracture - Shockwave Impact",
+        "region": "Sector 1 - Metro Downtown",
+        "coordinates": {
+            "lat": 40.71,
+            "lng": -74.002
+        },
+        "power_type": "Enhanced Strength",
+        "severity": "High",
+        "estimated_damage_usd": 350000,
+        "reported_by_hero": "hero_apex_01",
+        "matched_hero_alias": "APEX",
+        "civic_recovery_status": "Claim Approved - Fund Allocated",
+        "photo_evidence": "concrete_fracture_01.jpg",
+        "notes": "Structural pier stabilization required after neutralizing rogue kinetic assailant.",
+        "timestamp": "2026-09-29T19:44:06+00:00"
+    },
+    {
+        "id": "inc_2026_02",
+        "title": "Grid Substation Surge & Arc Discharge",
+        "region": "Sector 2 - Industrial District",
+        "coordinates": {
+            "lat": 40.732,
+            "lng": -73.94
+        },
+        "power_type": "Technomancy",
+        "severity": "Critical",
+        "estimated_damage_usd": 820000,
+        "reported_by_hero": "hero_lumina_02",
+        "matched_hero_alias": "LUMINA",
+        "civic_recovery_status": "Pending Assessor Review",
+        "photo_evidence": "electrical_burn_grid.jpg",
+        "notes": "Thermal containment failure during unverified high-output combat.",
+        "timestamp": "2026-10-02T01:44:06+00:00"
+    },
+    {
+        "id": "inc_2026_03",
+        "title": "Pier 14 Craneway Collapse",
+        "region": "Sector 4 - Coastal Wharf",
+        "coordinates": {
+            "lat": 40.68,
+            "lng": -74.041
+        },
+        "power_type": "Energy Projection",
+        "severity": "Severe",
+        "estimated_damage_usd": 540000,
+        "reported_by_hero": "hero_steelpulse_04",
+        "matched_hero_alias": "STEEL PULSE",
+        "civic_recovery_status": "Pending Civic Review",
+        "photo_evidence": "pier_collapse.jpg",
+        "notes": "High-velocity energy rounds cleaved crane anchors during defense.",
+        "timestamp": "2026-10-01T19:44:06+00:00"
+    }
+]

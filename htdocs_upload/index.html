@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Philippine Hero Registration Authority</title>
+  <meta http-equiv="refresh" content="0; url=login">
+  <script>
+    if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('/index.html') || window.location.pathname.endsWith('/index.php')) {
+      var base = window.location.pathname.replace(/\/index\.(html|php)$/i, '/');
+      if (!base.endsWith('/')) base += '/';
+      window.location.replace(base + 'login');
+    } else {
+      window.location.replace('login');
+    }
+  </script>
+</head>
+<body style="background:#0a0d14;color:#94a3b8;font-family:sans-serif;padding:2rem;text-align:center;">
+  <p>Loading Philippine Hero Registration Authority Terminal...</p>
+  <p><a href="login" style="color:#38bdf8;text-decoration:none;font-weight:bold;">Click here to access Security Clearance Login &rarr;</a></p>
+</body>
+</html>

@@ -1,0 +1,44 @@
+[
+    {
+        "id": "evt_6c9da0486eba",
+        "timestamp": "2026-10-08T09:07:38+00:00",
+        "actor": "SARAH_CHEN",
+        "role": "REGISTRAR",
+        "action": "REGISTRY_INIT",
+        "target_id": "HUNTER_ASSOC_CENTRAL",
+        "details": {
+            "message": "Hunters Association Management System online. Mana evaluation ledger authenticated."
+        },
+        "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "hash": "d5b5f08c4d0150c5c2fb976aab7ac2efaeaa5f3d9f6359d51e3bc4e0a4f7af01"
+    },
+    {
+        "id": "evt_d0615cfd3d77",
+        "timestamp": "2026-10-08T09:07:38+00:00",
+        "actor": "SARAH_CHEN",
+        "role": "REGISTRAR",
+        "action": "QUEUE_INGESTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "alias": "APEX",
+            "gov_code": "9GH-8430",
+            "status": "REVIEWING"
+        },
+        "prev_hash": "d5b5f08c4d0150c5c2fb976aab7ac2efaeaa5f3d9f6359d51e3bc4e0a4f7af01",
+        "hash": "1b251e98cfac62eeb8ca93e2d2d980774b2be368cc3c3ed48111f47611946ab1"
+    },
+    {
+        "id": "evt_3f3627dc1885",
+        "timestamp": "2026-10-08T09:07:38+00:00",
+        "actor": "SUPER_ADMIN_01",
+        "role": "SUPER_ADMIN",
+        "action": "SECURITY_AUDIT",
+        "target_id": "hero_specter_06",
+        "details": {
+            "alias": "SPECTER ZERO",
+            "action": "ROGUE_STATUS_FLAGGED"
+        },
+        "prev_hash": "1b251e98cfac62eeb8ca93e2d2d980774b2be368cc3c3ed48111f47611946ab1",
+        "hash": "658509e04a31f10d1cbaef71f89a8fede126248bf32cb5142e3ebf268c4f56f8"
+    }
+]

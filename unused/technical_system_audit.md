@@ -8,35 +8,35 @@ An exhaustive audit of the **Global Hero Registration & Management System (GHRMS
 
 | Category | Item / Feature | Implementation Status | Implementation Details / Grounding Files |
 | :--- | :--- | :--- | :--- |
-| **Account Creation** | Self-Registration & Callsign Reservation | **IMPLEMENTED** | `public/register.html`, `backend/api.php` (`POST /api/heroes/register`), `backend/auth.php` |
+| **Account Creation** | Self-Registration & Callsign Reservation | **IMPLEMENTED** | `frontend/register.html`, `backend/api.php` (`POST /api/heroes/register`), `backend/auth.php` |
 | **Account Creation** | Bcrypt Password Hashing | **IMPLEMENTED** | `backend/auth.php`, `backend/api.php` (`password_hash($raw, PASSWORD_BCRYPT)`) |
 | **Account Creation** | Direct Session Provisioning | **IMPLEMENTED** | `backend/auth.php`, `backend/api.php` (Auto-logs in applicant upon draft/submission) |
 | **Account Creation** | Email Verification Link (SMTP) | **NOT IMPLEMENTED** | Email is recorded for alerts, but no SMTP outbound mailer exists. |
-| **Personal Identity** | Civilian Personal Information Intake | **IMPLEMENTED** | `public/register.html` (Step 1), `backend/api.php` |
-| **Personal Identity** | Biometric Face Photo Upload | **IMPLEMENTED** | `public/register.html`, `backend/api.php` (`POST /api/upload-avatar`, `POST /api/heroes/{id}/avatar`) |
+| **Personal Identity** | Civilian Personal Information Intake | **IMPLEMENTED** | `frontend/register.html` (Step 1), `backend/api.php` |
+| **Personal Identity** | Biometric Face Photo Upload | **IMPLEMENTED** | `frontend/register.html`, `backend/api.php` (`POST /api/upload-avatar`, `POST /api/heroes/{id}/avatar`) |
 | **Personal Identity** | AES-256 Vault Encryption | **IMPLEMENTED** | `backend/crypto.php` (`encryptVault`, `decryptVault`, `AES-256-CBC`), `backend/data/vault.json` |
 | **Personal Identity** | Privileged Vault Decryption | **IMPLEMENTED** | `backend/api.php` (`POST /api/heroes/{id}/decrypt-vault`, `GET /api/heroes/{id}/review`) |
-| **Hero Specifications** | Powers, Abilities, Weaknesses, Style | **IMPLEMENTED** | `public/register.html` (Step 2), `backend/api.php` |
-| **Power Assessment** | Threat Tier (0–5), Combat & Output | **IMPLEMENTED** | `public/register.html` (Step 3), `backend/config.php` (`THREAT_TIERS`), `backend/api.php` |
-| **Supporting Docs** | File Upload (Required & Optional) | **IMPLEMENTED** | `public/register.html` (Step 4), `backend/api.php` (`POST /api/heroes/{id}/documents`) |
+| **Hero Specifications** | Powers, Abilities, Weaknesses, Style | **IMPLEMENTED** | `frontend/register.html` (Step 2), `backend/api.php` |
+| **Power Assessment** | Threat Tier (0–5), Combat & Output | **IMPLEMENTED** | `frontend/register.html` (Step 3), `backend/config.php` (`THREAT_TIERS`), `backend/api.php` |
+| **Supporting Docs** | File Upload (Required & Optional) | **IMPLEMENTED** | `frontend/register.html` (Step 4), `backend/api.php` (`POST /api/heroes/{id}/documents`) |
 | **Supporting Docs** | Secure In-Memory/Disk Document Serving | **IMPLEMENTED** | `backend/api.php` (`GET /api/heroes/{id}/documents/{docId}`) |
 | **Supporting Docs** | Document Expiration Tracking | **PARTIALLY IMPLEMENTED**| Stored in `expiration_date` attribute; automated cron alert notifications are planned. |
-| **Workflow** | Draft Saving & Resumption | **IMPLEMENTED** | `public/register.html` (`saveDraft()`), `backend/api.php` (`is_draft: true` sets `status: Draft`) |
-| **Workflow** | Intake Submission (`Draft` → `Submitted`) | **IMPLEMENTED** | `public/register.html` (`submitRegistration()`), `backend/api.php` |
-| **Workflow** | Queue Management & `Under Review` | **IMPLEMENTED** | `public/registrar.html`, `backend/api.php` (`action: MOVE_TO_REVIEW`) |
-| **Workflow** | Correction Loop (`Returned for Correction`) | **IMPLEMENTED** | `backend/api.php` (`action: REQUEST_CORRECTIONS`), `public/hero.html`, `public/register.html` |
-| **Workflow** | Resubmission (`Resubmitted` → `Submitted`) | **IMPLEMENTED** | `public/hero.html` (`resubmitRegistration()`), `backend/api.php` (`resubmit: true`) |
+| **Workflow** | Draft Saving & Resumption | **IMPLEMENTED** | `frontend/register.html` (`saveDraft()`), `backend/api.php` (`is_draft: true` sets `status: Draft`) |
+| **Workflow** | Intake Submission (`Draft` → `Submitted`) | **IMPLEMENTED** | `frontend/register.html` (`submitRegistration()`), `backend/api.php` |
+| **Workflow** | Queue Management & `Under Review` | **IMPLEMENTED** | `frontend/registrar.html`, `backend/api.php` (`action: MOVE_TO_REVIEW`) |
+| **Workflow** | Correction Loop (`Returned for Correction`) | **IMPLEMENTED** | `backend/api.php` (`action: REQUEST_CORRECTIONS`), `frontend/hero.html`, `frontend/register.html` |
+| **Workflow** | Resubmission (`Resubmitted` → `Submitted`) | **IMPLEMENTED** | `frontend/hero.html` (`resubmitRegistration()`), `backend/api.php` (`resubmit: true`) |
 | **Workflow** | Identity & Document Verification | **IMPLEMENTED** | `backend/api.php` (`action: VERIFY_IDENTITY`, `POST /api/heroes/{id}/documents/{docId}/verify`) |
 | **Workflow** | Administrative Approval & Licensing | **IMPLEMENTED** | `backend/api.php` (`action: APPROVE_LICENSE` generates `GHRMS-LIC-...` and sets `Approved`) |
 | **Workflow** | Application Rejection | **IMPLEMENTED** | `backend/api.php` (`action: REJECT_REGISTRATION` records reason and sets `Rejected`) |
 | **Security & Audit** | Role-Based Access Control (RBAC) | **IMPLEMENTED** | `backend/auth.php` (`AuthService::requireRole`), `router.php` |
 | **Security & Audit** | SHA-256 Chained Cryptographic Ledger | **IMPLEMENTED** | `backend/crypto.php` (`appendAudit`, `verifyAuditChain`), `backend/data/audit_ledger.json` |
-| **Administration** | Admin User Account Management | **IMPLEMENTED** | `public/admin.html`, `backend/api.php` (`/api/admin/users`) |
+| **Administration** | Admin User Account Management | **IMPLEMENTED** | `frontend/admin.html`, `backend/api.php` (`/api/admin/users`) |
 | **Database** | Concurrency Lock Engine (`flock`) | **IMPLEMENTED** | `backend/storage.php` (`JsonStorage::transaction`, `LOCK_EX` / `LOCK_SH`) |
 
 #### Files and Modules Examined
 - **Backend Core**: `backend/config.php`, `backend/auth.php`, `backend/crypto.php`, `backend/storage.php`, `backend/api.php`, `router.php`
-- **Frontend Pages & Scripts**: `public/register.html`, `public/hero.html`, `public/js/hero.js`, `public/registrar.html`, `public/js/registrar.js`, `public/admin.html`, `public/js/admin.js`, `public/login.html`
+- **Frontend Pages & Scripts**: `frontend/register.html`, `frontend/hero.html`, `frontend/js/hero.js`, `frontend/registrar.html`, `frontend/js/registrar.js`, `frontend/admin.html`, `frontend/js/admin.js`, `frontend/login.html`
 - **Datastores**: `backend/data/heroes.json`, `backend/data/vault.json`, `backend/data/users.json`, `backend/data/audit_ledger.json`, `backend/data/documents/`
 
 ---
@@ -67,7 +67,7 @@ The Hero Registration Module standardizes the onboarding process for all enhance
 - **Cryptography**: OpenSSL (`aes-256-cbc`), PBKDF2/HMAC-SHA256, Bcrypt password hashing (`PASSWORD_BCRYPT`).
 - **Data Persistence**: Atomic, transactional JSON flat-file storage with POSIX kernel file locks (`flock`) preventing race conditions without requiring a relational database engine.
 - **Frontend Architecture**: Modern semantic HTML5, Vanilla JavaScript (ES6+), custom CSS variables, and responsive layout styling.
-- **Storage Layer**: Dedicated, perimeter-isolated binary directories for biometric facial portraits (`/public/uploads/avatars/`) and confidential documents (`/backend/data/documents/`).
+- **Storage Layer**: Dedicated, perimeter-isolated binary directories for biometric facial portraits (`/frontend/uploads/avatars/`) and confidential documents (`/backend/data/documents/`).
 
 ### 1.4 Target Audience
 This documentation is intended for systems architects, security clearance auditors, lead software engineers, registrar administrative officers, and municipal system administrators responsible for operating or extending GHRMS.
@@ -87,16 +87,16 @@ This documentation is intended for systems architects, security clearance audito
 ## 3. Scope and Limitations
 
 ### 3.1 In-Scope (Hero Registration Module)
-- Self-service onboarding wizard for new applicants (`public/register.html`).
+- Self-service onboarding wizard for new applicants (`frontend/register.html`).
 - Account credential provisioning and Bcrypt password hashing.
 - Civilian bio-data encryption into isolated datastores (`backend/data/vault.json`).
 - Biometric facial photo capture and validation.
 - Superhuman power specifications and threat assessment data intake.
 - Upload, secure storage, and review of required and optional supporting documents.
 - State-machine registration lifecycle (`Draft` → `Submitted` → `Under Review` → `Verified` → `Approved` / `Rejected` / `Returned for Correction`).
-- Hero self-service status tracking, correction updates, and resubmissions (`public/hero.html`).
-- Registrar desk intake queue, document verification, correction dispatching, and licensing (`public/registrar.html`).
-- Super Admin user provisioning and registration management (`public/admin.html`).
+- Hero self-service status tracking, correction updates, and resubmissions (`frontend/hero.html`).
+- Registrar desk intake queue, document verification, correction dispatching, and licensing (`frontend/registrar.html`).
+- Super Admin user provisioning and registration management (`frontend/admin.html`).
 
 ### 3.2 Out-of-Scope (Other GHRMS Modules)
 - Sentinel automated biometric checkpoint patrol hardware and camera streaming.
@@ -178,10 +178,10 @@ Clearance Level 1: HERO (Registered Operative / Applicant)
 ## 5. Functional Requirements
 
 ### FR-1: Account Creation & Authentication Provisioning
-- The system must provide a public self-registration portal (`public/register.html`).
+- The system must provide a public self-registration portal (`frontend/register.html`).
 - The system must validate that the requested callsign/username is unique and does not collide with reserved municipal identifiers (`commander`, `admin`, `sarah.chen`, `root`, `system`, `ghrms`, `registrar`, `superadmin`).
 - Passwords must be hashed using `PASSWORD_BCRYPT` with cost factor 12 before persistence to `users.json`.
-- The system must automatically provision an authenticated PHP session cookie upon initial submission or draft creation, allowing the applicant immediate access to their operative portal (`public/hero.html`).
+- The system must automatically provision an authenticated PHP session cookie upon initial submission or draft creation, allowing the applicant immediate access to their operative portal (`frontend/hero.html`).
 
 ### FR-2: Classified Identity Vaulting
 - All civilian personal information (Legal Real Name, Government ID Number, Date of Birth, Gender, Contact Number, Safehouse Address, Emergency Contacts) must be encrypted via OpenSSL using AES-256-CBC.
@@ -192,7 +192,7 @@ Clearance Level 1: HERO (Registered Operative / Applicant)
 ### FR-3: Biometric Face Photo Enrollment
 - The system must accept face photo uploads via multipart/form-data or Base64 data URI up to 8MB.
 - The system must strictly restrict file types to authentic PNG, JPG, JPEG, and WEBP formats using PHP `finfo` MIME validation.
-- Uploaded photos must be stored with randomized filenames (`face_...`) in `/public/uploads/avatars/`.
+- Uploaded photos must be stored with randomized filenames (`face_...`) in `/frontend/uploads/avatars/`.
 
 ### FR-4: Superhuman Specifications Intake
 - Applicants must provide their Primary Superhuman Power, Power Mechanism Description, Limitations/Weaknesses, and Training & Field Experience.
@@ -211,7 +211,7 @@ Clearance Level 1: HERO (Registered Operative / Applicant)
 ### FR-7: Administrative Evaluation & Correction Loop
 - Authorized administrative officers must be able to place submitted applications into `Under Review`.
 - If an application is deficient, the administrator must be able to return the registration (`Returned for Correction`) with recorded correction notes.
-- When an application is returned for correction, the system must unlock editing for the hero owner while displaying an explanatory alert banner on both `public/hero.html` and `public/register.html`.
+- When an application is returned for correction, the system must unlock editing for the hero owner while displaying an explanatory alert banner on both `frontend/hero.html` and `frontend/register.html`.
 - Upon modifying data or uploading amended documents, the hero owner can trigger a resubmission, restoring the status to `Submitted` and re-entering the review queue.
 
 ### FR-8: Identity & Document Verification
@@ -353,14 +353,14 @@ stateDiagram-v2
 ### 7.2 Detailed Step-by-Step Flow
 
 #### Phase 1: Intake & Account Creation (`Draft` or `Submitted`)
-1. **Applicant Entry**: The operative navigates to `public/register.html`.
+1. **Applicant Entry**: The operative navigates to `frontend/register.html`.
 2. **Data Entry**: The applicant enters account credentials, personal civilian details, power specifications, threat calibrations, and selects document files.
 3. **Saving Draft**: If the applicant selects `Save as Draft`:
    - System calls `POST /api/heroes/register` with `is_draft: true`.
    - The civilian identity is encrypted and stored in `vault.json`.
    - Record status is initialized to `Draft` (`registration_step: 1`, `badge_color: 'gray'`).
    - Attached documents are sequentially uploaded.
-   - User account is created and an active session is started. The applicant is redirected to `public/hero.html`.
+   - User account is created and an active session is started. The applicant is redirected to `frontend/hero.html`.
 4. **Final Submission**: If the applicant selects `Submit Registration`:
    - System calls `POST /api/heroes/register` with `is_draft: false`.
    - Record status is initialized to `Submitted` (`submitted_at: date('c')`, `badge_color: 'yellow'`).
@@ -368,7 +368,7 @@ stateDiagram-v2
    - Record enters the active administrative intake queue.
 
 #### Phase 2: Administrative Review & Vetting (`Under Review`)
-1. **Queue Inspection**: A Registrar or Admin opens `public/registrar.html` or `public/admin.html` and inspects pending applicants.
+1. **Queue Inspection**: A Registrar or Admin opens `frontend/registrar.html` or `frontend/admin.html` and inspects pending applicants.
 2. **Review Transition**: The administrator selects the record. The system calls `POST /api/heroes/{id}/assess` with `action: 'MOVE_TO_REVIEW'`, updating status to `Under Review`.
 3. **Vault Decryption**: To verify real identity against submitted documents, the administrator clicks `[DECRYPT BIO]`. The system calls `POST /api/heroes/{id}/decrypt-vault`, returning decrypted civilian bio-data and recording a cryptographic audit event.
 4. **Document Inspection**: The officer reviews each uploaded document via inline preview (`GET /api/heroes/{id}/documents/{docId}`).
@@ -378,7 +378,7 @@ stateDiagram-v2
 1. **Correction Request**: If information is missing or a document is illegible, the officer inputs corrective instructions and triggers `action: 'REQUEST_CORRECTIONS'`.
    - Record status updates to `Returned for Correction`.
    - `correction_notes`, `correction_requested_at`, and `correction_requested_by` are saved.
-2. **Hero Notification**: When the hero logs into `public/hero.html`, a prominent amber alert banner displays the registrar's notes.
+2. **Hero Notification**: When the hero logs into `frontend/hero.html`, a prominent amber alert banner displays the registrar's notes.
 3. **Information Amendment**: The hero clicks `Open Full Stepper` (navigating to `/register`) or utilizes the inline editing interface on `/hero`.
 4. **Resubmission**: The hero clicks `[RESUBMIT REGISTRATION]`. The system calls `PUT /api/heroes/{id}` with `resubmit: true`:
    - Updated fields and new documents are stored.
@@ -494,7 +494,7 @@ GHRMS implements the following operational registration statuses defined in `bac
 
 ## 11. Validation Rules
 
-### 11.1 Client-Side Form Validation (`public/register.html`)
+### 11.1 Client-Side Form Validation (`frontend/register.html`)
 - **Step 1 (Account & Personal)**:
   - Callsign, Email, Legal Name, Date of Birth, Contact Number, Safehouse Address, Emergency Contact Name, and Emergency Contact Phone must be non-empty.
   - Password must be at least 6 characters for new registrations.
@@ -710,7 +710,7 @@ erDiagram
         ┌───────────────────────┴───────────────────────┐
         ▼                                               ▼
 [ Static Assets / UI ]                         [ REST JSON API ]
-public/*.html, css, js                         backend/api.php
+frontend/*.html, css, js                         backend/api.php
 - register.html (Intake Stepper)               - Auth Service (auth.php)
 - hero.html (Operative Portal)                 - Crypto Engine (crypto.php)
 - registrar.html (Registrar Desk)              - Storage Manager (storage.php)
@@ -741,7 +741,7 @@ To guarantee ACID transactions on flat JSON files without data loss or corruptio
 
 ## 15. UI / Page Documentation
 
-### 15.1 Hero Registration Intake Stepper (`/register` → `public/register.html`)
+### 15.1 Hero Registration Intake Stepper (`/register` → `frontend/register.html`)
 - **Purpose**: Public-facing 4-phase registration stepper for new superhuman applicants.
 - **Access Permission**: Public (Unauthenticated) or Authenticated Hero (editing draft/correction).
 - **Interface Structure**:
@@ -773,7 +773,7 @@ To guarantee ACID transactions on flat JSON files without data loss or corruptio
     - `Next Step →`: Validates current step before moving forward.
     - `[SUBMIT REGISTRATION]`: Validates all required inputs, submits record, and uploads files.
 
-### 15.2 Hero Operative Portal (`/hero` → `public/hero.html`)
+### 15.2 Hero Operative Portal (`/hero` → `frontend/hero.html`)
 - **Purpose**: Authenticated dashboard where heroes review their status, inspect power metrics, correct returned submissions, and access their anti-spoof field badge.
 - **Access Permission**: `HERO`, `REGISTRAR`, `SUPER_ADMIN`.
 - **Key Modules**:
@@ -782,7 +782,7 @@ To guarantee ACID transactions on flat JSON files without data loss or corruptio
   - **Operative Profile Cards**: Registered Powers, Combat Profile, Assigned Threat Tier badge, Vaulted Identity status, and Supporting Document Verification summary.
   - **Dynamic Field Badge Modal**: Live time-decaying anti-spoof TOTP verification token and QR code for Sentinel checkpoints.
 
-### 15.3 Registrar Review Desk (`/registrar` → `public/registrar.html`)
+### 15.3 Registrar Review Desk (`/registrar` → `frontend/registrar.html`)
 - **Purpose**: Central administrative triage terminal for reviewing applicants, decrypting identity vaults, verifying supporting documents, requesting corrections, and issuing licenses.
 - **Access Permission**: `REGISTRAR`, `ADMIN`, `SUPER_ADMIN` (Clearance Level 3+).
 - **Key Modules**:
@@ -795,7 +795,7 @@ To guarantee ACID transactions on flat JSON files without data loss or corruptio
     - `[EDIT ALL OPERATIVE INFO]`: Opens full modal to modify classification, threat tiers, and jurisdictions.
     - `[REVOKE LICENSE]`: Revokes active license with recorded reasons.
 
-### 15.4 Super Admin Command Center (`/admin` → `public/admin.html`)
+### 15.4 Super Admin Command Center (`/admin` → `frontend/admin.html`)
 - **Purpose**: Executive terminal for managing administrative personnel, auditing system activity, and overseeing federal registry operations.
 - **Access Permission**: `ADMIN`, `SUPER_ADMIN` (Clearance Level 4–5).
 - **Key Modules**:
@@ -1225,11 +1225,11 @@ Execute the following shell commands in the project root:
 ```bash
 # Ensure secure storage directories exist
 mkdir -p backend/data/documents
-mkdir -p public/uploads/avatars
+mkdir -p frontend/uploads/avatars
 
 # Set appropriate POSIX permissions (read/write for web server)
 chmod -R 775 backend/data
-chmod -R 775 public/uploads
+chmod -R 775 frontend/uploads
 ```
 
 ### 18.3 Environment Configuration (`.env`)
@@ -1352,7 +1352,7 @@ If `backend/data/users.json` is missing, `backend/auth.php` auto-seeds default a
 | Version | Date | Author / Authority | Summary of Changes |
 | :--- | :---: | :--- | :--- |
 | **v1.0.0** | 2026-09-14 | Systems Engineering Desk | Initial release of GHRMS Hero Registration Module. Core intake form, AES-256 identity vaulting, and JSON transaction storage engine. |
-| **v2.0.0** | 2026-09-20 | Registrar Technical Division | Introduced 4-phase registration wizard (`public/register.html`) with face photo biometric upload and document storage. |
+| **v2.0.0** | 2026-09-20 | Registrar Technical Division | Introduced 4-phase registration wizard (`frontend/register.html`) with face photo biometric upload and document storage. |
 | **v3.0.0** | 2026-09-24 | Security Clearance Audit | Added SHA-256 cryptographic chained audit ledger (`backend/crypto.php`) with integrity verification engine. |
 | **v4.0.0** | 2026-09-27 | Command Authority | Implemented full status lifecycle: `Draft` saving, `Returned for Correction` loops, resubmission handling, and document verification sync. |
 | **v4.1.0** | 2026-09-28 | GHRMS Systems Documentation | Published complete technical specification and operational manual for the Hero Registration Module. |

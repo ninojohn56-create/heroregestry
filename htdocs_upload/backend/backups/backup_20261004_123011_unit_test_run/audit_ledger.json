@@ -1,0 +1,862 @@
+[
+    {
+        "id": "evt_3892da133e53",
+        "timestamp": "2026-10-02T19:44:06+00:00",
+        "actor": "SARAH_CHEN",
+        "role": "REGISTRAR",
+        "action": "REGISTRY_INIT",
+        "target_id": "GHRMS_CENTRAL",
+        "details": {
+            "message": "Global Hero Registration Authority online. Active registrar session authenticated."
+        },
+        "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "hash": "086e0ba15f37a1feeb30491b1718e8ae85a88e392991ffbdd54d77b4f5afe395"
+    },
+    {
+        "id": "evt_dd8be897aed4",
+        "timestamp": "2026-10-02T19:44:06+00:00",
+        "actor": "SARAH_CHEN",
+        "role": "REGISTRAR",
+        "action": "QUEUE_INGESTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "alias": "APEX",
+            "gov_code": "9GH-8430",
+            "status": "REVIEWING"
+        },
+        "prev_hash": "086e0ba15f37a1feeb30491b1718e8ae85a88e392991ffbdd54d77b4f5afe395",
+        "hash": "d082049616905dfc9cee90583a74652aa6f6ab0f7ce23ae30b4789e6f2374c48"
+    },
+    {
+        "id": "evt_77981722e5d5",
+        "timestamp": "2026-10-02T19:44:06+00:00",
+        "actor": "SUPER_ADMIN_01",
+        "role": "SUPER_ADMIN",
+        "action": "SECURITY_AUDIT",
+        "target_id": "hero_specter_06",
+        "details": {
+            "alias": "SPECTER ZERO",
+            "action": "ROGUE_STATUS_FLAGGED"
+        },
+        "prev_hash": "d082049616905dfc9cee90583a74652aa6f6ab0f7ce23ae30b4789e6f2374c48",
+        "hash": "b2be2d3915921a71859869ecc2374c54458fbcef5f74e349ae003d337dc9d48b"
+    },
+    {
+        "id": "evt_7ad68b8f4757",
+        "timestamp": "2026-10-02T19:44:50+00:00",
+        "actor": "APEX (Samuel Wright)",
+        "role": "HERO",
+        "action": "USER_LOGOUT",
+        "target_id": "apex",
+        "details": [],
+        "prev_hash": "b2be2d3915921a71859869ecc2374c54458fbcef5f74e349ae003d337dc9d48b",
+        "hash": "16f05ad87cda6959563b7473634a825e731c219f5ba68885390b32cd9cd21b35"
+    },
+    {
+        "id": "evt_4606ebfbc724",
+        "timestamp": "2026-10-02T19:45:01+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "16f05ad87cda6959563b7473634a825e731c219f5ba68885390b32cd9cd21b35",
+        "hash": "e0c71438f49b373206a0e82fe972e8ddbc7060af3e6f75f79d54be693e8fa8f7"
+    },
+    {
+        "id": "evt_d9730bf6db37",
+        "timestamp": "2026-10-02T19:45:43+00:00",
+        "actor": "APEX (Samuel Wright)",
+        "role": "HERO",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "apex",
+        "details": {
+            "role": "HERO",
+            "clearance_level": 1
+        },
+        "prev_hash": "e0c71438f49b373206a0e82fe972e8ddbc7060af3e6f75f79d54be693e8fa8f7",
+        "hash": "3fcc1edcb2e3fdeaf764850430c902e71e7804ac5fe40d2a5b53d0520d16604d"
+    },
+    {
+        "id": "evt_2ab8d0ed895b",
+        "timestamp": "2026-10-02T19:46:19+00:00",
+        "actor": "SENTINEL-CHECKPOINT",
+        "role": "LAW_ENFORCEMENT",
+        "action": "SENTINEL_PROVISIONAL_AUDITED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "checkpoint": "CP-MAIN-01",
+            "officer": "OFC. VALDEZ // UNIT 402",
+            "status": "REVIEWING",
+            "totp_verified": null,
+            "threat": "A-Class (Continental)",
+            "alias": "APEX",
+            "hero_id": "hero_apex_01",
+            "qr_input": "GHRMS://HERO/9GH-8430"
+        },
+        "prev_hash": "3fcc1edcb2e3fdeaf764850430c902e71e7804ac5fe40d2a5b53d0520d16604d",
+        "hash": "6e9c7ae009f226a74c7f97ad7ee892f05302d5f8affad4edeb680eb2cbcabd0c"
+    },
+    {
+        "id": "evt_b990d4f5f2e0",
+        "timestamp": "2026-10-02T19:51:05+00:00",
+        "actor": "APEX (Samuel Wright)",
+        "role": "HERO",
+        "action": "USER_LOGOUT",
+        "target_id": "apex",
+        "details": [],
+        "prev_hash": "6e9c7ae009f226a74c7f97ad7ee892f05302d5f8affad4edeb680eb2cbcabd0c",
+        "hash": "f9802e54237d5a5baf2ff809b768345708bb9926aca1b6b8991ab0666368fe2a"
+    },
+    {
+        "id": "evt_eefb43193a4c",
+        "timestamp": "2026-10-02T19:51:33+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_FAILED",
+        "target_id": "sarah.chen",
+        "details": {
+            "reason": "Invalid password hash",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "f9802e54237d5a5baf2ff809b768345708bb9926aca1b6b8991ab0666368fe2a",
+        "hash": "e221a69cc8eb51927db92f406e9a5bef25c08659ce477e0a8176892af4bd2c35"
+    },
+    {
+        "id": "evt_3193ae1c58e0",
+        "timestamp": "2026-10-02T19:51:43+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "e221a69cc8eb51927db92f406e9a5bef25c08659ce477e0a8176892af4bd2c35",
+        "hash": "f52e63fe9b894d3598660f834f999c9a1a1fe11ef9cde3db676037a9e0bb7389"
+    },
+    {
+        "id": "evt_fd48857c9c68",
+        "timestamp": "2026-10-02T20:11:37+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "f52e63fe9b894d3598660f834f999c9a1a1fe11ef9cde3db676037a9e0bb7389",
+        "hash": "6da7b91db29c0b1762d3fa0cf027cb77f38f1c3f8240aa95124c0aaa92e0d50a"
+    },
+    {
+        "id": "evt_905639d28963",
+        "timestamp": "2026-10-02T20:11:38+00:00",
+        "actor": "sarah.chen (Sarah Chen)",
+        "role": "REGISTRAR",
+        "action": "HERO_PROFILE_EDITED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "account_username": "sarah.chen",
+            "account_name": "Sarah Chen",
+            "account_role": "REGISTRAR",
+            "clearance_level": 3,
+            "hero_id": "hero_apex_01",
+            "hero_alias": "APEX",
+            "fields_changed": [
+                "safehouse_address",
+                "power_description",
+                "primary_power",
+                "real_name"
+            ],
+            "diff": {
+                "safehouse_address": {
+                    "field": "safehouse_address",
+                    "old": "742 Lexington Ave, Penthouse 44, New York, NY",
+                    "new": "742 Lexington Ave, Floor 44"
+                },
+                "power_description": {
+                    "field": "power_description",
+                    "old": "",
+                    "new": "Kinetic amplification with skeletal density reinforcement."
+                },
+                "primary_power": {
+                    "field": "primary_power",
+                    "old": "Enhanced Strength",
+                    "new": "Titan-Grade Strength"
+                },
+                "real_name": {
+                    "field": "real_name",
+                    "old": "Samuel Wright",
+                    "new": "Samuel Wright Jr."
+                }
+            },
+            "has_vault_edits": true,
+            "client_ip": "127.0.0.1",
+            "user_agent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.9444"
+        },
+        "prev_hash": "6da7b91db29c0b1762d3fa0cf027cb77f38f1c3f8240aa95124c0aaa92e0d50a",
+        "hash": "e38b5442c3a9fe357ce92b0b2f932a3c9efc3fd7c73eb732518518db788edc9b"
+    },
+    {
+        "id": "evt_9ad4e52301ac",
+        "timestamp": "2026-10-02T20:11:38+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "e38b5442c3a9fe357ce92b0b2f932a3c9efc3fd7c73eb732518518db788edc9b",
+        "hash": "c9b4a005973e0e9cd8f0ad7e36cd4df504e457f59163a139412239010845faba"
+    },
+    {
+        "id": "evt_2a1705215008",
+        "timestamp": "2026-10-02T20:25:44+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "c9b4a005973e0e9cd8f0ad7e36cd4df504e457f59163a139412239010845faba",
+        "hash": "d72c9940dac6a1732f2cb3e519999d198089cd363f621de3953a4d2a5e449bc6"
+    },
+    {
+        "id": "evt_9b6cd8532540",
+        "timestamp": "2026-10-02T20:26:13+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "d72c9940dac6a1732f2cb3e519999d198089cd363f621de3953a4d2a5e449bc6",
+        "hash": "0cf06ab8358d35228b75124115a2fc0afc869d5c6d7a7f239ade61334b564eb3"
+    },
+    {
+        "id": "evt_7460c7a647fa",
+        "timestamp": "2026-10-02T20:26:31+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_FAILED",
+        "target_id": "",
+        "details": {
+            "reason": "User does not exist",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "0cf06ab8358d35228b75124115a2fc0afc869d5c6d7a7f239ade61334b564eb3",
+        "hash": "e6561d40dfaa6bb292d1f18d9d0320e1ae3035a9d9201b20fd28da2b9bfda9b5"
+    },
+    {
+        "id": "evt_f27e7c8f8393",
+        "timestamp": "2026-10-02T20:26:39+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "e6561d40dfaa6bb292d1f18d9d0320e1ae3035a9d9201b20fd28da2b9bfda9b5",
+        "hash": "c5f6bbbdb8a8c4a6667a2fd548f0772d1b6c73b279990dece6dd09685c7f1296"
+    },
+    {
+        "id": "evt_ad396ab1815a",
+        "timestamp": "2026-10-02T20:27:43+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "c5f6bbbdb8a8c4a6667a2fd548f0772d1b6c73b279990dece6dd09685c7f1296",
+        "hash": "0419911025f527a9a7be6f046ab72de4184c556ec9ceccaa703a2d0554a25ab0"
+    },
+    {
+        "id": "evt_7e90678146a2",
+        "timestamp": "2026-10-02T20:28:06+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "0419911025f527a9a7be6f046ab72de4184c556ec9ceccaa703a2d0554a25ab0",
+        "hash": "f34286e4be73cb3b405204f1e391ca8d66ab195fe062b9b711132f811faba913"
+    },
+    {
+        "id": "evt_ffc9a8ea9d27",
+        "timestamp": "2026-10-03T02:27:33+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_FAILED",
+        "target_id": "sarah.chen",
+        "details": {
+            "reason": "Invalid password hash",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "f34286e4be73cb3b405204f1e391ca8d66ab195fe062b9b711132f811faba913",
+        "hash": "736e8c832fde0ca5c62d149678bdc66d858a3dc904f8db6decbf1ca10f5f58a5"
+    },
+    {
+        "id": "evt_8a6f18813602",
+        "timestamp": "2026-10-03T02:28:12+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "admin",
+        "details": {
+            "role": "ADMIN",
+            "clearance_level": 4
+        },
+        "prev_hash": "736e8c832fde0ca5c62d149678bdc66d858a3dc904f8db6decbf1ca10f5f58a5",
+        "hash": "4634151ec3e20b9e8a0c9bf1453e81e3e57bb43d5644b4fa8b59de6afc12cac7"
+    },
+    {
+        "id": "evt_410fa066cb89",
+        "timestamp": "2026-10-03T02:29:23+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_REVIEW_PACKET_ACCESSED",
+        "target_id": "hero_apex_01",
+        "details": {
+            "alias": "APEX",
+            "vault_id": "vlt_2b29512bec3b09bc",
+            "purpose": "Verification and Face-to-Face (FTF) Interview Review"
+        },
+        "prev_hash": "4634151ec3e20b9e8a0c9bf1453e81e3e57bb43d5644b4fa8b59de6afc12cac7",
+        "hash": "dd204a3d75bdeaa98dfced6cbe044da0dd850e1494045506b80ce4ed9109584c"
+    },
+    {
+        "id": "evt_e941bec5f039",
+        "timestamp": "2026-10-03T02:29:32+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "dd204a3d75bdeaa98dfced6cbe044da0dd850e1494045506b80ce4ed9109584c",
+        "hash": "f9999e5408c67778dc392f1ca63687df0cc8c5f78d94159ffd35d10f474c27a0"
+    },
+    {
+        "id": "evt_44bf070376f2",
+        "timestamp": "2026-10-03T02:29:34+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "f9999e5408c67778dc392f1ca63687df0cc8c5f78d94159ffd35d10f474c27a0",
+        "hash": "8b105d0eaeda081c4c78c6bd2a6cc5a1ef43fef75050ab3807d577a409477a55"
+    },
+    {
+        "id": "evt_671e3de0255a",
+        "timestamp": "2026-10-03T02:29:40+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "8b105d0eaeda081c4c78c6bd2a6cc5a1ef43fef75050ab3807d577a409477a55",
+        "hash": "3fe906dfeb3594ec36085093dca8f3b07487252662c85e897d8076b5c371b9c1"
+    },
+    {
+        "id": "evt_52bf1d811f1e",
+        "timestamp": "2026-10-03T02:29:46+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "3fe906dfeb3594ec36085093dca8f3b07487252662c85e897d8076b5c371b9c1",
+        "hash": "269e7d1ce0464127cfaf4acbcd017b80da0b4fffe2fb99bc9a742973de5f2414"
+    },
+    {
+        "id": "evt_e1c6867eee63",
+        "timestamp": "2026-10-03T02:32:45+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "269e7d1ce0464127cfaf4acbcd017b80da0b4fffe2fb99bc9a742973de5f2414",
+        "hash": "fe8cf99f7ecc973e07a338fd25742e9088770f3ac312901fbd68ceff16bbabea"
+    },
+    {
+        "id": "evt_e813eee1261c",
+        "timestamp": "2026-10-03T02:32:45+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "fe8cf99f7ecc973e07a338fd25742e9088770f3ac312901fbd68ceff16bbabea",
+        "hash": "fdee09d655df22bf9ae8d04a5978af883d896c19560245535d5dec5527a61ab5"
+    },
+    {
+        "id": "evt_be213c1ef291",
+        "timestamp": "2026-10-03T02:34:17+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "APEX",
+            "status": "Under Review",
+            "threat_tier": 2
+        },
+        "prev_hash": "fdee09d655df22bf9ae8d04a5978af883d896c19560245535d5dec5527a61ab5",
+        "hash": "86c4bf2b84501f1cc55ab74e67a6cef14f4bdbc59a8d4c741f6a4f4ee196fa62"
+    },
+    {
+        "id": "evt_2a2758248bc9",
+        "timestamp": "2026-10-03T02:34:20+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_specter_06",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "SPECTER ZERO",
+            "status": "Under Review",
+            "threat_tier": 1
+        },
+        "prev_hash": "86c4bf2b84501f1cc55ab74e67a6cef14f4bdbc59a8d4c741f6a4f4ee196fa62",
+        "hash": "f1fb84eea2ac830d0ca5237815e147e6a050a77437e513f37f0a9a974d13cf26"
+    },
+    {
+        "id": "evt_0ba3a7032bcf",
+        "timestamp": "2026-10-03T02:34:22+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_solaris_a833dd",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "SOLARIS",
+            "status": "Under Review",
+            "threat_tier": 1
+        },
+        "prev_hash": "f1fb84eea2ac830d0ca5237815e147e6a050a77437e513f37f0a9a974d13cf26",
+        "hash": "2a1c12806eb23239c8f62cbf6476de7aecad635127cccaa9947f2101f9a444e5"
+    },
+    {
+        "id": "evt_6def41ceafe6",
+        "timestamp": "2026-10-03T02:34:25+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_aeroscout_07",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "AERO SCOUT",
+            "status": "Under Review",
+            "threat_tier": 4
+        },
+        "prev_hash": "2a1c12806eb23239c8f62cbf6476de7aecad635127cccaa9947f2101f9a444e5",
+        "hash": "88efb2942f8d26354c2d17f3fa93ae5b17b4c809d24d8ff5668ee257fe7e2f56"
+    },
+    {
+        "id": "evt_fd71a4399667",
+        "timestamp": "2026-10-03T02:34:25+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_johnckson_887ff2",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "JOHN CKSON",
+            "status": "Under Review",
+            "threat_tier": 3
+        },
+        "prev_hash": "88efb2942f8d26354c2d17f3fa93ae5b17b4c809d24d8ff5668ee257fe7e2f56",
+        "hash": "c452d8734ba7adb0f9ec72511427d5860b02efa0c7d80752cdb40d816c73ba2b"
+    },
+    {
+        "id": "evt_444873c72e99",
+        "timestamp": "2026-10-03T02:34:26+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_vanguard_05",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "VANGUARD TITAN",
+            "status": "Under Review",
+            "threat_tier": 1
+        },
+        "prev_hash": "c452d8734ba7adb0f9ec72511427d5860b02efa0c7d80752cdb40d816c73ba2b",
+        "hash": "a02fad665265bca1ba588d69abe3b2e201401d716a98925f7e77eecb769bd127"
+    },
+    {
+        "id": "evt_be50e114d891",
+        "timestamp": "2026-10-03T02:34:26+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_steelpulse_04",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "STEEL PULSE",
+            "status": "Under Review",
+            "threat_tier": 4
+        },
+        "prev_hash": "a02fad665265bca1ba588d69abe3b2e201401d716a98925f7e77eecb769bd127",
+        "hash": "6456ba91e873684165c06c379a0010905d1af7fdf6c818f5eddf4ad83da6e344"
+    },
+    {
+        "id": "evt_7895b7d12f52",
+        "timestamp": "2026-10-03T02:34:27+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_lumina_02",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "LUMINA",
+            "status": "Under Review",
+            "threat_tier": 2
+        },
+        "prev_hash": "6456ba91e873684165c06c379a0010905d1af7fdf6c818f5eddf4ad83da6e344",
+        "hash": "e00d94d43967e4d39f28842c7961e92ff289552e2f9d114c42df16542d8db3e7"
+    },
+    {
+        "id": "evt_545d861be339",
+        "timestamp": "2026-10-03T02:34:28+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_atlas_03",
+        "details": {
+            "action": "REQUEST_POWER_AUDIT",
+            "alias": "ATLAS",
+            "status": "Under Review",
+            "threat_tier": 3
+        },
+        "prev_hash": "e00d94d43967e4d39f28842c7961e92ff289552e2f9d114c42df16542d8db3e7",
+        "hash": "1ddaac4e1901ba5597cf407096961a515f1edb504f5c9bb4289bd1186fac30d8"
+    },
+    {
+        "id": "evt_1ba5f226b2e0",
+        "timestamp": "2026-10-03T02:37:06+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "1ddaac4e1901ba5597cf407096961a515f1edb504f5c9bb4289bd1186fac30d8",
+        "hash": "a85872253219acdbfbaaa4b6efa4affa0379a72cd62c43cbd1b7a1135df49c39"
+    },
+    {
+        "id": "evt_14e5a58094ce",
+        "timestamp": "2026-10-03T02:37:06+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_lumina_02",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "LUMINA",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "a85872253219acdbfbaaa4b6efa4affa0379a72cd62c43cbd1b7a1135df49c39",
+        "hash": "af4418fbb9c4aa94a218ccaf7e13e0150c9c05c86e2af2c9bc39931966956db3"
+    },
+    {
+        "id": "evt_7fbc29bfb97a",
+        "timestamp": "2026-10-03T02:40:27+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "sarah.chen",
+        "details": {
+            "role": "REGISTRAR",
+            "clearance_level": 3
+        },
+        "prev_hash": "af4418fbb9c4aa94a218ccaf7e13e0150c9c05c86e2af2c9bc39931966956db3",
+        "hash": "ce55d9d4926a98251a03c4d69d80a657ddc311ba65c2fb156dac0a3bdb3ebf95"
+    },
+    {
+        "id": "evt_c21c6c93dc50",
+        "timestamp": "2026-10-03T02:40:27+00:00",
+        "actor": "Sarah Chen",
+        "role": "REGISTRAR",
+        "action": "HERO_WORKFLOW_ACTION",
+        "target_id": "hero_apex_01",
+        "details": {
+            "action": "APPROVE_LICENSE",
+            "alias": "APEX",
+            "status": "Approved",
+            "threat_tier": 2
+        },
+        "prev_hash": "ce55d9d4926a98251a03c4d69d80a657ddc311ba65c2fb156dac0a3bdb3ebf95",
+        "hash": "2717308fcffa48f9ff0d1c81ca2d222932983356513a842e5c1faf2acb467a0c"
+    },
+    {
+        "id": "evt_0df54826c1f2",
+        "timestamp": "2026-10-03T17:58:23+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_FAILED",
+        "target_id": "",
+        "details": {
+            "reason": "User does not exist",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "2717308fcffa48f9ff0d1c81ca2d222932983356513a842e5c1faf2acb467a0c",
+        "hash": "d3c0e6680d6ad49a4f6155022e72c2770655f51d3dfd054fa63e95eec6330e1e"
+    },
+    {
+        "id": "evt_317c1151a0bb",
+        "timestamp": "2026-10-03T17:58:42+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "d3c0e6680d6ad49a4f6155022e72c2770655f51d3dfd054fa63e95eec6330e1e",
+        "hash": "7432117d7e94405185fb0966ea450599d666fd1bc3b085bc75d870d69558322b"
+    },
+    {
+        "id": "evt_5e3dd9efa214",
+        "timestamp": "2026-10-03T17:58:43+00:00",
+        "actor": "Admin Officer",
+        "role": "ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "admin",
+        "details": {
+            "role": "ADMIN",
+            "clearance_level": 4
+        },
+        "prev_hash": "7432117d7e94405185fb0966ea450599d666fd1bc3b085bc75d870d69558322b",
+        "hash": "32816018e37a59ea6e859c84e2dc8925a16329f58e5ac721baa3997fe49ad6d5"
+    },
+    {
+        "id": "evt_b0849df9d1b2",
+        "timestamp": "2026-10-03T17:58:51+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "32816018e37a59ea6e859c84e2dc8925a16329f58e5ac721baa3997fe49ad6d5",
+        "hash": "077078c52d867a74c2fbba75ed63badbfb54a6825bb151c8ec3e35348d1e9ff3"
+    },
+    {
+        "id": "evt_7945d2a51259",
+        "timestamp": "2026-10-03T17:58:56+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "077078c52d867a74c2fbba75ed63badbfb54a6825bb151c8ec3e35348d1e9ff3",
+        "hash": "35446aedecd5f71a506d7edffeba5fdb86b970bf0249ec2c2ae0f8266888ec07"
+    },
+    {
+        "id": "evt_17e43935edaa",
+        "timestamp": "2026-10-03T17:59:29+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5
+        },
+        "prev_hash": "35446aedecd5f71a506d7edffeba5fdb86b970bf0249ec2c2ae0f8266888ec07",
+        "hash": "dd9442b99d75d71ab0a281f839a4f507c86f6647edd4404e2f9b3593be942490"
+    },
+    {
+        "id": "evt_e268188c5128",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5,
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "dd9442b99d75d71ab0a281f839a4f507c86f6647edd4404e2f9b3593be942490",
+        "hash": "e8e135c99a098dbb2ac05b64228eceec99a521d0570d36c0baea2ba6728f7b13"
+    },
+    {
+        "id": "evt_5bb9604253c6",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_LOGOUT",
+        "target_id": "commander",
+        "details": [],
+        "prev_hash": "e8e135c99a098dbb2ac05b64228eceec99a521d0570d36c0baea2ba6728f7b13",
+        "hash": "5b1322a9c81ae1133075943deffa494c644913db911a0ff4e766d64b0fbc3684"
+    },
+    {
+        "id": "evt_9f1626c015b3",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "Samuel Wright Jr. (APEX)",
+        "role": "HERO",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "apex",
+        "details": {
+            "role": "HERO",
+            "clearance_level": 1,
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "5b1322a9c81ae1133075943deffa494c644913db911a0ff4e766d64b0fbc3684",
+        "hash": "b5a3bb0766c94c0ce0da358d9a36ae54242d6083dd972b9df06b21b5e24200c0"
+    },
+    {
+        "id": "evt_1f474fb320e2",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "Samuel Wright Jr. (APEX)",
+        "role": "HERO",
+        "action": "USER_LOGOUT",
+        "target_id": "apex",
+        "details": [],
+        "prev_hash": "b5a3bb0766c94c0ce0da358d9a36ae54242d6083dd972b9df06b21b5e24200c0",
+        "hash": "98c66409afb8831ca7089f7cf051bf02f87ed832875b994e571f24d8cf9f1f84"
+    },
+    {
+        "id": "evt_7b6c83d82166",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_FAILED",
+        "target_id": "commander",
+        "details": {
+            "reason": "Authentication failed (credentials)",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "98c66409afb8831ca7089f7cf051bf02f87ed832875b994e571f24d8cf9f1f84",
+        "hash": "c70a664cce9f4cb5bffe27cfe96fce222a0749e13582c4aaf36badcf1d16f2ab"
+    },
+    {
+        "id": "evt_288c02fa3fa5",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_FAILED",
+        "target_id": "ghost_operative_nonexistent_6ac246d29781a",
+        "details": {
+            "reason": "Authentication failed (credentials)",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "c70a664cce9f4cb5bffe27cfe96fce222a0749e13582c4aaf36badcf1d16f2ab",
+        "hash": "aba3462713123b28631023722749e3334c25b44e6d794fcecfb44419140c1a19"
+    },
+    {
+        "id": "evt_ff73ba674b56",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "SECURITY_GATEWAY",
+        "role": "ANONYMOUS",
+        "action": "LOGIN_BLOCKED_DISABLED",
+        "target_id": "test_disabled_344e7d",
+        "details": {
+            "reason": "Account is deactivated",
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "aba3462713123b28631023722749e3334c25b44e6d794fcecfb44419140c1a19",
+        "hash": "ef778fb0377c2e8c5d00cc670c1824f9b02c0aba33abfd8df2189911bf9752a3"
+    },
+    {
+        "id": "evt_1b3b6b367d00",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_AUTHENTICATED",
+        "target_id": "commander",
+        "details": {
+            "role": "SUPER_ADMIN",
+            "clearance_level": 5,
+            "ip": "127.0.0.1"
+        },
+        "prev_hash": "ef778fb0377c2e8c5d00cc670c1824f9b02c0aba33abfd8df2189911bf9752a3",
+        "hash": "0b3cd15b5a12ca3390e5c2d2c8cde2c011e7647226b70c5a1de8ce909b19e95d"
+    },
+    {
+        "id": "evt_ced48fc0e9a2",
+        "timestamp": "2026-10-04T12:30:10+00:00",
+        "actor": "Commander Vance",
+        "role": "SUPER_ADMIN",
+        "action": "USER_LOGOUT",
+        "target_id": "commander",
+        "details": [],
+        "prev_hash": "0b3cd15b5a12ca3390e5c2d2c8cde2c011e7647226b70c5a1de8ce909b19e95d",
+        "hash": "c0ae9c74fabc889bf74bd4941852123883fbc1817ea7e72aca3604e0fea10762"
+    },
+    {
+        "id": "evt_cec8a30dd0fe",
+        "timestamp": "2026-10-04T12:30:11+00:00",
+        "actor": "TestOfficer",
+        "role": "ADMIN",
+        "action": "SECURITY_TEST_AUDIT",
+        "target_id": "target_001",
+        "details": {
+            "test_metric": "verified",
+            "password": "[REDACTED]"
+        },
+        "prev_hash": "c0ae9c74fabc889bf74bd4941852123883fbc1817ea7e72aca3604e0fea10762",
+        "hash": "d33900cd47be621568094f5179c68c0f74124305bc521e44831d28c68ed389d7"
+    }
+]
