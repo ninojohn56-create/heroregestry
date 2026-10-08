@@ -1,67 +1,89 @@
 # Global Hero Registration Authority (GHRMS)
 ## Comprehensive System Functions Specification & Operations Manual
+**Accord Classification: Restricted // Standard GHRMS-701A // Release 2.5 // Philippine Hunters Association (HAMS)**
 
 ---
 
 ## 1. System Overview & Architecture
 
-The **Global Hero Registration Authority Management System (GHRMS)** (also operating as the **Hunters Association Management System - HAMS**) is an enterprise-grade, role-based superhuman management, compliance, and field telemetry platform.
+The **Global Hero Registration & Management System (GHRMS)** (also operating as the **Hunters Association Management System - HAMS**) is an enterprise-grade administrative, compliance, and tactical platform built to license, evaluate, and monitor superhuman operatives for public safety.
+
+Operating under the **Philippine Hunters Association** in the **San Francisco, Agusan del Sur Jurisdiction**, GHRMS enforces strict identity verification, power calibration, threat tier classification, secret identity vault encryption, and instant street-level checkpoint verification.
 
 ### Core Technology Stack
 - **Server Environment**: Native PHP 8.2+ with zero mandatory external framework dependencies.
 - **Routing & Perimeter Engine**: [router.php](file:///c:/Users/Nino/Documents/scene2%20final2%20%281%29/router.php) with strict Content-Security-Policy, anti-traversal defenses, and Apache `.htaccess` rewrite parity.
 - **Frontend Architecture**: Modern Vanilla HTML5, CSS3 design tokens (`app.css`), and JavaScript ES2022.
-- **Database & Data Store**: Structured JSON document stores backed by an AES-256-CBC encrypted vault (`backend/data/vault.json`).
+- **Database & Data Store**: Flat-file JSON document stores backed by an AES-256-CBC encrypted vault (`backend/data/vault.json`).
 - **Cryptographic Security**: Authenticated Encrypt-then-MAC (`AES-256-CBC + HMAC-SHA256`), chained SHA-256 audit ledger, and TOTP-style signed QR badge tokens.
 
 ---
 
 ## 2. Clearance Levels & Role Hierarchy
 
-| Clearance Level | Role Identifier | Primary Responsibilities | Default Landing |
-| :--- | :--- | :--- | :--- |
-| **Clearance 5** | `SUPER_ADMIN` | Supreme Commander / Association Chairman; full system directives, user provisioning, cryptographic ledger audit, emergency broadcast. | `/admin` |
-| **Clearance 4** | `ADMIN` | Tactical Administrator; incident assessment, regional threat radar oversight, registrar supervisor. | `/admin` |
-| **Clearance 3** | `REGISTRAR` | Intake Review Officer; identity verification, civilian vault access, document certification, license issuance. | `/registrar` |
-| **Clearance 1** | `HERO` | Registered Operative; intake registration, dynamic badge QR display, profile maintenance, battle incident reporting. | `/hero` |
-| **Field Access** | `SENTINEL` | Checkpoint Guards & Police Officers; rapid badge QR scanning, identity verification, containment directive lookup. | `/sentinel` |
+| Clearance Level | Role Identifier | Callsign / Username | Password | Default Landing | Operational Scope |
+| :---: | :--- | :--- | :--- | :--- | :--- |
+| **Clearance 5** | `SUPER_ADMIN` | `commander` | `admin123` | `/admin` | Supreme Commander / Association Chairman; full system directives, user provisioning, cryptographic ledger audit, emergency broadcast. |
+| **Clearance 4** | `ADMIN` | `admin` | `admin123` | `/admin` | Tactical Administrator; incident assessment, regional threat radar oversight, registrar supervisor. |
+| **Clearance 3** | `REGISTRAR` | `sarah.chen` | `registrar123` | `/registrar` | Intake Review Officer; identity verification, civilian vault access, document certification, license issuance. |
+| **Clearance 1** | `HERO` | `apex` | `hero123` | `/hero` | Registered Operative; intake registration, dynamic badge QR display, profile maintenance, battle incident reporting. |
+| **Field Access** | `SENTINEL` | *(Direct)* | *(No login)* | `/sentinel` | Checkpoint Guards & Police Officers; rapid badge QR scanning, identity verification, containment directive lookup. |
 
 ---
 
-## 3. User-Facing Portals & Interface Functions
+## 3. 10-State Lifecycle Machine (`RegistrationWorkflow`)
 
-### 3.1 Central Gateway & Portal Dispatcher (`/`)
+The system implements a deterministic 10-state lifecycle engine:
+- `Draft`: Initial self-registration saved without formal compliance submission.
+- `Submitted`: Application submitted by candidate and awaiting intake review.
+- `Under Review`: Assigned registrar is actively evaluating credentials and bio-data.
+- `Returned for Correction`: Reviewer flagged issues; applicant must amend fields and resubmit.
+- `Verified`: Official government ID and biometric face portrait authenticated by staff.
+- `Approved`: Review complete; municipal license issued (`GHRMS-LIC-YYYY-XXXX`).
+- `Licensed`: Active accredited hero permitted for field combat deployment.
+- `Suspended`: Temporary administrative hold; field deployment privileges revoked.
+- `Rejected`: Application disqualified due to security hazards or fraudulent declarations.
+- `Revoked`: Hero license permanently canceled due to criminal or rogue violations.
+
+### State Transition Invariants:
+1. Direct jumps from `Rejected` or `Revoked` to `Approved` or `Licensed` are strictly forbidden (HTTP 422).
+2. Only `SUPER_ADMIN` can reinstate a `Revoked` operative back to `Under Review`.
+3. Only `SUPER_ADMIN` and `ADMIN` can reinstate a `Suspended` operative.
+4. `HERO` role can only advance their own record: `Draft` &rarr; `Submitted`, or `Returned for Correction` &rarr; `Submitted`.
+5. An applicant's identity **cannot** be marked `Verified` until a required `Official ID` is certified by authorized staff.
+
+---
+
+## 4. User-Facing Portals & Interface Functions
+
+### 4.1 Central Gateway & Portal Dispatcher (`/`)
 - **[FN-GW-01] Role-Based Route Dispatch**: Automatically inspects active session cookies and routes users to their authorized operational dashboard (`/admin`, `/registrar`, or `/hero`).
 - **[FN-GW-02] Terminal Access Grid**: Provides visual portal cards to access Self-Registration, Security Clearance Login, Public Directory, and Field Sentinel Checkpoint.
 - **[FN-GW-03] System Heartbeat Telemetry**: Live indicators confirming database connectivity, registry synchronization, and server health.
 - **[FN-GW-04] Unified Theme Mode Toggle**: Global Light/Dark mode switcher with cross-tab persistence.
 
----
-
-### 3.2 Awakened Hunter Registration Wizard (`/register`)
-A guided 4-step wizard designed for hero applicants:
-- **[FN-REG-01] Step 1: Civilian & Account Identification**:
-  - Enrolls unique Hunter Callsign / Username, password, email, and real civilian name.
-  - **Live WebRTC Camera / Snapshot Capture**: Captures face portraits directly through the browser with oval HUD guidelines, front/rear camera flip, and mobile device camera fallback.
-  - **Tactical OpenStreetMap Geolocation Picker**: Leaflet-powered interactive map allowing candidates to pinpoint their safehouse coordinates and auto-assign municipal sector grids (`SF-POB`, `SF-HUB`, etc.).
-  - Emergency Handler & Next-of-Kin contact details.
-- **[FN-REG-02] Step 2: Combat Class & Awakened Skills**:
-  - Classification selection (Striker, Elementalist, Tanker, Assassin, Ranger, Support, Mentalist).
+### 4.2 Awakened Hunter Registration Wizard (`/register`)
+- **[FN-REG-01] Step 1: Account Information & Civilian Identity**:
+  - Enrolls Callsign / Username, password, email address, and real civilian legal name.
+  - **Live WebRTC Camera / Snapshot Capture**: Real-time camera feed with oval facial HUD guidelines, front/rear camera flip, and mobile fallback.
+  - **Tactical OpenStreetMap Geolocation Picker**: Leaflet interactive map allowing candidates to select their safehouse coordinates and auto-assign municipal sector grids (`SF-POB`, `SF-HUB`, `SF-KAR`, `SF-BIT`, `SF-CAI`).
+  - Emergency Handler & Next-of-Kin contact details (Name, Relationship, Phone).
+- **[FN-REG-02] Step 2: Combat Class & Tactical Capabilities**:
+  - Combat class taxonomy (Fighter, Mage, Tank, Assassin, Ranger, Healer).
   - Combat style, primary abilities, secondary powers, and tactical limitations/weaknesses.
   - Training background and equipment/gear manifest.
-- **[FN-REG-03] Step 3: Threat Tier & Power Calibrator**:
-  - Interactive Power Output slider (1–100) and Combat Rating slider (1–100).
-  - Power control proficiency rating (Novice, Competent, Mastered, Absolute).
-  - Self-assessed Hunter Rank from E-Rank up to National-Level Hunter.
-- **[FN-REG-04] Step 4: Identity Verification & Accord Declaration**:
-  - Upload official government credentials (National ID, Passport, Driver's License) with expiration dates.
+- **[FN-REG-03] Step 3: Power & Hero Tier Assessment**:
+  - Interactive Power Output slider (1–100) and Combat Effectiveness slider (1–100).
+  - Power control level rating (Novice, Competent, Mastered, Absolute).
+  - Evaluated Hero Tier / Rank slider from E-Rank (Tier 6) up to National-Level (Tier 0).
+  - Standing selection: Official Licensed Hero vs Guild Apprentice / Sidekick.
+- **[FN-REG-04] Step 4: Official Hunter Verification & Supporting Credentials**:
+  - Upload official government credentials (PhilSys National ID, Passport, Driver's License, Guild Clearance) with serial numbers and expiration dates.
   - Mandatory acknowledgment of the Philippine Hunters Association Accords.
-  - **Save as Draft Function (`saveDraft`)**: Allows incomplete applications to be stored securely and resumed at any time.
+  - **Save as Draft (`saveDraft`)**: Allows incomplete applications to be stored securely and resumed at any time.
   - **Packet Submission (`submitRegistration`)**: Encrypts secret identity details into the AES-256 vault and transitions status to `Submitted`.
 
----
-
-### 3.3 Hunter Operative Portal (`/hero`)
+### 4.3 Hunter Operative Portal (`/hero`)
 - **[FN-HERO-01] Dynamic Anti-Counterfeit QR Badge**:
   - Generates a cryptographically signed QR code using HMAC-SHA256 tokens that refresh every 30 seconds.
   - Animated visual countdown ring preventing screenshot replication.
@@ -74,12 +96,15 @@ A guided 4-step wizard designed for hero applicants:
   - Slide-over drawer allowing operatives to report post-mission property damage, civilian collateral impact, and sustained injuries.
 - **[FN-HERO-05] Hunter Profile & Credential Card**:
   - Displays official Hunter ID, municipal license number (when approved), assigned threat tier, and accredited abilities.
+  - Downloadable PNG ID Card for physical credential production.
+- **[FN-HERO-06] Profile Modification Request Workflow**:
+  - Operatives can submit proposed profile updates, queued in `backend/data/pending_updates.json` for registrar approval.
 
----
-
-### 3.4 Registrar Assessment Terminal (`/registrar`)
-- **[FN-REGIS-01] Multi-Stage Intake Queue**:
-  - Filterable tabs: Pending Intake (`Submitted`, `Under Review`), `Returned for Correction`, `Verified`, `Approved`, and `Rejected`.
+### 4.4 Registrar Assessment Desk (`/registrar`)
+- **[FN-REGIS-01] Multi-Mode Intake Queue**:
+  - Mode 1: Intake Queue (`[1] INTAKE QUEUE`) - `Submitted`, `Under Review`, `Returned for Correction`.
+  - Mode 2: Hero Roster (`[2] HERO ROSTER`) - Verified and Approved heroes.
+  - Mode 3: Revoked Licenses (`[3] REVOKED LICENSES`) - Suspended and revoked operatives.
 - **[FN-REGIS-02] Split-Screen Document & File Inspection**:
   - In-browser document viewer for high-resolution inspection and zoom of uploaded PDF/image credentials without leaving the desk.
 - **[FN-REGIS-03] Confidential Identity Vault Decryption**:
@@ -92,12 +117,14 @@ A guided 4-step wizard designed for hero applicants:
   - Stage 4: License Issuance (`GHRMS-LIC-YYYY-XXXX`) and status transition to `Approved`.
 - **[FN-REGIS-05] Request Correction Function**:
   - Returns applications to the hero with specific corrective instructions (e.g., "ID photo blurry; please re-upload").
+- **[FN-REGIS-06] Sidekick Management & Promotion**:
+  - Enroll sidekicks under accredited mentors and graduate veteran sidekicks to full Hero standing.
+- **[FN-REGIS-07] Operative Passkey Reset**:
+  - Generates secure random passkeys for hero operatives who have lost their credentials.
 
----
-
-### 3.5 Sentinel Field Checkpoint Terminal (`/sentinel`)
+### 4.5 Sentinel Field Checkpoint Terminal (`/sentinel`)
 - **[FN-SENT-01] Real-Time WebRTC QR Code Scanner**:
-  - Continuously scans QR badges presented on hero smartphones via camera feed.
+  - Continuously scans QR badges presented on hero smartphones via camera feed with optical targeting HUD and audio cues.
 - **[FN-SENT-02] Manual Callsign & License Lookup**:
   - Fast-lookup input field supporting Callsigns, Hunter IDs (`hero_apex_01`), Government Codes (`9GH-8430`), and License Numbers.
 - **[FN-SENT-03] Sub-Second Clearance Triage Verdicts**:
@@ -106,14 +133,14 @@ A guided 4-step wizard designed for hero applicants:
   - **Red Alert**: Suspended or Revoked; triggers immediate rogue operative alarm and containment directives.
 - **[FN-SENT-04] Medical Vulnerability & Safety Directives**:
   - Displays known weaknesses, combat limitations, and emergency medical precautions to field first-responders.
+- **[FN-SENT-05] Preset Field Test Chips**:
+  - Instant one-click test simulation for APEX, LUMINA, SOLARIS (Rogue), AERO SCOUT, and UNKNOWN Vigilante.
 
----
-
-### 3.6 Command Center & System Admin Matrix (`/admin`)
+### 4.6 Supreme Command Center & System Admin (`/admin`)
 - **[FN-ADM-01] Executive Telemetry & Citywide Readiness**:
   - Live counts of total operatives, active licenses, pending intake queues, and active incidents.
 - **[FN-ADM-02] Regional Threat Radar & Interactive Sector Map**:
-  - Geographical distribution of active heroes across municipal defense sectors.
+  - Geographical distribution of active heroes across municipal defense sectors with satellite and street layers.
 - **[FN-ADM-03] Staff User Administration**:
   - Provision, modify, suspend, or reactivate Registrar and Administrator accounts.
   - Immediate revocation of active sessions upon account suspension.
@@ -122,92 +149,87 @@ A guided 4-step wizard designed for hero applicants:
   - **Ledger Verification**: One-click hash chain recalculation ensuring zero tampering or deleted events.
   - CSV Export with formula injection sanitization (CWE-1236 defense).
 - **[FN-ADM-05] Emergency Directive Broadcaster**:
-  - Citywide broadcast of rogue operative containment alerts, sector lockdowns, and disaster levels.
+  - Citywide broadcast of rogue operative containment alerts, sector lockdowns, and disaster levels (`NORMAL - GREEN`, `ELEVATED - YELLOW`, `HIGH - ORANGE`, `CRITICAL - RED`).
 - **[FN-ADM-06] System Backup & Factory Reset**:
   - Download complete encrypted database snapshots.
   - Factory reset protected by dual confirmation tokens.
 
 ---
 
-## 4. Backend Architecture & Service Functions
+## 5. Complete REST API Catalog (49 Endpoints & Actions)
 
-### 4.1 Authentication Service (`backend/auth.php`)
-- `AuthService::initSession()`: Initializes hardened session cookies (`HttpOnly`, `SameSite=Lax`, strict cookie lifetime).
-- `AuthService::login($username, $password)`: Verifies credentials via `password_verify` with bcrypt timing-safe comparisons.
-- `AuthService::logout()`: Destroys session data and expires authentication cookies.
-- `AuthService::getCurrentUser()`: Returns authenticated session identity; enforces immediate revocation if account is suspended.
-- `AuthService::requireRole($allowedRoles)`: Enforces role boundaries; emits HTTP 403 upon privilege escalation attempts.
-- `AuthService::seedUsers()`: Guarantees baseline administrative accounts exist on fresh installations.
-
-### 4.2 Storage Service (`backend/storage.php`)
-- `StorageService::getHeroes()`: Retrieves all hero operative records.
-- `StorageService::getHeroById($id)`: Fetches a single operative record by primary key or alias.
-- `StorageService::saveHero($data)`: Persists updates to hero JSON document store with file locking (`LOCK_EX`).
-- `StorageService::getIncidents()` / `saveIncident($data)`: Manages battle damage and incident reports.
-- `StorageService::logAudit($action, $details)`: Records entries into the chained SHA-256 audit ledger.
-- `StorageService::verifyAuditChain()`: Validates that each block's `prev_hash` matches the preceding block's hash.
-
-### 4.3 Cryptographic Service (`backend/crypto.php`)
-- `CryptoService::encryptVault($plaintext)`: Encrypts confidential fields using AES-256-CBC and attaches HMAC-SHA256 signature (Encrypt-then-MAC).
-- `CryptoService::decryptVault($ciphertext)`: Verifies HMAC signature before decrypting; returns null if payload has been tampered with.
-- `CryptoService::generateBadgeToken($heroId, $status)`: Generates time-window signed tokens for QR verification.
-- `CryptoService::verifyBadgeToken($token)`: Validates badge token authenticity and freshness.
-
-### 4.4 Workflow Engine (`backend/workflow.php`)
-- `WorkflowService::transitionStatus($heroId, $newStatus, $actor, $notes)`: Validates legal state transitions (e.g., prevents direct jumps from `Rejected` to `Approved`).
-- `WorkflowService::verifyDocument($heroId, $docId, $decision, $notes)`: Records document certification decisions.
-- `WorkflowService::issueLicense($heroId)`: Generates unique accredited municipal license identifier (`GHRMS-LIC-YYYY-XXXX`).
-
-### 4.5 Security & Rate Limiting (`backend/rate_limiter.php`)
-- `RateLimiter::check($key, $maxAttempts, $windowSeconds)`: File-based token bucket rate limiter defending login endpoints against brute-force attacks.
-
----
-
-## 5. REST API Endpoint Catalog
-
-| HTTP Method | Route | Description | Clearance Required |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/auth/login` | Authenticate user credentials and establish session | Public |
-| `GET` | `/api/auth/me` | Fetch active user identity and clearance level | Session |
-| `POST` | `/api/auth/logout` | Terminate session and invalidate auth cookies | Session |
-| `GET` | `/api/heroes` | List all operative records (filtered by clearance) | Staff / Hero (Self) |
-| `GET` | `/api/heroes/{id}` | Inspect operative record by ID | Staff / Hero (Self) |
-| `POST` | `/api/heroes/register` | Self-register new hero candidate (Draft or Submit) | Public / Hero |
-| `PUT` | `/api/heroes/{id}` | Update operative record / draft | Hero (Owner) / Staff |
-| `GET` | `/api/heroes/{id}/token` | Generate dynamic 30s QR badge token | Hero (Owner) / Staff |
-| `POST` | `/api/heroes/{id}/decrypt-vault` | Decrypt civilian name & address (logged to audit) | Registrar / Admin |
-| `POST` | `/api/heroes/{id}/documents` | Upload credential file (ID, certificate, diploma) | Hero (Owner) / Staff |
-| `POST` | `/api/heroes/{id}/documents/{docId}/verify` | Reviewer decision on uploaded document | Registrar / Admin |
-| `POST` | `/api/sentinel/scan` | Field lookup by QR token, Callsign, ID, or License | Public / Sentinel |
-| `GET` | `/api/admin/audit` | Fetch cryptographic chained audit ledger | Super Admin |
-| `GET` | `/api/admin/audit/verify` | Verify cryptographic integrity of entire audit log | Super Admin |
-| `GET` | `/api/admin/users` | List system staff accounts | Super Admin |
-| `POST` | `/api/admin/users` | Provision new staff account | Super Admin |
-| `POST` | `/api/incidents` | Submit battle damage or mission incident report | Hero / Staff |
-| `GET` | `/api/health` | System health probe and liveness check | Public |
+| # | HTTP Method | Route / Endpoint | Description | Clearance Required |
+| :-: | :--- | :--- | :--- | :--- |
+| 1 | `GET` | `/api/health` | Health probe & liveness check (file stores & OpenSSL) | Public |
+| 2 | `POST` | `/api/auth/login` | Authenticate callsign and passkey; start session | Public (Rate Limited) |
+| 3 | `POST` | `/api/auth/logout` | Terminate session and invalidate auth cookies | Session |
+| 4 | `GET` | `/api/auth/me` | Fetch active user identity and clearance level | Session |
+| 5 | `GET` | `/api/notifications` | Universal tactical notifications & rogue alerts | Session |
+| 6 | `GET` | `/api/heroes` | List all operative records (filtered by role) | Staff (`REGISTRAR`, `ADMIN`) |
+| 7 | `GET` | `/api/heroes/{id}` | Inspect operative profile (IDOR protected) | Staff / Hero (Self) |
+| 8 | `GET` | `/api/heroes/{id}/review` | Comprehensive review packet with document metadata | Registrar / Admin |
+| 9 | `PUT` | `/api/heroes/{id}` | Edit hero record information | Registrar / Admin |
+| 10 | `POST` | `/api/heroes/{id}/ftf-interview` | Submit face-to-face interview assessment data | Registrar / Admin |
+| 11 | `DELETE` | `/api/heroes/{id}` | Permanently delete operative record | Super Admin (Level 5) |
+| 12 | `POST` | `/api/heroes/{id}/enroll-sidekick` | Enroll applicant as sidekick under a mentor | Registrar / Admin |
+| 13 | `POST` | `/api/heroes/{id}/promote-to-hero` | Graduate sidekick to full licensed hero | Registrar / Admin |
+| 14 | `POST` | `/api/heroes/register` | Self-register new hero candidate (Draft or Submit) | Public / Hero |
+| 15 | `POST` | `/api/heroes/{id}/documents` | Upload credential file (ID, Certificate, etc.) | Hero (Owner) / Staff |
+| 16 | `GET` | `/api/heroes/{id}/documents/{docId}` | Secure credential file preview / download | Hero (Owner) / Staff |
+| 17 | `DELETE` | `/api/heroes/{id}/documents/{docId}` | Delete document (blocked if already verified) | Hero (Owner) / Staff |
+| 18 | `POST` | `/api/heroes/{id}/documents/{docId}/verify` | Reviewer decision (`Verified` / `Rejected` + notes) | Registrar / Admin |
+| 19 | `POST` | `/api/upload-avatar` | Intake face photo upload | Public / Hero |
+| 20 | `POST` | `/api/heroes/{id}/avatar` | Update operative face photo | Hero (Owner) / Staff |
+| 21 | `GET` | `/api/heroes/{id}/badge-token` | Generate dynamic 30s HMAC-SHA256 badge token | Hero (Owner) / Staff |
+| 22 | `POST` | `/api/verify-badge` | Verify dynamic badge token authenticity | Sentinel / Staff |
+| 23 | `POST` | `/api/heroes/{id}/decrypt-vault` | Decrypt civilian name & address (logged to audit) | Registrar / Admin |
+| 24 | `POST` | `/api/heroes/{id}/assess [APPROVE_LICENSE]` | Issue accredited license and advance to `Approved` | Registrar / Admin |
+| 25 | `POST` | `/api/heroes/{id}/assess [REQUEST_CORRECTIONS]` | Return application with feedback notes | Registrar / Admin |
+| 26 | `POST` | `/api/heroes/{id}/assess [RESUBMIT]` | Resubmit application after correcting issues | Hero (Owner) / Staff |
+| 27 | `POST` | `/api/heroes/{id}/assess [MOVE_TO_REVIEW]` | Advance application status to `Under Review` | Registrar / Admin |
+| 28 | `POST` | `/api/heroes/{id}/assess [VERIFY_IDENTITY]` | Verify civilian identity against official ID | Registrar / Admin |
+| 29 | `POST` | `/api/heroes/{id}/assess [REJECT_REGISTRATION]` | Reject application with justification | Registrar / Admin |
+| 30 | `POST` | `/api/heroes/{id}/assess [REVOKE_LICENSE]` | Revoke hero license for accord breaches | Registrar / Admin |
+| 31 | `POST` | `/api/heroes/{id}/assess [SUSPEND_OPERATIVE]` | Temporarily suspend operative deployment | Registrar / Admin |
+| 32 | `POST` | `/api/heroes/{id}/assess [REINSTATE]` | Reinstate suspended or revoked operative | Admin / Super Admin |
+| 33 | `POST` | `/api/heroes/{id}/assess [REQUEST_POWER_AUDIT]` | Flag hero profile for power recalibration | Registrar / Admin |
+| 34 | `POST` | `/api/heroes/{id}/assess [SET_THREAT_TIER]` | Calibrate threat tier / power output rating | Registrar / Admin |
+| 35 | `POST` | `/api/heroes/{id}/assess [SET_ASSESSMENT]` | Update reviewer assessment scores & notes | Registrar / Admin |
+| 36 | `POST` | `/api/heroes/{id}/assess [MAP_SIDEKICKS]` | Link sidekicks to mentor operative | Registrar / Admin |
+| 37 | `POST` | `/api/damage-report` | Submit post-battle damage report | Hero / Staff |
+| 38 | `POST` | `/api/heroes/{id}/request-update` | Hero submits proposed profile changes | Hero (Owner) |
+| 39 | `GET` | `/api/pending-updates` | List all pending hero profile edit requests | Registrar / Admin |
+| 40 | `GET` | `/api/heroes/{id}/pending-update` | Hero inspects status of own pending edit | Hero (Owner) |
+| 41 | `POST` | `/api/pending-updates/{id}/approve` | Approve and commit hero profile update | Registrar / Admin |
+| 42 | `POST` | `/api/pending-updates/{id}/reject` | Reject hero profile update with reason | Registrar / Admin |
+| 43 | `GET` | `/api/damage-reports` | List all battle damage incident reports | Registrar / Admin |
+| 44 | `POST` | `/api/damage-reports/{id}/match` | Match incident report to responsible hero | Registrar / Admin |
+| 45 | `GET` | `/api/admin/metrics` | Executive readiness metrics & queue telemetry | Staff (`ADMIN`, `L5`) |
+| 46 | `GET` | `/api/admin/map-data` | Tactical radar operative & incident coordinates | Staff (`ADMIN`, `L5`) |
+| 47 | `POST` | `/api/admin/emergency-action` | Broadcast rogue containment alerts / lockouts | Admin / Super Admin |
+| 48 | `GET` | `/api/sentinel/scan` | Checkpoint scan by QR token, Callsign, ID, License | Sentinel / Staff |
+| 49 | `GET` | `/api/tactical-weather` | OpenWeatherMap meteorological radar telemetry | Staff (`ADMIN`, `L5`) |
 
 ---
 
-## 6. How to Share and Run with Friends Online
+## 6. How to Run Locally & Share Worldwide
 
-### Method 1: Permanent 24/7 Web Hosting (InfinityFree / FreePage)
-The system is ready for 24/7 web hosting at **`http://heroregestry.freepage.cc/`**.
+### Running Locally
+```bash
+# Windows
+start.bat
+# Linux / macOS
+chmod +x start.sh && ./start.sh
+# Manual
+php -S 127.0.0.1:8000 router.php
+```
 
-1. Locate the prepared upload folder: [htdocs_upload/](file:///c:/Users/Nino/Documents/scene2%20final2%20%281%29/htdocs_upload) or archive [htdocs_upload/.zip](file:///c:/Users/Nino/Documents/scene2%20final2%20%281%29/htdocs_upload/.zip).
-2. Open your hosting control panel / File Manager.
-3. Upload the **contents** of `htdocs_upload/` directly into your web server's **`htdocs/`** root directory.
-4. Anyone worldwide can visit:
-   - **Self-Registration**: `http://heroregestry.freepage.cc/register`
-   - **Staff & Hero Login**: `http://heroregestry.freepage.cc/login`
-   - **Public Registry**: `http://heroregestry.freepage.cc/registry`
-   - **Sentinel Field Scanner**: `http://heroregestry.freepage.cc/sentinel`
+### Remote Sharing Worldwide (Cloudflare Tunnel)
+```bat
+share_online.bat
+```
+Launches your local server and prints a public HTTPS URL ending in `.trycloudflare.com` accessible from any smartphone or PC worldwide.
 
----
-
-### Method 2: Instant Public Tunnel from Your PC (Zero-Install)
-If you want your friends to connect directly to the system running on your computer right now:
-
-1. Double-click [share_online.bat](file:///c:/Users/Nino/Documents/scene2%20final2%20%281%29/share_online.bat) in the project directory.
-2. It automatically starts your local PHP server and opens an encrypted Cloudflare Tunnel.
-3. It will print a public link ending in **`.trycloudflare.com`** (e.g. `https://random-words.trycloudflare.com`).
-4. Send that link to your friends. They can open it on their mobile phone or PC from anywhere in the world!
+### Permanent 24/7 Web Hosting (InfinityFree / FreePage)
+Upload the contents of `htdocs_upload/` directly into your web hosting server's `htdocs/` folder.
+Website stays online 24/7 at: **`http://heroregestry.freepage.cc/`**.
