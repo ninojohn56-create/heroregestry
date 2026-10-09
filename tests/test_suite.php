@@ -98,6 +98,9 @@ class GhraTestRunner {
         // Group 19: Sentinel QR Code & Operative ID Verification Scanner
         $this->testSentinelQrScanning();
 
+        // Group 20: Hardened Production Defense Verifications
+        $this->testHardeningDefenses();
+
         echo "\n=================================================================\n";
         echo "TEST EXECUTION SUMMARY\n";
         echo "=================================================================\n";
@@ -821,6 +824,99 @@ class GhraTestRunner {
             'qr_input' => 'GHRMS://HERO/NON_EXISTENT_UNKNOWN_000'
         ]);
         $this->assert($res5['code'] === 404, "Unregistered QR code returns 404 alert breach");
+    }
+
+    private function testHardeningDefenses(): void {
+        echo "\n28. Production Defense: Privileged Starter Credential Policy:\n";
+        require_once __DIR__ . '/../backend/config.php';
+        require_once __DIR__ . '/../backend/crypto.php';
+        require_once __DIR__ . '/../backend/auth.php';
+
+        // Direct test of production strict policy gate
+        $origEnv = getenv('APP_ENV');
+        $origAllow = getenv('ALLOW_DEFAULT_ADMIN_CREDENTIALS');
+        putenv('APP_ENV=production');
+        putenv('ALLOW_DEFAULT_ADMIN_CREDENTIALS=false');
+
+        $blockedRes = AuthService::login('commander', 'admin123');
+        $this->assert(isset($blockedRes['blocked_default_credential']) && $blockedRes['blocked_default_credential'] === true, "Production blocks privileged login using default admin123");
+
+        // Restore test env
+        putenv("APP_ENV={$origEnv}");
+        putenv("ALLOW_DEFAULT_ADMIN_CREDENTIALS={$origAllow}");
+
+        echo "\n29. Confidential Identity Access Control & Audit Ledger:\n";
+        $cjSarah = tempnam(sys_get_temp_dir(), 'ghra_sc_');
+        $this->request('POST', '/api/auth/login', ['username' => 'sarah.chen', 'password' => 'registrar123'], $cjSarah);
+        $sarahView = $this->request('GET', '/api/heroes/hero_apex_01', null, $cjSarah);
+        $this->assert(!isset($sarahView['json']['data']['vault_info']), "Registrar cannot see raw vault_info in profile API");
+        $this->assert(str_contains($sarahView['json']['data']['real_name'] ?? '', 'CONFIDENTIAL'), "Civilian real_name is masked for Registrar on profile API");
+
+        $cjAdmin = tempnam(sys_get_temp_dir(), 'ghra_adm_');
+        $this->request('POST', '/api/auth/login', ['username' => 'commander', 'password' => 'admin123'], $cjAdmin);
+        $adminView = $this->request('GET', '/api/heroes/hero_apex_01', null, $cjAdmin);
+        $this->assert(isset($adminView['json']['data']['vault_info']), "Super Admin receives decrypted vault_info on profile API");
+
+        // Verify audit log has CONFIDENTIAL_IDENTITY_ACCESSED
+        $auditData = JsonStorage::read(FILE_AUDIT, []);
+        $foundAudit = false;
+        foreach (array_reverse($auditData) as $log) {
+            if (($log['action'] ?? '') === 'CONFIDENTIAL_IDENTITY_ACCESSED' && ($log['target_id'] ?? '') === 'hero_apex_01') {
+                $foundAudit = true;
+                break;
+            }
+        }
+        $this->assert($foundAudit, "Confidential identity access is logged to audit ledger");
+        @unlink($cjSarah);
+        @unlink($cjAdmin);
+
+        echo "\n30. Verified Hero Pending-Update Approval Workflow Enforcement:\n";
+        $cjApex = tempnam(sys_get_temp_dir(), 'ghra_ap_');
+        $this->request('POST', '/api/auth/login', ['username' => 'apex', 'password' => 'hero123'], $cjApex);
+
+        // Direct PUT on approved/licensed hero is rejected
+        $putAttempt = $this->request('PUT', '/api/heroes/hero_apex_01', [
+            'primary_power' => 'Sonic Overdrive'
+        ], $cjApex);
+        $this->assert($putAttempt['code'] === 403, "Direct PUT profile update on verified/licensed hero is rejected (HTTP 403)", "Got code {$putAttempt['code']} - " . json_encode($putAttempt['json']));
+
+        // Proposing via request-update succeeds
+        $reqUpdate = $this->request('POST', '/api/heroes/hero_apex_01/request-update', [
+            'primary_power' => 'Sonic Overdrive'
+        ], $cjApex);
+        $this->assert($reqUpdate['code'] === 200, "Approved hero update routed to pending approval queue (HTTP 200)");
+        @unlink($cjApex);
+
+        echo "\n31. Legacy Vault HMAC Integrity Enforcement & Safe Auto-Migration:\n";
+        $legacyBio = [
+            'legal_name' => 'Legacy Operative Test',
+            'dna_sequence' => 'LEGACY-DNA-1234'
+        ];
+        $legacyEnc = CryptoService::encryptVault($legacyBio);
+        $legacyId = $legacyEnc['vault_id'];
+
+        // Simulate legacy unauthenticated record by stripping MAC
+        JsonStorage::transaction(FILE_VAULT, function(&$v) use ($legacyId) {
+            unset($v[$legacyId]['mac']);
+            $v[$legacyId]['algo'] = 'AES-256-CBC';
+        });
+
+        // Strict verification: decryption must reject record without MAC
+        $unauthDec = CryptoService::decryptVault($legacyId);
+        $this->assert($unauthDec === null, "Legacy record without MAC tag is rejected by decryptVault");
+
+        // Safe migration: migrate legacy unauthenticated record
+        $migratedCount = CryptoService::migrateVaultHmac();
+        $this->assert($migratedCount >= 1, "migrateVaultHmac successfully detects and migrates legacy record");
+
+        // Verify record is now properly authenticated and decrypts
+        $afterMigration = CryptoService::decryptVault($legacyId);
+        $this->assert($afterMigration !== null && $afterMigration['legal_name'] === 'Legacy Operative Test', "Migrated record decrypts successfully with valid HMAC tag");
+
+        // Cleanup
+        JsonStorage::transaction(FILE_VAULT, function(&$v) use ($legacyId) {
+            unset($v[$legacyId]);
+        });
     }
 }
 

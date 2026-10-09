@@ -38,6 +38,8 @@ jobs:
           php backend/backup.php verify "$BACKUP_FILE"
 
       - name: Start Built-in Application Server
+        env:
+          ALLOW_DEFAULT_ADMIN_CREDENTIALS: "true"
         run: |
           php -S 127.0.0.1:8000 router.php > server.log 2>&1 &
           sleep 2
@@ -46,5 +48,6 @@ jobs:
       - name: Execute Automated Regression & Security Test Suite
         env:
           TEST_BASE_URL: http://127.0.0.1:8000
+          ALLOW_DEFAULT_ADMIN_CREDENTIALS: "true"
         run: |
           php tests/test_suite.php

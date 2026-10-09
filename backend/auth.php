@@ -28,6 +28,11 @@ class AuthService {
             } else {
                 @session_start();
             }
+
+            // Ensure all legacy vault records are safely migrated before any decryption is attempted
+            if (class_exists('CryptoService')) {
+                CryptoService::migrateVaultHmac();
+            }
         }
     }
 
@@ -201,6 +206,26 @@ class AuthService {
                 'ip' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'
             ]);
             return null;
+        }
+
+        // Production Defense: Prevent live production instances from exposing privileged accounts with public default passwords
+        $isPrivileged = in_array($user['role'] ?? '', ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR'], true);
+        $isKnownDefault = in_array($password, ['admin123', 'registrar123'], true);
+        $envAllow = getenv('ALLOW_DEFAULT_ADMIN_CREDENTIALS');
+        $allowDefaults = ($envAllow !== false && $envAllow !== '')
+            ? filter_var($envAllow, FILTER_VALIDATE_BOOLEAN)
+            : (defined('ALLOW_DEFAULT_ADMIN_CREDENTIALS') ? ALLOW_DEFAULT_ADMIN_CREDENTIALS : false);
+        $isProductionStrict = (getenv('APP_ENV') === 'production' && !$allowDefaults);
+
+        if ($isProductionStrict && $isPrivileged && $isKnownDefault) {
+            CryptoService::appendAudit('SECURITY_GATEWAY', $user['role'], 'DEFAULT_CREDENTIAL_BLOCKED', $username, [
+                'reason' => 'Privileged account login with public default password blocked on production instance',
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'
+            ]);
+            return [
+                'blocked_default_credential' => true,
+                'message' => 'SECURITY POLICY: Default starter credentials cannot be used on a live production deployment. Please configure custom credentials or set ALLOW_DEFAULT_ADMIN_CREDENTIALS=true in .env.'
+            ];
         }
 
         // Prevent session fixation attacks by regenerating session ID upon privilege elevation

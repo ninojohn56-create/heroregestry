@@ -143,15 +143,18 @@ The live production portal is pre-configured at: **`http://heroregestry.freepage
 
 GHRMS implements a 5-tier Role-Based Access Control (RBAC) hierarchy enforced at both the router and API layers:
 
-| Clearance Level | Role Identifier | Username / Callsign | Password | Default Landing | Operational Authority |
+| Clearance Level | Role Identifier | Username / Callsign | Demo Passkey | Default Landing | Operational Authority |
 | :---: | :--- | :--- | :--- | :--- | :--- |
-| **Level 5** | `SUPER_ADMIN` | `commander` | `admin123` | `/admin` | Supreme Commander / Association Chairman: Citywide emergency directives, staff user provisioning, chained audit verification, factory resets. |
-| **Level 4** | `ADMIN` | `admin` | `admin123` | `/admin` | Tactical Administrator: Incident dispatch, threat radar oversight, registrar supervision. |
-| **Level 3** | `REGISTRAR` | `sarah.chen` | `registrar123` | `/registrar` | Intake Review Officer: Application examination, confidential identity vault decryption, 4-stage licensing. |
+| **Level 5** | `SUPER_ADMIN` | `commander` | `admin123` *(Dev/Demo)* | `/admin` | Supreme Commander / Association Chairman: Citywide emergency directives, staff user provisioning, chained audit verification, factory resets. |
+| **Level 4** | `ADMIN` | `admin` | `admin123` *(Dev/Demo)* | `/admin` | Tactical Administrator: Incident dispatch, threat radar oversight, registrar supervision. |
+| **Level 3** | `REGISTRAR` | `sarah.chen` | `registrar123` *(Dev/Demo)* | `/registrar` | Intake Review Officer: Application examination, confidential identity vault decryption, 4-stage licensing. |
 | **Level 1** | `HERO` | `apex` | `hero123` | `/hero` | Hero Operative (Apex): National-Level, accredited license `GHRMS-LIC-2024-8841`. |
 | **Level 1** | `HERO` | `lumina` | `hero123` | `/hero` | Hero Operative (Lumina): A-Rank Striker, status `Under Review`. |
 | **Level 1** | `HERO` | `solaris` | `hero123` | `/hero` | Hero Operative (Solaris): S-Rank Elementalist, status `Approved`. |
 | **Field** | `SENTINEL` | *(Direct)* | *(No login)* | `/sentinel` | Street Checkpoint Guards & Police: Instant camera QR scanning and triage. |
+
+> [!IMPORTANT]
+> **Production Credential Defense Policy**: On live production deployments (`APP_ENV=production`), well-known factory starter passkeys (`admin123`, `registrar123`) are strictly blocked at the authentication gateway (`DEFAULT_CREDENTIALS_PROHIBITED`) with security audit entries recorded. Default credentials require setting `ALLOW_DEFAULT_ADMIN_CREDENTIALS=true` in the private `.env` file during local evaluation and demonstration.
 
 ---
 
@@ -430,21 +433,29 @@ A guided 4-step wizard designed for hero candidate onboarding:
 
 ## 🔒 Security, Cryptography & Defensive Hardening
 
-1. **AES-256-CBC + HMAC-SHA256 Biometric Identity Vault:**
-   Civilian identities (legal names, safehouse addresses, emergency contacts) are encrypted using AES-256-CBC with an isolated 16-byte initialization vector (IV) and HMAC-SHA256 authentication tag (Encrypt-then-MAC). Tampered ciphertexts return `null` and trigger an immediate audit security alarm.
-2. **Cryptographic Chained SHA-256 Audit Ledger:**
+1. **Isolated Master Encryption Key & Dynamic Fallback Rotation:**
+   In production (`APP_ENV=production`), the system rejects public fallback keys and generates/enforces a private, uncommitted 256-bit key (`DATA_DIR/.vault_master_key`) protected by web server perimeter blocks. Dual-key fallback rotation (`AES_FALLBACK_KEY`) enables seamless key upgrades without datastore downtime.
+2. **AES-256-CBC + HMAC-SHA256 Biometric Identity Vault:**
+   Civilian identities (legal names, safehouse addresses, emergency contacts) are encrypted using AES-256-CBC with an isolated 16-byte initialization vector (IV) and mandatory HMAC-SHA256 authentication tag (Encrypt-then-MAC). Unauthenticated legacy records are safely auto-migrated on bootstrap; tampered ciphertexts return `null` and trigger an immediate audit alarm (`VAULT_INTEGRITY_VIOLATION`).
+3. **Strict Confidential Identity RBAC & Cryptographic Access Logging:**
+   Civilian identities and biometric vault data are strictly restricted to Clearance Level 4+ (`ADMIN`, `SUPER_ADMIN`) or the profile owner. Non-admin staff (e.g. Registrars on standard profile inspect) receive masked civilian names (`[CONFIDENTIAL // LEVEL 4+ CLEARANCE REQUIRED]`), and every disclosure is logged to the chained audit ledger (`CONFIDENTIAL_IDENTITY_ACCESSED`).
+4. **Mandatory Pending-Update Approval Workflow:**
+   Approved, Verified, Licensed, and Under Review operatives cannot bypass the administrative review pipeline via direct `PUT`. All proposed modifications must be submitted via `POST /api/heroes/{id}/request-update` into `pending_updates.json` for formal Registrar/Admin approval before taking effect.
+5. **Production Privileged Account Credential Hardening:**
+   Factory default passwords (`admin123`, `registrar123`) are blocked at the authentication gateway in live production instances (`DEFAULT_CREDENTIALS_PROHIBITED`), recording `DEFAULT_CREDENTIAL_BLOCKED` audit logs.
+6. **Cryptographic Chained SHA-256 Audit Ledger:**
    Every administrative action is appended to a cryptographic hash chain (`backend/data/audit_ledger.json`). Each block embeds the SHA-256 hash of the preceding entry:
    $$\text{Hash} = \text{SHA256}(\text{prev\_hash} \parallel \text{timestamp} \parallel \text{actor} \parallel \text{role} \parallel \text{action} \parallel \text{target\_id} \parallel \text{details})$$
    Modifying or deleting any historical record breaks the chain immediately.
-3. **Sliding-Window Rate Limiting:**
+7. **Sliding-Window Rate Limiting:**
    File-backed token bucket throttle protects authentication endpoints (`15 attempts / min`), avatar uploads (`20 / 5min`), and global API access (`300 / min`).
-4. **Crash-Safe Atomic Flat-File Persistence:**
+8. **Crash-Safe Atomic Flat-File Persistence:**
    All datastore mutations use exclusive POSIX locks (`flock(LOCK_EX)`), truncation safety, and temporary file swapping (`tmp_ghrms_*`) to prevent 0-byte corruptions during unexpected power cuts.
-5. **Strict Web Perimeter & Path Traversal Defense:**
+9. **Strict Web Perimeter & Path Traversal Defense:**
    `router.php` strictly forbids direct access to dotfiles (`.env`, `.git`), internal engine directories (`/backend/`, `/tests/`, `/unused/`), and configuration scripts. Realpath confinement blocks directory traversal attacks.
-6. **Hardened HTTP Response Headers:**
+10. **Hardened HTTP Response Headers:**
    Enforces `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(self)`, and strict `Content-Security-Policy`.
-7. **CSV Formula Injection Defense (CWE-1236):**
+11. **CSV Formula Injection Defense (CWE-1236):**
    Audit exports automatically sanitize formula operators (`=`, `+`, `-`, `@`) by escaping them, neutralizing spreadsheet execution attacks when opened in Microsoft Excel.
 
 ---

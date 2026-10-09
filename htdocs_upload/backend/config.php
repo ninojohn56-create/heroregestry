@@ -33,9 +33,34 @@ define('APP_DEBUG', filter_var(getenv('APP_DEBUG') ?: false, FILTER_VALIDATE_BOO
 
 define('DATA_DIR', __DIR__ . '/data');
 
-// Master AES-256 Key for Identity Vault (in production, read from ENV or Secret Manager)
-define('AES_KEY', hash('sha256', getenv('HRS_MASTER_KEY') ?: 'HRS_SECRET_VAULT_KEY_2026_HERO_SYSTEM', true));
+// Master AES-256 Key for Identity Vault (in production, read from ENV, Secret Manager, or isolated private key file)
+$rawMasterKey = getenv('HRS_MASTER_KEY');
+$publicFallbackKey = 'HRS_SECRET_VAULT_KEY_2026_HERO_SYSTEM';
+$examplePlaceholder = 'REPLACE_WITH_UNIQUE_SECURE_CRYPTOGRAPHIC_KEY_32_BYTES';
+
+if (getenv('APP_ENV') === 'production') {
+    // Enforce private local key file in production if environment variable is not explicitly injected with a unique secret
+    if (empty($rawMasterKey) || $rawMasterKey === $examplePlaceholder || $rawMasterKey === $publicFallbackKey) {
+        $privateKeyFile = DATA_DIR . '/.vault_master_key';
+        if (file_exists($privateKeyFile) && is_readable($privateKeyFile)) {
+            $rawMasterKey = trim((string)file_get_contents($privateKeyFile));
+        } else {
+            // Generate private high-entropy 256-bit key for production instance (protected by .htaccess and router.php)
+            $generatedKey = bin2hex(random_bytes(32));
+            @file_put_contents($privateKeyFile, $generatedKey);
+            $rawMasterKey = $generatedKey;
+        }
+    }
+} else {
+    if (empty($rawMasterKey) || $rawMasterKey === $examplePlaceholder) {
+        $rawMasterKey = $publicFallbackKey;
+    }
+}
+
+define('AES_KEY', hash('sha256', $rawMasterKey, true));
+define('AES_FALLBACK_KEY', hash('sha256', $publicFallbackKey, true));
 define('AES_CIPHER', 'aes-256-cbc');
+define('ALLOW_DEFAULT_ADMIN_CREDENTIALS', filter_var(getenv('ALLOW_DEFAULT_ADMIN_CREDENTIALS') ?: false, FILTER_VALIDATE_BOOLEAN));
 
 // Data file paths
 define('FILE_HEROES',   DATA_DIR . '/heroes.json');

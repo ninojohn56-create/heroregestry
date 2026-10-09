@@ -95,15 +95,37 @@ class CryptoService {
         $ciphertext = base64_decode($record['ciphertext']);
         $iv = base64_decode($record['iv']);
 
-        // Authenticated Encryption Verification (Encrypt-then-MAC)
-        if (!empty($record['mac'])) {
-            $expectedMac = hash_hmac('sha256', $iv . $ciphertext, self::getMacKey());
-            if (!hash_equals($expectedMac, (string)$record['mac'])) {
-                self::appendAudit('VAULT_ENGINE', 'SYSTEM', 'VAULT_INTEGRITY_VIOLATION', $vaultId, [
-                    'reason' => 'MAC verification failed: ciphertext or IV tampered'
-                ]);
-                return null;
+        // Strict Integrity Enforcement: Reject any record lacking an HMAC authentication tag
+        if (empty($record['mac'])) {
+            self::appendAudit('VAULT_ENGINE', 'SYSTEM', 'VAULT_INTEGRITY_VIOLATION', $vaultId, [
+                'reason' => 'Missing HMAC authentication tag: unauthenticated legacy ciphertext rejected'
+            ]);
+            return null;
+        }
+
+        $expectedMac = hash_hmac('sha256', $iv . $ciphertext, self::getMacKey());
+        if (!hash_equals($expectedMac, (string)$record['mac'])) {
+            // Key Rotation Support: Verify if record was encrypted with fallback key
+            if (defined('AES_FALLBACK_KEY') && AES_FALLBACK_KEY !== AES_KEY) {
+                $fallbackMacKey = hash_hmac('sha256', 'GHRA_VAULT_HMAC_AUTHENTICATION_KEY', AES_FALLBACK_KEY, true);
+                $fallbackExpectedMac = hash_hmac('sha256', $iv . $ciphertext, $fallbackMacKey);
+                if (hash_equals($fallbackExpectedMac, (string)$record['mac'])) {
+                    $fallbackDecrypted = openssl_decrypt($ciphertext, AES_CIPHER, AES_FALLBACK_KEY, OPENSSL_RAW_DATA, $iv);
+                    if ($fallbackDecrypted !== false) {
+                        $bio = json_decode($fallbackDecrypted, true);
+                        if (is_array($bio)) {
+                            // Seamless automatic key migration: re-encrypt with current private AES_KEY
+                            self::updateVault($vaultId, $bio);
+                            return $bio;
+                        }
+                    }
+                }
             }
+
+            self::appendAudit('VAULT_ENGINE', 'SYSTEM', 'VAULT_INTEGRITY_VIOLATION', $vaultId, [
+                'reason' => 'MAC verification failed: ciphertext or IV tampered'
+            ]);
+            return null;
         }
 
         $decrypted = openssl_decrypt($ciphertext, AES_CIPHER, AES_KEY, OPENSSL_RAW_DATA, $iv);
@@ -118,22 +140,30 @@ class CryptoService {
      * Migrate all existing legacy unauthenticated vault records to Encrypt-then-MAC
      */
     public static function migrateVaultHmac(): int {
-        return (int)JsonStorage::transaction(FILE_VAULT, function (&$vault) {
+        $migrated = (int)JsonStorage::transaction(FILE_VAULT, function (&$vault) {
             if (!is_array($vault)) return 0;
             $macKey = self::getMacKey();
-            $migrated = 0;
+            $count = 0;
             foreach ($vault as $vid => &$rec) {
                 if (empty($rec['mac']) && !empty($rec['ciphertext']) && !empty($rec['iv'])) {
                     $ciphertext = base64_decode($rec['ciphertext']);
                     $iv = base64_decode($rec['iv']);
                     $rec['mac'] = hash_hmac('sha256', $iv . $ciphertext, $macKey);
                     $rec['algo'] = 'AES-256-CBC+HMAC-SHA256';
-                    $migrated++;
+                    $count++;
                 }
             }
             unset($rec);
-            return $migrated;
+            return $count;
         }, 0);
+
+        if ($migrated > 0) {
+            self::appendAudit('VAULT_ENGINE', 'SYSTEM', 'VAULT_INTEGRITY_MIGRATED', 'ALL', [
+                'records_migrated' => $migrated,
+                'target_algo' => 'AES-256-CBC+HMAC-SHA256'
+            ]);
+        }
+        return $migrated;
     }
 
     /**

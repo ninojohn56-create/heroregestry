@@ -21,13 +21,16 @@ Operating under the **Philippine Hunters Association** in the **San Francisco, A
 
 ## 2. Clearance Levels & Role Hierarchy
 
-| Clearance Level | Role Identifier | Callsign / Username | Password | Default Landing | Operational Scope |
+| Clearance Level | Role Identifier | Callsign / Username | Demo Passkey | Default Landing | Operational Scope |
 | :---: | :--- | :--- | :--- | :--- | :--- |
-| **Clearance 5** | `SUPER_ADMIN` | `commander` | `admin123` | `/admin` | Supreme Commander / Association Chairman; full system directives, user provisioning, cryptographic ledger audit, emergency broadcast. |
-| **Clearance 4** | `ADMIN` | `admin` | `admin123` | `/admin` | Tactical Administrator; incident assessment, regional threat radar oversight, registrar supervisor. |
-| **Clearance 3** | `REGISTRAR` | `sarah.chen` | `registrar123` | `/registrar` | Intake Review Officer; identity verification, civilian vault access, document certification, license issuance. |
+| **Clearance 5** | `SUPER_ADMIN` | `commander` | `admin123` *(Dev/Demo only)* | `/admin` | Supreme Commander / Association Chairman; full system directives, user provisioning, cryptographic ledger audit, emergency broadcast. |
+| **Clearance 4** | `ADMIN` | `admin` | `admin123` *(Dev/Demo only)* | `/admin` | Tactical Administrator; incident assessment, regional threat radar oversight, registrar supervisor. |
+| **Clearance 3** | `REGISTRAR` | `sarah.chen` | `registrar123` *(Dev/Demo only)* | `/registrar` | Intake Review Officer; identity verification, civilian vault access, document certification, license issuance. |
 | **Clearance 1** | `HERO` | `apex` | `hero123` | `/hero` | Registered Operative; intake registration, dynamic badge QR display, profile maintenance, battle incident reporting. |
 | **Field Access** | `SENTINEL` | *(Direct)* | *(No login)* | `/sentinel` | Checkpoint Guards & Police Officers; rapid badge QR scanning, identity verification, containment directive lookup. |
+
+> [!IMPORTANT]
+> **Production Credential Defense Policy**: On live production deployments (`APP_ENV=production`), well-known factory starter passkeys (`admin123`, `registrar123`) are strictly blocked at the authentication gateway (`DEFAULT_CREDENTIALS_PROHIBITED`) with security audit entries recorded. Default passwords require setting `ALLOW_DEFAULT_ADMIN_CREDENTIALS=true` in the private `.env` file during local evaluation and demonstration.
 
 ---
 
@@ -233,3 +236,33 @@ Launches your local server and prints a public HTTPS URL ending in `.trycloudfla
 ### Permanent 24/7 Web Hosting (InfinityFree / FreePage)
 Upload the contents of `htdocs_upload/` directly into your web hosting server's `htdocs/` folder.
 Website stays online 24/7 at: **`http://heroregestry.freepage.cc/`**.
+
+---
+
+## 7. System Defense & Cryptographic Integrity Standards
+
+During system defense and security review, the following five core security gates are rigorously enforced across both local instances and live production deployments:
+
+1. **Master Encryption Key Isolation**:
+   - In production (`APP_ENV=production`), the system strictly rejects the public fallback key or placeholder.
+   - If an external environment key is absent, an isolated, uncommitted high-entropy 256-bit key (`DATA_DIR/.vault_master_key`) is generated and protected by web server perimeter blocks.
+   - Dual-key fallback rotation (`AES_FALLBACK_KEY`) enables seamless, zero-downtime re-encryption of existing datastore records.
+
+2. **Privileged Account Credential Hardening**:
+   - Privileged roles (`SUPER_ADMIN`, `ADMIN`, `REGISTRAR`) cannot log into live production systems using default starter passkeys (`admin123`, `registrar123`).
+   - Unauthorized attempts trigger HTTP 403 `DEFAULT_CREDENTIALS_PROHIBITED` and record a `DEFAULT_CREDENTIAL_BLOCKED` audit violation.
+   - Demo access requires explicit activation via `ALLOW_DEFAULT_ADMIN_CREDENTIALS=true` in the non-committed `.env`.
+
+3. **Confidential Identity RBAC & Cryptographic Access Logging**:
+   - Operative secret real names and biometric vault data are strictly classified under Clearance Level 4+ (`ADMIN`, `SUPER_ADMIN`) or the verified profile owner.
+   - Standard profile inspections (`GET /api/heroes/{id}`) by non-admin staff mask civilian identities (`[CONFIDENTIAL // LEVEL 4+ CLEARANCE REQUIRED]`) and omit raw vault blobs.
+   - Every disclosure of confidential civilian identity is permanently logged to the SHA-256 chained audit ledger (`CONFIDENTIAL_IDENTITY_ACCESSED`).
+
+4. **Enforced Profile Update Workflow**:
+   - Approved, Verified, Licensed, and Under Review operatives are blocked from directly mutating their live records via `PUT /api/heroes/{id}` (HTTP 403 `PENDING_UPDATE_REQUIRED`).
+   - All proposed profile modifications must flow through the pending-update approval workflow (`POST /api/heroes/{id}/request-update`) into `pending_updates.json`, requiring formal Registrar/Admin approval before taking effect.
+
+5. **Legacy Ciphertext Authenticated Encryption (Encrypt-then-MAC)**:
+   - Every identity vault record strictly requires a valid HMAC-SHA256 authentication tag (`AES-256-CBC+HMAC-SHA256`).
+   - Any record lacking a valid MAC is immediately rejected by `CryptoService::decryptVault()` as a `VAULT_INTEGRITY_VIOLATION`.
+   - The automated migration routine `CryptoService::migrateVaultHmac()` automatically detects legacy unauthenticated records during bootstrap and equips them with valid authentication tags prior to query execution.

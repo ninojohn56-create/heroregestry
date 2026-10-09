@@ -164,6 +164,9 @@ try {
             if (!$user) {
                 jsonError("Authentication failed: Invalid callsign or security passkey.", 401);
             }
+            if (isset($user['blocked_default_credential']) && $user['blocked_default_credential'] === true) {
+                jsonError($user['message'], 403, ['error_code' => 'DEFAULT_CREDENTIALS_PROHIBITED']);
+            }
 
             RateLimiter::reset('auth_login');
 
@@ -483,7 +486,7 @@ try {
         $heroData = $heroes[$heroId];
 
         $viewerRole = $viewer['role'] ?? 'HERO';
-        $isStaff = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN', 'REGISTRAR', 'ASSESSOR'], true);
+        $isAdminOrSuperAdmin = in_array($viewerRole, ['SUPER_ADMIN', 'ADMIN'], true);
         $isOwnerHero = ($viewerRole === 'HERO' && (($viewer['hero_id'] ?? '') === $heroId || ($heroData['user_id'] ?? '') === ($viewer['username'] ?? '')));
 
         // RBAC / IDOR defense: Operative accounts can strictly access ONLY their own service record
@@ -491,14 +494,39 @@ try {
             jsonError("ACCESS DENIED: Operative credentials only permit viewing your own designated service record.", 403);
         }
 
-        // Decrypt vault data strictly for authorized staff or the operative themselves
-        if (!empty($heroData['vault_id']) && ($isStaff || $isOwnerHero)) {
+        // Confidential identity access control:
+        // Raw vault biometric and civilian identity information is strictly classified (Clearance Level 4+).
+        // Only ADMIN, SUPER_ADMIN, and the verified profile owner may access decrypted identity fields.
+        // Registrars and general staff inspecting operative service records receive public operative data.
+        // When confidential identity data is disclosed, access is logged to the cryptographic audit ledger.
+        unset($heroData['vault_info']);
+
+        if (!empty($heroData['vault_id']) && ($isAdminOrSuperAdmin || $isOwnerHero)) {
             $vaultData = CryptoService::decryptVault($heroData['vault_id']);
             if ($vaultData) {
                 $heroData['vault_info'] = $vaultData;
                 if (!isset($heroData['real_name']) || empty($heroData['real_name'])) {
                     $heroData['real_name'] = $vaultData['real_name'] ?? ($vaultData['full_name'] ?? null);
                 }
+
+                // Mandatory Audit Logging for confidential identity disclosure
+                CryptoService::appendAudit(
+                    $viewer['name'] ?? $viewer['username'] ?? 'OPERATIVE',
+                    $viewerRole,
+                    'CONFIDENTIAL_IDENTITY_ACCESSED',
+                    $heroId,
+                    [
+                        'alias' => $heroData['alias'] ?? '',
+                        'vault_id' => $heroData['vault_id'],
+                        'accessor_role' => $viewerRole,
+                        'disclosed_fields' => ['real_name', 'vault_info']
+                    ]
+                );
+            }
+        } else {
+            // Mask civilian identity for non-admin staff (e.g. REGISTRAR) and unprivileged viewers
+            if (!$isAdminOrSuperAdmin && !$isOwnerHero) {
+                $heroData['real_name'] = '[CONFIDENTIAL // LEVEL 4+ CLEARANCE REQUIRED]';
             }
         }
         jsonResponse([
@@ -581,6 +609,17 @@ try {
             jsonError("Hero {$heroId} not found.", 404);
         }
         $existingRecord = $currentHeroes[$heroId];
+        $currentStatus = $existingRecord['status'] ?? 'Draft';
+
+        // Workflow Defense: Prevent verified, approved, or licensed heroes from bypassing the pending-update approval queue
+        $isVerifiedOrApproved = in_array($currentStatus, ['Verified', 'Approved', 'Licensed', 'Under Review', 'REVIEWING', 'VERIFIED', 'APPROVED', 'LICENSED', 'Active'], true);
+        if ($isOwnerHero && $isVerifiedOrApproved) {
+            jsonError(
+                "ACCESS RESTRICTED: Operatives in '{$currentStatus}' status cannot directly update approved service records. Proposed modifications must be submitted via the pending-update approval workflow (POST /api/heroes/{$heroId}/request-update).",
+                403,
+                ['error_code' => 'PENDING_UPDATE_REQUIRED']
+            );
+        }
 
         // Check vault identity fields to update
         $vaultFields = [
@@ -2046,7 +2085,7 @@ try {
     // Route: POST /api/heroes/{id}/decrypt-vault — REGISTRAR / SUPER_ADMIN only
     // -------------------------------------------------------------
     if ($parts[0] === 'heroes' && isset($parts[1]) && ($parts[2] ?? '') === 'decrypt-vault' && $method === 'POST') {
-        $actor = AuthService::requireRole(['REGISTRAR', 'SUPER_ADMIN']);
+        $actor = AuthService::requireRole(['REGISTRAR', 'ADMIN', 'SUPER_ADMIN']);
         $heroId = $parts[1];
         $heroes = JsonStorage::read(FILE_HEROES, []);
         if (!isset($heroes[$heroId])) {
